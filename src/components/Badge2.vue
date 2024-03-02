@@ -45,9 +45,6 @@
 <script>
 export default {
   name: 'Badge1',
-  props: {
-    msg: String
-  }
 }
 </script>
 

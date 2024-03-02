@@ -4,6 +4,7 @@
     <main>
       <Badge1 />
       <Badge2 />
+      <Badge3 />
     </main>
   </div>
 </template>
@@ -11,12 +12,14 @@
 <script>
 import Badge1 from './Badge1.vue'
 import Badge2 from './Badge2.vue'
+import Badge3 from './Badge3.vue'
 
 export default {
   name: 'AppStage',
   components: {
     Badge1,
-    Badge2
+    Badge2,
+    Badge3,
   }
 }
 </script>
@@ -44,9 +47,10 @@ main {
   display: flex;
   justify-content: center;
   align-content: center;
+  padding: 0 3rem;
 }
 .badge {
-  min-width: 500px;
+  min-width: 350px;
   max-width: 600px;
   padding: 1rem 1rem 0 0;
   margin: 1rem 1rem 0 0;
