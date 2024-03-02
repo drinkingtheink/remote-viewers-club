@@ -218,6 +218,10 @@ export default {
     position: relative;
 }
 
+.remote-viewers * {
+    transition: all 0.2;
+}
+
 @keyframes flicker {
     from {
         opacity: 0;
@@ -225,6 +229,12 @@ export default {
     to {
         opacity: 1;
     }
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: 1000;
+  }
 }
 
 .remote-viewers:hover .laser {
@@ -238,8 +248,22 @@ export default {
     animation-iteration-count: infinite;
 }
 
-.remote-viewers:hover .laser, .star, #grid, .left {
+.remote-viewers:hover .laser, .star, .left, .laser {
     opacity: 0;
+}
+
+#grid {
+    opacity: 0.2;
+}
+
+.remote-viewers:hover .laser {
+    opacity: 1;
+}
+
+.remote-viewers:hover #grid {
+    opacity: 1;
+    stroke-dasharray: 10;
+    animation: dash 50s linear infinite;
 }
 
 .remote-viewers:hover .skull.left {
