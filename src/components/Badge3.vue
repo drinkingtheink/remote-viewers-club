@@ -100,7 +100,7 @@ export default {
 }
 
 #stars {
-    opacity: 0.3;
+    opacity: 0.7;
 }
 
 @keyframes flicker {
