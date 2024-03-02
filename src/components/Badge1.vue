@@ -206,7 +206,7 @@ export default {
 .st0{fill:#EFEFF8;}
 .st1{fill:#1D1D1D;}
 .st2{fill:#F2F1FA;}
-.st3{fill:none;stroke:#EA1313;stroke-width:3;stroke-miterlimit:10;}
+.st3{fill:none;stroke:#FFFFFF;stroke-width:3;stroke-miterlimit:10;}
 .st4{fill:#FFFFFF;}
 .st5{fill:#5639EF;}
 
@@ -227,13 +227,22 @@ export default {
     opacity: 1;
 }
 
-
 .remote-viewers .skull.left {
+    fill: red;
     opacity: 1;
+}
+
+.remote-viewers #LEFT-skull-bg {
+    opacity: 0;
 }
 
 .remote-viewers:hover .skull.left {
     opacity: 0;
+}
+
+.remote-viewers:hover .st3 {
+    stroke-width: 7px;
+    stroke: #EA1313;
 }
 
 @keyframes flicker {
@@ -248,6 +257,7 @@ export default {
 @keyframes dash {
   to {
     stroke-dashoffset: 1000;
+    stroke-width: 3px;
   }
 }
 
@@ -272,6 +282,24 @@ export default {
 
 .remote-viewers:hover .laser {
     opacity: 1;
+}
+
+@keyframes jaw {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(20px);
+    }
+    60% {
+        transform: translateY(0);
+    }
+}
+
+.remote-viewers:hover .right#skull-bot {
+    animation: jaw 5s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
 }
 
 .remote-viewers:hover #grid {
