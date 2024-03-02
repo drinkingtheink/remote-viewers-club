@@ -60,6 +60,14 @@ main {
   align-content: center;
   padding: 0 3rem;
 }
+
+@media only screen and (max-width: 60em) {
+  main {
+    display: block;
+    text-align: center;
+  }
+}
+
 .badge {
   min-width: 350px;
   max-width: 600px;
