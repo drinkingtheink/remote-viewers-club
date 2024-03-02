@@ -65,6 +65,7 @@ main {
   main {
     display: block;
     text-align: center;
+    padding: 0;
   }
 }
 
@@ -77,10 +78,6 @@ main {
 }
 
 @media only screen and (max-width: 60em) {
-  .badge {
-    margin: 0 auto;
-  }
-
   .badge {
     padding: 1rem 0;
     margin: 0 auto;
