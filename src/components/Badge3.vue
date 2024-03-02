@@ -85,7 +85,7 @@ export default {
 <style scoped>
 .cls-1{stroke:#fff;stroke-width:2px;}
 .cls-1,.cls-2{fill:none;stroke-miterlimit:10;}
-.cls-2{stroke:#e81c26;}
+.cls-2{stroke:#e81c26;stroke-width: 1px;}
 .cls-3{fill:#1d1d1d;}
 .cls-3,.cls-4,.cls-5{stroke-width:0px;}
 .cls-4{fill:#fff;}
@@ -120,6 +120,10 @@ export default {
     animation-direction: alternate-reverse;
 }
 
+.heads:hover .cls-2 {
+    stroke-width: 3px;
+}
+
 @keyframes dash {
   to {
     stroke-dashoffset: 1000;
@@ -128,9 +132,8 @@ export default {
 
 .heads:hover #ship-path {
     opacity: 1;
-    stroke-dasharray: 100;
-    animation: dash 10s linear infinite;
-    animation-direction: reverse;
+    stroke-dasharray: 20;
+    animation: dash 7s reverse infinite;
 }
 
 </style>
