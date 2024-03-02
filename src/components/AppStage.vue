@@ -41,12 +41,11 @@ a {
 }
 
 main {
-  /* display: flex;
-  justify-content: center;
-  align-content: center; */
+  display: flex;
 }
-
 .badge {
+  min-width: 500px;
   max-width: 600px;
+  padding: 1rem 1rem 0 0;
 }
 </style>
