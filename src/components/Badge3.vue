@@ -120,4 +120,17 @@ export default {
     animation-direction: alternate-reverse;
 }
 
+@keyframes dash {
+  to {
+    stroke-dashoffset: 1000;
+  }
+}
+
+.heads:hover #ship-path {
+    opacity: 1;
+    stroke-dasharray: 100;
+    animation: dash 10s linear infinite;
+    animation-direction: reverse;
+}
+
 </style>
