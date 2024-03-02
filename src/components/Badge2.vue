@@ -75,9 +75,18 @@ export default {
     }
 }
 
+@keyframes pan {
+    from {
+        transform: rotate(-5px);
+    }
+    to {
+        transform: rotate(5px);
+    }
+}
+
 #phantom {
     transform: translate(-60px, 20px) scale(0.8);
-    opacity: 0.1;
+    opacity: 0.05;
     transition: all 1s;
 }
 
@@ -90,7 +99,7 @@ export default {
     opacity: 0.2;
 }
 
-#lights, #hand, #threads {
+#hand, #threads {
     opacity: 0;
 }
 
@@ -105,13 +114,19 @@ export default {
     transition: opacity 0.5s;
 }
 
+.electronic-phantoms:hover #lights path {
+    animation-name: pan;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+}
+
 #hand, #threads {
-    transform: translate(-20px, -10px);
+    transform: translate(-10px, -5px);
 }
 
 .electronic-phantoms:hover #hand, .electronic-phantoms:hover #threads {
     opacity: 1;
     transform: translate(0, 0);
-    transition: all 2s;
+    transition: all 1.25s;
 }
 </style>
