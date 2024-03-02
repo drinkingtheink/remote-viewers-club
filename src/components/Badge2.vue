@@ -3,8 +3,8 @@
         <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 682.89 682.89">
             <circle id="bg" class="cls-3" cx="341.45" cy="342.93" r="316.15"/>
             <g id="lights">
-                <path class="cls-5" style="animation-delay: 0.1s;" d="M572.27,126.93l-65.95,406.32h8.48l93.7-371.08s-9.97-52.63-36.23-35.24Z"/>
-                <path class="cls-5" style="animation-delay: 0.5s;" d="M636.05,225.08l-121.25,308.17,141.47-257.15s25.99-56.85-20.21-51.02Z"/>
+                <path class="cls-5" style="animation-delay: 0.7s;" d="M572.27,126.93l-65.95,406.32h8.48l93.7-371.08s-9.97-52.63-36.23-35.24Z"/>
+                <path class="cls-5" style="animation-delay: 1.5s;" d="M636.05,225.08l-121.25,308.17,141.47-257.15s25.99-56.85-20.21-51.02Z"/>
                 <path class="cls-5" style="animation-delay: 0.6s;" d="M178.53,64.65l78.85,450.12-29.76-479.07s-53.56,1.45-49.1,28.95Z"/>
                 <path class="cls-5" style="animation-delay: 1s;" d="M103.82,129.7l53.89,389.53L74.18,173.61s-16.17-48.16,29.64-43.91Z"/>
                 <path class="cls-5" style="animation-delay: 1.2s;" d="M34.3,251.48l188.87,243.95L17.88,275.14s-1.37-32.53,16.42-23.66Z"/>
