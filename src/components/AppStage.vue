@@ -75,4 +75,10 @@ main {
   margin: 1rem 1rem 0 0;
   filter: drop-shadow(10px 0 10px #111);
 }
+
+@media only screen and (max-width: 60em) {
+  .badge {
+    margin: 0 auto;
+  }
+}
 </style>
