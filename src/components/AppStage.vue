@@ -1,19 +1,22 @@
 <template>
-  <div class="hello">
+  <div class="app-stage">
     <h1>REMOTE VIEWERS CLUB</h1>
     <main>
       <Badge1 />
+      <Badge2 />
     </main>
   </div>
 </template>
 
 <script>
 import Badge1 from './Badge1.vue'
+import Badge2 from './Badge2.vue'
 
 export default {
   name: 'AppStage',
   components: {
-    Badge1
+    Badge1,
+    Badge2
   }
 }
 </script>
