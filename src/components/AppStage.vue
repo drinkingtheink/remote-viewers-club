@@ -50,5 +50,6 @@ main {
   max-width: 600px;
   padding: 1rem 1rem 0 0;
   margin: 1rem 1rem 0 0;
+  filter: drop-shadow(10px 0 10px #111);
 }
 </style>
