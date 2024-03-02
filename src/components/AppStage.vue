@@ -42,10 +42,13 @@ a {
 
 main {
   display: flex;
+  justify-content: center;
+  align-content: center;
 }
 .badge {
   min-width: 500px;
   max-width: 600px;
   padding: 1rem 1rem 0 0;
+  margin: 1rem 1rem 0 0;
 }
 </style>
