@@ -80,5 +80,10 @@ main {
   .badge {
     margin: 0 auto;
   }
+
+  .badge {
+    padding: 1rem 0;
+    margin: 0 auto;
+  }
 }
 </style>
