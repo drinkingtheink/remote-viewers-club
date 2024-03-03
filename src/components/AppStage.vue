@@ -1,13 +1,15 @@
 <template>
   <div class="app-stage">
     <h1>REMOTE VIEWERS CLUB</h1>
-    <h2>See you there!</h2>
-    <p>Animated vignettes inspired by military and astronomical mission badges and other ephemera.</p>
+    <p class="intro">Animated vignettes inspired by military and astronomical mission badges and other ephemera.</p>
     <main>
       <div class="badge" v-for="badge in badgeMap" :key="badge.title">
         <component :is="`Badge${badge.id}`"></component>
-        <h3>{{ badge.title }}</h3>
-        <h4>{{ badge.desc }}</h4>
+
+        <div class="badge-details">
+          <h3>{{ badge.title }}</h3>
+          <h4>{{ badge.desc }}</h4>
+        </div>
       </div>
     </main>
   </div>
@@ -72,11 +74,14 @@ export default {
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Anta&family=Exo:wght@300;700&family=Russo+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Amita:wght@400;700&display=swap');
+
 body {
   font-family: "Anta", sans-serif;
   font-weight: 400;
   font-style: normal;
   padding-bottom: 10rem;
+  margin: 0;
 }
 
 h1 {
@@ -84,6 +89,31 @@ h1 {
   font-weight: 400;
   font-style: normal;
   font-size: 330%;
+  background: rgba(0,0,0,0.6);
+  padding: 10px 0;
+  margin-bottom: 0;
+}
+
+@media only screen and (max-width: 60em) {
+  h1 {
+    font-size: 200%;
+  }
+}
+
+p.intro {
+  background: rgba(0,0,0,0.6);
+  padding: 0 0 1rem 0;
+  margin: 0;
+  font-family: "Amita", serif;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 140%;
+}
+
+@media only screen and (max-width: 60em) {
+  p.intro {
+    font-size: 100%;
+  }
 }
 
 h1, h2, h3, h4 {
@@ -133,5 +163,21 @@ main {
     margin: 0 auto;
     width: 100%;
   }
+}
+
+.badge-details {
+  background: rgba(0,0,0,0.6);
+  padding: 10px 5px;
+  margin-top: 20px;
+}
+
+.badge-details h3 {
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.badge-details h4 {
+  margin: 10px 0;
+  color: white;
 }
 </style>
