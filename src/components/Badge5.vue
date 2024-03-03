@@ -154,17 +154,26 @@ export default {
     stroke-dashoffset: 10000;
   }
 }
-.temporal-recon #moons, .temporal-recon #hourglass {
+
+#moons {
+    opacity: 0.4;
+}
+
+.temporal-recon:hover #moons {
+    opacity: 1;
+}
+
+.temporal-recon #hourglass {
     opacity: 0;
     transition: all 2s;
 }
 
-.temporal-recon:hover #moons, .temporal-recon:hover #hourglass {
+.temporal-recon:hover #hourglass {
     opacity: 1;
 }
 
 .temporal-recon #lotus {
-    opacity: 0.25;
+    opacity: 0;
 }
 
 .temporal-recon:hover #lotus {
