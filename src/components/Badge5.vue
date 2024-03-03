@@ -192,4 +192,27 @@ export default {
 .temporal-recon:hover #outer-ring * {
     fill:#ED0000;
 }
+
+@keyframes flicker {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.temporal-recon:hover #anim1 {
+    animation: flicker 2s alternate-reverse;
+}
+
+.temporal-recon:hover #anim2 {
+    animation: flicker 2s alternate-reverse;
+    animation-delay: 2s;
+}
+
+.temporal-recon:hover #anim3 {
+    animation: flicker 2s alternate-reverse;
+    animation-delay: 4s;
+}
 </style>
