@@ -25,35 +25,35 @@
                     c11.2-2.2,18.5-13.2,16.3-24.4c-2.2-11.2-13.2-18.5-24.4-16.3c-3.7,0.7-6.9,2.4-9.5,4.7C329.5,46.4,337.4,51.9,339.1,60.4z"/>
             </g>
             <g id="lotus">
-                <g>
+                <g style="animation-delay: 1s;">
                     <path class="st4" d="M338.7,340.1c0,0,77.8-148.7,287.4-64.6C626.1,275.4,493.1,450.4,338.7,340.1z"/>
                     <path class="st4" d="M336.9,339.9c0,0-77.8-148.7-287.4-64.6C49.5,275.3,182.5,450.2,336.9,339.9z"/>
                 </g>
-                <g>
+                <g style="animation-delay: 1.5s;">
                     <path class="st4" d="M335,342.3c0,0-77.8,148.7-287.4,64.6C47.6,407,180.6,232,335,342.3z"/>
                     <path class="st4" d="M336.8,342.5c0,0,77.8,148.7,287.4,64.6C624.2,407.1,491.2,232.2,336.8,342.5z"/>
                 </g>
-                <g>
+                <g style="animation-delay: 2s;">
                     <path class="st4" d="M343.5,350.3c0,0-28.1,165.5-253.3,150.3C90.2,500.6,162.6,293.2,343.5,350.3z"/>
                     <path class="st4" d="M581.8,499.4c0,0-28.1-165.5-253.3-150.3C328.5,349.1,400.9,556.6,581.8,499.4z"/>
                 </g>
-                <g>
+                <g style="animation-delay: 2.5s;">
                     <path class="st4" d="M346.2,327.8c0,0-28.1-165.5-253.3-150.3C92.8,177.5,165.2,385,346.2,327.8z"/>
                     <path class="st4" d="M584.5,189.1c0,0-28.1,165.5-253.3,150.3C331.1,339.4,403.6,131.9,584.5,189.1z"/>
                 </g>
-                <g>
+                <g style="animation-delay: 3s;">
                     <path class="st4" d="M348.2,348.6c0,0,37.6,163.6-176.3,236C171.8,584.6,159.1,365.2,348.2,348.6z"/>
                     <path class="st4" d="M325.8,347.9c0,0-37.6,163.6,176.3,236C502.1,583.8,514.8,364.5,325.8,347.9z"/>
                 </g>
-                <g>
+                <g style="animation-delay: 3.5s;">
                     <path class="st4" d="M349.5,337c0,0,37.6-163.6-176.3-236C173.2,101.1,160.5,320.4,349.5,337z"/>
                     <path class="st4" d="M327.1,337.8c0,0-37.6-163.6,176.3-236C503.4,101.8,516.1,321.2,327.1,337.8z"/>
                 </g>
-                <g>
+                <g style="animation-delay: 4s;">
                     <path class="st4" d="M335.1,340.9c0,0,100.1,134.8-66.8,286.9C268.2,627.8,168.6,432,335.1,340.9z"/>
                     <path class="st4" d="M331.2,341.3c0,0-100.1,134.8,66.8,286.9C398,628.2,497.7,432.4,331.2,341.3z"/>
                 </g>
-                <g>
+                <g style="animation-delay: 4.5s;">
                     <path class="st4" d="M339.4,343.6c0,0,100.1-134.8-66.8-286.9C272.6,56.7,173,252.6,339.4,343.6z"/>
                     <path class="st4" d="M335.6,343.2c0,0-100.1-134.8,66.8-286.9C402.4,56.3,502,252.2,335.6,343.2z"/>
                 </g>
@@ -155,6 +155,15 @@ export default {
   }
 }
 
+@keyframes flicker {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
 #moons {
     opacity: 0.4;
 }
@@ -178,10 +187,14 @@ export default {
 }
 
 .temporal-recon:hover #lotus {
-    animation: dash 30s;
+    /* animation: dash 30s; */
     stroke-dasharray: 10;
     animation-iteration-count: infinite;
     opacity: 0.7;
+}
+
+.temporal-recon:hover #lotus * {
+    animation: flicker 3s infinite;
 }
 
 #outer-ring * {
@@ -191,15 +204,6 @@ export default {
 
 .temporal-recon:hover #outer-ring * {
     fill:#ED0000;
-}
-
-@keyframes flicker {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
 }
 
 .temporal-recon:hover #anim1 {
