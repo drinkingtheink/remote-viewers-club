@@ -210,9 +210,8 @@ export default {
 .st4{fill:#FFFFFF;}
 .st5{fill:#5639EF;}
 
-.remote-viewers {
-    overflow: hidden;
-    position: relative;
+.remote-viewers svg {
+    transform: scale(1.05); /* slightly smaller than other badges so this fixes it */
 }
 
 .remote-viewers * {

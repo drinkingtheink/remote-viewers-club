@@ -125,8 +125,11 @@ export default {
 }
 
 @keyframes dash {
-  to {
+  0% {
     stroke-dashoffset: 1000;
+  }
+  50% {
+    stroke-dashoffset: 10000;
   }
 }
 
