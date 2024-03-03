@@ -140,4 +140,11 @@ export default {
     fill: #000;
 }
 
+#red-bg {
+    fill: #000;
+}
+
+.eye-ship:hover #red-bg {
+    fill: #e80000;
+}
 </style>
