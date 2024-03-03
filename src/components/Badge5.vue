@@ -183,4 +183,13 @@ export default {
     animation-iteration-count: infinite;
     opacity: 0.7;
 }
+
+#outer-ring * {
+    fill: #CC993E;
+    transition: all 0.5s;
+}
+
+.temporal-recon:hover #outer-ring * {
+    fill:#ED0000;
+}
 </style>
