@@ -166,9 +166,12 @@ main {
 }
 
 .badge-details {
+  margin-top: 20px;
+}
+
+.badge-details * {
   background: rgba(0,0,0,0.6);
   padding: 10px 5px;
-  margin-top: 20px;
 }
 
 .badge-details h3 {
