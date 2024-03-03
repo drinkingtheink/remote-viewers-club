@@ -5,6 +5,7 @@
       <Badge1 />
       <Badge2 />
       <Badge3 />
+      <Badge4 />
     </main>
   </div>
 </template>
@@ -13,6 +14,7 @@
 import Badge1 from './Badge1.vue'
 import Badge2 from './Badge2.vue'
 import Badge3 from './Badge3.vue'
+import Badge4 from './Badge4.vue'
 
 export default {
   name: 'AppStage',
@@ -20,6 +22,7 @@ export default {
     Badge1,
     Badge2,
     Badge3,
+    Badge4,
   }
 }
 </script>
