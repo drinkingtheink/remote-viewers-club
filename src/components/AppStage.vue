@@ -4,6 +4,9 @@
     <h2>See you there!</h2>
     <p>Animated vignettes inspired by military and astronomical mission badges and other ephemera.</p>
     <main>
+      <div class="badge" v-for="badge in badgeMap" :key="badge.title">
+        <h4>{{ badge.title }}</h4>
+      </div>
       <Badge1 />
       <Badge2 />
       <Badge3 />
@@ -20,6 +23,39 @@ import Badge3 from './Badge3.vue'
 import Badge4 from './Badge4.vue'
 import Badge5 from './Badge5.vue'
 
+const badgeMap = [
+  {
+    title: 'Remote Viewing Task Force',
+    desc: 'For Stillwater',
+    inspo: 'https://twitter.com/CassetteDyne/status/1735694599262192051',
+    id: 1,
+  },
+  {
+    title: 'Electronic Phantoms',
+    desc: '9716th Radar Decoy Squadron',
+    inspo: 'https://twitter.com/CassetteDyne/status/1735694599262192051',
+    id: 2,
+  },
+  {
+    title: '960th PSYWACs',
+    desc: '',
+    inspo: 'https://twitter.com/CassetteDyne/status/1735694599262192051',
+    id: 3,
+  },
+  {
+    title: 'Vigilance and Speed',
+    desc: '3rd Special Interceptor Squadron',
+    inspo: 'https://twitter.com/CassetteDyne/status/1735694599262192051',
+    id: 4,
+  },
+  {
+    title: 'See You Yesterday',
+    desc: '37th Temporal Reconaissance Wing',
+    inspo: 'https://twitter.com/CassetteDyne/status/1735694599262192051',
+    id: 5,
+  },
+];
+
 export default {
   name: 'AppStage',
   components: {
@@ -28,7 +64,12 @@ export default {
     Badge3,
     Badge4,
     Badge5,
-  }
+  },
+  data() {
+    return {
+      badgeMap: badgeMap,
+    }
+  },
 }
 </script>
 
