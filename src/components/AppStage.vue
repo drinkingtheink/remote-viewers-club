@@ -1,6 +1,7 @@
 <template>
   <div class="app-stage">
     <h1>REMOTE VIEWERS CLUB</h1>
+    <h2>See you there!</h2>
     <main>
       <Badge1 />
       <Badge2 />
@@ -58,10 +59,10 @@ a {
 }
 
 main {
-  display: flex;
-  justify-content: center;
-  align-content: center;
   padding: 0 3rem;
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
 }
 
 @media only screen and (max-width: 60em) {
@@ -73,17 +74,17 @@ main {
 }
 
 .badge {
-  min-width: 350px;
-  max-width: 600px;
+  filter: drop-shadow(10px 0 10px #111);
+  width: 30%;
   padding: 1rem 1rem 0 0;
   margin: 1rem 1rem 0 0;
-  filter: drop-shadow(10px 0 10px #111);
 }
 
 @media only screen and (max-width: 60em) {
   .badge {
     padding: 1rem 0;
     margin: 0 auto;
+    width: 100%;
   }
 }
 </style>
