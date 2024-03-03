@@ -5,13 +5,10 @@
     <p>Animated vignettes inspired by military and astronomical mission badges and other ephemera.</p>
     <main>
       <div class="badge" v-for="badge in badgeMap" :key="badge.title">
-        <h4>{{ badge.title }}</h4>
+        <component :is="`Badge${badge.id}`"></component>
+        <h3>{{ badge.title }}</h3>
+        <h4>{{ badge.desc }}</h4>
       </div>
-      <Badge1 />
-      <Badge2 />
-      <Badge3 />
-      <Badge4 />
-      <Badge5 />
     </main>
   </div>
 </template>

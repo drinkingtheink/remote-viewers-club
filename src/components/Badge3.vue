@@ -1,5 +1,5 @@
 <template>
-    <div class="heads badge">
+    <div class="heads">
         <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 699.47 699.47">
             <circle class="cls-5" cx="349.74" cy="349.74" r="349.74" />
             <circle id="badge-bg" class="cls-3" cx="350.37" cy="349.98" r="324.63" />

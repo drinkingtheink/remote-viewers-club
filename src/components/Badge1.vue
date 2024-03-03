@@ -1,5 +1,5 @@
 <template>
-<div class="remote-viewers badge">
+<div class="remote-viewers">
     <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
         viewBox="0 0 720 709" style="enable-background:new 0 0 720 709;" xml:space="preserve">
         <circle class="st0" cx="370.3" cy="359.3" r="349.7"/>

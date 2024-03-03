@@ -1,5 +1,5 @@
 <template>
-    <div class="eye-ship badge">
+    <div class="eye-ship">
         <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 696.42 693.28">
             <ellipse id="red-bg" class="cls-4" cx="348.21" cy="348.14" rx="319.64" ry="318.18" />
             <polygon

@@ -1,5 +1,5 @@
 <template>
-    <div class="electronic-phantoms badge">
+    <div class="electronic-phantoms">
         <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 682.89 682.89">
             <circle id="bg" class="cls-3" cx="341.45" cy="342.93" r="316.15"/>
             <g id="lights">
