@@ -7,6 +7,7 @@
       <Badge2 />
       <Badge3 />
       <Badge4 />
+      <Badge5 />
     </main>
   </div>
 </template>
@@ -16,6 +17,7 @@ import Badge1 from './Badge1.vue'
 import Badge2 from './Badge2.vue'
 import Badge3 from './Badge3.vue'
 import Badge4 from './Badge4.vue'
+import Badge5 from './Badge5.vue'
 
 export default {
   name: 'AppStage',
@@ -24,6 +26,7 @@ export default {
     Badge2,
     Badge3,
     Badge4,
+    Badge5,
   }
 }
 </script>
@@ -38,11 +41,15 @@ body {
 
 h1 {
   color: #eaeaea;
-  font-family: "Anta", sans-serif;
   font-weight: 400;
   font-style: normal;
   font-size: 330%;
 }
+
+h1, h2, h3, h4 {
+  font-family: "Anta", sans-serif;
+}
+
 h3 {
   margin: 40px 0 0;
 }
