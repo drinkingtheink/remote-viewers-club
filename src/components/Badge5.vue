@@ -142,7 +142,35 @@ export default {
 .st1{fill:#FFFFFF;}
 .st2{fill:#CC993E;}
 .st3{fill:none;stroke:#CC993E;stroke-width:8;stroke-miterlimit:10;}
-.st4{fill:none;stroke:#9E9E9E;stroke-width:3;stroke-miterlimit:10;}
+.st4{fill:none;stroke:#FFF;stroke-width:3;stroke-miterlimit:10;}
 .st5{display:none;}
 .st6{display:inline;fill:#CC993E;}
+
+@keyframes dash {
+  0% {
+    stroke-dashoffset: 1000;
+  }
+  50% {
+    stroke-dashoffset: 10000;
+  }
+}
+.temporal-recon #moons, .temporal-recon #hourglass {
+    opacity: 0;
+    transition: all 2s;
+}
+
+.temporal-recon:hover #moons, .temporal-recon:hover #hourglass {
+    opacity: 1;
+}
+
+.temporal-recon #lotus {
+    opacity: 0.25;
+}
+
+.temporal-recon:hover #lotus {
+    animation: dash 30s;
+    stroke-dasharray: 10;
+    animation-iteration-count: infinite;
+    opacity: 1;
+}
 </style>
