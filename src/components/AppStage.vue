@@ -2,6 +2,7 @@
   <div class="app-stage">
     <h1>REMOTE VIEWERS CLUB</h1>
     <h2>See you there!</h2>
+    <p>Animated vignettes inspired by military and astronomical mission badges and other ephemera.</p>
     <main>
       <Badge1 />
       <Badge2 />

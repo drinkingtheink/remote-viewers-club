@@ -143,7 +143,7 @@ export default {
 .st2{fill:#CC993E;}
 .st3{fill:none;stroke:#CC993E;stroke-width:8;stroke-miterlimit:10;}
 .st4{fill:none;stroke:#FFF;stroke-width:3;stroke-miterlimit:10;}
-.st5{display:none;}
+.st5{opacity:0;}
 .st6{display:inline;fill:#CC993E;}
 
 @keyframes dash {
@@ -170,6 +170,7 @@ export default {
 
 .temporal-recon:hover #hourglass {
     opacity: 1;
+    animation: dripsand 10s infinite;
 }
 
 .temporal-recon #lotus {
@@ -180,6 +181,6 @@ export default {
     animation: dash 30s;
     stroke-dasharray: 10;
     animation-iteration-count: infinite;
-    opacity: 1;
+    opacity: 0.7;
 }
 </style>
