@@ -1,9 +1,9 @@
 <template>
   <div class="app-stage">
     <div class="intro-wrapper">
+      <SeeYouThere class="watcher" />
       <h1>REMOTE VIEWERS CLUB</h1>
       <p class="intro">Animated vignettes inspired by military and astronomical mission badges and other ephemera.</p>
-      <SeeYouThere class="watcher" />
     </div>
     <main>
       <div class="badge" v-for="badge in badgeMap" :key="badge.title">
