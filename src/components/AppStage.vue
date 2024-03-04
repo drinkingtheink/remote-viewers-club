@@ -100,7 +100,7 @@ h1 {
   font-style: normal;
   font-size: 330%;
   background: rgba(0,0,0,0.6);
-  padding: 10px 0;
+  padding: 10px 0 2rem 0;
   margin-bottom: 0;
 }
 
@@ -112,7 +112,7 @@ h1 {
 
 p.intro {
   background: rgba(0,0,0,0.6);
-  padding: 0 20% 1rem 10%;
+  padding: 0 20% 2rem 20%;
   margin: 0;
   font-family: "Unica One", sans-serif;
   font-weight: 400;
@@ -160,6 +160,7 @@ main {
   display: flex;
   flex-wrap: wrap;
   position: relative;
+  max-width: 2000px;
 }
 
 @media only screen and (max-width: 60em) {
