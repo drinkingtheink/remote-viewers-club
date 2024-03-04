@@ -9,7 +9,7 @@
         <div class="badge-details">
           <h3>{{ badge.title }}</h3>
           <h4 v-if="badge.desc">{{ badge.desc }}</h4>
-          <a class="inspo" :href="badge.inspo">Inspired by</a>
+          <a class="inspo" :href="badge.inspo">Origin</a>
         </div>
       </div>
     </main>
@@ -37,8 +37,8 @@ const badgeMap = [
     id: 2,
   },
   {
-    title: '960th PSYWACs',
-    desc: '',
+    title: 'PSYWACs',
+    desc: '960th Psychological Warfare Squadron',
     inspo: 'https://twitter.com/CassetteDyne/status/1735694599262192051',
     id: 3,
   },
@@ -78,7 +78,12 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Amita:wght@400;700&family=Unica+One&display=swap');
 .inspo {
   display: block;
+}
 
+.inspo:hover {
+  background: white;
+  color: #ED0000;
+  font-weight: bold;
 }
 
 body {
@@ -170,6 +175,7 @@ main {
   width: 30%;
   padding: 1rem 1rem 0 0;
   margin: 1rem 1rem 0 0;
+  position: relative;
 }
 
 @media only screen and (max-width: 60em) {
