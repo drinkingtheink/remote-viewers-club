@@ -8,7 +8,8 @@
 
         <div class="badge-details">
           <h3>{{ badge.title }}</h3>
-          <h4>{{ badge.desc }}</h4>
+          <h4 v-if="badge.desc">{{ badge.desc }}</h4>
+          <a class="inspo" :href="badge.inspo">Inspired by</a>
         </div>
       </div>
     </main>
@@ -25,7 +26,7 @@ import Badge5 from './Badge5.vue'
 const badgeMap = [
   {
     title: 'Remote Viewing Task Force',
-    desc: 'For Stillwater',
+    desc: 'Fort Stillwater',
     inspo: 'https://twitter.com/CassetteDyne/status/1735694599262192051',
     id: 1,
   },
@@ -76,11 +77,16 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Anta&family=Exo:wght@300;700&family=Russo+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Amita:wght@400;700&display=swap');
 
+.inspo {
+  display: block;
+
+}
+
 body {
   font-family: "Anta", sans-serif;
   font-weight: 400;
   font-style: normal;
-  padding-bottom: 10rem;
+  padding: 0 0 10rem 0;
   margin: 0;
 }
 
@@ -102,7 +108,7 @@ h1 {
 
 p.intro {
   background: rgba(0,0,0,0.6);
-  padding: 0 0 1rem 0;
+  padding: 0 10% 1rem 10%;
   margin: 0;
   font-family: "Amita", serif;
   font-weight: 700;
@@ -113,6 +119,7 @@ p.intro {
 @media only screen and (max-width: 60em) {
   p.intro {
     font-size: 100%;
+    padding: 0 1rem;
   }
 }
 
@@ -132,7 +139,15 @@ li {
   margin: 0 10px;
 }
 a {
-  color: #42b983;
+  color: #ED0000;
+  text-decoration: none;
+  transition: all 0.3s;
+  text-transform: uppercase;
+}
+
+a:hover {
+  color: #CC993E;
+  text-decoration: none;
 }
 
 main {
