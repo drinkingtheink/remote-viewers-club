@@ -1,7 +1,10 @@
 <template>
   <div class="app-stage">
-    <h1>REMOTE VIEWERS CLUB</h1>
-    <p class="intro">Animated vignettes inspired by military and astronomical mission badges and other ephemera.</p>
+    <div class="intro-wrapper">
+      <h1>REMOTE VIEWERS CLUB</h1>
+      <p class="intro">Animated vignettes inspired by military and astronomical mission badges and other ephemera.</p>
+      <SeeYouThere class="watcher" />
+    </div>
     <main>
       <div class="badge" v-for="badge in badgeMap" :key="badge.title">
         <component :is="`Badge${badge.id}`"></component>
@@ -22,6 +25,7 @@ import Badge2 from './Badge2.vue'
 import Badge3 from './Badge3.vue'
 import Badge4 from './Badge4.vue'
 import Badge5 from './Badge5.vue'
+import SeeYouThere from './SeeYouThere.vue'
 
 const badgeMap = [
   {
@@ -64,6 +68,7 @@ export default {
     Badge3,
     Badge4,
     Badge5,
+    SeeYouThere,
   },
   data() {
     return {
@@ -108,6 +113,18 @@ h1 {
   h1 {
     font-size: 200%;
   }
+}
+
+.intro-wrapper {
+  position: relative;
+}
+
+.watcher {
+  position: absolute;
+  top: -2rem;
+  right: 5%;
+  width: 200px;
+  transform: rotate(20deg);
 }
 
 p.intro {
