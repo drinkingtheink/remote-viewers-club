@@ -75,8 +75,7 @@ export default {
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Anta&family=Exo:wght@300;700&family=Russo+One&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Amita:wght@400;700&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Amita:wght@400;700&family=Unica+One&display=swap');
 .inspo {
   display: block;
 
@@ -86,7 +85,7 @@ body {
   font-family: "Anta", sans-serif;
   font-weight: 400;
   font-style: normal;
-  padding: 0 0 10rem 0;
+  padding: 0;
   margin: 0;
 }
 
@@ -108,18 +107,19 @@ h1 {
 
 p.intro {
   background: rgba(0,0,0,0.6);
-  padding: 0 10% 1rem 10%;
+  padding: 0 20% 1rem 10%;
   margin: 0;
-  font-family: "Amita", serif;
-  font-weight: 700;
+  font-family: "Unica One", sans-serif;
+  font-weight: 400;
   font-style: normal;
-  font-size: 140%;
+  font-size: 200%;
 }
 
 @media only screen and (max-width: 60em) {
   p.intro {
-    font-size: 100%;
+    font-size: 150%;
     padding: 0 1rem;
+    margin-bottom: 2rem;
   }
 }
 
@@ -151,7 +151,7 @@ a:hover {
 }
 
 main {
-  padding: 0 3rem;
+  padding: 0 3rem 10rem;
   display: flex;
   flex-wrap: wrap;
   position: relative;
@@ -195,7 +195,7 @@ main {
 }
 
 .badge-details h4 {
-  margin: 10px 0;
+  margin: 5px 0;
   color: white;
 }
 </style>
