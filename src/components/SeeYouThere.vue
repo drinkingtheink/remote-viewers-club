@@ -1,5 +1,5 @@
 <template>
-    <div class="see-you-there">
+    <div class="see-you-there" :class="{ 'closed': blink }">
         <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 494.75 493.77">
             <g id="ribbon">
                 <polygon
@@ -72,6 +72,22 @@
 <script>
 export default {
     name: 'SeeYouThere',
+    data() {
+        return {
+            blink: false,
+        }
+    },
+    mounted() {
+        setInterval(() => {
+            console.log(`BLINKINGGGGGGGGGG >>>>>>>>>>>>>`);
+            this.blink = true
+        }, 1000)    
+    },
+    watch: {
+        blink() {
+            if (this.blink) this.blink = false;
+        }
+    }
 }
 </script>
 
@@ -82,5 +98,21 @@ export default {
 
 #closed-eye {
     opacity: 0;
+}
+
+.closed #closed-eye {
+    opacity: 1;
+}
+
+.closed #eye {
+    opacity: 0;
+}
+
+.see-you-there:hover #eye {
+    opacity: 0;
+}
+
+.see-you-there:hover #closed-eye {
+    opacity: 1;
 }
 </style>

@@ -112,6 +112,7 @@ h1 {
 @media only screen and (max-width: 60em) {
   h1 {
     font-size: 200%;
+    padding: 2rem 2rem 0.5rem 2rem;
   }
 }
 
@@ -123,8 +124,17 @@ h1 {
   position: absolute;
   top: -2rem;
   right: 5%;
-  width: 200px;
+  width: 160px;
   transform: rotate(20deg);
+  filter: drop-shadow(10px 0 10px #111);
+}
+
+@media only screen and (max-width: 60em) {
+  .watcher {
+    position: static;
+    margin: 0 auto;
+    width: 33%;
+  }
 }
 
 p.intro {
@@ -140,7 +150,7 @@ p.intro {
 @media only screen and (max-width: 60em) {
   p.intro {
     font-size: 150%;
-    padding: 0 1rem;
+    padding: 0.5rem 1rem 2rem 1rem;
     margin-bottom: 2rem;
   }
 }
