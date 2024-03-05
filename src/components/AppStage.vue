@@ -25,6 +25,7 @@ import Badge2 from './Badge2.vue'
 import Badge3 from './Badge3.vue'
 import Badge4 from './Badge4.vue'
 import Badge5 from './Badge5.vue'
+import Badge6 from './Badge6.vue'
 import SeeYouThere from './SeeYouThere.vue'
 
 const badgeMap = [
@@ -74,6 +75,7 @@ export default {
     Badge3,
     Badge4,
     Badge5,
+    Badge6,
     SeeYouThere,
   },
   data() {
