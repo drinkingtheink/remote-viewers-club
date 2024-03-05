@@ -198,6 +198,7 @@ a:hover {
 
 main {
   padding: 0 3rem 10rem;
+  margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
   position: relative;
