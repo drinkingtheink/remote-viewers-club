@@ -55,7 +55,7 @@ const badgeMap = [
   {
     title: 'See You Yesterday',
     desc: '37th Temporal Reconaissance Wing',
-    inspo: 'https://twitter.com/CassetteDyne/status/1735694599262192051',
+    inspo: 'https://twitter.com/arpitingle/status/1698709125088088109',
     id: 5,
   },
 ];
@@ -83,12 +83,14 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Amita:wght@400;700&family=Unica+One&display=swap');
 .inspo {
   display: block;
+  border-bottom: 3px solid transparent;
 }
 
 .inspo:hover {
-  background: white;
+  background: #f1f380;
   color: #ED0000;
   font-weight: bold;
+  border-bottom-color: #ED0000;
 }
 
 body {
