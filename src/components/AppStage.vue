@@ -12,7 +12,7 @@
         <div class="badge-details">
           <h3>{{ badge.title }}</h3>
           <h4 v-if="badge.desc">{{ badge.desc }}</h4>
-          <a class="inspo" :href="badge.inspo">Origin</a>
+          <a class="inspo" :href="badge.inspo" target="_blank">Origin</a>
         </div>
       </div>
     </main>
@@ -57,6 +57,12 @@ const badgeMap = [
     desc: '37th Temporal Reconaissance Wing',
     inspo: 'https://twitter.com/arpitingle/status/1698709125088088109',
     id: 5,
+  },
+  {
+    title: 'Beyond All Bounds',
+    desc: '24th Omnidimensional Operations Squadron',
+    inspo: 'https://twitter.com/arpitingle/status/1698709125088088109',
+    id: 6,
   },
 ];
 
