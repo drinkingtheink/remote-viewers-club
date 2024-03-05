@@ -16,6 +16,10 @@
         </div>
       </div>
     </main>
+    <footer>
+      <a href="https://github.com/drinkingtheink/remote-viewers-club" target="_blank">About this App</a>
+      <a href="https://www.drinkingtheink.com/" target="_blank">About the Author</a>
+    </footer>
   </div>
 </template>
 
@@ -241,5 +245,38 @@ main {
 .badge-details h4 {
   margin: 5px 0;
   color: white;
+}
+
+footer {
+  text-align: center;
+  display: flex;
+  justify-content: space-around;
+  max-width: 800px;
+  margin: 2rem auto 0 auto;
+}
+
+@media only screen and (max-width: 60em) {
+  footer {
+    display: block;
+  }
+}
+
+footer a {
+  display: block;
+  background: rgba(0,0,0,0.8);
+  width: 46%;
+  padding: 1rem 0;
+  border-left: 10px solid #ED0000;
+}
+
+@media only screen and (max-width: 60em) {
+  footer a {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}
+
+footer a:hover {
+  border-color: #CC993E;
 }
 </style>
