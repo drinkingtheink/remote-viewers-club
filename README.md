@@ -1,3 +1,9 @@
+# Remote Viewers Club
+## Animated vignettes inspired by military and astronomical mission badges and other ephemera
+
+![Remote Viewers Club Collection](https://i.ibb.co/rHcMRYq/remote-viewers-club-preview.png)
+
+----------------------------------
 # app
 
 ## Project setup
