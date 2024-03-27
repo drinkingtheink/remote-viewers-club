@@ -13,6 +13,7 @@
           <h3>{{ badge.title }}</h3>
           <h4 v-if="badge.desc">{{ badge.desc }}</h4>
           <a class="inspo" :href="badge.inspo" target="_blank">Origin</a>
+          <button class="enlarge" @click="handleBadgeClick(badge)">Enlarge</button>
         </div>
       </div>
     </main>
@@ -85,8 +86,15 @@ export default {
   data() {
     return {
       badgeMap: badgeMap,
+      activeBadge: null,
     }
   },
+  methods: {
+    handleBadgeClick(badge) {
+      console.log(JSON.stringify(badge, null, 2));
+      this.activeBadge = badge.id;
+    },
+  }
 }
 </script>
 

@@ -79,7 +79,6 @@ export default {
     },
     mounted() {
         setInterval(() => {
-            console.log(`BLINKINGGGGGGGGGG >>>>>>>>>>>>>`);
             this.blink = true
         }, 1000)    
     },
