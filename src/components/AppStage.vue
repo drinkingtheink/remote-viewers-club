@@ -175,11 +175,8 @@ export default {
   padding: 0 20%;
 }
 
-.active-badge .modal-content {
-}
-
 .close-active {
-  font-size: 120%;
+  font-size: 80%;
   margin: 1rem 0;
   text-transform: uppercase;
   padding: 1rem 2rem;
