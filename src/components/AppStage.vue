@@ -372,4 +372,17 @@ footer a {
 footer a:hover {
   border-color: #CC993E;
 }
+
+button.enlarge {
+  color: white;
+  width: 60%;
+  border-radius: 40px;
+  margin: 5px auto 0 auto;
+  border: none;
+  text-transform: uppercase;
+}
+
+button.enlarge:hover {
+  background: black;
+}
 </style>
