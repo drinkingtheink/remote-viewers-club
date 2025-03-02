@@ -5,6 +5,18 @@
       <h1>REMOTE VIEWERS CLUB</h1>
       <p class="intro">Animated vignettes inspired by military and astronomical mission badges and other ephemera.</p>
     </div>
+    <div v-if="!!activeBadge" class="modal-mask">
+      <div class="modal-wrapper">
+        <div class="modal-container">
+          <div class="active-badge">
+            <section class="modal-content">
+              <button class="close-active" @click="closeActive">Back to Gallery</button>
+              <component :is="`Badge${activeBadge.id}`"></component>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
     <main>
       <div class="badge" v-for="badge in badgeMap" :key="badge.title">
         <component :is="`Badge${badge.id}`"></component>
@@ -17,6 +29,9 @@
         </div>
       </div>
     </main>
+
+    <RemoteViewingSim />
+
     <footer>
       <a href="https://github.com/drinkingtheink/remote-viewers-club" target="_blank">About this App</a>
       <a href="https://www.drinkingtheink.com/" target="_blank">About the Author</a>
@@ -32,6 +47,7 @@ import Badge4 from './Badge4.vue'
 import Badge5 from './Badge5.vue'
 import Badge6 from './Badge6.vue'
 import SeeYouThere from './SeeYouThere.vue'
+import RemoteViewingSim from './RemoteViewingSim.vue'
 
 const badgeMap = [
   {
@@ -82,6 +98,7 @@ export default {
     Badge5,
     Badge6,
     SeeYouThere,
+    RemoteViewingSim,
   },
   data() {
     return {
@@ -91,8 +108,10 @@ export default {
   },
   methods: {
     handleBadgeClick(badge) {
-      console.log(JSON.stringify(badge, null, 2));
-      this.activeBadge = badge.id;
+      this.activeBadge = badge;
+    },
+    closeActive() {
+      this.activeBadge = null;
     },
   }
 }
@@ -101,6 +120,71 @@ export default {
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Anta&family=Exo:wght@300;700&family=Russo+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Amita:wght@400;700&family=Unica+One&display=swap');
+.modal-mask {
+  position: fixed;
+  z-index: 9998;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: table;
+  transition: opacity 0.3s ease;
+}
+
+.modal-wrapper {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.modal-container {
+  width: 1000px;
+  margin: 0px auto;
+  padding: 20px 30px;
+  background-color: rgba(0,0,0,0.6);
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+  transition: all 0.3s ease;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.modal-header h3 {
+  margin-top: 0;
+  color: #42b983;
+}
+
+.modal-body {
+  margin: 20px 0;
+}
+
+.modal-enter {
+  opacity: 0;
+}
+
+.modal-leave-active {
+  opacity: 0;
+}
+
+.modal-enter .modal-container,
+.modal-leave-active .modal-container {
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+}
+
+.active-badge {
+  padding: 0 20%;
+}
+
+.active-badge .modal-content {
+}
+
+.close-active {
+  font-size: 120%;
+  margin: 1rem 0;
+  text-transform: uppercase;
+  padding: 1rem 2rem;
+}
+
 .inspo {
   display: block;
   border-bottom: 3px solid transparent;
