@@ -3,7 +3,7 @@
     <div class="intro-wrapper">
       <SeeYouThere class="watcher" />
       <h1>REMOTE VIEWERS CLUB</h1>
-      <p class="intro">Animated vignettes inspired by military and astronomical mission badges and other ephemera.</p>
+      <p class="intro">Remote viewing is the practice of seeking impressions about a distant or unseen subject, purportedly sensing with the mind.</p>
     </div>
     <div v-if="!!activeBadge" class="modal-mask">
       <div class="modal-wrapper">
@@ -25,6 +25,7 @@
     
     <main>
       <section class="gallery" v-if="activeSection === 'gallery'">
+        <h2 class="intro">Animated vignettes inspired by military and astronomical mission badges and other ephemera.</h2>
         <div class="badge" v-for="badge in badgeMap" :key="badge.title">
           <component :is="`Badge${badge.id}`"></component>
 
@@ -126,7 +127,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 @import url('https://fonts.googleapis.com/css2?family=Anta&family=Exo:wght@300;700&family=Russo+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Amita:wght@400;700&family=Unica+One&display=swap');
 .modal-mask {
@@ -390,12 +391,18 @@ button.enlarge {
   transition: all 0.2s;
 }
 
+@media only screen and (max-width: 767px) {
+  button.enlarge {
+    display: none;
+  }
+}
+
 button.enlarge:hover {
   background: red;
 }
 
-section.section-buttons {
-
+.sections {
+  padding-top: 1rem;
 }
 
 .sections button {
@@ -404,8 +411,8 @@ section.section-buttons {
   color: white;
   margin: 5px;
   display: inline-block;
-  border: 10px solid transparent;
-  padding: 0.5rem 2rem;
+  border: 5px solid transparent;
+  padding: 1rem 3rem;
   transition: all 0.2s;
   border-radius: 10px;
 }
@@ -417,5 +424,10 @@ section.section-buttons {
 
 .sections button.active {
   border-color: red;
+  color: #f1f380;
+}
+
+.intro {
+  font-family: "Unica One", sans-serif;
 }
 </style>

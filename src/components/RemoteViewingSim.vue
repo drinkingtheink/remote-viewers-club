@@ -1,5 +1,7 @@
 <template>
   <div class="remote-viewing-container">
+    <h2 class="intro">Practice your skills and maybe you can make one of the squadrons.</h2>
+
     <div v-if="stage === 'intro'" class="stage intro">
       <h2>Remote Viewing Session</h2>
       <p>Focus your mind and prepare to connect with the target coordinates.</p>
@@ -269,7 +271,7 @@ watch(penSize, () => {
 }
 
 .remote-viewing-container .stage {
-  background-color: #f8f9fa;
+  background-color: rgba(0,0,0,0.6);
   border-radius: 8px;
   padding: 25px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -278,24 +280,25 @@ watch(penSize, () => {
 .remote-viewing-container .stage h2, 
 .remote-viewing-container .stage h3, 
 .remote-viewing-container .stage h4 {
-  color: #2c3e50;
+  /* color: #2c3e50; */
   margin-top: 0;
 }
 
 .remote-viewing-container .stage p {
-  color: #555;
+  /* color: #555; */
   line-height: 1.6;
 }
 
 .remote-viewing-container .btn-primary {
-  background-color: #4a6fa5;
+  background-color: red;
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 10px 50px;
   border-radius: 4px;
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s;
+  text-transform: uppercase;
 }
 
 .remote-viewing-container .btn-primary:hover {
@@ -329,7 +332,7 @@ watch(penSize, () => {
 
 .remote-viewing-container .progress-bar .progress {
   height: 100%;
-  background-color: #4a6fa5;
+  background-color: red;
   transition: width 0.3s ease;
 }
 
@@ -465,5 +468,11 @@ watch(penSize, () => {
 .remote-viewing-container .accuracy-container .accuracy-notes {
   color: #555;
   font-style: italic;
+}
+
+.intro {
+  background: rgba(0,0,0,0.6);
+  padding: 10px 0.5rem;
+  border-bottom: 3px solid red;
 }
 </style>
