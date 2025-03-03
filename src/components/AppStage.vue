@@ -18,11 +18,9 @@
       </div>
     </div>
 
-    <section class="section-buttons">
-      <button @click="activeSection = 'gallery'">Gallery</button>
-      <button @click="activeSection = 'praxis'">Praxis</button>
-
-      <p>{{ activeSection}}</p>
+    <section class="sections">
+      <button @click="activeSection = 'gallery'" :class="{ active: activeSection === 'gallery' }">Gallery</button>
+      <button @click="activeSection = 'praxis'" :class="{ active: activeSection === 'praxis' }">Praxis</button>
     </section>
     
     <main>
@@ -394,5 +392,30 @@ button.enlarge {
 
 button.enlarge:hover {
   background: red;
+}
+
+section.section-buttons {
+
+}
+
+.sections button {
+  font-size: 150%;
+  background: black;
+  color: white;
+  margin: 5px;
+  display: inline-block;
+  border: 10px solid transparent;
+  padding: 0.5rem 2rem;
+  transition: all 0.2s;
+  border-radius: 10px;
+}
+
+.sections button:hover {
+  cursor: pointer;
+  color: red;
+}
+
+.sections button.active {
+  border-color: red;
 }
 </style>
