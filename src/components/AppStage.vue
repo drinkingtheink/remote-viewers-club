@@ -17,20 +17,30 @@
         </div>
       </div>
     </div>
+
+    <section class="section-buttons">
+      <button @click="activeSection = 'gallery'">Gallery</button>
+      <button @click="activeSection = 'praxis'">Praxis</button>
+
+      <p>{{ activeSection}}</p>
+    </section>
+    
     <main>
-      <div class="badge" v-for="badge in badgeMap" :key="badge.title">
-        <component :is="`Badge${badge.id}`"></component>
+      <section class="gallery" v-if="activeSection === 'gallery'">
+        <div class="badge" v-for="badge in badgeMap" :key="badge.title">
+          <component :is="`Badge${badge.id}`"></component>
 
-        <div class="badge-details">
-          <h3>{{ badge.title }}</h3>
-          <h4 v-if="badge.desc">{{ badge.desc }}</h4>
-          <a class="inspo" :href="badge.inspo" target="_blank">Origin</a>
-          <button class="enlarge" @click="handleBadgeClick(badge)">Enlarge</button>
+          <div class="badge-details">
+            <h3>{{ badge.title }}</h3>
+            <h4 v-if="badge.desc">{{ badge.desc }}</h4>
+            <a class="inspo" :href="badge.inspo" target="_blank">Origin</a>
+            <button class="enlarge" @click="handleBadgeClick(badge)">Enlarge</button>
+          </div>
         </div>
-      </div>
-    </main>
+      </section>
 
-    <RemoteViewingSim />
+      <RemoteViewingSim class="praxis" v-if="activeSection === 'praxis'" />
+    </main>
 
     <footer>
       <a href="https://github.com/drinkingtheink/remote-viewers-club" target="_blank">About this App</a>
@@ -104,6 +114,7 @@ export default {
     return {
       badgeMap: badgeMap,
       activeBadge: null,
+      activeSection: null,
     }
   },
   methods: {
@@ -285,7 +296,7 @@ a:hover {
   text-decoration: none;
 }
 
-main {
+section.gallery {
   padding: 0 3rem 10rem;
   margin: 0 auto;
   display: flex;
@@ -295,7 +306,7 @@ main {
 }
 
 @media only screen and (max-width: 60em) {
-  main {
+  section.gallery {
     display: block;
     text-align: center;
     padding: 0;
@@ -377,9 +388,10 @@ button.enlarge {
   margin: 5px auto 0 auto;
   border: none;
   text-transform: uppercase;
+  transition: all 0.2s;
 }
 
 button.enlarge:hover {
-  background: black;
+  background: red;
 }
 </style>
