@@ -218,7 +218,7 @@ h1 {
   font-style: normal;
   font-size: 330%;
   background: rgba(0,0,0,0.6);
-  padding: 10px 0 2rem 0;
+  padding: 10px 0 0 0;
   margin-bottom: 0;
 }
 
