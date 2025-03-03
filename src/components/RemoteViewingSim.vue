@@ -295,6 +295,7 @@ watch(penSize, () => {
   /* color: #555; */
   line-height: 1.6;
   font-size: 140%;
+  color: white;
 }
 
 .remote-viewing-container .btn-primary {
@@ -423,7 +424,7 @@ watch(penSize, () => {
 .remote-viewing-container .results-container .user-impression,
 .remote-viewing-container .results-container .actual-target {
   flex: 1;
-  background-color: #fff;
+  background-color: black;
   padding: 15px;
   border-radius: 6px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -447,11 +448,10 @@ watch(penSize, () => {
 .remote-viewing-container .results-container .impression-text,
 .remote-viewing-container .results-container .target-description {
   font-size: 14px;
-  color: #555;
 }
 
 .remote-viewing-container .accuracy-container {
-  background-color: #fff;
+  background-color: black;
   padding: 15px;
   border-radius: 6px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -460,21 +460,19 @@ watch(penSize, () => {
 
 .remote-viewing-container .accuracy-container h4 {
   margin-top: 0;
-  color: #2c3e50;
 }
 
 .remote-viewing-container .accuracy-container .accuracy-score {
-  font-size: 18px;
+  font-size: 180%;
   margin: 10px 0;
 }
 
 .remote-viewing-container .accuracy-container .accuracy-score .score {
   font-weight: bold;
-  color: #4a6fa5;
+  color: white;
 }
 
 .remote-viewing-container .accuracy-container .accuracy-notes {
-  color: #555;
   font-style: italic;
 }
 
