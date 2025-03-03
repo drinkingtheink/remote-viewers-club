@@ -5,6 +5,9 @@
     <div v-if="stage === 'intro'" class="stage intro">
       <h2>Remote Viewing Session</h2>
       <p>Focus your mind and prepare to connect with the target coordinates.</p>
+
+      <RemoteViewingIcon class="rv-icon" />
+
       <button @click="beginSession" class="btn-primary">Begin Session</button>
     </div>
 
@@ -15,6 +18,9 @@
       <div class="progress-bar">
         <div :style="{ width: `${focusProgress}%` }" class="progress"></div>
       </div>
+
+      <RemoteViewingIcon class="rv-icon" />
+
       <p class="status-text">{{ statusMessage }}</p>
       <button @click="submitImpression" :disabled="!canSubmit" class="btn-primary">
         Submit Impression
@@ -76,6 +82,7 @@
 
 <script setup>
 import { ref, watch } from 'vue';
+import RemoteViewingIcon from './icons/RemoteViewingIcon'
 
 // State variables
 const stage = ref('intro');
@@ -287,6 +294,7 @@ watch(penSize, () => {
 .remote-viewing-container .stage p {
   /* color: #555; */
   line-height: 1.6;
+  font-size: 140%;
 }
 
 .remote-viewing-container .btn-primary {
@@ -474,5 +482,10 @@ watch(penSize, () => {
   background: rgba(0,0,0,0.6);
   padding: 10px 0.5rem;
   border-bottom: 3px solid red;
+}
+
+.rv-icon {
+  max-width: 50%;
+  margin: 0 auto;
 }
 </style>
