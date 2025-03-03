@@ -24,7 +24,7 @@
     </section>
     
     <main>
-      <section class="gallery" v-if="activeSection === 'gallery'">
+      <section class="gallery" v-if="activeSection === 'gallery'" :key='gallery-stage'>
         <h2 class="intro">Animated vignettes inspired by military and astronomical mission badges and other ephemera.</h2>
         <div class="badge" v-for="badge in badgeMap" :key="badge.title">
           <component :is="`Badge${badge.id}`"></component>
@@ -38,7 +38,7 @@
         </div>
       </section>
 
-      <RemoteViewingSim class="praxis" v-if="activeSection === 'praxis'" />
+      <RemoteViewingSim class="praxis" v-if="activeSection === 'praxis'" :key='praxis-stage' />
     </main>
 
     <footer>
@@ -432,4 +432,21 @@ button.enlarge:hover {
 .intro {
   font-family: "Unica One", sans-serif;
 }
+
+@keyframes fadeIn {
+  0% { 
+    opacity: 0;
+    transform: translateY(50px); 
+  }
+  100% { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+.gallery,
+.praxis {
+  animation: fadeIn 0.3s;
+}
+
 </style>
