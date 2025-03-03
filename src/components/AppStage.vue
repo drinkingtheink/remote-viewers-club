@@ -415,6 +415,8 @@ button.enlarge:hover {
   padding: 1rem 3rem;
   transition: all 0.2s;
   border-radius: 10px;
+  font-family: "Anta", sans-serif;
+  text-transform: uppercase;
 }
 
 .sections button:hover {

@@ -390,14 +390,14 @@ watch(penSize, () => {
 }
 
 .remote-viewing-container .impression-textarea {
-  width: 100%;
+  width: 90%;
   min-height: 100px;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
   resize: vertical;
   font-family: inherit;
-  margin-bottom: 20px;
+  margin: 0 auto 20px auto;
 }
 
 .remote-viewing-container .results-container {
