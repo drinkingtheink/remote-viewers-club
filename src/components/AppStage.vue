@@ -3,7 +3,7 @@
     <div class="intro-wrapper">
       <SeeYouThere class="watcher" />
       <h1>REMOTE VIEWERS CLUB</h1>
-      <p class="intro">Remote viewing is the practice of seeking impressions about a distant or unseen subject, purportedly sensing with the mind.</p>
+      <p class="intro">Remote viewing is the practice of seeking impressions about a distant or unseen subject. Anyone can do it!</p>
     </div>
     <div v-if="!!activeBadge" class="modal-mask">
       <div class="modal-wrapper">

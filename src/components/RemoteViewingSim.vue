@@ -302,7 +302,7 @@ watch(penSize, () => {
 }
 
 .remote-viewing-container .btn-primary:hover {
-  background-color: #3a5a80;
+  background-color: #830b02;
 }
 
 .remote-viewing-container .btn-primary:disabled {
@@ -314,7 +314,7 @@ watch(penSize, () => {
   font-family: 'Courier New', monospace;
   font-size: 24px;
   padding: 15px;
-  background-color: #2c3e50;
+  background-color: #000000;
   color: #fff;
   border-radius: 4px;
   margin: 15px 0;
