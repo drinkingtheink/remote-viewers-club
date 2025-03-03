@@ -3,19 +3,44 @@
     <div class="intro-wrapper">
       <SeeYouThere class="watcher" />
       <h1>REMOTE VIEWERS CLUB</h1>
-      <p class="intro">Animated vignettes inspired by military and astronomical mission badges and other ephemera.</p>
+      <p class="intro">Remote viewing is the practice of seeking impressions about a distant or unseen subject. Anyone can do it!</p>
     </div>
-    <main>
-      <div class="badge" v-for="badge in badgeMap" :key="badge.title">
-        <component :is="`Badge${badge.id}`"></component>
-
-        <div class="badge-details">
-          <h3>{{ badge.title }}</h3>
-          <h4 v-if="badge.desc">{{ badge.desc }}</h4>
-          <a class="inspo" :href="badge.inspo" target="_blank">Origin</a>
+    <div v-if="!!activeBadge" class="modal-mask">
+      <div class="modal-wrapper">
+        <div class="modal-container">
+          <div class="active-badge">
+            <section class="modal-content">
+              <button class="close-active" @click="closeActive">Back to Gallery</button>
+              <component :is="`Badge${activeBadge.id}`"></component>
+            </section>
+          </div>
         </div>
       </div>
+    </div>
+
+    <section class="sections">
+      <button @click="activeSection = 'gallery'" :class="{ active: activeSection === 'gallery' }">Gallery</button>
+      <button @click="activeSection = 'praxis'" :class="{ active: activeSection === 'praxis' }">Praxis</button>
+    </section>
+    
+    <main>
+      <section class="gallery" v-if="activeSection === 'gallery'" :key='gallery-stage'>
+        <h2 class="intro">Animated vignettes inspired by military and astronomical mission badges and other ephemera.</h2>
+        <div class="badge" v-for="badge in badgeMap" :key="badge.title">
+          <component :is="`Badge${badge.id}`"></component>
+
+          <div class="badge-details">
+            <h3>{{ badge.title }}</h3>
+            <h4 v-if="badge.desc">{{ badge.desc }}</h4>
+            <a class="inspo" :href="badge.inspo" target="_blank">Origin</a>
+            <button class="enlarge" @click="handleBadgeClick(badge)">Enlarge</button>
+          </div>
+        </div>
+      </section>
+
+      <RemoteViewingSim class="praxis" v-if="activeSection === 'praxis'" :key='praxis-stage' />
     </main>
+
     <footer>
       <a href="https://github.com/drinkingtheink/remote-viewers-club" target="_blank">About this App</a>
       <a href="https://www.drinkingtheink.com/" target="_blank">About the Author</a>
@@ -31,42 +56,43 @@ import Badge4 from './Badge4.vue'
 import Badge5 from './Badge5.vue'
 import Badge6 from './Badge6.vue'
 import SeeYouThere from './SeeYouThere.vue'
+import RemoteViewingSim from './RemoteViewingSim.vue'
 
 const badgeMap = [
-  {
-    title: 'Remote Viewing Task Force',
-    desc: 'Fort Stillwater',
-    inspo: 'https://twitter.com/CassetteDyne/status/1735694599262192051',
-    id: 1,
-  },
-  {
-    title: 'Electronic Phantoms',
-    desc: '9716th Radar Decoy Squadron',
-    inspo: 'https://twitter.com/CassetteDyne/status/1735694599262192051',
-    id: 2,
-  },
-  {
-    title: 'PSYWACs',
-    desc: '960th Psychological Warfare Squadron',
-    inspo: 'https://twitter.com/CassetteDyne/status/1735694599262192051',
-    id: 3,
-  },
-  {
-    title: 'Vigilance and Speed',
-    desc: '3rd Special Interceptor Squadron',
-    inspo: 'https://twitter.com/CassetteDyne/status/1735694599262192051',
-    id: 4,
-  },
   {
     title: 'See You Yesterday',
     desc: '37th Temporal Reconaissance Wing',
     inspo: 'https://twitter.com/arpitingle/status/1698709125088088109',
-    id: 5,
+    id: 1,
   },
   {
     title: 'Beyond All Bounds',
     desc: '24th Omnidimensional Operations Squadron',
     inspo: 'https://twitter.com/arpitingle/status/1698709125088088109',
+    id: 2,
+  },
+  {
+    title: 'Remote Viewing Task Force',
+    desc: 'Fort Stillwater',
+    inspo: 'https://twitter.com/CassetteDyne/status/1735694599262192051',
+    id: 3,
+  },
+  {
+    title: 'Electronic Phantoms',
+    desc: '9716th Radar Decoy Squadron',
+    inspo: 'https://twitter.com/CassetteDyne/status/1735694599262192051',
+    id: 4,
+  },
+  {
+    title: 'PSYWACs',
+    desc: '960th Psychological Warfare Squadron',
+    inspo: 'https://twitter.com/CassetteDyne/status/1735694599262192051',
+    id: 5,
+  },
+  {
+    title: 'Vigilance and Speed',
+    desc: '3rd Special Interceptor Squadron',
+    inspo: 'https://twitter.com/CassetteDyne/status/1735694599262192051',
     id: 6,
   },
 ];
@@ -81,18 +107,91 @@ export default {
     Badge5,
     Badge6,
     SeeYouThere,
+    RemoteViewingSim,
   },
   data() {
     return {
       badgeMap: badgeMap,
+      activeBadge: null,
+      activeSection: 'gallery',
     }
   },
+  methods: {
+    handleBadgeClick(badge) {
+      this.activeBadge = badge;
+    },
+    closeActive() {
+      this.activeBadge = null;
+    },
+  }
 }
 </script>
 
-<style scoped>
+<style>
 @import url('https://fonts.googleapis.com/css2?family=Anta&family=Exo:wght@300;700&family=Russo+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Amita:wght@400;700&family=Unica+One&display=swap');
+.modal-mask {
+  position: fixed;
+  z-index: 9998;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: table;
+  transition: opacity 0.3s ease;
+}
+
+.modal-wrapper {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.modal-container {
+  width: 1000px;
+  margin: 0px auto;
+  padding: 20px 30px;
+  background-color: rgba(0,0,0,0.6);
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+  transition: all 0.3s ease;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.modal-header h3 {
+  margin-top: 0;
+  color: #42b983;
+}
+
+.modal-body {
+  margin: 20px 0;
+}
+
+.modal-enter {
+  opacity: 0;
+}
+
+.modal-leave-active {
+  opacity: 0;
+}
+
+.modal-enter .modal-container,
+.modal-leave-active .modal-container {
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+}
+
+.active-badge {
+  padding: 0 20%;
+}
+
+.close-active {
+  font-size: 80%;
+  margin: 1rem 0;
+  text-transform: uppercase;
+  padding: 1rem 2rem;
+}
+
 .inspo {
   display: block;
   border-bottom: 3px solid transparent;
@@ -119,7 +218,7 @@ h1 {
   font-style: normal;
   font-size: 330%;
   background: rgba(0,0,0,0.6);
-  padding: 10px 0 2rem 0;
+  padding: 10px 0 0 0;
   margin-bottom: 0;
 }
 
@@ -196,17 +295,18 @@ a:hover {
   text-decoration: none;
 }
 
-main {
+section.gallery {
   padding: 0 3rem 10rem;
   margin: 0 auto;
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
   position: relative;
   max-width: 2000px;
 }
 
 @media only screen and (max-width: 60em) {
-  main {
+  section.gallery {
     display: block;
     text-align: center;
     padding: 0;
@@ -253,7 +353,7 @@ footer {
   display: flex;
   justify-content: space-around;
   max-width: 800px;
-  margin: 2rem auto 0 auto;
+  margin: 2rem auto 4rem auto;
 }
 
 @media only screen and (max-width: 60em) {
@@ -280,4 +380,73 @@ footer a {
 footer a:hover {
   border-color: #CC993E;
 }
+
+button.enlarge {
+  color: white;
+  width: 60%;
+  border-radius: 40px;
+  margin: 5px auto 0 auto;
+  border: none;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+
+@media only screen and (max-width: 767px) {
+  button.enlarge {
+    display: none;
+  }
+}
+
+button.enlarge:hover {
+  background: red;
+}
+
+.sections {
+  padding-top: 1rem;
+}
+
+.sections button {
+  font-size: 150%;
+  background: black;
+  color: white;
+  margin: 5px;
+  display: inline-block;
+  border: 5px solid transparent;
+  padding: 1rem 3rem;
+  transition: all 0.2s;
+  border-radius: 10px;
+  font-family: "Anta", sans-serif;
+  text-transform: uppercase;
+}
+
+.sections button:hover {
+  cursor: pointer;
+  color: red;
+}
+
+.sections button.active {
+  border-color: red;
+  color: #f1f380;
+}
+
+.intro {
+  font-family: "Unica One", sans-serif;
+}
+
+@keyframes fadeIn {
+  0% { 
+    opacity: 0;
+    transform: translateY(50px); 
+  }
+  100% { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+.gallery,
+.praxis {
+  animation: fadeIn 0.3s;
+}
+
 </style>
