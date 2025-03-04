@@ -302,7 +302,7 @@ section.gallery {
   justify-content: center;
   flex-wrap: wrap;
   position: relative;
-  max-width: 1400px;
+  max-width: 1200px;
 }
 
 @media only screen and (max-width: 60em) {
