@@ -302,7 +302,7 @@ section.gallery {
   justify-content: center;
   flex-wrap: wrap;
   position: relative;
-  max-width: 2000px;
+  max-width: 1400px;
 }
 
 @media only screen and (max-width: 60em) {
@@ -447,6 +447,10 @@ button.enlarge:hover {
 .gallery,
 .praxis {
   animation: fadeIn 0.3s;
+}
+
+.gallery h2 .info {
+  flex-basis: 70%;
 }
 
 </style>
