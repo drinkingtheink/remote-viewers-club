@@ -64,5 +64,6 @@ export default {
 
 #star {
     fill: #f1f380;
+    display: none;
 }
 </style>

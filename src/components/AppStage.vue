@@ -39,6 +39,9 @@
       </section>
 
       <section class="praxis" v-if="activeSection === 'praxis'" :key='praxis-stage'>
+
+        <h2 class="intro">Practice your skills and maybe you can make one of the squadrons.</h2>
+
         <div class="focii">
           <span class="focus-option">
             <RemoteViewingIcon />
@@ -464,6 +467,11 @@ button.enlarge:hover {
   animation: fadeIn 0.3s;
 }
 
+.praxis .intro {
+  width: 70%;
+  margin: 1rem auto;
+}
+
 .gallery h2 .info {
   flex-basis: 70%;
 }
@@ -474,7 +482,9 @@ button.enlarge:hover {
 
 .focii span {
   display: inline-block;
-  padding: 5px 10px;
+  padding: 10px 10px;
+  margin-right: 10px;
+  background: rgba(0,0,0,0.6);
 }
 
 .focii {

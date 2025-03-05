@@ -1,7 +1,5 @@
 <template>
   <div class="remote-viewing-container">
-    <h2 class="intro">Practice your skills and maybe you can make one of the squadrons.</h2>
-
     <div v-if="stage === 'intro'" class="stage intro">
       <h2>Remote Viewing Session</h2>
       <p>Focus your mind and prepare to connect with the target coordinates.</p>
@@ -82,7 +80,7 @@
 
 <script setup>
 import { ref, watch } from 'vue';
-import RemoteViewingIcon from './icons/RemoteViewingIcon'
+import RemoteViewingIcon from './icons/RemoteViewingIcon';
 
 // State variables
 const stage = ref('intro');
