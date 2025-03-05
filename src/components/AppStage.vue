@@ -19,8 +19,16 @@
     </div>
 
     <section class="sections">
-      <button @click="activeSection = 'gallery'" :class="{ active: activeSection === 'gallery' }">Gallery</button>
-      <button @click="activeSection = 'praxis'" :class="{ active: activeSection === 'praxis' }">Praxis</button>
+      <button 
+        @click="activeSection = 'gallery'" 
+        :class="{ active: activeSection === 'gallery' }">
+         Gallery
+        </button>
+      <button 
+        @click="activeSection = 'praxis'" 
+        :class="{ active: activeSection === 'praxis' }">
+          Praxis
+        </button>
     </section>
     
     <main>
@@ -434,11 +442,15 @@ button.enlarge:hover {
   margin: 5px;
   display: inline-block;
   border: 5px solid transparent;
-  padding: 1rem 3rem;
+  padding: 1rem 4rem;
   transition: all 0.2s;
   border-radius: 10px;
   font-family: "Anta", sans-serif;
   text-transform: uppercase;
+
+  @media only screen and (max-width: 767px) {
+    width: 300px;
+  }
 }
 
 .sections button:hover {
