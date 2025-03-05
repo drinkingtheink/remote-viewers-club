@@ -64,6 +64,14 @@ export default {
 
 #star {
     fill: #f1f380;
-    display: none;
+    opacity: 0;
+}
+
+.icon.remote-viewing * {
+    transition: all 0.3s;
+}
+
+.icon.remote-viewing:hover #star {
+    opacity: 1; 
 }
 </style>
