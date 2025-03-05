@@ -53,7 +53,7 @@
 
         <RemoteViewingSim />
 
-        <PerceptionTraining />
+        <!-- <PerceptionTraining /> -->
       </section>
     </main>
 

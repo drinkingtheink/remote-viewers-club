@@ -1,7 +1,5 @@
 <template>
-  <div class="remote-viewers-container">
-    <h1 class="main-title">Remote Viewers Club</h1>
-    
+  <div class="perception-training-stage">
     <div v-if="currentChallenge === 'pattern-recognition'" class="challenge-section">
       <h2 class="challenge-title">Pattern Recognition Challenge</h2>
       <div class="pattern-grid">
@@ -132,7 +130,7 @@ const switchChallenge = (challenge) => {
 </script>
 
 <style>
-.remote-viewers-container {
+.perception-training-stage {
   max-width: 600px;
   margin: 0 auto;
   padding: 1.5rem;
