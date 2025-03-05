@@ -38,7 +38,13 @@
         </div>
       </section>
 
-      <RemoteViewingSim class="praxis" v-if="activeSection === 'praxis'" :key='praxis-stage' />
+      <section class="praxis" v-if="activeSection === 'praxis'" :key='praxis-stage'>
+        <div class="focii">
+          <RemoteViewingIcon />
+          <PrecogIcon />
+        </div>
+        <RemoteViewingSim />
+      </section>
     </main>
 
     <footer>
@@ -57,6 +63,8 @@ import Badge5 from './Badge5.vue'
 import Badge6 from './Badge6.vue'
 import SeeYouThere from './SeeYouThere.vue'
 import RemoteViewingSim from './RemoteViewingSim.vue'
+import RemoteViewingIcon from './icons/RemoteViewingIcon';
+import PrecogIcon from './icons/PrecognitionIcon';
 
 const badgeMap = [
   {
@@ -108,6 +116,8 @@ export default {
     Badge6,
     SeeYouThere,
     RemoteViewingSim,
+    PrecogIcon,
+    RemoteViewingIcon,
   },
   data() {
     return {
