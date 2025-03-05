@@ -111,4 +111,8 @@ export default {
     stroke: #f1f380;
     stroke-miterlimit: 10;
 }
+
+#crystal-ball * {
+    fill: #f1f380;
+}
 </style>

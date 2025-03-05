@@ -52,6 +52,8 @@
         </div>
 
         <RemoteViewingSim />
+
+        <PerceptionTraining />
       </section>
     </main>
 
@@ -71,6 +73,7 @@ import Badge5 from './Badge5.vue'
 import Badge6 from './Badge6.vue'
 import SeeYouThere from './SeeYouThere.vue'
 import RemoteViewingSim from './RemoteViewingSim.vue'
+import PerceptionTraining from './PerceptionTraining.vue'
 import RemoteViewingIcon from './icons/RemoteViewingIcon';
 import PrecogIcon from './icons/PrecognitionIcon';
 
@@ -126,6 +129,7 @@ export default {
     RemoteViewingSim,
     PrecogIcon,
     RemoteViewingIcon,
+    PerceptionTraining,
   },
   data() {
     return {
