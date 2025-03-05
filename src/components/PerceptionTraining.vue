@@ -1,266 +1,220 @@
 <template>
-  <div class="perception-training-stage">
-    <div v-if="currentChallenge === 'pattern-recognition'" class="challenge-section">
-      <h2 class="challenge-title">Pattern Recognition Challenge</h2>
-      <div class="pattern-grid">
-        <div 
-          v-for="(card, index) in recognitionCards" 
-          :key="index"
-          @click="selectCard(index)"
-          class="pattern-card"
-          :class="{
-            'selected': selectedCards.includes(index),
-            'revealed': !card.hidden
-          }"
-        >
-          {{ card.hidden ? '?' : card.value }}
-        </div>
+  <div class="prediction-container">
+    <h2>Precognition Challenge</h2>
+    
+    <div class="session-stats">
+      <div class="stat-box">
+        <span class="stat-label">Matches</span>
+        <span class="stat-value matches">{{ sessionStats.matches }}</span>
       </div>
+      <div class="stat-box">
+        <span class="stat-label">Misses</span>
+        <span class="stat-value misses">{{ sessionStats.misses }}</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-label">Accuracy</span>
+        <span class="stat-value accuracy">{{ accuracyPercentage }}%</span>
+      </div>
+    </div>
+    
+    <div class="prediction-grid">
       <button 
-        @click="checkPattern" 
-        class="check-pattern-btn"
+        v-for="(color, index) in predictionColors" 
+        :key="index"
+        @click="makePrediction(color)"
+        :style="{ backgroundColor: color }"
+        :disabled="predictionResult !== null"
       >
-        Check Pattern
+        {{ color }}
       </button>
-      <p class="attempts-counter">Attempts: {{ attempts }}</p>
     </div>
 
-    <div v-if="currentChallenge === 'random-prediction'" class="challenge-section">
-      <h2 class="challenge-title">Random Prediction Challenge</h2>
-      <div class="prediction-grid">
-        <button 
-          v-for="(color, index) in predictionColors" 
-          :key="index"
-          @click="makePrediction(color)"
-          class="prediction-button"
-          :style="{ backgroundColor: color }"
-        >
-          {{ color }}
-        </button>
-      </div>
-      <div v-if="predictionResult" class="prediction-result">
-        <p>Your Prediction: {{ userPrediction }}</p>
-        <p>Actual Result: {{ actualColor }}</p>
-        <p>Result: {{ predictionResult }}</p>
-      </div>
+    <div v-if="predictionResult" class="prediction-result">
+      <p>Your Prediction: {{ userPrediction }}</p>
+      <p>Actual Result: {{ actualColor }}</p>
+      <p>{{ predictionResult }}</p>
+      
+      <button 
+        @click="resetChallenge" 
+        class="restart-btn"
+      >
+        Start New Round
+      </button>
     </div>
 
-    <div class="challenge-selector">
-      <button 
-        @click="switchChallenge('pattern-recognition')"
-        class="challenge-switch-btn pattern-btn"
-      >
-        Pattern Recognition
-      </button>
-      <button 
-        @click="switchChallenge('random-prediction')"
-        class="challenge-switch-btn prediction-btn"
-      >
-        Random Prediction
-      </button>
-    </div>
+    <button 
+      @click="resetSession" 
+      class="reset-session-btn"
+    >
+      Reset Session
+    </button>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 
-// Pattern Recognition Challenge
-const recognitionCards = ref(
-  Array.from({ length: 16 }, () => ({
-    value: Math.floor(Math.random() * 10),
-    hidden: true
-  }))
-)
-const selectedCards = ref([])
-const attempts = ref(0)
-
-const selectCard = (index) => {
-  if (!selectedCards.value.includes(index)) {
-    selectedCards.value.push(index)
-  }
+const generateRandomColor = () => {
+  return `#${Math.floor(Math.random()*16777215).toString(16).padStart(6, '0')}`
 }
 
-const checkPattern = () => {
-  attempts.value++
-  const pattern = recognitionCards.value
-    .map((card, index) => selectedCards.value.includes(index) ? card.value : null)
-    .filter(val => val !== null)
-
-  // Simple pattern detection logic
-  const isUniquePattern = new Set(pattern).size === pattern.length
-  
-  if (isUniquePattern) {
-    recognitionCards.value.forEach((card) => {
-      card.hidden = false
-    })
-    alert('Interesting pattern detected!')
-  } else {
-    alert('Try again. Look for unique connections.')
-  }
-
-  selectedCards.value = []
-}
-
-// Random Prediction Challenge
-const predictionColors = ['red', 'blue', 'green']
+const predictionColors = ref([])
 const userPrediction = ref(null)
 const actualColor = ref(null)
 const predictionResult = ref(null)
+const sessionStats = ref({
+  matches: 0,
+  misses: 0
+})
+
+const accuracyPercentage = computed(() => {
+  const totalRounds = sessionStats.value.matches + sessionStats.value.misses
+  return totalRounds > 0 
+    ? Math.round((sessionStats.value.matches / totalRounds) * 100)
+    : 0
+})
+
+const generateColorOptions = () => {
+  // Generate 3 unique random colors
+  const colors = new Set()
+  while (colors.size < 3) {
+    colors.add(generateRandomColor())
+  }
+  predictionColors.value = Array.from(colors)
+}
 
 const makePrediction = (color) => {
   userPrediction.value = color
-  actualColor.value = predictionColors[Math.floor(Math.random() * predictionColors.length)]
+  actualColor.value = predictionColors.value[Math.floor(Math.random() * predictionColors.value.length)]
   
-  predictionResult.value = userPrediction.value === actualColor.value 
-    ? 'Correct Prediction! 🔮' 
-    : 'Close, but not quite...'
+  if (userPrediction.value === actualColor.value) {
+    predictionResult.value = 'Correct Prediction! 🔮'
+    sessionStats.value.matches++
+  } else {
+    predictionResult.value = 'Close, but not quite...'
+    sessionStats.value.misses++
+  }
 }
 
-// Challenge Switching
-const currentChallenge = ref('pattern-recognition')
-
-const switchChallenge = (challenge) => {
-  currentChallenge.value = challenge
-  // Reset states when switching
-  selectedCards.value = []
-  attempts.value = 0
+const resetChallenge = () => {
+  generateColorOptions()
+  userPrediction.value = null
+  actualColor.value = null
   predictionResult.value = null
 }
+
+const resetSession = () => {
+  sessionStats.value = {
+    matches: 0,
+    misses: 0
+  }
+  resetChallenge()
+}
+
+// Generate initial color options when component mounts
+onMounted(generateColorOptions)
 </script>
 
 <style>
-.perception-training-stage {
-  max-width: 600px;
+.prediction-container {
+  min-width: 300px;
+  width: 70%;
   margin: 0 auto;
-  padding: 1.5rem;
-  font-family: Arial, sans-serif;
   text-align: center;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background: rgba(0,0,0,0.6);
+  border-bottom: 3px solid red;
 }
 
-.main-title {
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
-  color: #333;
-}
-
-.challenge-section {
-  background-color: #f4f4f4;
-  border-radius: 8px;
-  padding: 1rem;
-  margin-bottom: 1rem;
-}
-
-.challenge-title {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  color: #2c3e50;
-}
-
-.pattern-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.pattern-card {
-  background-color: #3498db;
-  color: white;
-  border: none;
-  padding: 1rem;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+.session-stats {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
 }
 
-.pattern-card:hover {
-  background-color: #2980b9;
+.stat-box {
+  background-color: black;
+  border-radius: 5px;
+  padding: 10px;
+  flex-grow: 1;
+  margin: 0 5px;
 }
 
-.pattern-card.selected {
-  background-color: #2ecc71;
+.stat-label {
+  display: block;
+  font-size: 0.8em;
+  color: #e2e2e2;
+  margin-bottom: 5px;
 }
 
-.pattern-card.revealed {
-  background-color: #2c3e50;
+.stat-value {
+  font-size: 1.5em;
+  font-weight: bold;
 }
 
-.check-pattern-btn {
-  background-color: #9b59b6;
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+.stat-value.matches {
+  color: #4CAF50;
 }
 
-.check-pattern-btn:hover {
-  background-color: #8e44ad;
+.stat-value.misses {
+  color: #F44336;
 }
 
-.attempts-counter {
-  margin-top: 0.5rem;
-  color: #7f8c8d;
+.stat-value.accuracy {
+  color: #2196F3;
 }
 
 .prediction-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-  margin-bottom: 1rem;
+  gap: 10px;
+  margin: 20px 0;
 }
 
-.prediction-button {
+.prediction-grid button {
   color: white;
   border: none;
-  padding: 1rem;
-  border-radius: 6px;
+  padding: 15px;
+  border-radius: 5px;
   cursor: pointer;
   text-transform: capitalize;
+  transition: opacity 0.3s ease;
+}
+
+.prediction-grid button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .prediction-result {
-  margin-top: 1rem;
-  background-color: #ecf0f1;
-  padding: 1rem;
-  border-radius: 6px;
+  background-color: black;
+  padding: 15px;
+  border-radius: 5px;
+  margin-top: 20px;
 }
 
-.challenge-selector {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
-.challenge-switch-btn {
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
+.restart-btn, .reset-session-btn {
+  background-color: red;
   color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  margin-top: 10px;
+  cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.pattern-btn {
-  background-color: #9b59b6;
+.restart-btn:hover, .reset-session-btn:hover {
+  background-color: rgb(121, 3, 3);
 }
 
-.pattern-btn:hover {
-  background-color: #8e44ad;
+.reset-session-btn {
+  background-color: #2196F3;
+  margin-top: 20px;
 }
 
-.prediction-btn {
-  background-color: #1abc9c;
-}
-
-.prediction-btn:hover {
-  background-color: #16a085;
+.reset-session-btn:hover {
+  background-color: #1976D2;
 }
 </style>
