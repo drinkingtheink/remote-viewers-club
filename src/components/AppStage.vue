@@ -40,9 +40,14 @@
 
       <section class="praxis" v-if="activeSection === 'praxis'" :key='praxis-stage'>
         <div class="focii">
-          <RemoteViewingIcon />
-          <PrecogIcon />
+          <span class="focus-option">
+            <RemoteViewingIcon />
+          </span>
+          <span class="focus-option">
+            <PrecogIcon />
+          </span>
         </div>
+
         <RemoteViewingSim />
       </section>
     </main>
@@ -463,4 +468,18 @@ button.enlarge:hover {
   flex-basis: 70%;
 }
 
+.focii svg {
+  width: 150px;
+}
+
+.focii span {
+  display: inline-block;
+  padding: 5px 10px;
+}
+
+.focii {
+  display: flex;
+  margin: 0 auto;
+  justify-content: center;
+}
 </style>
