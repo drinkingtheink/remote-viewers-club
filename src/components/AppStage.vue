@@ -447,6 +447,8 @@ button.enlarge:hover {
   border-radius: 10px;
   font-family: "Anta", sans-serif;
   text-transform: uppercase;
+  border: 6px solid rgba(0,0,0,0.6);
+  width: 300px;
 
   @media only screen and (max-width: 767px) {
     width: 300px;
@@ -459,7 +461,7 @@ button.enlarge:hover {
 }
 
 .sections button.active {
-  border-color: red;
+  background-color: red;
   color: #f1f380;
 }
 
