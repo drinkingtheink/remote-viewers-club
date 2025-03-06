@@ -1,7 +1,8 @@
 <template>
-  <div class="prediction-container">
-    <h2>Precognition Challenge</h2>
-    
+  <div class="prediction-container stage intro">
+    <h2>Precognition Session</h2>
+    <p>Can you devine the colors chosen by the oracle on the other side?</p>
+
     <div class="session-stats">
       <div class="stat-box">
         <span class="stat-label">Matches</span>
@@ -25,7 +26,7 @@
         :style="{ backgroundColor: color }"
         :disabled="predictionResult !== null"
       >
-        {{ color }}
+        <span class="color-mask">{{ color }}</span>
       </button>
     </div>
 
@@ -180,6 +181,13 @@ onMounted(generateColorOptions)
   cursor: pointer;
   text-transform: capitalize;
   transition: opacity 0.3s ease;
+}
+
+.prediction-grid button span {
+    background: rgba(0,0,0,0.6);
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 5px;
 }
 
 .prediction-grid button:disabled {

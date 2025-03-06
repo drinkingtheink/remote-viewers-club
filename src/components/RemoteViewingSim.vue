@@ -289,13 +289,6 @@ watch(penSize, () => {
   margin-top: 0;
 }
 
-.remote-viewing-container .stage p {
-  /* color: #555; */
-  line-height: 1.6;
-  font-size: 140%;
-  color: white;
-}
-
 .remote-viewing-container .btn-primary {
   background-color: red;
   color: white;

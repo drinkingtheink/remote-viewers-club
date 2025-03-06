@@ -143,7 +143,7 @@ export default {
     return {
       badgeMap: badgeMap,
       activeBadge: null,
-      activeSection: 'gallery',
+      activeSection: 'praxis',
     }
   },
   methods: {
@@ -507,5 +507,12 @@ button.enlarge:hover {
   display: flex;
   margin: 0 auto;
   justify-content: center;
+}
+
+.stage p {
+  /* color: #555; */
+  line-height: 1.3;
+  font-size: 170%;
+  color: white;
 }
 </style>
