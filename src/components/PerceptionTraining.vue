@@ -181,6 +181,12 @@ onMounted(generateColorOptions)
   cursor: pointer;
   text-transform: capitalize;
   transition: opacity 0.3s ease;
+  border: 3px solid transparent;
+  transition: all 0.3s;
+}
+
+.prediction-grid button:hover {
+    border-color: red;
 }
 
 .prediction-grid button span {
