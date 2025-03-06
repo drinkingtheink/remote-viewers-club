@@ -22,11 +22,13 @@
       <button 
         @click="activeSection = 'gallery'" 
         :class="{ active: activeSection === 'gallery' }">
-         Gallery
+          <span class="sparkle" v-if="activeSection === 'gallery'" />
+          Gallery
         </button>
       <button 
         @click="activeSection = 'praxis'" 
         :class="{ active: activeSection === 'praxis' }">
+          <span class="sparkle" v-if="activeSection === 'praxis'" />
           Praxis
         </button>
     </section>
@@ -451,6 +453,7 @@ button.enlarge:hover {
   text-transform: uppercase;
   border: 6px solid rgba(0,0,0,0.6);
   width: 300px;
+  position: relative;
 
   @media only screen and (max-width: 767px) {
     width: 300px;
@@ -548,5 +551,33 @@ button.enlarge:hover {
   line-height: 1.3;
   font-size: 170%;
   color: white;
+}
+
+@keyframes swoop-up {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.sparkle {
+  height: 30px;
+  width: 25px;
+  background: #EDC951;
+  mask: radial-gradient(#0000 71%, #000 72%) 10000% 10000%/99.5% 99.5%;
+  transition: all 0.2s;
+  display: inline-block;
+  position: absolute;
+  left: 20%;
+  animation: swoop-up 0.25s linear;
+  /* if you will use a different unit than px consider round()
+   height: round(__,1px);
+   width: round(__,1px);
+  */
 }
 </style>
