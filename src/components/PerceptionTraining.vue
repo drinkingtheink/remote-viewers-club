@@ -1,7 +1,7 @@
 <template>
   <div class="prediction-container stage intro">
     <h2>Precognition Session</h2>
-    <p>Can you devine the colors chosen by the oracle on the other side?</p>
+    <p>Can you devine the colors chosen by the oracle?</p>
 
     <div class="session-stats">
       <div class="stat-box">
