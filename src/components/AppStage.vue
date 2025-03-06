@@ -503,7 +503,7 @@ button.enlarge:hover {
 .focii span {
   display: inline-block;
   padding: 10px 10px;
-  margin-right: 10px;
+  margin-right: 30px;
   background: rgba(0,0,0,0.6);
   position: relative;
 }
@@ -517,9 +517,10 @@ button.enlarge:hover {
   font-size: 15px;
   font-weight: bold;
   color: #fff;
+  padding-left: 20px;
 }
 .focii .banner {
-  --f: .5em; /* control the folded part*/
+  --f: 1.5em; /* control the folded part*/
   --r: .8em; /* control the ribbon shape */
   
   position: absolute;
