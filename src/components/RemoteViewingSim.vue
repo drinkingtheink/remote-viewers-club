@@ -1,6 +1,6 @@
 <template>
   <div class="remote-viewing-container">
-    <div v-if="stage === 'intro'" class="stage intro">
+    <div v-if="stage === 'intro'" class="stage intro panel">
       <h2>Remote Viewing Session</h2>
       <p>Focus your mind and prepare to connect with the target coordinates.</p>
 

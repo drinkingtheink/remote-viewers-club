@@ -1,5 +1,5 @@
 <template>
-  <div class="prediction-container stage intro">
+  <div class="prediction-container stage intro panel">
     <h2>Precognition Session</h2>
     <p>Can you devine the colors chosen by the oracle?</p>
 

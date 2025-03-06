@@ -260,6 +260,7 @@ h1 {
   h1 {
     font-size: 200%;
     padding: 2rem 2rem 0.5rem 2rem;
+    margin-top: -40px;
   }
 }
 
@@ -298,7 +299,7 @@ p.intro {
   p.intro {
     font-size: 150%;
     padding: 0.5rem 1rem 2rem 1rem;
-    margin-bottom: 2rem;
+    margin-bottom: 0;
   }
 }
 
@@ -456,7 +457,7 @@ button.enlarge:hover {
   position: relative;
 
   @media only screen and (max-width: 767px) {
-    width: 300px;
+    width: 350px;
   }
 }
 
@@ -579,5 +580,9 @@ button.enlarge:hover {
    height: round(__,1px);
    width: round(__,1px);
   */
+}
+
+@media only screen and (max-width: 767px) {
+  
 }
 </style>
