@@ -53,9 +53,11 @@
         <div class="focii">
           <span class="focus-option">
             <RemoteViewingIcon />
+            <span class="banner">Remote Viewing</span>
           </span>
           <span class="focus-option">
             <PrecogIcon />
+            <span class="banner">Precognition</span>
           </span>
         </div>
 
@@ -503,6 +505,35 @@ button.enlarge:hover {
   padding: 10px 10px;
   margin-right: 10px;
   background: rgba(0,0,0,0.6);
+  position: relative;
+}
+
+.focii .banner {
+  display: inline-block;
+}
+
+/* HTML: <div class="ribbon">Your text content</div> */
+.focii .banner {
+  font-size: 15px;
+  font-weight: bold;
+  color: #fff;
+}
+.focii .banner {
+  --f: .5em; /* control the folded part*/
+  --r: .8em; /* control the ribbon shape */
+  
+  position: absolute;
+  bottom: 20px;
+  left: calc(-1*var(--f));
+  padding-inline: .25em;
+  line-height: 1.8;
+  background: red;
+  border-top: var(--f) solid #0005;
+  border-right: var(--r) solid #0000;
+  clip-path: 
+    polygon(0 100%,0 var(--f),var(--f) 0,
+      var(--f) var(--f),100% var(--f),
+      calc(100% - var(--r)) calc(50% + var(--f)/2),100% 100%);
 }
 
 .focii {
