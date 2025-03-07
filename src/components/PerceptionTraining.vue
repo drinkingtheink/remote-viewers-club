@@ -1,5 +1,5 @@
 <template>
-  <div class="prediction-container stage intro panel">
+  <div class="prediction-container stage panel">
     <h2>Precognition Session</h2>
     <p>Can you devine the colors chosen by the oracle?</p>
 
@@ -118,14 +118,10 @@ onMounted(generateColorOptions)
 
 <style>
 .prediction-container {
-  min-width: 300px;
-  width: 70%;
   margin: 0 auto;
   text-align: center;
-  padding: 20px;
   font-family: Arial, sans-serif;
   background: rgba(0,0,0,0.6);
-  border-bottom: 3px solid red;
 }
 
 .session-stats {

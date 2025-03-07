@@ -457,7 +457,8 @@ button.enlarge:hover {
   position: relative;
 
   @media only screen and (max-width: 767px) {
-    width: 350px;
+    width: 90%;
+    margin: 0 auto 0.5rem auto;
   }
 }
 
@@ -492,12 +493,15 @@ button.enlarge:hover {
 }
 
 .praxis .intro {
-  width: 70%;
   margin: 1rem auto;
 }
 
 .gallery h2 .info {
-  flex-basis: 70%;
+  flex-basis: 75%;
+
+  @media only screen and (max-width: 767px) {
+      flex-basis: 95%;
+  }  
 }
 
 .focii svg {
@@ -583,6 +587,28 @@ button.enlarge:hover {
 }
 
 @media only screen and (max-width: 767px) {
-  
+  html, body {
+    width: 100vw;
+    min-width: 100vw;
+  }
+}
+
+.stage {
+  margin: 0 auto;
+  background-color: rgba(0,0,0,0.6);
+  border-radius: 8px;
+  padding: 25px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-bottom: 3px solid red;
+  margin: 1rem auto 2rem auto;
+
+  @media only screen and (max-width: 767px) {
+    width: 100%;
+  }
+
+  @media only screen and (min-width: 766px) {
+    width: 75%;
+    max-width: 1000px;
+  }
 }
 </style>

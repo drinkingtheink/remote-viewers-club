@@ -1,6 +1,6 @@
 <template>
   <div class="remote-viewing-container">
-    <div v-if="stage === 'intro'" class="stage intro panel">
+    <div v-if="stage === 'intro'" class="stage panel">
       <h2>Remote Viewing Session</h2>
       <p>Focus your mind and prepare to connect with the target coordinates.</p>
 
@@ -269,17 +269,7 @@ watch(penSize, () => {
 
 <style>
 .remote-viewing-container {
-  max-width: 800px;
   margin: 0 auto;
-  padding: 20px;
-  font-family: 'Arial', sans-serif;
-}
-
-.remote-viewing-container .stage {
-  background-color: rgba(0,0,0,0.6);
-  border-radius: 8px;
-  padding: 25px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .remote-viewing-container .stage h2, 
