@@ -279,22 +279,6 @@ watch(penSize, () => {
   margin-top: 0;
 }
 
-.remote-viewing-container .btn-primary {
-  background-color: red;
-  color: white;
-  border: none;
-  padding: 10px 50px;
-  border-radius: 4px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  text-transform: uppercase;
-}
-
-.remote-viewing-container .btn-primary:hover {
-  background-color: #830b02;
-}
-
 .remote-viewing-container .btn-primary:disabled {
   background-color: #cccccc;
   cursor: not-allowed;

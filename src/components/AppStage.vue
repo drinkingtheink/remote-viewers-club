@@ -61,6 +61,10 @@
             <PrecogIcon />
             <span class="banner">Precognition</span>
           </span>
+          <!-- <span class="focus-option">
+            <PrecogIcon />
+            <span class="banner">Precognition</span>
+          </span> -->
         </div>
 
         <RemoteViewingSim />
@@ -189,7 +193,6 @@ export default {
   border-radius: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   transition: all 0.3s ease;
-  font-family: Helvetica, Arial, sans-serif;
 }
 
 .modal-header h3 {
@@ -551,13 +554,6 @@ button.enlarge:hover {
   justify-content: center;
 }
 
-.stage p {
-  /* color: #555; */
-  line-height: 1.3;
-  font-size: 170%;
-  color: white;
-}
-
 @keyframes swoop-up {
   from {
     transform: translateY(10px);
@@ -590,6 +586,7 @@ button.enlarge:hover {
   html, body {
     width: 100vw;
     min-width: 100vw;
+    overflow-x: hidden;
   }
 }
 
@@ -604,11 +601,41 @@ button.enlarge:hover {
 
   @media only screen and (max-width: 767px) {
     width: 100%;
+    padding: 25px 0;
   }
 
-  @media only screen and (min-width: 766px) {
+  @media only screen and (min-width: 768px) {
     width: 75%;
     max-width: 1000px;
   }
+}
+
+.stage p {
+  line-height: 1.3;
+  font-size: 170%;
+  color: white;
+  font-family: "Anta", sans-serif;
+  margin: 0 auto 1rem auto;
+
+  @media only screen and (max-width: 767px) {
+    width: 85%;
+    font-size: 130%;
+  }
+}
+
+.stage button {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 10px 50px;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  text-transform: uppercase;
+}
+
+.stage button:hover {
+  background-color: #830b02;
 }
 </style>

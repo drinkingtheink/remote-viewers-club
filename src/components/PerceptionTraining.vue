@@ -181,10 +181,6 @@ onMounted(generateColorOptions)
   transition: all 0.3s;
 }
 
-.prediction-grid button:hover {
-    border-color: red;
-}
-
 .prediction-grid button span {
     background: rgba(0,0,0,0.6);
     display: inline-block;
