@@ -497,6 +497,10 @@ button.enlarge:hover {
 
 .praxis .intro {
   margin: 1rem auto;
+
+  @media only screen and (min-width: 767px) {
+    width: 70%;
+  }
 }
 
 .gallery h2 .info {
@@ -504,7 +508,7 @@ button.enlarge:hover {
 
   @media only screen and (max-width: 767px) {
       flex-basis: 95%;
-  }  
+  }
 }
 
 .focii svg {
