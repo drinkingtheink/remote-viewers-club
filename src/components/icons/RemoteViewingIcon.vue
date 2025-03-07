@@ -53,6 +53,15 @@ export default {
 </script>
 
 <style scoped>
+@keyframes rotating {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .cls-2 {
     stroke: #f1f380;
     stroke-miterlimit: 10;
@@ -73,5 +82,7 @@ export default {
 
 .icon.remote-viewing:hover #star {
     opacity: 1; 
+    animation: rotating 10s linear infinite;
+    transform-origin: center;
 }
 </style>
