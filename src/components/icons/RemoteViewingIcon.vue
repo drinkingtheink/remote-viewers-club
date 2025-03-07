@@ -82,7 +82,7 @@ export default {
 
 .icon.remote-viewing:hover #star {
     opacity: 1; 
-    animation: rotating 10s linear infinite;
+    animation: rotating 20s linear infinite;
     transform-origin: center;
 }
 </style>

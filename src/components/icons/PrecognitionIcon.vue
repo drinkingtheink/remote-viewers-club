@@ -137,7 +137,7 @@ export default {
 
 .icon.precognition:hover #star {
     opacity: 0.5; 
-    animation: rotating 10s linear infinite;
+    animation: rotating 20s linear infinite;
     transform-origin: center;
 }
 </style>
