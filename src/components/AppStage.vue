@@ -30,7 +30,13 @@
         :class="{ active: activeSection === 'praxis' }">
           <span class="sparkle" v-if="activeSection === 'praxis'" />
           Praxis
-        </button>
+      </button>
+      <button 
+        @click="activeSection = 'join'" 
+        :class="{ active: activeSection === 'join' }">
+          <span class="sparkle" v-if="activeSection === 'join'" />
+          Join Us
+      </button>
     </section>
     
     <main>

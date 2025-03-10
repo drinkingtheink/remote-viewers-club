@@ -81,6 +81,7 @@
 <script setup>
 import { ref, watch } from 'vue';
 import RemoteViewingIcon from './icons/RemoteViewingIcon';
+import sites from '../data/latLongSites';
 
 // State variables
 const stage = ref('intro');
@@ -103,7 +104,8 @@ const penColor = ref('#000000');
 const penSize = ref(3);
 
 // Possible targets - in a real app these would be fetched from a database
-const possibleTargets = [
+const possibleTargets = sites 
+const origSites = [
   {
     id: 1,
     image: '/api/placeholder/400/300',
