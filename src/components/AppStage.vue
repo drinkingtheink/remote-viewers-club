@@ -77,6 +77,10 @@
 
         <PerceptionTraining />
       </section>
+
+      <section class="join">
+        <h2>Join Us</h2>
+      </section>
     </main>
 
     <footer>
