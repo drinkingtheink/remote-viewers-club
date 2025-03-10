@@ -79,7 +79,7 @@
       </section>
 
       <section class="join">
-        <h2>Join Us</h2>
+        <h2>Join Us - Coming Soon</h2>
       </section>
     </main>
 
