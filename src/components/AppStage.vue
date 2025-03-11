@@ -55,9 +55,7 @@
       </section>
 
       <section class="praxis" v-if="activeSection === 'praxis'" :key='praxis-stage'>
-
         <h2 class="intro">Practice your skills and maybe you can make one of the squadrons.</h2>
-
         <div class="focii">
           <span class="focus-option">
             <RemoteViewingIcon />
@@ -78,8 +76,8 @@
         <PerceptionTraining />
       </section>
 
-      <section class="join">
-        <h2>Join Us - Coming Soon</h2>
+      <section class="join" v-if="activeSection === 'join'" :key='join'>
+        <Join />
       </section>
     </main>
 
@@ -100,6 +98,7 @@ import Badge6 from './Badge6.vue'
 import SeeYouThere from './SeeYouThere.vue'
 import RemoteViewingSim from './RemoteViewingSim.vue'
 import PerceptionTraining from './PerceptionTraining.vue'
+import Join from './Join.vue'
 import RemoteViewingIcon from './icons/RemoteViewingIcon';
 import PrecogIcon from './icons/PrecognitionIcon';
 
@@ -156,6 +155,7 @@ export default {
     PrecogIcon,
     RemoteViewingIcon,
     PerceptionTraining,
+    Join,
   },
   data() {
     return {
@@ -501,7 +501,8 @@ button.enlarge:hover {
 }
 
 .gallery,
-.praxis {
+.praxis,
+.join {
   animation: fadeIn 0.3s;
 }
 
