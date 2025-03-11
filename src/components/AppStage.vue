@@ -598,6 +598,10 @@ button.enlarge:hover {
    height: round(__,1px);
    width: round(__,1px);
   */
+
+  @media only screen and (max-width: 767px) {
+    visibility: hidden;
+  }
 }
 
 @media only screen and (max-width: 767px) {
