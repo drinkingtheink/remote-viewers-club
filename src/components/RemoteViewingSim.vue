@@ -4,7 +4,7 @@
       <h2>Remote Viewing Session</h2>
       <p>Focus your mind and prepare to connect with the target coordinates.</p>
 
-      <RemoteViewingIcon class="rv-icon" />
+      <!-- <RemoteViewingIcon class="rv-icon" /> -->
 
       <button @click="beginSession" class="btn-primary">Begin Session</button>
     </div>
@@ -17,7 +17,7 @@
         <div :style="{ width: `${focusProgress}%` }" class="progress"></div>
       </div>
 
-      <RemoteViewingIcon class="rv-icon" />
+      <!-- <RemoteViewingIcon class="rv-icon" /> -->
 
       <p class="status-text">{{ statusMessage }}</p>
       <button @click="submitImpression" :disabled="!canSubmit" class="btn-primary">
@@ -80,7 +80,7 @@
 
 <script setup>
 import { ref, watch } from 'vue';
-import RemoteViewingIcon from './icons/RemoteViewingIcon';
+// import RemoteViewingIcon from './icons/RemoteViewingIcon';
 import sites from '../data/latLongSites';
 
 // State variables
@@ -103,28 +103,27 @@ const ctx = ref(null);
 const penColor = ref('#000000');
 const penSize = ref(3);
 
-// Possible targets - in a real app these would be fetched from a database
 const possibleTargets = sites 
-const origSites = [
-  {
-    id: 1,
-    image: '/api/placeholder/400/300',
-    description: 'A lighthouse on a rocky coast with waves crashing against the shore.',
-    coordinates: '37.1924° N, 122.3893° W'
-  },
-  {
-    id: 2,
-    image: '/api/placeholder/400/300',
-    description: 'A large waterfall in a lush forest setting.',
-    coordinates: '43.0775° N, 79.7624° W'
-  },
-  {
-    id: 3,
-    image: '/api/placeholder/400/300',
-    description: 'A small red bridge crossing a serene garden pond.',
-    coordinates: '35.7102° N, 139.8085° E'
-  }
-];
+// const origSites = [
+//   {
+//     id: 1,
+//     image: '/api/placeholder/400/300',
+//     description: 'A lighthouse on a rocky coast with waves crashing against the shore.',
+//     coordinates: '37.1924° N, 122.3893° W'
+//   },
+//   {
+//     id: 2,
+//     image: '/api/placeholder/400/300',
+//     description: 'A large waterfall in a lush forest setting.',
+//     coordinates: '43.0775° N, 79.7624° W'
+//   },
+//   {
+//     id: 3,
+//     image: '/api/placeholder/400/300',
+//     description: 'A small red bridge crossing a serene garden pond.',
+//     coordinates: '35.7102° N, 139.8085° E'
+//   }
+// ];
 
 // Methods
 const beginSession = () => {
