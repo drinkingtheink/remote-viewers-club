@@ -506,7 +506,7 @@ button.enlarge:hover {
   animation: fadeIn 0.3s;
 }
 
-.praxis .intro {
+.intro {
   margin: 1rem auto;
 
   @media only screen and (min-width: 767px) {
