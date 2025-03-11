@@ -178,6 +178,8 @@ export default {
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Anta&family=Exo:wght@300;700&family=Russo+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Amita:wght@400;700&family=Unica+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Vollkorn:ital,wght@0,400..900;1,400..900&display=swap');
+
 .modal-mask {
   position: fixed;
   z-index: 9998;
@@ -252,9 +254,7 @@ export default {
 }
 
 body {
-  font-family: "Anta", sans-serif;
-  font-weight: 400;
-  font-style: normal;
+
   padding: 0;
   margin: 0;
 }
@@ -317,7 +317,10 @@ p.intro {
 }
 
 h1, h2, h3, h4 {
-  font-family: "Anta", sans-serif;
+  font-family: "Vollkorn", serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: italic;
 }
 
 h3 {
@@ -636,7 +639,10 @@ button.enlarge:hover {
   line-height: 1.3;
   font-size: 170%;
   color: white;
-  font-family: "Anta", sans-serif;
+  font-family: "Vollkorn", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
   margin: 0 auto 1rem auto;
 
   @media only screen and (max-width: 767px) {
