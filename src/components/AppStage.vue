@@ -264,7 +264,7 @@ h1, h2, h3, h4 {
   font-weight: 600;
   font-style: normal;
   text-transform: uppercase;
-  font-size: 200%;
+  font-size: 160%;
   padding-top: 0;
   margin-top: 0;
 }
