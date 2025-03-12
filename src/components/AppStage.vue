@@ -3,7 +3,7 @@
     <div class="intro-wrapper">
       <SeeYouThere class="watcher" />
       <h1>REMOTE VIEWERS CLUB</h1>
-      <p class="intro">Remote viewing is the practice of seeking impressions about a distant or unseen subject. Anyone can do it!</p>
+      <p class="introduction">Remote viewing is the practice of seeking impressions about a distant or unseen subject. Anyone can do it!</p>
     </div>
     <div v-if="!!activeBadge" class="modal-mask">
       <div class="modal-wrapper">
@@ -264,7 +264,6 @@ h1 {
   font-weight: 400;
   font-style: normal;
   font-size: 330%;
-  background: rgba(0,0,0,0.6);
   padding: 10px 0 0 0;
   margin-bottom: 0;
 }
@@ -279,6 +278,9 @@ h1 {
 
 .intro-wrapper {
   position: relative;
+  background-color: rgba(0,0,0,0.6);
+  padding-bottom: 2rem;
+  border-bottom: 3px solid red;
 }
 
 .watcher {
@@ -298,18 +300,15 @@ h1 {
   }
 }
 
-p.intro {
-  background: rgba(0,0,0,0.6);
-  padding: 0 20% 2rem 20%;
-  margin: 0;
+p.introduction {
+  margin: 0 auto;
   font-family: "Unica One", sans-serif;
   font-weight: 400;
   font-style: normal;
   font-size: 200%;
-}
+  max-width: 800px;
 
-@media only screen and (max-width: 60em) {
-  p.intro {
+  @media only screen and (max-width: 60em) {
     font-size: 150%;
     padding: 0.5rem 1rem 2rem 1rem;
     margin-bottom: 0;
