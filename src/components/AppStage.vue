@@ -284,9 +284,10 @@ h1 {
 
 @media only screen and (max-width: 60em) {
   h1 {
-    font-size: 200%;
+    font-size: 260%;
     padding: 2rem 2rem 0.5rem 2rem;
     margin-top: -40px;
+    line-height: 1.2;
   }
 }
 
