@@ -254,9 +254,23 @@ export default {
 }
 
 body {
-
-  padding: 0;
+  padding: 3rem 0 0 0;
   margin: 0;
+}
+
+h1, h2, h3, h4 {
+  font-family: "Vollkorn", serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+  text-transform: uppercase;
+  font-size: 200%;
+  padding-top: 0;
+  margin-top: 0;
+}
+
+h3 {
+  margin: 40px 0 0;
 }
 
 h1 {
@@ -315,16 +329,6 @@ p.introduction {
   }
 }
 
-h1, h2, h3, h4 {
-  font-family: "Vollkorn", serif;
-  font-optical-sizing: auto;
-  font-weight: 600;
-  font-style: italic;
-}
-
-h3 {
-  margin: 40px 0 0;
-}
 ul {
   list-style-type: none;
   padding: 0;
