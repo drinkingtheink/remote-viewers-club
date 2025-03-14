@@ -112,7 +112,7 @@ IN WITNESS WHEREOF, the parties have executed this Agreement as of the date firs
     </section>
 
     <section class="signature">
-      <h3>Sign Here</h3>
+      <h3>- Sign Here When Ready -</h3>
       <SignaturePad />
     </section>
   </div>
@@ -152,7 +152,7 @@ export default {
   background-color: rgba(0,0,0,0.8);
   width: 90%;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0 2rem;
   cursor: crosshair;
 }
 
