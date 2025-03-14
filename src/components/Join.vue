@@ -111,7 +111,10 @@ IN WITNESS WHEREOF, the parties have executed this Agreement as of the date firs
 *Note: By signing this document, MEMBER confirms they have read and understood all terms, or have at least attempted to perceive them psychically. This Agreement is binding in this dimension and all parallel realities.*</p>
     </section>
 
-    <SignaturePad />
+    <section class="signature">
+      <h3>Sign Here</h3>
+      <SignaturePad />
+    </section>
   </div>
 </template>
 
@@ -169,5 +172,17 @@ export default {
 .tos h3 {
   margin: 0;
   padding: 0 0 1rem 0;
+}
+
+.signature {
+  margin: 0 auto;
+  background-color: rgba(0,0,0,0.8);
+  padding: 2rem;
+  max-width: 500px;
+}
+
+.signature h3 {
+  margin: 0;
+  padding: 0;
 }
 </style>

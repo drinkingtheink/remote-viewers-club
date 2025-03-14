@@ -148,11 +148,11 @@ const clearSignature = () => {
   emit('clear')
 }
 
-const saveSignature = () => {
-  const canvas = signatureCanvas.value
-  const imageData = canvas.toDataURL('image/png')
-  emit('save', imageData)
-}
+// const saveSignature = () => {
+//   const canvas = signatureCanvas.value
+//   const imageData = canvas.toDataURL('image/png')
+//   emit('save', imageData)
+// }
 
 const handleTouchStart = (event) => {
   event.preventDefault()
