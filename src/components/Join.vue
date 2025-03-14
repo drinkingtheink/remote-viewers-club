@@ -2,7 +2,7 @@
   <div class="join-us">
     <h2 class="intro">There's always room for one more...</h2>
 
-    <section class="tos">
+    <section class="tos" @mousemove="handleMouseMove">
       <p># REMOTE VIEWERS CLUB
 ## MEMBERSHIP AGREEMENT AND TERMS OF PARTICIPATION
 
@@ -121,14 +121,46 @@ CLUB REPRESENTATIVE: _______________________________
 <script>
 export default {
     name: 'Join',
+    methods: {
+      handleMouseMove(e) {
+        const root = document.documentElement;
+
+        console.log(`HANDLING MOUSE MOVE >>>>>> X: ${e.offsetX} || Y: ${e.offsetY}`)
+        let x = e.offsetX;
+        let y = e.offsetY;
+    
+        root.style.setProperty('--mouse-x', `${x}px`);
+        root.style.setProperty('--mouse-y', `${y}px`);
+      }
+    }
 }
 </script>
 
 <style>
+:root {
+  --color-1: rgb(205 205 155 / 1);
+  --color-2: rgb(0 0 0 / 0);
+  --mouse-x: 50%;
+  --mouse-y: 10em;
+	--size: 10em;
+}
+
 .tos {
   background-color: rgba(0,0,0,0.8);
   width: 90%;
   margin: 0 auto;
   padding: 1rem;
+}
+
+.tos p {
+  background: radial-gradient(var(--size) var(--size) at var(--mouse-x) var(--mouse-y),  
+    var(--color-1) 0%,
+    var(--color-2) 99%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+	user-select: none;
+	text-align: center;
 }
 </style>
