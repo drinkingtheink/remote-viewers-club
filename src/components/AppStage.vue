@@ -161,7 +161,7 @@ export default {
     return {
       badgeMap: badgeMap,
       activeBadge: null,
-      activeSection: 'join',
+      activeSection: 'gallery',
     }
   },
   methods: {
