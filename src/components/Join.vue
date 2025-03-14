@@ -115,8 +115,6 @@ IN WITNESS WHEREOF, the parties have executed this Agreement as of the date firs
       <h3>- Sign Here When Ready -</h3>
       <SignaturePad 
         bloodColor="#8B0000"
-        :drippingProbability="0.9"
-        :drippingSpeed="1.5"
       />
     </section>
   </div>
