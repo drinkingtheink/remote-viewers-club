@@ -3,10 +3,9 @@
     <h2 class="intro">There's always room for one more...</h2>
 
     <section class="tos" @mousemove="handleMouseMove">
-      <p># REMOTE VIEWERS CLUB
-## MEMBERSHIP AGREEMENT AND TERMS OF PARTICIPATION
-
-**WHEREAS**, the undersigned individual (hereinafter referred to as "MEMBER," "PSYCHIC ASPIRANT," "THIRD EYE ENTHUSIAST," or "YOU") wishes to join the organization known as the Remote Viewers Club (hereinafter referred to as "THE CLUB," "THE ORGANIZATION," "THE PSYCHIC COLLECTIVE," or "THOSE WHO SEE BEYOND");
+      <h2>REMOTE VIEWERS CLUB</h2>
+      <h3>MEMBERSHIP AGREEMENT AND TERMS OF PARTICIPATION</h3>
+      <p>**WHEREAS**, the undersigned individual (hereinafter referred to as "MEMBER," "PSYCHIC ASPIRANT," "THIRD EYE ENTHUSIAST," or "YOU") wishes to join the organization known as the Remote Viewers Club (hereinafter referred to as "THE CLUB," "THE ORGANIZATION," "THE PSYCHIC COLLECTIVE," or "THOSE WHO SEE BEYOND");
 
 **AND WHEREAS**, THE CLUB offers training, community, and support for individuals seeking to develop their extrasensory perception abilities and other arcane practices;
 
@@ -109,10 +108,6 @@
 
 IN WITNESS WHEREOF, the parties have executed this Agreement as of the date first written above, or as of the date they psychically became aware of it, whichever came first.
 
-MEMBER SIGNATURE: _______________________________
-
-CLUB REPRESENTATIVE: _______________________________
-
 *Note: By signing this document, MEMBER confirms they have read and understood all terms, or have at least attempted to perceive them psychically. This Agreement is binding in this dimension and all parallel realities.*</p>
     </section>
   </div>
@@ -124,8 +119,6 @@ export default {
     methods: {
       handleMouseMove(e) {
         const root = document.documentElement;
-
-        console.log(`HANDLING MOUSE MOVE >>>>>> X: ${e.offsetX} || Y: ${e.offsetY}`)
         let x = e.offsetX;
         let y = e.offsetY;
     
@@ -140,9 +133,9 @@ export default {
 :root {
   --color-1: rgb(205 205 155 / 1);
   --color-2: rgb(0 0 0 / 0);
-  --mouse-x: 50%;
-  --mouse-y: 10em;
-	--size: 10em;
+  --mouse-x: 90%;
+  --mouse-y: 15em;
+	--size: 15em;
 }
 
 .tos {
@@ -150,6 +143,7 @@ export default {
   width: 90%;
   margin: 0 auto;
   padding: 1rem;
+  cursor: crosshair;
 }
 
 .tos p {
@@ -161,6 +155,12 @@ export default {
   -webkit-background-clip: text;
   color: transparent;
 	user-select: none;
-	text-align: center;
+	text-align: left;
+}
+
+.tos h2,
+.tos h3 {
+  margin: 0;
+  padding: 0 0 1rem 0;
 }
 </style>
