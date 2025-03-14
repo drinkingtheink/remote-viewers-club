@@ -40,7 +40,7 @@ const props = defineProps({
   },
   lineColor: {
     type: String,
-    default: '#000'
+    default: 'red'
   },
   backgroundColor: {
     type: String,
@@ -208,8 +208,9 @@ button {
 }
 
 .clear-button {
-  background-color: #f0f0f0;
-  color: #333;
+    background-color: red;
+    color: white;
+    padding: 1rem 3rem;
 }
 
 .save-button {
