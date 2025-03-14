@@ -110,12 +110,19 @@ IN WITNESS WHEREOF, the parties have executed this Agreement as of the date firs
 
 *Note: By signing this document, MEMBER confirms they have read and understood all terms, or have at least attempted to perceive them psychically. This Agreement is binding in this dimension and all parallel realities.*</p>
     </section>
+
+    <SignaturePad />
   </div>
 </template>
 
 <script>
+import SignaturePad from './SignaturePad.vue'
+
 export default {
     name: 'Join',
+    components: {
+      SignaturePad
+    },
     methods: {
       handleMouseMove(e) {
         const root = document.documentElement;
