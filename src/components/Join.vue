@@ -152,7 +152,7 @@ export default {
   background-color: rgba(0,0,0,0.8);
   width: 90%;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 2rem 3rem;
   cursor: crosshair;
 }
 
