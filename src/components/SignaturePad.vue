@@ -210,7 +210,8 @@ button {
 .clear-button {
     background-color: red;
     color: white;
-    padding: 1rem 3rem;
+    padding: 0.5rem 3rem;
+    text-transform: uppercase;
 }
 
 .save-button {
