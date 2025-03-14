@@ -1,6 +1,10 @@
 <template>
-    <div class="see-you-there" :class="{ 'closed': blink }">
-        <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 494.75 493.77">
+    <div class="see-you-there" >
+        <svg 
+            id="Layer_1" 
+            :class="{ 'closed': blink }"
+            xmlns="http://www.w3.org/2000/svg" 
+            viewBox="0 0 494.75 493.77">
             <g id="ribbon">
                 <polygon
                     class="cls-3"
@@ -75,18 +79,32 @@ export default {
     data() {
         return {
             blink: false,
+            intervalId: null,
+            timeoutId: null,
         }
     },
     mounted() {
-        setInterval(() => {
-            this.blink = true
-        }, 1000)    
+        this.startBlinkCycle();    
     },
-    watch: {
-        blink() {
-            if (this.blink) this.blink = false;
+    beforeUnmount() {
+        if (this.intervalId) {
+            clearInterval(this.intervalId)
         }
-    }
+        if (this.timeoutId) {
+            clearTimeout(this.timeoutId)
+        }
+    },
+    methods: {
+        startBlinkCycle() {
+            this.intervalId = setInterval(() => {
+                this.blink = true
+                
+                this.timeoutId = setTimeout(() => {
+                    this.blink = false
+                }, 1000)
+            }, 7000)
+        }
+    },
 }
 </script>
 

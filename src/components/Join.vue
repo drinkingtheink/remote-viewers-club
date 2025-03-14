@@ -1,6 +1,6 @@
 <template>
   <div class="join-us">
-    <h2 class="intro">There's always room for one more!</h2>
+    <h2 class="intro">There's always room for one more...</h2>
     <section class="tos stage">
             <h2>REMOTE VIEWERS CLUB || MEMBERSHIP AGREEMENT AND TERMS OF PARTICIPATION</h2>
 
