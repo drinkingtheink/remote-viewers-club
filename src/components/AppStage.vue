@@ -161,7 +161,7 @@ export default {
     return {
       badgeMap: badgeMap,
       activeBadge: null,
-      activeSection: 'praxis',
+      activeSection: 'gallery',
     }
   },
   methods: {
@@ -396,13 +396,15 @@ section.gallery {
 .badge-details h3 {
   margin: 0;
   text-transform: uppercase;
+  font-size: 1.25rem;
+  line-height: 1.2;
 }
 
 .badge-details h4 {
   margin: 5px 0;
   color: white;
   font-family: 'Sans Serif';
-  font-size: 140%;
+  font-size: 110%;
 }
 
 footer {
