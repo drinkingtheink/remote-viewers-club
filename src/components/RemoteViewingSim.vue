@@ -126,13 +126,19 @@ const possibleTargets = sites
 // ];
 
 // Methods
+const getRandomInt = (max) => {
+  return Math.floor(Math.random() * max);
+}
+
 const beginSession = () => {
   stage.value = 'coordinates';
   
   // This makes it seem random but actually selects based on something deterministic
   // like the current hour of the day or some other factor
-  const targetIndex = new Date().getHours() % possibleTargets.length;
+  const targetIndex = getRandomInt(possibleTargets.length);
+  console.log(`TARGET INDEX >>> ${targetIndex}`);
   const target = possibleTargets[targetIndex];
+  console.log(`TARGET >>> ${JSON.stringify(target)}`);
   coordinates.value = target.coordinates;
   targetImage.value = target.image;
   targetDescription.value = target.description;
@@ -155,7 +161,7 @@ const beginSession = () => {
     } else {
       clearInterval(interval);
     }
-  }, 200);
+  }, 5);
 };
 
 const submitImpression = () => {
@@ -287,7 +293,7 @@ watch(penSize, () => {
 
 .remote-viewing-container .coordinate-display {
   font-family: 'Courier New', monospace;
-  font-size: 24px;
+  font-size: 230%;
   padding: 15px;
   background-color: #000000;
   color: #fff;
