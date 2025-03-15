@@ -39,7 +39,7 @@
         @click="resetChallenge" 
         class="restart-btn"
       >
-        Start New Round
+        Next Round
       </button>
     </div>
 
