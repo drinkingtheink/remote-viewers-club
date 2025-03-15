@@ -174,7 +174,12 @@ export default {
 .tos h2,
 .tos h3 {
   margin: 0;
-  padding: 0 0 1rem 0;
+  padding: 0;
+}
+
+.tos h3 {
+  font-weight: 200;
+  font-size: 1.25rem;
 }
 
 .signature {
