@@ -63,6 +63,7 @@
         <div class="actual-target">
           <h4>Actual Target</h4>
           <img :src="targetImage" alt="Target" class="target-image" />
+          <h5>{{ targetName }}</h5>
           <div class="target-description">{{ targetDescription }}</div>
         </div>
       </div>
@@ -92,6 +93,7 @@ const canSubmit = ref(false);
 const textualImpression = ref('');
 const userDrawingImage = ref('');
 const targetImage = ref('');
+const targetName = ref('');
 const targetDescription = ref('');
 const accuracyScore = ref(0);
 const accuracyNotes = ref('');
@@ -142,6 +144,7 @@ const beginSession = () => {
   coordinates.value = target.coordinates;
   targetImage.value = target.image;
   targetDescription.value = target.description;
+  targetName.value = target.name;
   
   // Start the "focusing" process
   const interval = setInterval(() => {
@@ -419,7 +422,7 @@ watch(penSize, () => {
 
 .remote-viewing-container .results-container .impression-text,
 .remote-viewing-container .results-container .target-description {
-  font-size: 14px;
+  /* font-size: 14px; */
 }
 
 .remote-viewing-container .accuracy-container {
