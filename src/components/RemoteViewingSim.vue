@@ -138,9 +138,7 @@ const beginSession = () => {
   // This makes it seem random but actually selects based on something deterministic
   // like the current hour of the day or some other factor
   const targetIndex = getRandomInt(possibleTargets.length);
-  console.log(`TARGET INDEX >>> ${targetIndex}`);
   const target = possibleTargets[targetIndex];
-  console.log(`TARGET >>> ${JSON.stringify(target)}`);
   coordinates.value = target.coordinates;
   targetImage.value = target.image;
   targetDescription.value = target.description;
@@ -223,6 +221,7 @@ const revealTarget = () => {
   // Capture the canvas as an image
   if (canvas.value) {
     userDrawingImage.value = canvas.value.toDataURL('image/png');
+    console.log(`USER DRAWING VALUE >>> ${userDrawingImage.value}`);
   }
   
   // Calculate a seemingly objective score based on timing and user input
@@ -231,20 +230,31 @@ const revealTarget = () => {
   // - Complexity of drawing
   // - Keywords in textual description that match target
   
-  const lengthFactor = Math.min(textualImpression.value.length / 50, 1);
+  // const lengthFactor = Math.min(textualImpression.value.length / 50, 1);
 //   const timeFactor = Math.min(focusProgress.value / 100, 1);
   
   // A pseudo-random but actually deterministic score
   // For demo purposes we'll make it always quite impressive
-  accuracyScore.value = Math.floor(65 + (lengthFactor * 20) + (Math.random() * 10));
+  let maxAccScore = 100;
+
+  if (textualImpression.value !== '' || textualImpression.value !== undefined) {
+    console.log(`USER ENTERED TEXT: ${textualImpression.value}`)
+  } else {
+    maxAccScore = maxAccScore - 30;
+    console.log(`MAX ACC SCORE REDUCED TO: ${maxAccScore}`)
+  }
+
+  accuracyScore.value = getRandomInt(maxAccScore);
   
   // Generate analysis notes
   if (accuracyScore.value > 80) {
     accuracyNotes.value = 'Exceptional accuracy! Your impression captured key elements of the target with remarkable precision.';
   } else if (accuracyScore.value > 65) {
     accuracyNotes.value = 'Good accuracy. Several important aspects of the target were identified in your impression.';
+  } else if (accuracyScore.value > 40) {
+    accuracyNotes.value = 'Swing and a miss. Keep swinging!';
   } else {
-    accuracyNotes.value = 'Some elements match the target. With practice, your remote viewing abilities will improve.';
+    accuracyNotes.value = 'Abysmal performance. You have much work to do before you can wear the title of `Soothsayer`.';
   }
   
   stage.value = 'reveal';
