@@ -33,7 +33,7 @@
     <div v-if="predictionResult" class="prediction-result">
       <p>Your Prediction: <span class="value">{{ userPrediction }}</span> <span class="prediction-swatch" :style="{ backgroundColor: userPrediction }"></span></p>
       <p>Actual Result: <span class="value">{{ actualColor }}</span> <span class="prediction-swatch" :style="{ backgroundColor: actualColor }"></span></p>
-      <p class="result-text">{{ predictionResult }}</p>
+      <p class="result-text" :class="{ 'correct': predictionResult.includes('Correct Prediction') }">{{ predictionResult }}</p>
       
       <button 
         @click="resetChallenge" 
@@ -67,6 +67,7 @@ const sessionStats = ref({
   matches: 0,
   misses: 0
 })
+const sessionCount = ref(0)
 
 const accuracyPercentage = computed(() => {
   const totalRounds = sessionStats.value.matches + sessionStats.value.misses
@@ -91,9 +92,11 @@ const makePrediction = (color) => {
   if (userPrediction.value === actualColor.value) {
     predictionResult.value = 'Correct Prediction! 🔮'
     sessionStats.value.matches++
+    sessionCount.value++
   } else {
     predictionResult.value = 'Close, but not quite...'
     sessionStats.value.misses++
+    sessionCount.value++
   }
 }
 
@@ -241,5 +244,12 @@ onMounted(generateColorOptions)
 .result-text {
   color: yellow !important;
   font-size: 1.8rem !important;
+  border-radius: 10px !important;
+}
+
+.result-text.correct {
+  background-color: rgb(75, 189, 75) !important;
+  color: white !important;
+  padding: 1rem 0;
 }
 </style>
