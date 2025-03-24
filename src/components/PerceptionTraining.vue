@@ -31,9 +31,9 @@
     </div>
 
     <div v-if="predictionResult" class="prediction-result">
-      <p>Your Prediction: {{ userPrediction }}</p>
-      <p>Actual Result: {{ actualColor }}</p>
-      <p>{{ predictionResult }}</p>
+      <p>Your Prediction: <span class="value">{{ userPrediction }}</span></p>
+      <p>Actual Result: <span class="value">{{ actualColor }}</span></p>
+      <p class="result-text">{{ predictionResult }}</p>
       
       <button 
         @click="resetChallenge" 
@@ -198,6 +198,11 @@ onMounted(generateColorOptions)
   padding: 15px;
   border-radius: 5px;
   margin-top: 20px;
+}
+
+.prediction-result .value {
+  color: yellow;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .restart-btn, .reset-session-btn {
