@@ -250,7 +250,7 @@ onMounted(generateColorOptions)
 
 @keyframes glow {
   from {
-    box-shadow: 0 0 30px 15px rgba(255,255,255,0.5);
+    box-shadow: 0 0 20px 10px rgba(255,255,255,0.5);
   }
   to {
     box-shadow: 0 0 5px 2px rgba(255,255,255,0.9);
