@@ -31,8 +31,8 @@
     </div>
 
     <div v-if="predictionResult" class="prediction-result">
-      <p>Your Prediction: <span class="value">{{ userPrediction }}</span></p>
-      <p>Actual Result: <span class="value">{{ actualColor }}</span></p>
+      <p>Your Prediction: <span class="value">{{ userPrediction }}</span> <span class="prediction-swatch" :style="{ backgroundColor: userPrediction }"></span></p>
+      <p>Actual Result: <span class="value">{{ actualColor }}</span> <span class="prediction-swatch" :style="{ backgroundColor: actualColor }"></span></p>
       <p class="result-text">{{ predictionResult }}</p>
       
       <button 
@@ -205,6 +205,15 @@ onMounted(generateColorOptions)
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.prediction-result .prediction-swatch {
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  display: inline-block;
+  margin-left: 5px;
+  border: 2px solid rgba(255,255,255,0.3);
+}
+
 .restart-btn, .reset-session-btn {
   background-color: red;
   color: white;
@@ -227,5 +236,10 @@ onMounted(generateColorOptions)
 
 .reset-session-btn:hover {
   background-color: #1976D2;
+}
+
+.result-text {
+  color: yellow !important;
+  font-size: 1.8rem !important;
 }
 </style>
