@@ -435,6 +435,11 @@ watch(penSize, () => {
   /* font-size: 14px; */
 }
 
+.actual-target h5 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
 .remote-viewing-container .accuracy-container {
   background-color: black;
   padding: 15px;
@@ -471,4 +476,6 @@ watch(penSize, () => {
   max-width: 50%;
   margin: 0 auto;
 }
+
+
 </style>
