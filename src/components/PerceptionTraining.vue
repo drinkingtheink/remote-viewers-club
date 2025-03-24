@@ -250,10 +250,10 @@ onMounted(generateColorOptions)
 
 @keyframes glow {
   from {
-    box-shadow: 0 0 30px 15px rgba(255,255,255,0.3);
+    box-shadow: 0 0 30px 15px rgba(255,255,255,0.5);
   }
   to {
-    box-shadow: 0 0 5px 2px rgba(255,255,255,0.7);
+    box-shadow: 0 0 5px 2px rgba(255,255,255,0.9);
   }
 }
 
@@ -263,7 +263,7 @@ onMounted(generateColorOptions)
   padding: 1rem 0;
   box-shadow: 0 0 20px 5px white;
   animation-name: glow;
-  animation-duration: 5s;
+  animation-duration: 2s;
   animation-iteration-count: infinite;
   animation-direction: alternate-reverse;
 }
