@@ -245,11 +245,26 @@ onMounted(generateColorOptions)
   color: yellow !important;
   font-size: 1.8rem !important;
   border-radius: 10px !important;
+  transition: all 0.2s;
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 0 30px 15px rgba(255,255,255,0.3);
+  }
+  to {
+    box-shadow: 0 0 5px 2px rgba(255,255,255,0.7);
+  }
 }
 
 .result-text.correct {
   background-color: rgb(75, 189, 75) !important;
   color: white !important;
   padding: 1rem 0;
+  box-shadow: 0 0 20px 5px white;
+  animation-name: glow;
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate-reverse;
 }
 </style>
