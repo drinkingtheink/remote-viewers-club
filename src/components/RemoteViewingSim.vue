@@ -335,6 +335,7 @@ watch(penSize, () => {
   font-style: italic;
   margin-bottom: 20px;
   min-height: 24px;
+  color: yellow;
 }
 
 .remote-viewing-container .canvas-container {
