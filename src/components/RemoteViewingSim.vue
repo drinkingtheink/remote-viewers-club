@@ -360,7 +360,6 @@ watch(penSize, () => {
 }
 
 .remote-viewing-container .canvas-container .canvas-tools .btn-tool {
-  background-color: #e9ecef;
   border: none;
   padding: 5px 10px;
   border-radius: 4px;
