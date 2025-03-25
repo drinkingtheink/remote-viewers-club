@@ -83,6 +83,7 @@
 import { ref, watch } from 'vue';
 // import RemoteViewingIcon from './icons/RemoteViewingIcon';
 import sites from '../data/latLongSites';
+import failMsgs from '../data/failureFeedback';
 
 // State variables
 const stage = ref('intro');
@@ -105,31 +106,17 @@ const ctx = ref(null);
 const penColor = ref('#000000');
 const penSize = ref(3);
 
-const possibleTargets = sites 
-// const origSites = [
-//   {
-//     id: 1,
-//     image: '/api/placeholder/400/300',
-//     description: 'A lighthouse on a rocky coast with waves crashing against the shore.',
-//     coordinates: '37.1924° N, 122.3893° W'
-//   },
-//   {
-//     id: 2,
-//     image: '/api/placeholder/400/300',
-//     description: 'A large waterfall in a lush forest setting.',
-//     coordinates: '43.0775° N, 79.7624° W'
-//   },
-//   {
-//     id: 3,
-//     image: '/api/placeholder/400/300',
-//     description: 'A small red bridge crossing a serene garden pond.',
-//     coordinates: '35.7102° N, 139.8085° E'
-//   }
-// ];
+const possibleTargets = sites;
 
 // Methods
 const getRandomInt = (max) => {
   return Math.floor(Math.random() * max);
+}
+
+const getFailMsg = () => {
+  if (failMsgs.length) {
+    return failMsgs[Math.floor(Math.random() * failMsgs.length)];
+  }
 }
 
 const beginSession = () => {
@@ -237,6 +224,8 @@ const revealTarget = () => {
   // For demo purposes we'll make it always quite impressive
   let maxAccScore = 100;
 
+  console.log(`TEXTUAL IMPRESSION >>>>> ${textualImpression.value}`)
+
   if (textualImpression.value !== '' || textualImpression.value !== undefined) {
     console.log(`USER ENTERED TEXT: ${textualImpression.value}`)
   } else {
@@ -252,9 +241,9 @@ const revealTarget = () => {
   } else if (accuracyScore.value > 65) {
     accuracyNotes.value = 'Good accuracy. Several important aspects of the target were identified in your impression.';
   } else if (accuracyScore.value > 40) {
-    accuracyNotes.value = 'Swing and a miss. Keep swinging!';
+    accuracyNotes.value = getFailMsg();
   } else {
-    accuracyNotes.value = 'Abysmal performance. You have much work to do before you can wear the title of `Soothsayer`.';
+    accuracyNotes.value = getFailMsg();
   }
   
   stage.value = 'reveal';

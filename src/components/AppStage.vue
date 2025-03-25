@@ -41,7 +41,7 @@
     
     <main>
       <section class="gallery" v-if="activeSection === 'gallery'" :key='gallery-stage'>
-        <h2 class="intro">Animated vignettes inspired by military and astronomical mission badges and other ephemera.</h2>
+        <h2 class="intro">Special Teams and Operations badges executed by the best of us</h2>
         <div class="badge" v-for="badge, index in badgeMap" :key="badge.title">
           <component :is="`Badge${index + 1}`"></component>
 
@@ -155,7 +155,7 @@ export default {
     return {
       badgeMap: badgeMap,
       activeBadge: null,
-      activeSection: 'gallery',
+      activeSection: 'praxis',
     }
   },
   methods: {
