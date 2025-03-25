@@ -42,8 +42,8 @@
     <main>
       <section class="gallery" v-if="activeSection === 'gallery'" :key='gallery-stage'>
         <h2 class="intro">Animated vignettes inspired by military and astronomical mission badges and other ephemera.</h2>
-        <div class="badge" v-for="badge in badgeMap" :key="badge.title">
-          <component :is="`Badge${badge.id}`"></component>
+        <div class="badge" v-for="badge, index in badgeMap" :key="badge.title">
+          <component :is="`Badge${index + 1}`"></component>
 
           <div class="badge-details">
             <h3>{{ badge.title }}</h3>
@@ -104,40 +104,34 @@ import PrecogIcon from './icons/PrecognitionIcon';
 
 const badgeMap = [
   {
-    title: 'See You Yesterday',
-    desc: '37th Temporal Reconaissance Wing',
-    inspo: 'https://twitter.com/arpitingle/status/1698709125088088109',
-    id: 1,
-  },
-  {
     title: 'Beyond All Bounds',
     desc: '24th Omnidimensional Operations Squadron',
     inspo: 'https://twitter.com/arpitingle/status/1698709125088088109',
-    id: 2,
   },
   {
     title: 'Remote Viewing Task Force',
     desc: 'Fort Stillwater',
     inspo: 'https://twitter.com/CassetteDyne/status/1735694599262192051',
-    id: 3,
   },
   {
     title: 'Electronic Phantoms',
     desc: '9716th Radar Decoy Squadron',
     inspo: 'https://twitter.com/CassetteDyne/status/1735694599262192051',
-    id: 4,
   },
   {
     title: 'PSYWACs',
     desc: '960th Psychological Warfare Squadron',
     inspo: 'https://twitter.com/CassetteDyne/status/1735694599262192051',
-    id: 5,
   },
   {
     title: 'Vigilance and Speed',
     desc: '3rd Special Interceptor Squadron',
     inspo: 'https://twitter.com/CassetteDyne/status/1735694599262192051',
-    id: 6,
+  },
+  {
+    title: 'See You Yesterday',
+    desc: '37th Temporal Reconaissance Wing',
+    inspo: 'https://twitter.com/arpitingle/status/1698709125088088109',
   },
 ];
 
@@ -161,7 +155,7 @@ export default {
     return {
       badgeMap: badgeMap,
       activeBadge: null,
-      activeSection: 'praxis',
+      activeSection: 'gallery',
     }
   },
   methods: {
