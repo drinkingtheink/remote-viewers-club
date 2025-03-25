@@ -124,7 +124,7 @@ IN WITNESS WHEREOF, the parties have executed this Agreement as of the date firs
 import SignaturePad from './SignaturePad.vue'
 
 export default {
-    name: 'Join',
+    name: 'join-us',
     components: {
       SignaturePad
     },

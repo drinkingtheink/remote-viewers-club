@@ -1991,7 +1991,7 @@
 
 <script>
 export default {
-    name: 'Badge1',
+    name: 'badge-1',
 }
 </script>
 

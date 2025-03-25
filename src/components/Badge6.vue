@@ -133,7 +133,7 @@
 
 <script>
 export default {
-  name: 'Badge6',
+  name: 'badge-6',
 }
 </script>
 

@@ -48,7 +48,7 @@
 
 <script>
 export default {
-  name: 'Badge5',
+  name: 'badge-5',
 }
 </script>
 
