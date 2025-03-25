@@ -229,7 +229,7 @@ onMounted(generateColorOptions)
   width: 25px;
   height: 25px;
   display: inline-block;
-  margin-left: 5px;
+  margin: 0 0 -3px 5px;
   border: 2px solid rgba(255,255,255,0.3);
 }
 
