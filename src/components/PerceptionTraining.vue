@@ -33,7 +33,23 @@
     <div v-if="predictionResult" class="prediction-result">
       <p>Your Prediction: <span class="value">{{ userPrediction }}</span> <span class="prediction-swatch" :style="{ backgroundColor: userPrediction }"></span></p>
       <p>Actual Result: <span class="value">{{ actualColor }}</span> <span class="prediction-swatch" :style="{ backgroundColor: actualColor }"></span></p>
-      <p class="result-text" :class="{ 'correct': predictionResult.includes('Correct Prediction') }">{{ predictionResult }}</p>
+      
+      <section>
+        <p 
+          class="result-text" 
+          :class="{ 'correct': predictionResult.includes('Correct Prediction') }"
+        >
+          {{ predictionResult }}
+
+          <span 
+            class="x-container"
+            v-show="!predictionResult.includes('Correct Prediction')"  
+          >
+            <span class="x-line"></span>
+            <span class="x-line"></span>
+          </span>
+        </p>
+      </section>
       
       <button 
         @click="resetChallenge" 
@@ -246,11 +262,12 @@ onMounted(generateColorOptions)
   font-size: 1.8rem !important;
   border-radius: 10px !important;
   transition: all 0.2s;
+  position: relative;
 }
 
 @keyframes glow {
   from {
-    box-shadow: 0 0 20px 10px rgba(255,255,255,0.5);
+    box-shadow: 0 0 20px 10px rgba(227, 243, 136, 0.5);
   }
   to {
     box-shadow: 0 0 5px 2px rgba(255,255,255,0.9);
@@ -266,5 +283,29 @@ onMounted(generateColorOptions)
   animation-duration: 2s;
   animation-iteration-count: infinite;
   animation-direction: alternate-reverse;
+}
+
+.x-container {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 0;
+}
+
+.x-line {
+  position: absolute;
+  width: 55px;
+  height: 16px;
+  background-color: red;
+  top: 12px;
+  left: 0;
+}
+
+.x-line:first-child {
+  transform: rotate(45deg);
+}
+
+.x-line:last-child {
+  transform: rotate(-45deg);
 }
 </style>
