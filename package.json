@@ -1,10 +1,10 @@
 {
-  "name": "sparkle-config",
+  "name": "remote-viewers-club",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "NODE_OPTIONS='--openssl-legacy-provider' vue-cli-service build",
+    "build": "NODE_OPTIONS='--openssl-legacy-provider --legacy-peer-deps' vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
