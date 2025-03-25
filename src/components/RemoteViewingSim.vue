@@ -205,6 +205,8 @@ const clearCanvas = () => {
 };
 
 const revealTarget = () => {
+  let noTextEntered = true;
+
   // Capture the canvas as an image
   if (canvas.value) {
     userDrawingImage.value = canvas.value.toDataURL('image/png');
@@ -226,11 +228,12 @@ const revealTarget = () => {
 
   console.log(`TEXTUAL IMPRESSION >>>>> ${textualImpression.value}`)
 
-  if (textualImpression.value !== '' || textualImpression.value !== undefined) {
-    console.log(`USER ENTERED TEXT: ${textualImpression.value}`)
+  if (!!textualImpression.value && textualImpression.value !== '') {
+    console.log(`USER ENTERED TEXT: ${textualImpression.value}`);
+    noTextEntered = false;
   } else {
     maxAccScore = maxAccScore - 30;
-    console.log(`MAX ACC SCORE REDUCED TO: ${maxAccScore}`)
+    console.log(`MAX ACC SCORE REDUCED TO: ${maxAccScore}`);
   }
 
   accuracyScore.value = getRandomInt(maxAccScore);
@@ -244,6 +247,10 @@ const revealTarget = () => {
     accuracyNotes.value = getFailMsg();
   } else {
     accuracyNotes.value = getFailMsg();
+  }
+
+  if (noTextEntered) {
+    accuracyNotes.value = accuracyNotes.value + ' At least try entering a description.';
   }
   
   stage.value = 'reveal';
