@@ -366,10 +366,6 @@ watch(penSize, () => {
   cursor: pointer;
 }
 
-.remote-viewing-container .canvas-container .canvas-tools .btn-tool:hover {
-  background-color: #dee2e6;
-}
-
 .remote-viewing-container .canvas-container .canvas-tools .color-picker {
   width: 40px;
   height: 40px;
