@@ -41,7 +41,7 @@
     
     <main>
       <section class="gallery" v-if="activeSection === 'gallery'" :key='gallery-stage'>
-        <h2 class="intro">Special Teams and Operations badges executed by the best of us</h2>
+        <h2 class="intro">Special Teams and Operations badges executed by the best of our club</h2>
         <div class="badge" v-for="badge, index in badgeMap" :key="badge.title">
           <component :is="`Badge${index + 1}`"></component>
 
@@ -55,7 +55,7 @@
       </section>
 
       <section class="praxis" v-if="activeSection === 'praxis'" :key='praxis-stage'>
-        <h2 class="intro">Practice your skills and maybe you can make one of the squadrons.</h2>
+        <h2 class="intro">Practice your skills and maybe you can make one of the special teams</h2>
         <div class="focii">
           <span class="focus-option">
             <RemoteViewingIcon />

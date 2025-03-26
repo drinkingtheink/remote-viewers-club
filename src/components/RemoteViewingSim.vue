@@ -4,7 +4,7 @@
       <h2>Remote Viewing Session</h2>
       <p>Focus your mind and prepare to connect with the target coordinates.</p>
 
-      <!-- <RemoteViewingIcon class="rv-icon" /> -->
+      <psychicPerson class="psychic-anim" />
 
       <button @click="beginSession" class="btn-primary">Begin Session</button>
     </div>
@@ -107,6 +107,7 @@ import { ref, watch } from 'vue';
 // import RemoteViewingIcon from './icons/RemoteViewingIcon';
 import sites from '../data/latLongSites';
 import failMsgs from '../data/failureFeedback';
+import psychicPerson from './Psychic';
 
 // State variables
 const stage = ref('intro');
@@ -481,5 +482,8 @@ watch(penSize, () => {
   margin: 0 auto;
 }
 
-
+.psychic-anim {
+  max-width: 200px;
+  margin: 0 auto;
+}
 </style>
