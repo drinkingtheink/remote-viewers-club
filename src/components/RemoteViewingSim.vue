@@ -443,7 +443,6 @@ watch(penSize, () => {
   min-height: 140px;
 }
 
-
 .actual-target h5 {
   font-size: 1.2rem;
   margin: 0 0 10px 0;
