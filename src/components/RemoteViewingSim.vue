@@ -244,8 +244,6 @@ const revealTarget = () => {
   // const lengthFactor = Math.min(textualImpression.value.length / 50, 1);
 //   const timeFactor = Math.min(focusProgress.value / 100, 1);
   
-  // A pseudo-random but actually deterministic score
-  // For demo purposes we'll make it always quite impressive
   let maxAccScore = 100;
 
   if (!!textualImpression.value && textualImpression.value !== '') {
