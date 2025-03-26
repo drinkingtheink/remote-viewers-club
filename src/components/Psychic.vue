@@ -129,7 +129,7 @@
 
 <script>
 export default {
-    name: 'psychic-person',
+    name: 'psychic-animation',
 }
 </script>
 
