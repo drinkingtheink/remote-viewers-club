@@ -148,9 +148,7 @@ const beginSession = () => {
   // This makes it seem random but actually selects based on something deterministic
   // like the current hour of the day or some other factor
   const targetIndex = getRandomInt(possibleTargets.length);
-  console.log(`TARGET INDEX >>> ${targetIndex}`);
   const target = possibleTargets[targetIndex];
-  console.log(`TARGET >>> ${JSON.stringify(target, null, 2)}`);
   coordinates.value = target.coordinates;
   targetImage.value = target.image;
   targetDescription.value = target.description;
