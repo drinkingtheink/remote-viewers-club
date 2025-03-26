@@ -62,7 +62,12 @@
         </div>
         <div class="actual-target">
           <h4>Actual Target</h4>
-          <img :src="targetImage" alt="Target" class="target-image" />
+          <img v-if="targetImage.includes('angkor')" src="../assets/angkor-wat.png" alt="Target" class="target-image" />
+          <img v-if="targetImage.includes('antelope')" src="../assets/antelope-canyon.jpg" alt="Target" class="target-image" />
+          <img v-if="targetImage.includes('ayers')" src="../assets/ayers-rock.jpg" alt="Target" class="target-image" />
+          <img v-if="targetImage.includes('bamboo')" src="../assets/bamboo-grove.jpg" alt="Target" class="target-image" />
+          <img v-if="targetImage.includes('bioluminescent')" src="../assets/bioluminescent-bay.jpg" alt="Target" class="target-image" />
+          <img v-if="targetImage.includes('hole')" src="../assets/blue-hole.webp" alt="Target" class="target-image" />
           <h5>{{ targetName }}</h5>
           <div class="target-description">{{ targetDescription }}</div>
         </div>
@@ -125,7 +130,9 @@ const beginSession = () => {
   // This makes it seem random but actually selects based on something deterministic
   // like the current hour of the day or some other factor
   const targetIndex = getRandomInt(possibleTargets.length);
+  console.log(`TARGET INDEX >>> ${targetIndex}`);
   const target = possibleTargets[targetIndex];
+  console.log(`TARGET >>> ${JSON.stringify(target, null, 2)}`);
   coordinates.value = target.coordinates;
   targetImage.value = target.image;
   targetDescription.value = target.description;
@@ -149,7 +156,7 @@ const beginSession = () => {
     } else {
       clearInterval(interval);
     }
-  }, 5);
+  }, 2);
 };
 
 const submitImpression = () => {
@@ -210,7 +217,6 @@ const revealTarget = () => {
   // Capture the canvas as an image
   if (canvas.value) {
     userDrawingImage.value = canvas.value.toDataURL('image/png');
-    console.log(`USER DRAWING VALUE >>> ${userDrawingImage.value}`);
   }
   
   // Calculate a seemingly objective score based on timing and user input
@@ -226,14 +232,10 @@ const revealTarget = () => {
   // For demo purposes we'll make it always quite impressive
   let maxAccScore = 100;
 
-  console.log(`TEXTUAL IMPRESSION >>>>> ${textualImpression.value}`)
-
   if (!!textualImpression.value && textualImpression.value !== '') {
-    console.log(`USER ENTERED TEXT: ${textualImpression.value}`);
     noTextEntered = false;
   } else {
     maxAccScore = maxAccScore - 30;
-    console.log(`MAX ACC SCORE REDUCED TO: ${maxAccScore}`);
   }
 
   accuracyScore.value = getRandomInt(maxAccScore);
@@ -420,12 +422,9 @@ watch(penSize, () => {
   width: 100%;
   border-radius: 4px;
   margin-bottom: 10px;
+  min-height: 140px;
 }
 
-.remote-viewing-container .results-container .impression-text,
-.remote-viewing-container .results-container .target-description {
-  /* font-size: 14px; */
-}
 
 .actual-target h5 {
   font-size: 1.2rem;
