@@ -446,7 +446,7 @@ watch(penSize, () => {
 
 .actual-target h5 {
   font-size: 1.2rem;
-  margin-bottom: 10px;
+  margin: 0 0 10px 0;
 }
 
 .remote-viewing-container .accuracy-container {
