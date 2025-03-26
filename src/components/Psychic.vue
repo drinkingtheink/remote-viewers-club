@@ -148,6 +148,15 @@ export default {
     }
 }
 
+@keyframes blink {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
 #floaties path {
     animation-name: wobble;
     animation-duration: 5s;
@@ -164,5 +173,12 @@ export default {
 .remote-viewing-container:hover .stage #floaties path,
 .remote-viewing-container:hover .stage #third-eye {
     opacity: 1;
+}
+
+.remote-viewing-container:hover .stage #third-eye {
+    animation-name: blink;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate-reverse;
 }
 </style>
