@@ -251,7 +251,7 @@ const revealTarget = () => {
   if (!!textualImpression.value && textualImpression.value !== '') {
     noTextEntered = false;
   } else {
-    maxAccScore = maxAccScore - 30;
+    maxAccScore = maxAccScore - 50;
   }
 
   accuracyScore.value = getRandomInt(maxAccScore);
