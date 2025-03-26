@@ -19,7 +19,7 @@ const sites = [
       "longitude": "East"
     },
     "description": "World's largest coral reef system composed of over 2,900 individual reefs and 900 islands stretching for 2,300 kilometers.",
-    "image": "machu-picchu.jpg"
+    "image": "great-barrier-reef.jpg"
   },
   {
     "id": 3,
@@ -30,7 +30,7 @@ const sites = [
       "longitude": "East"
     },
     "description": "Famous archaeological site in Jordan's southwestern desert with massive facades carved into pink sandstone cliffs.",
-    "image": "machu-picchu.jpg"
+    "image": "petra.png"
   },
   {
     "id": 4,
@@ -41,7 +41,7 @@ const sites = [
       "longitude": "East"
     },
     "description": "Earth's highest mountain above sea level, located in the Mahalangur Himal sub-range of the Himalayas.",
-    "image": "machu-picchu.jpg"
+    "image": "mount-everest.webp"
   },
   {
     "id": 5,
@@ -52,7 +52,7 @@ const sites = [
       "longitude": "East"
     },
     "description": "Spectacular waterfall on the Zambezi River at the border of Zambia and Zimbabwe, creating the world's largest sheet of falling water.",
-    "image": "machu-picchu.jpg"
+    "image": "victoria-falls.webp"
   },
   {
     "id": 6,
@@ -63,7 +63,7 @@ const sites = [
       "longitude": "East"
     },
     "description": "Massive temple complex in Cambodia and the largest religious monument in the world, originally constructed as a Hindu temple.",
-    "image": "machu-picchu.jpg"
+    "image": "angkor-wat.png"
   },
   {
     "id": 7,
@@ -74,7 +74,7 @@ const sites = [
       "longitude": "West"
     },
     "description": "Steep-sided canyon carved by the Colorado River in Arizona, known for its overwhelming size and intricate landscape.",
-    "image": "machu-picchu.jpg"
+    "image": "grand-canyon.png"
   },
   {
     "id": 8,
@@ -85,7 +85,7 @@ const sites = [
       "longitude": "East"
     },
     "description": "Greek island known for its stunning white-washed buildings with blue domes, dramatic views, and spectacular sunsets.",
-    "image": "machu-picchu.jpg"
+    "image": "santorini.png"
   },
   {
     "id": 9,
@@ -96,7 +96,7 @@ const sites = [
       "longitude": "East"
     },
     "description": "One of the best places to view the Aurora Borealis, with the dancing lights frequently visible during winter months.",
-    "image": "machu-picchu.jpg"
+    "image": "tromso.png"
   },
   {
     "id": 10,
@@ -107,7 +107,7 @@ const sites = [
       "longitude": "East"
     },
     "description": "Tanzania's oldest and most popular national park, famous for its annual migration of over 1.5 million wildebeest.",
-    "image": "machu-picchu.jpg"
+    "image": "serengeti.png"
   },
   {
     "id": 11,
@@ -118,7 +118,7 @@ const sites = [
       "longitude": "East"
     },
     "description": "Ivory-white marble mausoleum on the southern bank of the Yamuna river in the Indian city of Agra, built by Mughal emperor Shah Jahan.",
-    "image": "machu-picchu.jpg"
+    "image": "taj-mahal.png"
   },
   {
     "id": 12,
@@ -129,7 +129,7 @@ const sites = [
       "longitude": "West"
     },
     "description": "Remote Chilean island in the Pacific known for its nearly 1,000 monumental statues called moai, created by the Rapa Nui people.",
-    "image": "machu-picchu.jpg"
+    "image": "easter-island.jpg"
   },
   {
     "id": 13,
@@ -140,7 +140,7 @@ const sites = [
       "longitude": "East"
     },
     "description": "Chinese national park known for towering quartzite sandstone pillars, the inspiration for the 'floating mountains' in the movie Avatar.",
-    "image": "machu-picchu.jpg"
+    "image": "zhangjiajie.png"
   },
   {
     "id": 14,
@@ -151,7 +151,7 @@ const sites = [
       "longitude": "East"
     },
     "description": "Built on more than 100 small islands in a lagoon in the Adriatic Sea, this Italian city has no roads, just canals including the Grand Canal.",
-    "image": "machu-picchu.jpg"
+    "image": "venice.png"
   },
   {
     "id": 15,
@@ -162,7 +162,7 @@ const sites = [
       "longitude": "West"
     },
     "description": "Giant marine sinkhole off the coast of Belize, circular in shape with rich blue color, a world-class destination for recreational scuba divers.",
-    "image": "machu-picchu.jpg"
+    "image": "blue-hole.webp"
   },
   {
     "id": 16,
@@ -173,7 +173,7 @@ const sites = [
       "longitude": "East"
     },
     "description": "Massive sandstone monolith in Australia's Northern Territory, sacred to indigenous Australians and known for its size and red glow at sunset.",
-    "image": "machu-picchu.jpg"
+    "image": "ayers-rock.jpg"
   },
   {
     "id": 17,
@@ -184,7 +184,7 @@ const sites = [
       "longitude": "East"
     },
     "description": "Natural site in Turkey featuring terraces of carbonate minerals left by flowing water, appearing as a 'cotton castle' with thermal pools.",
-    "image": "machu-picchu.jpg"
+    "image": "pamukkale.avif"
   },
   {
     "id": 18,
@@ -195,7 +195,7 @@ const sites = [
       "longitude": "West"
     },
     "description": "Slot canyon in Arizona known for its wave-like structure and light beams that shine down through openings in the top.",
-    "image": "machu-picchu.jpg"
+    "image": "antelope-canyon.jpg"
   },
   {
     "id": 19,
@@ -206,7 +206,7 @@ const sites = [
       "longitude": "West"
     },
     "description": "World's largest salt flat, located in Bolivia, creates a mirror effect when covered with water during the rainy season.",
-    "image": "machu-picchu.jpg"
+    "image": "salar-de-uyuni.jpg"
   },
   {
     "id": 20,
@@ -217,7 +217,7 @@ const sites = [
       "longitude": "East"
     },
     "description": "Famous bamboo forest in Japan with pathways that wind through towering green stalks, creating an otherworldly atmosphere.",
-    "image": "machu-picchu.jpg"
+    "image": "bamboo-grove.jpg"
   },
   {
     "id": 21,
@@ -228,7 +228,7 @@ const sites = [
       "longitude": "East"
     },
     "description": "Region in Turkey known for its distinctive 'fairy chimney' rock formations and historic cave dwellings, popular for hot air balloon rides.",
-    "image": "machu-picchu.jpg"
+    "image": "cappadocia.jpg"
   },
   {
     "id": 22,
@@ -239,7 +239,7 @@ const sites = [
       "longitude": "East"
     },
     "description": "UNESCO World Heritage Site in Vietnam featuring thousands of limestone karsts and isles in various shapes and sizes rising from emerald waters.",
-    "image": "machu-picchu.jpg"
+    "image": "ha-long-bar.jpg"
   },
   {
     "id": 23,
@@ -250,7 +250,7 @@ const sites = [
       "longitude": "West"
     },
     "description": "Glacially-fed lake in Canada's Banff National Park known for its stunning turquoise blue color set against a backdrop of mountains.",
-    "image": "machu-picchu.jpg"
+    "image": "lake-moraine.jpg"
   },
   {
     "id": 24,
@@ -261,7 +261,7 @@ const sites = [
       "longitude": "West"
     },
     "description": "Bay in Vieques, Puerto Rico, containing microorganisms that glow blue when disturbed, creating a magical nighttime spectacle.",
-    "image": "machu-picchu.jpg"
+    "image": "bioluminescent-bay.jpg"
   },
   {
     "id": 25,
@@ -272,7 +272,7 @@ const sites = [
       "longitude": "East"
     },
     "description": "Coastal desert in southern Africa with some of the tallest and most spectacular sand dunes in the world, including the famous 'Big Daddy' dune.",
-    "image": "machu-picchu.jpg"
+    "image": "namib-desert.webp"
   }
 ]
 
