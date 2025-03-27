@@ -5,9 +5,9 @@
       <p>Focus your mind and prepare to connect with the given coordinates.</p>
 
       <section class="anim">
-        <!-- <globe class="globe left" /> -->
+        <Candle class="candle-anim-stage" />
         <psychicPerson class="psychic-anim" />
-        <!-- <globe class="globe right" /> -->
+        <Candle class="candle-anim-stage" />
       </section>
 
       <button @click="beginSession" class="btn-primary">Begin Session</button>
@@ -21,7 +21,11 @@
         <div :style="{ width: `${focusProgress}%` }" class="progress"></div>
       </div>
 
-      <psychicPerson class="psychic-anim" />
+      <section class="anim">
+        <Candle class="candle-anim-stage" />
+        <psychicPerson class="psychic-anim" />
+        <Candle class="candle-anim-stage" />
+      </section>
 
       <!-- <RemoteViewingIcon class="rv-icon" /> -->
 
@@ -114,6 +118,7 @@ import { ref, watch } from 'vue';
 import sites from '../data/latLongSites';
 import failMsgs from '../data/failureFeedback';
 import psychicPerson from './Psychic';
+import Candle from './Candle';
 // import globe from './Globe';
 
 // State variables
@@ -489,9 +494,12 @@ watch(penSize, () => {
   margin: 0 auto;
 }
 
-.anim .psychic-anim {
-  max-width: 300px;
-  margin: 0 auto;
+.anim {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
 }
 
 .remote-viewing-container:hover #lines,
