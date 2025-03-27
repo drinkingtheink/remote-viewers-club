@@ -2015,7 +2015,7 @@ export default {
 }
 
 .beyond-bounds:hover #eye-color {
-    animation: shifty 3s infinite alternate-reverse;
+    animation: shifty 1s infinite alternate-reverse;
 }
 
 .space-wheel, .circ {
