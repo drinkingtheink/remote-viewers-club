@@ -5,9 +5,9 @@
       <p>Focus your mind and prepare to connect with the given coordinates.</p>
 
       <section class="anim">
-        <globe class="globe left" />
+        <!-- <globe class="globe left" /> -->
         <psychicPerson class="psychic-anim" />
-        <globe class="globe right" />
+        <!-- <globe class="globe right" /> -->
       </section>
 
       <button @click="beginSession" class="btn-primary">Begin Session</button>
@@ -114,7 +114,7 @@ import { ref, watch } from 'vue';
 import sites from '../data/latLongSites';
 import failMsgs from '../data/failureFeedback';
 import psychicPerson from './Psychic';
-import globe from './Globe';
+// import globe from './Globe';
 
 // State variables
 const stage = ref('intro');
@@ -489,8 +489,17 @@ watch(penSize, () => {
   margin: 0 auto;
 }
 
-.psychic-anim {
-  max-width: 200px;
+.anim .psychic-anim {
+  max-width: 300px;
   margin: 0 auto;
+}
+
+.remote-viewing-container:hover #lines,
+.remote-viewing-container:hover .globe {
+  opacity: 1;
+}
+
+.globe {
+  opacity: 0.5;
 }
 </style>

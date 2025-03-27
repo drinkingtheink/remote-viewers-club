@@ -173,7 +173,10 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Anta&family=Exo:wght@300;700&family=Russo+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Amita:wght@400;700&family=Unica+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Vollkorn:ital,wght@0,400..900;1,400..900&display=swap');
-
+ 
+:root {
+  --the-yellow: #f1f380;
+}
 .modal-mask {
   position: fixed;
   z-index: 9998;

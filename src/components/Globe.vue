@@ -22,19 +22,19 @@
             </g>
             <g id="lines">
                 <g id="top-line">
-                    <path class="cls-2" d="M18.64,278.43s4-3.73,11.35-9.79" />
-                    <path class="cls-4" d="M53.5,250.49c67.13-48.65,219.11-133.9,348.01-25.31,133.81,112.72,294.32,77.19,357.93,56.35" />
-                    <path class="cls-2" d="M773.44,276.65c8.97-3.33,13.91-5.59,13.91-5.59" />
+                    <path class="globe-anim-piece-2" d="M18.64,278.43s4-3.73,11.35-9.79" />
+                    <path class="globe-anim-piece-4" d="M53.5,250.49c67.13-48.65,219.11-133.9,348.01-25.31,133.81,112.72,294.32,77.19,357.93,56.35" />
+                    <path class="globe-anim-piece-2" d="M773.44,276.65c8.97-3.33,13.91-5.59,13.91-5.59" />
                 </g>
                 <g id="mid-line">
-                    <path class="cls-3" d="M18.64,317.22s1.95-1.81,5.61-4.97" />
+                    <path class="globe-anim-piece-3" d="M18.64,317.22s1.95-1.81,5.61-4.97" />
                     <path class="globe-anim-piece" d="M35.7,302.8c53.64-42.74,223.74-158.5,365.81-38.83,145.22,122.33,321.88,70.06,372.01,51.44" />
-                    <path class="cls-3" d="M780.44,312.75c4.51-1.8,6.91-2.9,6.91-2.9" />
+                    <path class="globe-anim-piece-3" d="M780.44,312.75c4.51-1.8,6.91-2.9,6.91-2.9" />
                 </g>
                 <g id="bot-line">
-                    <path class="cls-3" d="M18.64,340.91s1.95-1.81,5.61-4.97" />
+                    <path class="globe-anim-piece-3" d="M18.64,340.91s1.95-1.81,5.61-4.97" />
                     <path class="globe-anim-piece" d="M35.7,326.49c53.64-42.74,223.74-158.5,365.81-38.83,145.22,122.33,321.88,70.06,372.01,51.44" />
-                    <path class="cls-3" d="M780.44,336.44c4.51-1.8,6.91-2.9,6.91-2.9" />
+                    <path class="globe-anim-piece-3" d="M780.44,336.44c4.51-1.8,6.91-2.9,6.91-2.9" />
                 </g>
             </g>
         </svg>
@@ -54,5 +54,61 @@ export default {
 </script>
 
 <style>
-.globe-anim-piece{stroke-dasharray:14.85 14.85;}.globe-anim-piece,.cls-2,.cls-3,.cls-4{fill:none;stroke:#000;stroke-linecap:round;stroke-miterlimit:10;}.globe-anim-piece,.cls-3{stroke-width:8px;}.cls-2,.cls-4{stroke-width:14px;}.cls-4{stroke-dasharray:29.7 29.7;}
+
+.globe-animation * {
+    transition: all 0.2s;
+}
+
+#map-pin,
+#wire-globe,
+#land-mass-1,
+#land-mass-2 {
+    fill: var(--the-yellow);
+}
+
+#land-mass-2 {
+    opacity: 0;
+}
+
+.globe-anim-piece {
+	stroke-dasharray: 14.85 14.85;
+}
+
+.globe-anim-piece,
+.globe-anim-piece-2,
+.globe-anim-piece-3,
+.globe-anim-piece-4 {
+	fill: none;
+	stroke: var(--the-yellow);
+	stroke-linecap: round;
+	stroke-miterlimit: 10;
+}
+
+.globe-anim-piece,
+.globe-anim-piece-3 {
+	stroke-width: 8px;
+}
+
+.globe-anim-piece-2,
+.globe-anim-piece-4 {
+	stroke-width: 14px;
+}
+
+.globe-anim-piece-4 {
+	stroke-dasharray: 29.7 29.7;
+}
+
+#land-mass-1,
+#land-mass-2 {
+    display: none;
+}
+
+/* ANIMATION */
+#map-pin {
+    opacity: 0;
+}
+
+#lines {
+    opacity: 0;
+}
 </style>
