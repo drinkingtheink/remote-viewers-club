@@ -2,7 +2,7 @@
   <div class="remote-viewing-container">
     <div v-if="stage === 'intro'" class="stage panel">
       <h2>Remote Viewing Session</h2>
-      <p>Focus your mind and prepare to connect with the target coordinates.</p>
+      <p>Focus your mind and prepare to connect with the given coordinates.</p>
 
       <psychicPerson class="psychic-anim" />
 
@@ -16,6 +16,8 @@
       <div class="progress-bar">
         <div :style="{ width: `${focusProgress}%` }" class="progress"></div>
       </div>
+
+      <psychicPerson class="psychic-anim" />
 
       <!-- <RemoteViewingIcon class="rv-icon" /> -->
 

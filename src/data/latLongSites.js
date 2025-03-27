@@ -184,7 +184,7 @@ const sites = [
       "longitude": "East"
     },
     "description": "Natural site in Turkey featuring terraces of carbonate minerals left by flowing water, appearing as a 'cotton castle' with thermal pools.",
-    "image": "pamukkale.avif"
+    "image": "pamukkale.png"
   },
   {
     "id": 18,

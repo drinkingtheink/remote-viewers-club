@@ -229,7 +229,7 @@ export default {
 }
 
 .remote-viewing-container:hover .stage #floaties path {
-    animation: wobble 2s infinite alternate-reverse;
+    animation: wobble 1s infinite alternate-reverse;
 }
 
 .remote-viewing-container:hover .stage #closed-eyes {
