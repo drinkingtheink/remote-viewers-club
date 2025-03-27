@@ -4,7 +4,11 @@
       <h2>Remote Viewing Session</h2>
       <p>Focus your mind and prepare to connect with the given coordinates.</p>
 
-      <psychicPerson class="psychic-anim" />
+      <section class="anim">
+        <globe class="globe left" />
+        <psychicPerson class="psychic-anim" />
+        <globe class="globe right" />
+      </section>
 
       <button @click="beginSession" class="btn-primary">Begin Session</button>
     </div>
@@ -110,6 +114,7 @@ import { ref, watch } from 'vue';
 import sites from '../data/latLongSites';
 import failMsgs from '../data/failureFeedback';
 import psychicPerson from './Psychic';
+import globe from './Globe';
 
 // State variables
 const stage = ref('intro');
