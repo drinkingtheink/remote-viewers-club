@@ -71,11 +71,11 @@
           </span> -->
         </div>
 
+        <GnosisTest />
+        
         <RemoteViewingSim />
 
         <PerceptionTraining />
-
-        <GnosisTest />
       </section>
 
       <section class="join" v-if="activeSection === 'join'" :key='join'>

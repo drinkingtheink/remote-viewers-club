@@ -188,10 +188,10 @@ export default {
 
 @keyframes wobble {
     from {
-        transform: translateY(-7px);
+        transform: translateY(-3px);
     }
     to {
-        transform: translateY(7px);
+        transform: translateY(3px);
     }
 }
 
@@ -229,7 +229,7 @@ export default {
 }
 
 .remote-viewing-container:hover .stage #floaties path {
-    animation: wobble 1s infinite alternate-reverse;
+    animation: wobble 0.25s infinite alternate-reverse;
 }
 
 .remote-viewing-container:hover .stage #closed-eyes {
