@@ -8,7 +8,7 @@
       <button @click="startGame">Start Game</button>
     </div>
     
-    <div v-else class="trivia-board">
+    <div v-else-if="!gameOver" class="trivia-board">
       <div class="score-section">
         <span>Score: {{ score }}</span>
         <span>Round: {{ currentRound }}/10</span>
@@ -19,38 +19,41 @@
         <p class="description">{{ currentQuestion.description }}</p>
       </div>
       
-      <div class="answer-section">
-        <input 
-          v-model="userAnswer" 
-          @keyup.enter="checkAnswer"
-          placeholder="Type your answer" 
-        />
-        <button @click="checkAnswer">Submit</button>
-      </div>
-      
-      <div v-if="feedback" class="feedback" :class="{
-        'correct': isCorrect,
-        'incorrect': !isCorrect
-      }">
-        {{ feedback }}
-      </div>
-      
-      <div v-if="showDetails" class="details-section">
-        <h3>{{ currentQuestion.keyword }}</h3>
-        <p>{{ currentQuestion.explanation }}</p>
-      </div>
-      
-      <div class="game-controls">
+      <div class="choices-section">
         <button 
-          v-if="showDetails" 
-          @click="nextQuestion"
+          v-for="(choice, index) in currentQuestion.choices" 
+          :key="index"
+          @click="selectAnswer(choice)"
+          :class="{ 
+            'selected': userAnswer === choice,
+            'correct': showResults && choice === currentQuestion.keyword,
+            'incorrect': showResults && userAnswer === choice && choice !== currentQuestion.keyword
+          }"
         >
+          {{ choice }}
+        </button>
+      </div>
+      
+      <div v-if="showResults" class="feedback-section">
+        <div class="feedback" :class="{
+          'correct': isCorrect,
+          'incorrect': !isCorrect
+        }">
+          {{ feedback }}
+        </div>
+        
+        <div class="details-section">
+          <h3>{{ currentQuestion.keyword }}</h3>
+          <p>{{ currentQuestion.explanation }}</p>
+        </div>
+        
+        <button @click="nextQuestion" class="next-btn">
           Next Question
         </button>
       </div>
     </div>
     
-    <div v-if="gameOver" class="game-over-screen">
+    <div v-else class="game-over-screen">
       <h2>Game Over!</h2>
       <p>Final Score: {{ score }}/10</p>
       <button @click="resetGame">Play Again</button>
@@ -65,52 +68,62 @@ const paranormalQuestions = [
   {
     keyword: "Poltergeist",
     description: "A type of supernatural phenomenon characterized by noisy disturbances and objects moving seemingly by themselves.",
-    explanation: "Derived from German words 'poltern' (to make noise) and 'geist' (ghost). Often associated with adolescent-centered hauntings and unexplained physical disturbances."
+    explanation: "Derived from German words 'poltern' (to make noise) and 'geist' (ghost). Often associated with adolescent-centered hauntings and unexplained physical disturbances.",
+    choices: ["Poltergeist", "Banshee", "Cryptid", "Zeitgeist"]
   },
   {
     keyword: "Cryptid",
     description: "A creature whose existence is unproven by scientific consensus, often part of local folklore or mythology.",
-    explanation: "Examples include Bigfoot, Loch Ness Monster, and Chupacabra. These legendary animals are studied by cryptozoology, a pseudoscience focused on proving their existence."
+    explanation: "Examples include Bigfoot, Loch Ness Monster, and Chupacabra. These legendary animals are studied by cryptozoology, a pseudoscience focused on proving their existence.",
+    choices: ["Wendigo", "Cryptid", "Tulpa", "EVP"]
   },
   {
     keyword: "Ectoplasm",
     description: "A supposed supernatural viscous substance said to exude from the body of a medium during a spiritualistic trance.",
-    explanation: "Popularized in the early 20th century, ectoplasm was claimed to be physical evidence of spirit manifestation during séances."
+    explanation: "Popularized in the early 20th century, ectoplasm was claimed to be physical evidence of spirit manifestation during séances.",
+    choices: ["Skinwalker", "Doppelganger", "Ectoplasm", "Zeitgeist"]
   },
   {
     keyword: "Skinwalker",
     description: "A type of harmful witch in Navajo tradition with the ability to transform into, possess, or disguise themselves as animals.",
-    explanation: "In Navajo culture, skinwalkers are shapeshifters associated with dark magic and considered taboo to discuss openly."
+    explanation: "In Navajo culture, skinwalkers are shapeshifters associated with dark magic and considered taboo to discuss openly.",
+    choices: ["Banshee", "Skinwalker", "EVP", "Tulpa"]
   },
   {
     keyword: "EVP",
     description: "An acronym standing for a specific type of paranormal audio recording technique.",
-    explanation: "Electronic Voice Phenomenon (EVP) involves capturing unexplained voices or sounds on electronic recording devices, often believed to be communications from spirits."
+    explanation: "Electronic Voice Phenomenon (EVP) involves capturing unexplained voices or sounds on electronic recording devices, often believed to be communications from spirits.",
+    choices: ["Cryptid", "Doppelganger", "EVP", "Ectoplasm"]
   },
   {
     keyword: "Tulpa",
     description: "A concept from Tibetan mysticism describing a being created through spiritual or mental concentration.",
-    explanation: "In theory, a tulpa is a sentient, independent thought-form that can be manifested through intense meditation and visualization."
+    explanation: "In theory, a tulpa is a sentient, independent thought-form that can be manifested through intense meditation and visualization.",
+    choices: ["Poltergeist", "Tulpa", "Skinwalker", "Zeitgeist"]
   },
   {
     keyword: "Doppelganger",
     description: "A ghostly double of a living person, often considered an omen of bad luck or impending death.",
-    explanation: "From German meaning 'double-walker', a doppelganger is a look-alike or double of a living person that is considered paranormal."
+    explanation: "From German meaning 'double-walker', a doppelganger is a look-alike or double of a living person that is considered paranormal.",
+    choices: ["Banshee", "Doppelganger", "Wendigo", "EVP"]
   },
   {
     keyword: "Banshee",
     description: "A female spirit in Irish folklore known for her haunting wail that signals an impending death in a family.",
-    explanation: "In Celtic mythology, a banshee's mournful cry is a supernatural warning of an upcoming tragedy or loss of life."
+    explanation: "In Celtic mythology, a banshee's mournful cry is a supernatural warning of an upcoming tragedy or loss of life.",
+    choices: ["Ectoplasm", "Banshee", "Cryptid", "Tulpa"]
   },
   {
     keyword: "Wendigo",
     description: "A cannibalistic creature from Algonquian-speaking First Nations folklore, associated with winter, coldness, and hunger.",
-    explanation: "A mythological man-eating monster that symbolizes the desperation and taboo of cannibalism in Native American legends."
+    explanation: "A mythological man-eating monster that symbolizes the desperation and taboo of cannibalism in Native American legends.",
+    choices: ["Skinwalker", "Zeitgeist", "Wendigo", "Doppelganger"]
   },
   {
     keyword: "Zeitgeist",
     description: "While not strictly paranormal, this term relates to the spirit or mood of a particular period in history.",
-    explanation: "From German, meaning 'spirit of the time'. Used to describe the intellectual and cultural climate of an era."
+    explanation: "From German, meaning 'spirit of the time'. Used to describe the intellectual and cultural climate of an era.",
+    choices: ["EVP", "Zeitgeist", "Poltergeist", "Banshee"]
   }
 ]
 
@@ -121,11 +134,14 @@ const score = ref(0)
 const userAnswer = ref('')
 const feedback = ref('')
 const isCorrect = ref(false)
-const showDetails = ref(false)
+const showResults = ref(false)
 
 const currentQuestion = ref(null)
 
 function startGame() {
+  // Shuffle the questions
+  paranormalQuestions.sort(() => Math.random() - 0.5)
+  
   gameStarted.value = true
   currentRound.value = 1
   score.value = 0
@@ -133,7 +149,7 @@ function startGame() {
 }
 
 function nextQuestion() {
-  if (currentRound.value >= 10) {
+  if (currentRound.value > 10) {
     gameOver.value = true
     return
   }
@@ -141,17 +157,16 @@ function nextQuestion() {
   currentQuestion.value = paranormalQuestions[currentRound.value - 1]
   userAnswer.value = ''
   feedback.value = ''
-  showDetails.value = false
+  showResults.value = false
   currentRound.value++
 }
 
-function checkAnswer() {
-  if (!userAnswer.value) return
-
-  const normalizedUserAnswer = userAnswer.value.toLowerCase().trim()
-  const normalizedCorrectAnswer = currentQuestion.value.keyword.toLowerCase().trim()
-
-  if (normalizedUserAnswer === normalizedCorrectAnswer) {
+function selectAnswer(choice) {
+  if (showResults.value) return
+  
+  userAnswer.value = choice
+  
+  if (choice === currentQuestion.value.keyword) {
     feedback.value = 'Correct! Well done!'
     isCorrect.value = true
     score.value++
@@ -160,7 +175,7 @@ function checkAnswer() {
     isCorrect.value = false
   }
   
-  showDetails.value = true
+  showResults.value = true
 }
 
 function resetGame() {
@@ -194,43 +209,41 @@ function resetGame() {
   color: #c7c7c7;
 }
 
-.answer-section {
-  display: flex;
+.choices-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
   margin-bottom: 20px;
 }
 
-input {
-  flex-grow: 1;
-  padding: 10px;
-  border: 2px solid #0f3460;
-  background-color: #1a1a2e;
-  color: #e0e0e0;
+.choices-section button.selected {
+  background-color: #1a2b5a;
+  border: 2px solid #e94560;
 }
 
-button {
-  padding: 10px 15px;
-  background-color: #0f3460;
-  color: white;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+.choices-section button.correct {
+  background-color: #2ecc71;
 }
 
-button:hover {
-  background-color: #e94560;
+.choices-section button.incorrect {
+  background-color: #e74c3c;
+}
+
+.feedback-section {
+  margin-top: 20px;
 }
 
 .feedback {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   font-weight: bold;
 }
 
 .feedback.correct {
-  color: #00ff00;
+  color: #2ecc71;
 }
 
 .feedback.incorrect {
-  color: #ff0000;
+  color: #e74c3c;
 }
 
 .details-section {
@@ -243,5 +256,18 @@ button:hover {
 .details-section h3 {
   color: #e94560;
   margin-bottom: 10px;
+}
+
+.next-btn {
+  padding: 10px 20px;
+  background-color: #0f3460;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.next-btn:hover {
+  background-color: #e94560;
 }
 </style>
