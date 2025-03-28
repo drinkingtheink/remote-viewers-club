@@ -74,6 +74,8 @@
         <RemoteViewingSim />
 
         <PerceptionTraining />
+
+        <GnosisTest />
       </section>
 
       <section class="join" v-if="activeSection === 'join'" :key='join'>
@@ -98,6 +100,7 @@ import Badge6 from './Badge6.vue'
 import SeeYouThere from './SeeYouThere.vue'
 import RemoteViewingSim from './RemoteViewingSim.vue'
 import PerceptionTraining from './PerceptionTraining.vue'
+import GnosisTest from './GnosisTest.vue'
 import Join from './Join.vue'
 import RemoteViewingIcon from './icons/RemoteViewingIcon';
 import PrecogIcon from './icons/PrecognitionIcon';
@@ -150,6 +153,7 @@ export default {
     RemoteViewingIcon,
     PerceptionTraining,
     Join,
+    GnosisTest,
   },
   data() {
     return {

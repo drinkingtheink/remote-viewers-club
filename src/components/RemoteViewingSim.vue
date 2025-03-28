@@ -27,8 +27,6 @@
         <Candle class="candle-anim-stage" />
       </section>
 
-      <!-- <RemoteViewingIcon class="rv-icon" /> -->
-
       <p class="status-text">{{ statusMessage }}</p>
       <button @click="submitImpression" :disabled="!canSubmit" class="btn-primary">
         Submit Impression
@@ -114,12 +112,10 @@
 
 <script setup>
 import { ref, watch } from 'vue';
-// import RemoteViewingIcon from './icons/RemoteViewingIcon';
 import sites from '../data/latLongSites';
 import failMsgs from '../data/failureFeedback';
 import psychicPerson from './Psychic';
 import Candle from './Candle';
-// import globe from './Globe';
 
 // State variables
 const stage = ref('intro');
@@ -505,9 +501,5 @@ watch(penSize, () => {
 .remote-viewing-container:hover #lines,
 .remote-viewing-container:hover .globe {
   opacity: 1;
-}
-
-.globe {
-  opacity: 0.5;
 }
 </style>
