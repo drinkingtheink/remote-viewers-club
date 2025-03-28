@@ -13,7 +13,7 @@
       </div>
       
       <div class="question-section">
-        <h2>Identify the Paranormal Keyword</h2>
+        <h3>Identify the Paranormal Keyword</h3>
         <p class="description">{{ currentQuestion.description }}</p>
       </div>
       
@@ -277,6 +277,12 @@ function resetGame() {
   margin-bottom: 20px;
 }
 
+.question-section h3 {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid white;
+}
+
 .description {
   font-style: italic;
   color: #c7c7c7;
@@ -301,6 +307,12 @@ function resetGame() {
 
 .choices-section button.correct {
   background-color: #2ecc71;
+  color: black;
+}
+
+.choices-section button.correct:hover {
+  background-color: #2ecc71;
+  color: black;
 }
 
 .choices-section button.incorrect {
