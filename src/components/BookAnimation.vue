@@ -111,6 +111,10 @@ export default {
     padding-bottom: 1rem;
 }
 
+#book {
+    overflow: visible;
+}
+
 #book * {
     transition: all 0.2s;
 }
