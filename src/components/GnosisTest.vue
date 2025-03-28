@@ -1,4 +1,3 @@
-<!-- App.vue -->
 <template>
   <div class="game-container stage">
     <h2>Gnosis Session</h2>
@@ -9,9 +8,8 @@
     </div>
     
     <div v-else-if="!gameOver" class="trivia-board">
-      <div class="score-section">
-        <span>Score: {{ score }}</span>
-        <span>Round: {{ currentRound }}/10</span>
+      <div class="header-section">
+        <button @click="resetGame" class="new-game-btn">New Game</button>
       </div>
       
       <div class="question-section">
@@ -32,6 +30,11 @@
         >
           {{ choice }}
         </button>
+      </div>
+
+      <div class="score-section">
+        <span>Score: {{ score }}</span>
+        <span>Round: {{ currentRound }}/20</span>
       </div>
       
       <div v-if="showResults" class="feedback-section">
@@ -55,8 +58,10 @@
     
     <div v-else class="game-over-screen">
       <h2>Game Over!</h2>
-      <p>Final Score: {{ score }}/10</p>
-      <button @click="resetGame">Play Again</button>
+      <p>Final Score: {{ score }}/20</p>
+      <div class="game-over-buttons">
+        <button @click="resetGame">New Game</button>
+      </div>
     </div>
   </div>
 </template>
@@ -65,6 +70,7 @@
 import { ref } from 'vue'
 
 const paranormalQuestions = [
+  // Original 10 questions
   {
     keyword: "Poltergeist",
     description: "A type of supernatural phenomenon characterized by noisy disturbances and objects moving seemingly by themselves.",
@@ -124,6 +130,67 @@ const paranormalQuestions = [
     description: "While not strictly paranormal, this term relates to the spirit or mood of a particular period in history.",
     explanation: "From German, meaning 'spirit of the time'. Used to describe the intellectual and cultural climate of an era.",
     choices: ["EVP", "Zeitgeist", "Poltergeist", "Banshee"]
+  },
+  // New 10 questions
+  {
+    keyword: "Kitsune",
+    description: "A mythical fox-like creature from Japanese folklore with shapeshifting abilities and multiple tails.",
+    explanation: "In Japanese mythology, kitsune are intelligent spirits that can transform into human form, often associated with the Shinto deity Inari.",
+    choices: ["Kitsune", "Djinn", "Golem", "Sprite"]
+  },
+  {
+    keyword: "Djinn",
+    description: "Supernatural creatures in Islamic mythology, capable of good or evil and existing in a parallel dimension.",
+    explanation: "Often mistranslated as 'genie', djinn are intelligent beings created from smokeless fire, with free will and the ability to interact with humans.",
+    choices: ["Wraith", "Djinn", "Changeling", "Revenant"]
+  },
+  {
+    keyword: "Changeling",
+    description: "A folklore creature supposedly left in place of a human child by supernatural beings.",
+    explanation: "In European folklore, fairies or other mythical entities would secretly replace a human infant with one of their own kind.",
+    choices: ["Golem", "Banshee", "Changeling", "Sprite"]
+  },
+  {
+    keyword: "Revenant",
+    description: "A visible ghost or animated corpse that returns from the grave to terrorize the living.",
+    explanation: "Derived from the French word 'revenir', meaning 'to return', revenants are believed to be corpses that rise from their graves.",
+    choices: ["Zombie", "Wraith", "Revenant", "Poltergeist"]
+  },
+  {
+    keyword: "Golem",
+    description: "An animated anthropomorphic being in Jewish folklore, created from inanimate matter like clay or mud.",
+    explanation: "Traditionally created by a rabbi through mystical practices, golems were powerful protectors without free will or speech.",
+    choices: ["Tulpa", "Sprite", "Kitsune", "Golem"]
+  },
+  {
+    keyword: "Wraith",
+    description: "A ghostly apparition or spirit, often considered an omen of death.",
+    explanation: "In paranormal mythology, a wraith is a spectral entity that represents the soul or essence of a deceased person.",
+    choices: ["Djinn", "Wraith", "Changeling", "Doppelganger"]
+  },
+  {
+    keyword: "Sprite",
+    description: "A type of fairy or elf-like supernatural being, often associated with natural elements.",
+    explanation: "In folklore, sprites are small, ethereal creatures that inhabit forests, waters, and other natural environments.",
+    choices: ["Kitsune", "Sprite", "Golem", "Tulpa"]
+  },
+  {
+    keyword: "Simulacrum",
+    description: "A representation or imitation of a person or thing, sometimes with supernatural connotations.",
+    explanation: "In philosophical and paranormal contexts, a simulacrum is an ersatz version of reality that may be indistinguishable from the original.",
+    choices: ["Doppelganger", "Simulacrum", "Zeitgeist", "EVP"]
+  },
+  {
+    keyword: "Fetch",
+    description: "A supernatural double or wraith of a living person in Irish and British folklore.",
+    explanation: "Similar to a doppelganger, a fetch is believed to be an exact duplicate that appears as a portent of the person's imminent death.",
+    choices: ["Banshee", "Fetch", "Revenant", "Skinwalker"]
+  },
+  {
+    keyword: "Homunculus",
+    description: "A miniature human or humanoid creature created through alchemical or magical processes.",
+    explanation: "Originating in medieval folklore, a homunculus was believed to be artificially created through arcane scientific or magical methods.",
+    choices: ["Tulpa", "Golem", "Homunculus", "Sprite"]
   }
 ]
 
@@ -143,13 +210,14 @@ function startGame() {
   paranormalQuestions.sort(() => Math.random() - 0.5)
   
   gameStarted.value = true
+  gameOver.value = false
   currentRound.value = 1
   score.value = 0
   nextQuestion()
 }
 
 function nextQuestion() {
-  if (currentRound.value > 10) {
+  if (currentRound.value > 20) {
     gameOver.value = true
     return
   }
@@ -183,6 +251,9 @@ function resetGame() {
   gameOver.value = false
   currentRound.value = 0
   score.value = 0
+  userAnswer.value = ''
+  feedback.value = ''
+  showResults.value = false
 }
 </script>
 
@@ -197,7 +268,9 @@ function resetGame() {
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
-  color: #e94560;
+  color: var(--the-yellow);
+  background-color: black;
+  padding: 10px;
 }
 
 .question-section {
@@ -216,9 +289,14 @@ function resetGame() {
   margin-bottom: 20px;
 }
 
+.choices-section button {
+  color: red;
+  background-color: black;
+}
+
 .choices-section button.selected {
   background-color: #1a2b5a;
-  border: 2px solid #e94560;
+  border: 4px solid white;
 }
 
 .choices-section button.correct {
@@ -236,6 +314,7 @@ function resetGame() {
 .feedback {
   margin-bottom: 15px;
   font-weight: bold;
+  font-size: 1.4rem;
 }
 
 .feedback.correct {
@@ -247,21 +326,19 @@ function resetGame() {
 }
 
 .details-section {
-  background-color: #0f3460;
+  background: black;
   padding: 15px;
   border-radius: 5px;
   margin-bottom: 20px;
 }
 
 .details-section h3 {
-  color: #e94560;
   margin-bottom: 10px;
+  margin-top: 0;
 }
 
 .next-btn {
   padding: 10px 20px;
-  background-color: #0f3460;
-  color: white;
   border: none;
   cursor: pointer;
   transition: background-color 0.3s ease;

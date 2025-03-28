@@ -632,6 +632,7 @@ button.enlarge:hover {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   border-bottom: 3px solid red;
   margin: 1rem auto 2rem auto;
+  position: relative;
 
   @media only screen and (max-width: 767px) {
     width: 100%;
