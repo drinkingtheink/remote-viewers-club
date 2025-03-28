@@ -3,9 +3,9 @@
     <h2>Gnosis Session</h2>
     
     <div v-if="!gameStarted" class="start-screen">
-      <p>Test your knowledge of paranormal phenomena!</p>
+      <p>Test your knowledge of paranormal phenomena.</p>
 
-      <Lotus />
+      <BookAnimation />
 
       <button @click="startGame">Start Game</button>
     </div>
@@ -71,7 +71,8 @@
 
 <script setup>
 import { ref } from 'vue'
-import Lotus from './Lotus.vue'
+// import Lotus from './Lotus.vue'
+import BookAnimation from './BookAnimation.vue'
 import questions from '../data/trivia'
 
 const paranormalQuestions = questions
@@ -141,9 +142,7 @@ function resetGame() {
 
 <style>
 .start-screen, .game-over-screen {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  
 }
 
 .score-section {
