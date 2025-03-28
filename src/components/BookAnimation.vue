@@ -99,9 +99,11 @@ export default {
 @keyframes wobble {
     from {
         transform: translateY(-6px);
+        opacity: 0.2;
     }
     to {
         transform: translateY(6px);
+        opacity: 0.9;
     }
 }
 
