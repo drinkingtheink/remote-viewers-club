@@ -110,31 +110,37 @@ const badgeMap = [
     title: 'Beyond All Bounds',
     desc: '24th Omnidimensional Operations Squadron',
     inspo: 'https://twitter.com/arpitingle/status/1698709125088088109',
+    id: 1,
   },
   {
     title: 'Remote Viewing Task Force',
     desc: 'Fort Stillwater',
     inspo: 'https://twitter.com/CassetteDyne/status/1735694599262192051',
+    id: 2,
   },
   {
     title: 'Electronic Phantoms',
     desc: '9716th Radar Decoy Squadron',
     inspo: 'https://twitter.com/CassetteDyne/status/1735694599262192051',
+    id: 3,
   },
   {
     title: 'PSYWACs',
     desc: '960th Psychological Warfare Squadron',
     inspo: 'https://twitter.com/CassetteDyne/status/1735694599262192051',
+    id: 4,
   },
   {
     title: 'Vigilance and Speed',
     desc: '3rd Special Interceptor Squadron',
     inspo: 'https://twitter.com/CassetteDyne/status/1735694599262192051',
+    id: 5,
   },
   {
     title: 'See You Yesterday',
     desc: '37th Temporal Reconaissance Wing',
     inspo: 'https://twitter.com/arpitingle/status/1698709125088088109',
+    id: 6,
   },
 ];
 
@@ -159,11 +165,12 @@ export default {
     return {
       badgeMap: badgeMap,
       activeBadge: null,
-      activeSection: 'praxis',
+      activeSection: 'gallery',
     }
   },
   methods: {
     handleBadgeClick(badge) {
+      console.log(`BADGE INCOMING >>>>> ${JSON.stringify(badge, null, 2)}`)
       this.activeBadge = badge;
     },
     closeActive() {
