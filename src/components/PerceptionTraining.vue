@@ -71,7 +71,7 @@ const resultMessage = computed(() => {
   console.log(`COMPUTING RESULTS MSG`);
   console.log(`WINS >>> ${stats.wins}`);
   console.log(`ATTPS >>> ${stats.attempts}`);
-  return stats.wins === stats.attempts 
+  return correctCardChosen.value 
     ? `Congratulations! You found the chosen card!` 
     : `Sorry! Try again next time!`;
 });
@@ -134,6 +134,7 @@ function startOver() {
   stats.wins = 0;
   stats.attempts = 0;
   gameState.value = 'intro';
+  correctCardChosen.value = false;
 }
 </script>
 
