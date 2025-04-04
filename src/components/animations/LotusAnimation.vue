@@ -121,11 +121,13 @@ export default {
     opacity: 0.6;
     transform: translateY(-50px) scale(0.6);
     transform-origin: center;
+    animation: glimmerDimmer 2s infinite alternate;
 }
 
 .card-game:hover #flower {
     opacity: 1;
     transform: translateY(-70px) scale(0.8);
+    animation: none;
 }
 
 </style>

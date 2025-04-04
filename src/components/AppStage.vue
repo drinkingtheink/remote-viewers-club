@@ -714,6 +714,15 @@ button.enlarge:hover {
     }
 }
 
+@keyframes glimmerDimmer {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 0.5;
+    }
+}
+
 @keyframes dash {
   to {
     stroke-dashoffset: 50;
