@@ -159,7 +159,7 @@ export default {
     RemoteViewingIcon,
     PerceptionTraining,
     Join,
-    GnosisTest,
+    GnosisTest
   },
   data() {
     return {
