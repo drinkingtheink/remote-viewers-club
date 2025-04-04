@@ -187,6 +187,7 @@ export default {
  
 :root {
   --the-yellow: #f1f380;
+  --success: #2ecc71;
 }
 .modal-mask {
   position: fixed;
