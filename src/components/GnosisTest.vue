@@ -71,8 +71,7 @@
 
 <script setup>
 import { ref } from 'vue'
-// import Lotus from './Lotus.vue'
-import BookAnimation from './BookAnimation.vue'
+import BookAnimation from './animations/BookAnimation.vue'
 import questions from '../data/trivia'
 
 const paranormalQuestions = questions

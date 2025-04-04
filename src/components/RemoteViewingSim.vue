@@ -111,7 +111,7 @@
 import { ref, watch } from 'vue';
 import sites from '../data/latLongSites';
 import failMsgs from '../data/failureFeedback';
-import WindowAnimation from './WindowAnimation.vue';
+import WindowAnimation from './animations/WindowAnimation.vue';
 
 // State variables
 const stage = ref('intro');
