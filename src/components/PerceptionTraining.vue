@@ -68,9 +68,6 @@ const cardSymbols = ['♠', '♥', '♣', '♦', '♤', '♡', '♧', '♢', '�
 
 // Computed message for result screen
 const resultMessage = computed(() => {
-  console.log(`COMPUTING RESULTS MSG`);
-  console.log(`WINS >>> ${stats.wins}`);
-  console.log(`ATTPS >>> ${stats.attempts}`);
   return correctCardChosen.value 
     ? `Congratulations! You found the chosen card!` 
     : `Sorry! Try again next time!`;
