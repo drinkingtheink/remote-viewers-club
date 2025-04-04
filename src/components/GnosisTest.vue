@@ -7,7 +7,7 @@
 
       <BookAnimation />
 
-      <button @click="startGame">Start Game</button>
+      <button @click="startGame">Begin Session</button>
     </div>
     
     <div v-else-if="!gameOver" class="trivia-board">
