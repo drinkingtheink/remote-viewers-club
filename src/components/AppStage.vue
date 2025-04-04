@@ -684,4 +684,24 @@ button.enlarge:hover {
 .stage button:hover {
   background-color: #830b02;
 }
+
+@keyframes wobble {
+    from {
+        transform: translateY(-6px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(6px);
+        opacity: 0.9;
+    }
+}
+
+@keyframes wobble2 {
+    from {
+        transform: translateY(-6px);
+    }
+    to {
+        transform: translateY(6px);
+    }
+}
 </style>

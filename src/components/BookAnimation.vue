@@ -119,23 +119,14 @@ export default {
 </script>
 
 <style>
-@keyframes wobble {
-    from {
-        transform: translateY(-6px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(6px);
-        opacity: 0.9;
-    }
-}
-
 @keyframes hover {
     from {
-        transform: scale(0.6) translateY(-6px);
+        transform: translateY(-6px) scale(0.7);
+        opacity: 0.7;
     }
     to {
-        transform: scale(0.6) translateY(6px);
+        transform: translateY(6px) scale(0.7);
+        opacity: 0.7;
     }
 }
 
@@ -169,7 +160,6 @@ export default {
 
 #hand-2 {
     transform-origin: center;
-    opacity: 1;
     animation: hover 1s infinite alternate;
     transform: scale(0.6);
 }
@@ -194,7 +184,7 @@ export default {
 }
 
 .game-container:hover #hand-2 {
-    opacity: 0;
+    display: none;
 }
 
 </style>
