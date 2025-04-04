@@ -1,311 +1,262 @@
 <template>
-  <div class="prediction-container stage panel">
-    <h2>Precognition Session</h2>
-    <p>Can you devine the colors chosen by the Hidden Oracle?</p>
-
-    <div class="session-stats">
-      <div class="stat-box">
-        <span class="stat-label">Matches</span>
-        <span class="stat-value matches">{{ sessionStats.matches }}</span>
-      </div>
-      <div class="stat-box">
-        <span class="stat-label">Misses</span>
-        <span class="stat-value misses">{{ sessionStats.misses }}</span>
-      </div>
-      <div class="stat-box">
-        <span class="stat-label">Accuracy</span>
-        <span class="stat-value accuracy">{{ accuracyPercentage }}%</span>
-      </div>
-    </div>
+  <div class="card-game">
+    <h1>Find the Chosen Card</h1>
     
-    <div class="prediction-grid">
-      <button 
-        v-for="(color, index) in predictionColors" 
-        :key="index"
-        @click="makePrediction(color)"
-        :style="{ backgroundColor: color }"
-        :disabled="predictionResult !== null"
-      >
-        <span class="color-mask">{{ color }}</span>
-      </button>
-    </div>
-
-    <div v-if="predictionResult" class="prediction-result">
-      <p>Your Prediction: <span class="value">{{ userPrediction }}</span> <span class="prediction-swatch" :style="{ backgroundColor: userPrediction }"></span></p>
-      <p>Actual Result: <span class="value">{{ actualColor }}</span> <span class="prediction-swatch" :style="{ backgroundColor: actualColor }"></span></p>
+    <div class="game-container">
+      <transition name="fade">
+        <div v-if="gameState === 'intro'" class="game-screen">
+          <p>Try to guess which card is the chosen one!</p>
+          <button @click="startGame" class="btn">Start Game</button>
+        </div>
+        
+        <div v-else-if="gameState === 'playing'" class="game-screen">
+          <div class="cards-container">
+            <div 
+              v-for="(card, index) in cards" 
+              :key="index"
+              class="card"
+              :class="{ 'flipped': card.flipped }"
+              @click="selectCard(index)"
+            >
+              <div class="card-inner">
+                <div class="card-front">
+                  <div class="card-symbol">{{ card.frontSymbol }}</div>
+                </div>
+                <div class="card-back">
+                  <div class="card-symbol" :class="{ 'chosen': card.isChosen }">
+                    {{ card.isChosen ? '★' : '✗' }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div v-else-if="gameState === 'result'" class="game-screen">
+          <p>{{ resultMessage }}</p>
+          <button @click="resetGame" class="btn">Play Again</button>
+        </div>
+      </transition>
       
-      <section>
-        <p 
-          class="result-text" 
-          :class="{ 'correct': predictionResult.includes('Correct Prediction') }"
-        >
-          {{ predictionResult }}
-
-          <span 
-            class="x-container"
-            v-show="!predictionResult.includes('Correct Prediction')"  
-          >
-            <span class="x-line"></span>
-            <span class="x-line"></span>
-          </span>
-        </p>
-      </section>
+      <div class="stats">
+        <p>Wins: {{ stats.wins }} | Attempts: {{ stats.attempts }}</p>
+      </div>
       
-      <button 
-        @click="resetChallenge" 
-        class="restart-btn"
-      >
-        Next Round
-      </button>
+      <!-- Start Over button (visible when not on intro screen) -->
+      <div v-if="gameState !== 'intro'" class="start-over-container">
+        <button @click="startOver" class="btn btn-secondary">Start Over</button>
+      </div>
     </div>
-
-    <button 
-      @click="resetSession" 
-      class="reset-session-btn"
-    >
-      Reset Session
-    </button>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, reactive, computed } from 'vue';
 
-const generateRandomColor = () => {
-  return `#${Math.floor(Math.random()*16777215).toString(16).padStart(6, '0')}`
-}
+// Game state
+const gameState = ref('intro'); // 'intro', 'playing', 'result'
+const chosenCardIndex = ref(0);
+const cards = ref([]);
+const stats = reactive({
+  wins: 0,
+  attempts: 0
+});
 
-const predictionColors = ref([])
-const userPrediction = ref(null)
-const actualColor = ref(null)
-const predictionResult = ref(null)
-const sessionStats = ref({
-  matches: 0,
-  misses: 0
-})
-const sessionCount = ref(0)
+// Array of symbols for card fronts
+const cardSymbols = ['♠', '♥', '♣', '♦', '♤', '♡', '♧', '♢', '✪', '✿', '❁', '✾'];
 
-const accuracyPercentage = computed(() => {
-  const totalRounds = sessionStats.value.matches + sessionStats.value.misses
-  return totalRounds > 0 
-    ? Math.round((sessionStats.value.matches / totalRounds) * 100)
-    : 0
-})
+// Computed message for result screen
+const resultMessage = computed(() => {
+  return stats.wins === stats.attempts 
+    ? `Congratulations! You found the chosen card!` 
+    : `Sorry! Try again next time!`;
+});
 
-const generateColorOptions = () => {
-  // Generate 3 unique random colors
-  const colors = new Set()
-  while (colors.size < 3) {
-    colors.add(generateRandomColor())
-  }
-  predictionColors.value = Array.from(colors)
-}
-
-const makePrediction = (color) => {
-  userPrediction.value = color
-  actualColor.value = predictionColors.value[Math.floor(Math.random() * predictionColors.value.length)]
+// Initialize cards
+function initializeCards() {
+  // Get random symbols from the array
+  const shuffledSymbols = [...cardSymbols].sort(() => 0.5 - Math.random()).slice(0, 3);
   
-  if (userPrediction.value === actualColor.value) {
-    predictionResult.value = 'Correct Prediction! 🔮'
-    sessionStats.value.matches++
-    sessionCount.value++
-  } else {
-    predictionResult.value = 'Close, but not quite...'
-    sessionStats.value.misses++
-    sessionCount.value++
+  cards.value = [
+    { isChosen: false, flipped: false, frontSymbol: shuffledSymbols[0] },
+    { isChosen: false, flipped: false, frontSymbol: shuffledSymbols[1] },
+    { isChosen: false, flipped: false, frontSymbol: shuffledSymbols[2] }
+  ];
+  
+  // Randomly select the chosen card
+  chosenCardIndex.value = Math.floor(Math.random() * 3);
+  cards.value[chosenCardIndex.value].isChosen = true;
+}
+
+// Start a new game
+function startGame() {
+  initializeCards();
+  gameState.value = 'playing';
+}
+
+// Handle card selection
+function selectCard(index) {
+  // Prevent selection if cards are already flipped
+  if (cards.value.some(card => card.flipped)) return;
+  
+  stats.attempts++;
+  
+  // Flip all cards
+  cards.value.forEach((card) => {
+    card.flipped = true;
+  });
+  
+  // Check if player won
+  if (index === chosenCardIndex.value) {
+    stats.wins++;
   }
+  
+  // Show result after a delay
+  setTimeout(() => {
+    gameState.value = 'result';
+  }, 1500);
 }
 
-const resetChallenge = () => {
-  generateColorOptions()
-  userPrediction.value = null
-  actualColor.value = null
-  predictionResult.value = null
+// Reset the game (continue playing)
+function resetGame() {
+  initializeCards();
+  gameState.value = 'playing';
 }
 
-const resetSession = () => {
-  sessionStats.value = {
-    matches: 0,
-    misses: 0
-  }
-  resetChallenge()
+// Start over (completely reset game and stats)
+function startOver() {
+  stats.wins = 0;
+  stats.attempts = 0;
+  gameState.value = 'intro';
 }
-
-// Generate initial color options when component mounts
-onMounted(generateColorOptions)
 </script>
 
-<style>
-.prediction-container {
-  margin: 0 auto;
-  text-align: center;
+<style scoped>
+.card-game {
   font-family: Arial, sans-serif;
-  background: rgba(0,0,0,0.6);
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
 }
 
-.session-stats {
-  display: flex;
-  justify-content: space-between;
+h1 {
+  color: #333;
   margin-bottom: 20px;
 }
 
-.stat-box {
-  background-color: black;
-  border-radius: 5px;
-  padding: 10px;
-  flex-grow: 1;
-  margin: 0 5px;
+.game-container {
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.stat-label {
-  display: block;
-  font-size: 0.8em;
-  color: #e2e2e2;
-  margin-bottom: 5px;
+.game-screen {
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.stat-value {
-  font-size: 1.5em;
+.cards-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin: 30px 0;
+}
+
+.card {
+  width: 120px;
+  height: 180px;
+  perspective: 1000px;
+  cursor: pointer;
+}
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.card.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-front, .card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-front {
+  background-color: #2c3e50;
+  color: white;
+}
+
+.card-back {
+  background-color: #ecf0f1;
+  transform: rotateY(180deg);
+}
+
+.card-symbol {
+  font-size: 48px;
   font-weight: bold;
 }
 
-.stat-value.matches {
-  color: #4CAF50;
+.card-symbol.chosen {
+  color: #f1c40f;
 }
 
-.stat-value.misses {
-  color: #F44336;
-}
-
-.stat-value.accuracy {
-  color: #2196F3;
-}
-
-.prediction-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin: 20px 0;
-}
-
-.prediction-grid button {
+.btn {
+  background-color: #3498db;
   color: white;
   border: none;
-  padding: 15px;
+  padding: 10px 20px;
   border-radius: 5px;
+  font-size: 16px;
   cursor: pointer;
-  text-transform: capitalize;
-  transition: opacity 0.3s ease;
-  border: 3px solid transparent;
-  transition: all 0.3s;
-}
-
-.prediction-grid button span {
-    background: rgba(0,0,0,0.6);
-    display: inline-block;
-    padding: 5px 10px;
-    border-radius: 5px;
-}
-
-.prediction-grid button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.prediction-result {
-  background-color: black;
-  padding: 15px;
-  border-radius: 5px;
+  transition: background-color 0.3s;
   margin-top: 20px;
 }
 
-.prediction-result .value {
-  color: yellow;
-  font-family: Arial, Helvetica, sans-serif;
+.btn:hover {
+  background-color: #2980b9;
 }
 
-.prediction-result .prediction-swatch {
-  border-radius: 50%;
-  width: 25px;
-  height: 25px;
-  display: inline-block;
-  margin: 0 0 -3px 5px;
-  border: 2px solid rgba(255,255,255,0.3);
-}
-
-.restart-btn, .reset-session-btn {
-  background-color: red;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
+.btn-secondary {
+  background-color: #95a5a6;
   margin-top: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
-.restart-btn:hover, .reset-session-btn:hover {
-  background-color: rgb(121, 3, 3);
+.btn-secondary:hover {
+  background-color: #7f8c8d;
 }
 
-.reset-session-btn {
-  background-color: #2196F3;
+.stats {
   margin-top: 20px;
+  font-weight: bold;
+  color: #7f8c8d;
 }
 
-.reset-session-btn:hover {
-  background-color: #1976D2;
+.start-over-container {
+  margin-top: 10px;
 }
 
-.result-text {
-  color: yellow !important;
-  font-size: 1.8rem !important;
-  border-radius: 10px !important;
-  transition: all 0.2s;
-  position: relative;
+/* Transitions */
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s;
 }
-
-@keyframes glow {
-  from {
-    box-shadow: 0 0 20px 10px rgba(227, 243, 136, 0.5);
-  }
-  to {
-    box-shadow: 0 0 5px 2px rgba(255,255,255,0.9);
-  }
-}
-
-.result-text.correct {
-  background-color: rgb(75, 189, 75) !important;
-  color: white !important;
-  padding: 1rem 0;
-  box-shadow: 0 0 20px 5px white;
-  animation-name: glow;
-  animation-duration: 2s;
-  animation-iteration-count: infinite;
-  animation-direction: alternate-reverse;
-}
-
-.x-container {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  top: 0;
-}
-
-.x-line {
-  position: absolute;
-  width: 55px;
-  height: 16px;
-  background-color: red;
-  top: 12px;
-  left: 0;
-}
-
-.x-line:first-child {
-  transform: rotate(45deg);
-}
-
-.x-line:last-child {
-  transform: rotate(-45deg);
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
 }
 </style>
