@@ -1,11 +1,11 @@
 <template>
   <div class="card-game stage">
-    <h2>Perception Training Session</h2>
+    <h2>Precognition Session</h2>
     
     <div class="game-container">
       <transition name="fade">
         <div v-if="gameState === 'intro'" class="game-screen">
-          <p>Try to guess which card is the chosen one.</p>
+          <p>Can you divine which card is chosen by the Hidden Oracle?</p>
 
           <LotusAnimation class="lotus-anim-stage" />
           
