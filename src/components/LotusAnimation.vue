@@ -77,8 +77,13 @@ export default {
 <style>
 .lotus-anim-piece {
     fill: var(--the-yellow);
-    stroke: var(--the-yellow);
-    stroke-miterlimit: 10;
-    stroke-width: 3px;
+    /* stroke: var(--the-yellow); */
+    stroke-miterlimit: 5;
+    stroke-width: 1px;
+}
+
+.lotus-animation {
+    max-width: 300px;
+    margin: 0 auto;
 }
 </style>

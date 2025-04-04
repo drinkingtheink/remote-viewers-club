@@ -1,5 +1,5 @@
 <template>
-  <div class="game-container stage">
+  <div class="gnosis-container stage">
     <h2>Gnosis Session</h2>
     
     <div v-if="!gameStarted" class="start-screen">

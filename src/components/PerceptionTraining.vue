@@ -7,6 +7,8 @@
         <div v-if="gameState === 'intro'" class="game-screen">
           <p>Try to guess which card is the chosen one.</p>
 
+          <LotusAnimation class="lotus-anim-stage" />
+          
           <button @click="startGame" class="btn">Begin Session</button>
         </div>
         
@@ -55,6 +57,7 @@
 <script setup>
 import { ref, reactive, computed } from 'vue'
 import failMsgs from '../data/failureFeedback'
+import LotusAnimation from './LotusAnimation.vue'
 
 // Game state
 const gameState = ref('intro'); // 'intro', 'playing', 'result'

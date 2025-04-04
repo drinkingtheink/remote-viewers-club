@@ -168,22 +168,22 @@ export default {
     max-width: 100%;
 }
 
-.game-container:hover #bobbles {
+.gnosis-container:hover #bobbles {
     opacity: 1;
 }
 
-.game-container:hover #bobbles path,
-.game-container:hover #bobbles circle {
+.gnosis-container:hover #bobbles path,
+.gnosis-container:hover #bobbles circle {
     animation: wobble 1s infinite alternate;
     opacity: 0;
 }
 
-.game-container:hover #hand {
+.gnosis-container:hover #hand {
     transform: scale(1);
     opacity: 1;
 }
 
-.game-container:hover #hand-2 {
+.gnosis-container:hover #hand-2 {
     display: none;
 }
 
