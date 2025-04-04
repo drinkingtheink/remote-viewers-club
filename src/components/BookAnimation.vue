@@ -99,7 +99,7 @@ export default {
 @keyframes wobble {
     from {
         transform: translateY(-6px);
-        opacity: 0.2;
+        opacity: 0;
     }
     to {
         transform: translateY(6px);
@@ -141,7 +141,8 @@ export default {
 
 .game-container:hover #bobbles path,
 .game-container:hover #bobbles circle {
-    animation: wobble 1s infinite alternate-reverse;
+    animation: wobble 1s infinite alternate;
+    opacity: 0;
 }
 
 .game-container:hover #hand {
