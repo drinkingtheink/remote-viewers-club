@@ -52,6 +52,7 @@
 
 <script setup>
 import { ref, reactive, computed } from 'vue';
+import failMsgs from '../data/failureFeedback';
 
 // Game state
 const gameState = ref('intro'); // 'intro', 'playing', 'result'
@@ -70,7 +71,7 @@ const cardSymbols = ['♠', '♥', '♣', '♦', '♤', '♡', '♧', '♢', '�
 const resultMessage = computed(() => {
   return correctCardChosen.value 
     ? `Congratulations! You found the chosen card!` 
-    : `Sorry! Try again next time!`;
+    : getFailMsg();
 });
 
 // Initialize cards
@@ -132,6 +133,12 @@ function startOver() {
   stats.attempts = 0;
   gameState.value = 'intro';
   correctCardChosen.value = false;
+}
+
+const getFailMsg = () => {
+  if (failMsgs.length) {
+    return failMsgs[Math.floor(Math.random() * failMsgs.length)];
+  }
 }
 </script>
 
