@@ -1,11 +1,11 @@
 <template>
-  <div class="card-game">
-    <h1>Find the Chosen Card</h1>
+  <div class="card-game stage">
+    <h2>Perception Training Session</h2>
     
     <div class="game-container">
       <transition name="fade">
         <div v-if="gameState === 'intro'" class="game-screen">
-          <p>Try to guess which card is the chosen one!</p>
+          <p>Try to guess which card is the chosen one.</p>
           <button @click="startGame" class="btn">Start Game</button>
         </div>
         
@@ -133,30 +133,21 @@ function startOver() {
 
 <style scoped>
 .card-game {
-  font-family: Arial, sans-serif;
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-  text-align: center;
+
 }
 
 h1 {
-  color: #333;
   margin-bottom: 20px;
 }
 
 .game-container {
-  background-color: #f5f5f5;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
 }
 
 .game-screen {
   min-height: 300px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
 }
 
@@ -218,28 +209,15 @@ h1 {
 }
 
 .btn {
-  background-color: #3498db;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s;
   margin-top: 20px;
 }
 
 .btn:hover {
-  background-color: #2980b9;
+
 }
 
 .btn-secondary {
-  background-color: #95a5a6;
   margin-top: 10px;
-}
-
-.btn-secondary:hover {
-  background-color: #7f8c8d;
 }
 
 .stats {
