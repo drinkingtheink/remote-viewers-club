@@ -38,7 +38,7 @@
         </div>
       </transition>
       
-      <div class="stats">
+      <div v-if="stats.attempts > 0" class="stats">
         <p>Wins: {{ stats.wins }} | Attempts: {{ stats.attempts }}</p>
       </div>
       
@@ -117,7 +117,7 @@ function selectCard(index) {
   // Show result after a delay
   setTimeout(() => {
     gameState.value = 'result';
-  }, 1500);
+  }, 2500);
 }
 
 // Reset the game (continue playing)
