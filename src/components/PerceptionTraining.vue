@@ -61,12 +61,16 @@ const stats = reactive({
   wins: 0,
   attempts: 0
 });
+const correctCardChosen = ref(false);
 
 // Array of symbols for card fronts
 const cardSymbols = ['♠', '♥', '♣', '♦', '♤', '♡', '♧', '♢', '✪', '✿', '❁', '✾'];
 
 // Computed message for result screen
 const resultMessage = computed(() => {
+  console.log(`COMPUTING RESULTS MSG`);
+  console.log(`WINS >>> ${stats.wins}`);
+  console.log(`ATTPS >>> ${stats.attempts}`);
   return stats.wins === stats.attempts 
     ? `Congratulations! You found the chosen card!` 
     : `Sorry! Try again next time!`;
@@ -109,6 +113,7 @@ function selectCard(index) {
   // Check if player won
   if (index === chosenCardIndex.value) {
     stats.wins++;
+    correctCardChosen.value = true;
   }
   
   // Show result after a delay
@@ -121,6 +126,7 @@ function selectCard(index) {
 function resetGame() {
   initializeCards();
   gameState.value = 'playing';
+  correctCardChosen.value = false;
 }
 
 // Start over (completely reset game and stats)
