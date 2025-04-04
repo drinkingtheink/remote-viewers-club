@@ -106,6 +106,7 @@ export default {
 .window-animation path {
     fill: var(--the-yellow);
     stroke: var(--the-yellow);
+    stroke-width: 0.5;
 }
 
 .window-animation path.arch {
