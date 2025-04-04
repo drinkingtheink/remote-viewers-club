@@ -421,7 +421,7 @@ footer {
   display: flex;
   justify-content: space-around;
   max-width: 800px;
-  margin: 2rem auto 4rem auto;
+  margin: 4rem auto 10rem auto;
 }
 
 @media only screen and (max-width: 60em) {
