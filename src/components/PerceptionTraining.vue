@@ -7,8 +7,6 @@
         <div v-if="gameState === 'intro'" class="game-screen">
           <p>Try to guess which card is the chosen one.</p>
 
-          <WindowAnimation class="window-anim-stage" />
-
           <button @click="startGame" class="btn">Begin Session</button>
         </div>
         
@@ -57,7 +55,6 @@
 <script setup>
 import { ref, reactive, computed } from 'vue'
 import failMsgs from '../data/failureFeedback'
-import WindowAnimation from './Window'
 
 // Game state
 const gameState = ref('intro'); // 'intro', 'playing', 'result'
@@ -247,12 +244,6 @@ const getFailMsg = () => {
 
 .start-over-container {
   margin-top: 10px;
-}
-
-.window-anim-stage {
-  max-width: 300px;
-  margin: 0 auto;
-  padding-bottom: 1rem;
 }
 
 /* Transitions */
