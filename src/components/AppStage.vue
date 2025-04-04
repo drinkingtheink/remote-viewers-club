@@ -716,7 +716,7 @@ button.enlarge:hover {
 
 @keyframes glimmerDimmer {
     from {
-        opacity: 0;
+        opacity: 0.2;
     }
     to {
         opacity: 0.5;
