@@ -704,4 +704,20 @@ button.enlarge:hover {
         transform: translateY(6px);
     }
 }
+
+@keyframes glimmer {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: 50;
+    stroke-width: 7px;
+  }
+}
 </style>
