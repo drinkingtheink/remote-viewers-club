@@ -308,7 +308,7 @@ const submitData = () => {
   // Create a hidden iframe approach (CORS bypass for Google Scripts)
   const form = document.createElement('form');
   form.method = 'POST';
-  form.action = 'https://script.google.com/macros/s/AKfycbwQ8xPl3CtN-BC7LeVLGRm22sfbCCKTYGrpenNCGWZDq7Qw_DBZwtGfbHWCiyZSY4Nu/exec';
+  form.action = 'https://script.google.com/macros/s/AKfycbwSRoSXOVHURDBw2hXGYZJsYW6aucSCP1nWpWe0d0naSRwotRoqQ0rzsOPraBrBTIS-/exec';
   form.target = 'hidden-iframe';
   form.style.display = 'none';
   
