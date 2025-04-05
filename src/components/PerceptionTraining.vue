@@ -1,5 +1,5 @@
 <template>
-  <div class="card-game stage">
+  <div class="card-game stage" :class="{ 'active': gameState !== 'intro' }">
     <h2>Precognition Session</h2>
     
     <div class="game-container">
