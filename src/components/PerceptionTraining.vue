@@ -2,10 +2,11 @@
   <div class="card-game stage" :class="{ 'active': gameState !== 'intro' }">
     <h2>Precognition Session</h2>
     
+    <p class="panel-subheader">Can you divine which card is chosen by the Hidden Oracle?</p>
+    
     <div class="game-container">
       <transition name="fade">
         <div v-if="gameState === 'intro'" class="game-screen">
-          <p>Can you divine which card is chosen by the Hidden Oracle?</p>
 
           <LotusAnimation class="lotus-anim-stage" />
           

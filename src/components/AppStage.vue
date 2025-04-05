@@ -643,16 +643,17 @@ button.enlarge:hover {
   margin: 0 auto;
   background-color: rgba(0,0,0,0.6);
   border-radius: 8px;
-  padding: 25px;
+  padding: 25px 10px 10px 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   border-bottom: 3px solid red;
   margin: 10px;
   position: relative;
   transition: all 0.2s;
+  position: relative;
 
   @media only screen and (max-width: 767px) {
     width: 100%;
-    padding: 25px 0;
+    padding: 30px 0;
   }
 
   @media only screen and (min-width: 768px) {
@@ -681,6 +682,10 @@ button.enlarge:hover {
   }
 }
 
+.stage h2 {
+  border-bottom: 1px solid red;
+}
+
 .stage button {
   background-color: red;
   color: white;
@@ -695,6 +700,11 @@ button.enlarge:hover {
 
 .stage button:hover {
   background-color: #830b02;
+}
+
+.panel-subheader {
+  height: 100px;
+  font-size: 20pt !important;
 }
 
 @keyframes wobble {

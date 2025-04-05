@@ -3,7 +3,7 @@
     <h2>Remote Viewing Session</h2>
 
     <div v-if="stage === 'intro'" class="panel">
-      <p>Focus your mind and prepare to connect with the given coordinates.</p>
+      <p class="panel-subheader">Focus your mind and prepare to connect with the given coordinates.</p>
 
       <section class="anim">
         <WindowAnimation class="window-anim-stage" />

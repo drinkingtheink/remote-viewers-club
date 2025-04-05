@@ -7,7 +7,7 @@
     <h2>Gnosis Session</h2>
     
     <div v-if="!gameStarted" class="start-screen">
-      <p>Test your knowledge of paranormal phenomena.</p>
+      <p class="panel-subheader">Test your knowledge of paranormal phenomena.</p>
 
       <BookAnimation />
 
