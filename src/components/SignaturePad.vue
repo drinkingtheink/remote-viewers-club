@@ -20,8 +20,8 @@
         class="drips-canvas"
       ></canvas>
     </div>
-    <div class="controls">
-      <button type="button" class="clear-button" @click="clearSignature">Clear</button>
+    <div class="sig-controls">
+      <button type="button" class="clear-button secondary" @click="clearSignature">Clear</button>
       <button type="button" class="save-button" @click="saveSignature">Save</button>
     </div>
   </div>
@@ -470,28 +470,35 @@ canvas {
   z-index: 1; /* Ensure drips appear above signature */
 }
 
-.controls {
+.sig-controls {
   display: flex;
   gap: 10px;
 }
 
-button {
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  border: none;
-}
-
-button {
-    background-color: red;
-    color: white;
-    text-transform: uppercase;
-    padding: 0.5rem 3rem;
-}
-
-.save-button {
-  background-color: #4caf50;
+.sig-controls button {
+  background-color: red;
   color: white;
+  border: none;
+  padding: 10px 50px;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-transform: uppercase;
+}
+
+.sig-controls button:hover {
+  background-color: #830b02;
+}
+
+.sig-controls button.secondary {
+  background-color: black;
+  color: red;
+  border: 3px solid red;
+}
+
+.sig-controls button.secondary:hover {
+  color: white;
+  border: 3px solid white;
 }
 </style>
