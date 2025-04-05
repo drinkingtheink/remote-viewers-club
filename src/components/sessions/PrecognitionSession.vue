@@ -40,7 +40,7 @@
         </div>
         
         <div v-else-if="gameState === 'result'" class="game-screen">
-          <p>{{ resultMessage }}</p>
+          <p>{{ getResultMessage() }}</p>
           <button @click="resetGame" class="btn">Play Again</button>
         </div>
       </transition>
@@ -58,7 +58,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive } from 'vue'
 import failMsgs from '../../data/failureFeedback'
 import LotusAnimation from '../animations/LotusAnimation.vue'
 
@@ -76,11 +76,11 @@ const correctCardChosen = ref(false);
 const cardSymbols = ['♠', '♥', '♣', '♦', '♤', '♡', '♧', '♢', '✪', '✿', '❁', '✾'];
 
 // Computed message for result screen
-const resultMessage = computed(() => {
+const getResultMessage = () => {
   return correctCardChosen.value 
     ? `Congratulations! You found the chosen card!` 
     : getFailMsg();
-});
+};
 
 // Initialize cards
 function initializeCards() {

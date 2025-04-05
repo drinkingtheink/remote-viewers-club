@@ -77,6 +77,7 @@ const lastY = ref(0)
 const drips = ref([])
 const animationFrameId = ref(null)
 const isAnimating = ref(false)
+// const isAMember = ref(false)
 
 // Methods
 const setupCanvas = () => {
