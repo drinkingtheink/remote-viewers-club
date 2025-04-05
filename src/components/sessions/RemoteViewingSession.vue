@@ -308,7 +308,7 @@ const submitData = () => {
   // Create a hidden iframe approach (CORS bypass for Google Scripts)
   const form = document.createElement('form');
   form.method = 'POST';
-  form.action = 'https://script.google.com/macros/s/AKfycbzt0laK7JHG6_LftciGM8z876aeqsEHy0iG7hKMupnhd6JRr3y_qDTFAtEG-6bMqTwy/exec';
+  form.action = 'https://script.google.com/macros/s/AKfycbwQ8xPl3CtN-BC7LeVLGRm22sfbCCKTYGrpenNCGWZDq7Qw_DBZwtGfbHWCiyZSY4Nu/exec';
   form.target = 'hidden-iframe';
   form.style.display = 'none';
   
@@ -318,9 +318,6 @@ const submitData = () => {
   input.name = 'data';
   input.value = JSON.stringify(formData);
   form.appendChild(input);
-
-  console.log(`CREATED INPUT >>>>>`)
-  console.dir(input)
   
   // Create the iframe
   const iframe = document.createElement('iframe');
@@ -328,9 +325,7 @@ const submitData = () => {
   iframe.style.display = 'none';
   
   // Add success/error handlers
-  iframe.onload = function() {
-    alert('Form submitted successfully!');
-    
+  iframe.onload = function() {    
     // Clean up
     setTimeout(function() {
       document.body.removeChild(form);
