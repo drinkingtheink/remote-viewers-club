@@ -52,7 +52,9 @@
       <textarea 
         v-model="textualImpression" 
         placeholder="Describe what you sensed..." 
-        class="impression-textarea">
+        class="impression-textarea"
+        id="textualImpression"
+      >
       </textarea>
       <button @click="revealTarget" class="btn-primary">Reveal Target</button>
     </div>
@@ -247,7 +249,7 @@ const revealTarget = () => {
   // - Keywords in textual description that match target
   
   // const lengthFactor = Math.min(textualImpression.value.length / 50, 1);
-//   const timeFactor = Math.min(focusProgress.value / 100, 1);
+  // const timeFactor = Math.min(focusProgress.value / 100, 1);
   
   let maxAccScore = 100;
 
@@ -274,6 +276,8 @@ const revealTarget = () => {
     accuracyNotes.value = accuracyNotes.value + ' At least try entering a description.';
   }
   
+  submitData();
+
   stage.value = 'reveal';
 };
 
@@ -289,6 +293,56 @@ const resetSession = () => {
   isDrawing.value = false;
   ctx.value = null;
 };
+
+const submitData = () => {
+  // Get form data
+  const formData = {
+    coordinates: coordinates.value,
+    illustration: userDrawingImage.value,
+    description: textualImpression.value,
+    accuracyNotes: accuracyNotes.value,
+    actualTarget: targetName.value,
+    accuracyScore: accuracyScore.value
+  };
+
+  // Create a hidden iframe approach (CORS bypass for Google Scripts)
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = 'https://script.google.com/macros/s/AKfycbzt0laK7JHG6_LftciGM8z876aeqsEHy0iG7hKMupnhd6JRr3y_qDTFAtEG-6bMqTwy/exec';
+  form.target = 'hidden-iframe';
+  form.style.display = 'none';
+  
+  // Add a hidden input with the stringified JSON
+  const input = document.createElement('input');
+  input.type = 'hidden';
+  input.name = 'data';
+  input.value = JSON.stringify(formData);
+  form.appendChild(input);
+
+  console.log(`CREATED INPUT >>>>>`)
+  console.dir(input)
+  
+  // Create the iframe
+  const iframe = document.createElement('iframe');
+  iframe.name = 'hidden-iframe';
+  iframe.style.display = 'none';
+  
+  // Add success/error handlers
+  iframe.onload = function() {
+    alert('Form submitted successfully!');
+    
+    // Clean up
+    setTimeout(function() {
+      document.body.removeChild(form);
+      document.body.removeChild(iframe);
+    }, 500);
+  };
+  
+  // Add elements to DOM and submit
+  document.body.appendChild(iframe);
+  document.body.appendChild(form);
+  form.submit();
+}
 
 // Watch for changes to pen properties
 watch(penColor, () => {
