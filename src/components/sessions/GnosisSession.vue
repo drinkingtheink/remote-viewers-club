@@ -15,10 +15,6 @@
     </div>
     
     <div v-else-if="!gameOver" class="trivia-board">
-      <div class="header-section">
-        <button @click="resetGame" class="new-game-btn secondary">New Game</button>
-      </div>
-      
       <div class="question-section">
         <h3>Identify the Paranormal Keyword</h3>
         <p class="description">{{ currentQuestion.description }}</p>
@@ -60,6 +56,10 @@
         <button @click="nextQuestion" class="next-btn">
           Next Question
         </button>
+      </div>
+
+      <div class="header-section">
+        <button @click="resetGame" class="new-game-btn secondary">New Game</button>
       </div>
     </div>
     
@@ -164,7 +164,6 @@ function resetGame() {
 .question-section h3 {
   margin-top: 1rem;
   padding-top: 1rem;
-  border-top: 1px solid white;
 }
 
 .description {
@@ -238,6 +237,7 @@ function resetGame() {
   border: none;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin-bottom: 10px;
 }
 
 .next-btn:hover {
