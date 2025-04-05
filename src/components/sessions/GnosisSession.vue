@@ -16,7 +16,7 @@
     
     <div v-else-if="!gameOver" class="trivia-board">
       <div class="header-section">
-        <button @click="resetGame" class="new-game-btn">New Game</button>
+        <button @click="resetGame" class="new-game-btn secondary">New Game</button>
       </div>
       
       <div class="question-section">
@@ -103,7 +103,7 @@ function startGame() {
 
 function nextQuestion() {
   currentRound.value++
-  
+
   if (currentRound.value > 15) {
     gameOver.value = true
     return

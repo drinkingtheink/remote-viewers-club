@@ -51,7 +51,7 @@
       
       <!-- Start Over button (visible when not on intro screen) -->
       <div v-if="gameState !== 'intro'" class="start-over-container">
-        <button @click="startOver" class="btn btn-secondary">Start Over</button>
+        <button @click="startOver" class="btn secondary">Start Over</button>
       </div>
     </div>
   </div>

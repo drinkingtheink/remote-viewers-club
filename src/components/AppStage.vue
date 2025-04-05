@@ -694,12 +694,23 @@ button.enlarge:hover {
   border-radius: 4px;
   font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all 0.3s;
   text-transform: uppercase;
 }
 
 .stage button:hover {
   background-color: #830b02;
+}
+
+.stage button.secondary {
+  background-color: black;
+  color: red;
+  border: 3px solid red;
+}
+
+.stage button.secondary:hover {
+  color: white;
+  border: 3px solid white;
 }
 
 .panel-subheader {

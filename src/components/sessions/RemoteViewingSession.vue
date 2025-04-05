@@ -44,7 +44,7 @@
           height="300">
         </canvas>
         <div class="canvas-tools">
-          <button @click="clearCanvas" class="btn-tool">Clear</button>
+          <button @click="clearCanvas" class="secondary">Clear</button>
           <input type="color" v-model="penColor" class="color-picker" />
           <input type="range" v-model="penSize" min="1" max="20" class="pen-size" />
         </div>
