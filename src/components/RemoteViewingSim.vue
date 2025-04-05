@@ -1,5 +1,5 @@
 <template>
-  <div class="remote-viewing-container stage">
+  <div class="remote-viewing-container stage" :class="{ 'active': stage !== 'intro' }">
     <h2>Remote Viewing Session</h2>
 
     <div v-if="stage === 'intro'" class="panel">
@@ -12,7 +12,7 @@
       <button @click="beginSession" class="btn-primary">Begin Session</button>
     </div>
 
-    <div v-else-if="stage === 'coordinates'" class="stage coordinates">
+    <div v-else-if="stage === 'coordinates'" class="coordinates">
       <h3>Target Coordinates</h3>
       <div class="coordinate-display">{{ coordinates }}</div>
       <p>Focus on these coordinates. Clear your mind and visualize what exists at this location.</p>
@@ -30,7 +30,7 @@
       </button>
     </div>
 
-    <div v-else-if="stage === 'drawing'" class="stage drawing">
+    <div v-else-if="stage === 'drawing'" class="drawing">
       <h3>Record Your Impression</h3>
       <p>Draw or describe what you sensed at the coordinates.</p>
       <div class="canvas-container">
@@ -57,7 +57,7 @@
       <button @click="revealTarget" class="btn-primary">Reveal Target</button>
     </div>
 
-    <div v-else-if="stage === 'reveal'" class="stage reveal">
+    <div v-else-if="stage === 'reveal'" class="reveal">
       <h3>Target Revealed</h3>
       <div class="results-container">
         <div class="user-impression">

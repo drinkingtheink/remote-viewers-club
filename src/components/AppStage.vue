@@ -645,8 +645,9 @@ button.enlarge:hover {
   padding: 25px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   border-bottom: 3px solid red;
-  margin: 1rem auto 2rem auto;
+  margin: 1rem auto;
   position: relative;
+  transition: all 0.2s;
 
   @media only screen and (max-width: 767px) {
     width: 100%;
@@ -654,9 +655,8 @@ button.enlarge:hover {
   }
 
   @media only screen and (min-width: 768px) {
-    /* width: 75%; */
     width: 44%;
-    /* max-width: 1000px; */
+    max-width: 1000px;
   }
 }
 
