@@ -658,12 +658,12 @@ button.enlarge:hover {
 
   @media only screen and (min-width: 768px) {
     width: 25%;
-    max-width: 1000px;
+    max-width: 1400px;
   }
 }
 
 .stage.active {
-  width: 85vw;
+  width: 90vw;
 }
 
 .stage p {

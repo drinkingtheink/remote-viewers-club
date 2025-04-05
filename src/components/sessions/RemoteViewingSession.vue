@@ -88,7 +88,7 @@
           <img v-if="targetImage.includes('venice')" src="../../assets/venice.png" alt="Target" class="target-image" />
           <img v-if="targetImage.includes('victoria')" src="../../assets/victoria-falls.webp" alt="Target" class="target-image" />
           <img v-if="targetImage.includes('zhangjiajie')" src="../../assets/zhangjiajie.png" alt="Target" class="target-image" />
-          <img v-if="targetImage.includes('canyon')" src="../../assets/grand-canyon.png" alt="Target" class="target-image" />
+          <img v-if="targetImage.includes('grand-canyon')" src="../../assets/grand-canyon.png" alt="Target" class="target-image" />
           <img v-if="targetImage.includes('barrier')" src="../../assets/great-barrier-reef.jpg" alt="Target" class="target-image" />
           <img v-if="targetImage.includes('easter')" src="../../assets/easter-island.jpg" alt="Target" class="target-image" />
           <h5>{{ targetName }}</h5>
