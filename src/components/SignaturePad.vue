@@ -399,15 +399,14 @@ const submitData = (sigImgData) => {
     try {
       saving.value = false
       isSaved.value = true
-      console.log("Window loaded successfully");
     } catch (error) {
-      console.error("Error during window load:", error);
+      console.error("Error during iframe load:", error);
     } 
     // Clean up
     setTimeout(function() {
       document.body.removeChild(form);
       document.body.removeChild(iframe);
-    }, 500);
+    }, 1500);
   };
   
   // Add elements to DOM and submit
