@@ -71,11 +71,13 @@
           </span> -->
         </div>
 
-        <GnosisTest />
-        
-        <RemoteViewingSim />
+        <setion class="session-stage">
+          <GnosisTest />
+          
+          <RemoteViewingSim />
 
-        <PerceptionTraining />
+          <PerceptionTraining />`
+        </setion>
       </section>
 
       <section class="join" v-if="activeSection === 'join'" :key='join'>
@@ -165,12 +167,11 @@ export default {
     return {
       badgeMap: badgeMap,
       activeBadge: null,
-      activeSection: 'gallery',
+      activeSection: 'praxis',
     }
   },
   methods: {
     handleBadgeClick(badge) {
-      console.log(`BADGE INCOMING >>>>> ${JSON.stringify(badge, null, 2)}`)
       this.activeBadge = badge;
     },
     closeActive() {
@@ -632,6 +633,11 @@ button.enlarge:hover {
   }
 }
 
+.session-stage {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .stage {
   margin: 0 auto;
   background-color: rgba(0,0,0,0.6);
@@ -648,9 +654,14 @@ button.enlarge:hover {
   }
 
   @media only screen and (min-width: 768px) {
-    width: 75%;
-    max-width: 1000px;
+    /* width: 75%; */
+    width: 44%;
+    /* max-width: 1000px; */
   }
+}
+
+.stage.active {
+  width: 85vw;
 }
 
 .stage p {

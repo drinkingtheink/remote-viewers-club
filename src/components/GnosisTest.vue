@@ -1,5 +1,9 @@
 <template>
-  <div class="gnosis-container stage">
+  <div class="gnosis-container stage"
+    :class="{ 
+      'active': gameStarted || gameOver
+    }"
+  >
     <h2>Gnosis Session</h2>
     
     <div v-if="!gameStarted" class="start-screen">
