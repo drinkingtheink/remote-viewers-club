@@ -727,6 +727,21 @@ button.begin-session {
   margin: auto
 }
 
+input {
+  padding: 10px;
+  color: red;
+  font-size: 1.2rem;
+}
+
+button.disabled {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+button.disabled:hover {
+  cursor: not-allowed !important;
+}
+
 @keyframes wobble {
     from {
         transform: translateY(-6px);

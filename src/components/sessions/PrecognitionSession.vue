@@ -75,7 +75,6 @@ const correctCardChosen = ref(false);
 // Array of symbols for card fronts
 const cardSymbols = ['♠', '♥', '♣', '♦', '♤', '♡', '♧', '♢', '✪', '✿', '❁', '✾'];
 
-// Computed message for result screen
 const getResultMessage = () => {
   return correctCardChosen.value 
     ? `Congratulations! You found the chosen card!` 

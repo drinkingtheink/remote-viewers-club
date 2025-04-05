@@ -20,15 +20,26 @@
         class="drips-canvas"
       ></canvas>
     </div>
+    <label for="print-name">Printed Name</label>
+    <input id="print-name" v-model="printedName" />
     <div class="sig-controls">
       <button type="button" class="clear-button secondary" @click="clearSignature">Clear</button>
-      <button type="button" class="save-button" @click="saveSignature">Save</button>
+      <button 
+        :class="{ 'disabled': printedName == null || printedName == undefined, 'saving': saving }" 
+        type="button" 
+        class="save-button" 
+        @click="saveSignature"
+      > 
+        <span v-if="!saving && !isSaved">Save</span>
+        <span v-if="saving">Saving</span>
+        <span v-if="isSaved">SAVED!</span>
+      </button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, defineProps, defineEmits } from 'vue'
+import { ref, onMounted, onBeforeUnmount, defineProps, defineEmits, watch } from 'vue'
 
 // Props
 const props = defineProps({
@@ -77,6 +88,9 @@ const lastY = ref(0)
 const drips = ref([])
 const animationFrameId = ref(null)
 const isAnimating = ref(false)
+const printedName = ref(null)
+const saving = ref(false)
+const isSaved = ref(false)
 // const isAMember = ref(false)
 
 // Methods
@@ -330,6 +344,7 @@ const clearSignature = () => {
 }
 
 const saveSignature = () => {
+  saving.value = true
   // Create a temporary canvas to merge signature and drips
   const tempCanvas = document.createElement('canvas')
   tempCanvas.width = signatureCanvas.value.width
@@ -355,13 +370,14 @@ const saveSignature = () => {
 const submitData = (sigImgData) => {
   // Get form data
   const formData = {
-    signatureImgData: sigImgData
+    signatureImgData: sigImgData,
+    printedName: printedName.value
   };
 
   // Create a hidden iframe approach (CORS bypass for Google Scripts)
   const form = document.createElement('form');
   form.method = 'POST';
-  form.action = 'https://script.google.com/macros/s/AKfycbxobKLN96g3YMev65nBc8woLP63Z6ah8oJyAxLYJyWxY_WDSb1Hiv1OuBnips9SvTYv/exec';
+  form.action = 'https://script.google.com/macros/s/AKfycbyvzV2bQNDsIR-NkD7q0GYGahVgTOi6m5eQAo-rYy8KDbwxRUbiwrPmAQMIxGX5sy9l/exec';
   form.target = 'hidden-iframe';
   form.style.display = 'none';
   
@@ -378,7 +394,14 @@ const submitData = (sigImgData) => {
   iframe.style.display = 'none';
   
   // Add success/error handlers
-  iframe.onload = function() {    
+  iframe.onload = function() {   
+    try {
+      saving.value = false
+      isSaved.value = true
+      console.log("Window loaded successfully");
+    } catch (error) {
+      console.error("Error during window load:", error);
+    } 
     // Clean up
     setTimeout(function() {
       document.body.removeChild(form);
@@ -441,6 +464,14 @@ onBeforeUnmount(() => {
     cancelAnimationFrame(animationFrameId.value)
   }
 })
+
+watch(isSaved, () => {
+  if (isSaved.value) {
+    setTimeout(function() {
+      isSaved.value = false
+    }, 500); 
+  }
+});
 </script>
 
 <style scoped>
@@ -475,6 +506,7 @@ canvas {
 .sig-controls {
   display: flex;
   gap: 10px;
+  margin-top: 1rem;
 }
 
 .sig-controls button {
@@ -502,5 +534,18 @@ canvas {
 .sig-controls button.secondary:hover {
   color: white;
   border: 3px solid white;
+}
+
+@keyframes blink {
+  from {
+    background-color: red;
+  }
+  to {
+    background-color: rgb(255, 240, 105);
+  }
+}
+
+button.saving {
+  animation: blink 0.5s infinite forwards;
 }
 </style>
