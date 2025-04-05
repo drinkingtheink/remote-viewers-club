@@ -3,14 +3,14 @@
     <h2>Precognition Session</h2>
     
     <p class="panel-subheader">Can you divine which card is chosen by the Hidden Oracle?</p>
-    
+
     <div class="game-container">
       <transition name="fade">
         <div v-if="gameState === 'intro'" class="game-screen">
 
           <LotusAnimation class="lotus-anim-stage" />
           
-          <button @click="startGame" class="btn">Begin Session</button>
+          <button @click="startGame" class="btn begin-session">Begin Session</button>
         </div>
         
         <div v-else-if="gameState === 'playing'" class="game-screen">
@@ -256,5 +256,9 @@ const getFailMsg = () => {
 }
 .fade-enter-from, .fade-leave-to {
   opacity: 0;
+}
+
+.lotus-anim-stage {
+  margin-top: -20px;
 }
 </style>

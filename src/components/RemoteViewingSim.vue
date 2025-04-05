@@ -9,7 +9,7 @@
         <WindowAnimation class="window-anim-stage" />
       </section>
 
-      <button @click="beginSession" class="btn-primary">Begin Session</button>
+      <button @click="beginSession" class="btn-primary begin-session">Begin Session</button>
     </div>
 
     <div v-else-if="stage === 'coordinates'" class="coordinates">

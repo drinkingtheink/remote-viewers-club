@@ -643,7 +643,7 @@ button.enlarge:hover {
   margin: 0 auto;
   background-color: rgba(0,0,0,0.6);
   border-radius: 8px;
-  padding: 25px 10px 10px 10px;
+  padding: 25px 10px 50px 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   border-bottom: 3px solid red;
   margin: 10px;
@@ -705,6 +705,15 @@ button.enlarge:hover {
 .panel-subheader {
   height: 100px;
   font-size: 20pt !important;
+}
+
+button.begin-session {
+  position: absolute;
+  bottom: 1rem;
+  width: 80%;
+  left: 0;
+  right: 0;
+  margin: auto
 }
 
 @keyframes wobble {
