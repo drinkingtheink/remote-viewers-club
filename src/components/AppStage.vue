@@ -636,6 +636,7 @@ button.enlarge:hover {
 .session-stage {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .stage {
@@ -645,7 +646,7 @@ button.enlarge:hover {
   padding: 25px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   border-bottom: 3px solid red;
-  margin: 1rem auto;
+  margin: 10px;
   position: relative;
   transition: all 0.2s;
 
@@ -655,7 +656,7 @@ button.enlarge:hover {
   }
 
   @media only screen and (min-width: 768px) {
-    width: 44%;
+    width: 25%;
     max-width: 1000px;
   }
 }
