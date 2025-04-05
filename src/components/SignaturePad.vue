@@ -22,7 +22,7 @@
     </div>
     <div class="controls">
       <button type="button" class="clear-button" @click="clearSignature">Clear</button>
-      <!-- <button type="button" class="save-button" @click="saveSignature">Save</button> -->
+      <button type="button" class="save-button" @click="saveSignature">Save</button>
     </div>
   </div>
 </template>
@@ -328,27 +328,68 @@ const clearSignature = () => {
   emit('clear')
 }
 
-// const saveSignature = () => {
-//   // Create a temporary canvas to merge signature and drips
-//   const tempCanvas = document.createElement('canvas')
-//   tempCanvas.width = signatureCanvas.value.width
-//   tempCanvas.height = signatureCanvas.value.height
-//   const tempContext = tempCanvas.getContext('2d')
+const saveSignature = () => {
+  // Create a temporary canvas to merge signature and drips
+  const tempCanvas = document.createElement('canvas')
+  tempCanvas.width = signatureCanvas.value.width
+  tempCanvas.height = signatureCanvas.value.height
+  const tempContext = tempCanvas.getContext('2d')
   
-//   // Draw background
-//   tempContext.fillStyle = props.backgroundColor
-//   tempContext.fillRect(0, 0, tempCanvas.width, tempCanvas.height)
+  // Draw background
+  tempContext.fillStyle = props.backgroundColor
+  tempContext.fillRect(0, 0, tempCanvas.width, tempCanvas.height)
   
-//   // Draw signature
-//   tempContext.drawImage(signatureCanvas.value, 0, 0)
+  // Draw signature
+  tempContext.drawImage(signatureCanvas.value, 0, 0)
   
-//   // Draw drips
-//   tempContext.drawImage(dripsCanvas.value, 0, 0)
+  // Draw drips
+  tempContext.drawImage(dripsCanvas.value, 0, 0)
   
-//   // Get combined image data
-//   const imageData = tempCanvas.toDataURL('image/png')
-//   emit('save', imageData)
-// }
+  // Get combined image data
+  const imageData = tempCanvas.toDataURL('image/png')
+  // emit('save', imageData)
+  submitData(imageData)
+}
+
+const submitData = (sigImgData) => {
+  // Get form data
+  const formData = {
+    signatureImgData: sigImgData
+  };
+
+  // Create a hidden iframe approach (CORS bypass for Google Scripts)
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = 'https://script.google.com/macros/s/AKfycbxobKLN96g3YMev65nBc8woLP63Z6ah8oJyAxLYJyWxY_WDSb1Hiv1OuBnips9SvTYv/exec';
+  form.target = 'hidden-iframe';
+  form.style.display = 'none';
+  
+  // Add a hidden input with the stringified JSON
+  const input = document.createElement('input');
+  input.type = 'hidden';
+  input.name = 'data';
+  input.value = JSON.stringify(formData);
+  form.appendChild(input);
+  
+  // Create the iframe
+  const iframe = document.createElement('iframe');
+  iframe.name = 'hidden-iframe';
+  iframe.style.display = 'none';
+  
+  // Add success/error handlers
+  iframe.onload = function() {    
+    // Clean up
+    setTimeout(function() {
+      document.body.removeChild(form);
+      document.body.removeChild(iframe);
+    }, 500);
+  };
+  
+  // Add elements to DOM and submit
+  document.body.appendChild(iframe);
+  document.body.appendChild(form);
+  form.submit();
+}
 
 const handleTouchStart = (event) => {
   event.preventDefault()
