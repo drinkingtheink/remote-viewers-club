@@ -75,8 +75,8 @@
 
 <script setup>
 import { ref } from 'vue'
-import BookAnimation from './animations/BookAnimation.vue'
-import questions from '../data/trivia'
+import BookAnimation from '../animations/BookAnimation.vue'
+import questions from '../../data/trivia'
 
 const paranormalQuestions = questions
 

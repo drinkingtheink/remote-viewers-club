@@ -57,8 +57,8 @@
 
 <script setup>
 import { ref, reactive, computed } from 'vue'
-import failMsgs from '../data/failureFeedback'
-import LotusAnimation from './animations/LotusAnimation.vue'
+import failMsgs from '../../data/failureFeedback'
+import LotusAnimation from '../animations/LotusAnimation.vue'
 
 // Game state
 const gameState = ref('intro'); // 'intro', 'playing', 'result'

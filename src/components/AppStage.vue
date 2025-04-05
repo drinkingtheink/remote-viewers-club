@@ -72,11 +72,11 @@
         </div>
 
         <setion class="session-stage">
-          <GnosisTest />
+          <GnosisSession />
           
-          <RemoteViewingSim />
+          <RemoteViewingSession />
 
-          <PerceptionTraining />`
+          <PrecognitionSession />`
         </setion>
       </section>
 
@@ -100,9 +100,9 @@ import Badge4 from './Badge4.vue'
 import Badge5 from './Badge5.vue'
 import Badge6 from './Badge6.vue'
 import SeeYouThere from './SeeYouThere.vue'
-import RemoteViewingSim from './RemoteViewingSim.vue'
-import PerceptionTraining from './PerceptionTraining.vue'
-import GnosisTest from './GnosisTest.vue'
+import RemoteViewingSession from './sessions/RemoteViewingSession.vue'
+import PrecognitionSession from './sessions/PrecognitionSession.vue'
+import GnosisSession from './sessions/GnosisSession.vue'
 import Join from './Join.vue'
 import RemoteViewingIcon from './icons/RemoteViewingIcon';
 import PrecogIcon from './icons/PrecognitionIcon';
@@ -156,12 +156,12 @@ export default {
     Badge5,
     Badge6,
     SeeYouThere,
-    RemoteViewingSim,
+    RemoteViewingSession,
     PrecogIcon,
     RemoteViewingIcon,
-    PerceptionTraining,
+    PrecognitionSession,
     Join,
-    GnosisTest
+    GnosisSession
   },
   data() {
     return {

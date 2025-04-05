@@ -67,30 +67,30 @@
         </div>
         <div class="actual-target">
           <h4>Actual Target</h4>
-          <img v-if="targetImage.includes('angkor')" src="../assets/angkor-wat.png" alt="Target" class="target-image" />
-          <img v-if="targetImage.includes('antelope')" src="../assets/antelope-canyon.jpg" alt="Target" class="target-image" />
-          <img v-if="targetImage.includes('ayers')" src="../assets/ayers-rock.jpg" alt="Target" class="target-image" />
-          <img v-if="targetImage.includes('bamboo')" src="../assets/bamboo-grove.jpg" alt="Target" class="target-image" />
-          <img v-if="targetImage.includes('bioluminescent')" src="../assets/bioluminescent-bay.jpg" alt="Target" class="target-image" />
-          <img v-if="targetImage.includes('hole')" src="../assets/blue-hole.webp" alt="Target" class="target-image" />
-          <img v-if="targetImage.includes('namib')" src="../assets/namib-desert.webp" alt="Target" class="target-image" />
-          <img v-if="targetImage.includes('machu')" src="../assets/machu-picchu.jpg" alt="Target" class="target-image" />
-          <img v-if="targetImage.includes('everest')" src="../assets/mount-everest.webp" alt="Target" class="target-image" />
-          <img v-if="targetImage.includes('cappadocia')" src="../assets/cappadocia.jpg" alt="Target" class="target-image" />
-          <img v-if="targetImage.includes('ha-long')" src="../assets/ha-long-bay.jpg" alt="Target" class="target-image" />
-          <img v-if="targetImage.includes('lake')" src="../assets/lake-moraine.jpg" alt="Target" class="target-image" />
-          <img v-if="targetImage.includes('petra')" src="../assets/petra.png" alt="Target" class="target-image" />
-          <img v-if="targetImage.includes('salar')" src="../assets/salar-de-uyuni.jpg" alt="Target" class="target-image" />
-          <img v-if="targetImage.includes('santorini')" src="../assets/santorini.png" alt="Target" class="target-image" />
-          <img v-if="targetImage.includes('serengeti')" src="../assets/serengeti.png" alt="Target" class="target-image" />
-          <img v-if="targetImage.includes('taj')" src="../assets/taj-mahal.png" alt="Target" class="target-image" />
-          <img v-if="targetImage.includes('tromso')" src="../assets/tromso.png" alt="Target" class="target-image" />
-          <img v-if="targetImage.includes('venice')" src="../assets/venice.png" alt="Target" class="target-image" />
-          <img v-if="targetImage.includes('victoria')" src="../assets/victoria-falls.webp" alt="Target" class="target-image" />
-          <img v-if="targetImage.includes('zhangjiajie')" src="../assets/zhangjiajie.png" alt="Target" class="target-image" />
-          <img v-if="targetImage.includes('canyon')" src="../assets/grand-canyon.png" alt="Target" class="target-image" />
-          <img v-if="targetImage.includes('barrier')" src="../assets/great-barrier-reef.jpg" alt="Target" class="target-image" />
-          <img v-if="targetImage.includes('easter')" src="../assets/easter-island.jpg" alt="Target" class="target-image" />
+          <img v-if="targetImage.includes('angkor')" src="../../assets/angkor-wat.png" alt="Target" class="target-image" />
+          <img v-if="targetImage.includes('antelope')" src="../../assets/antelope-canyon.jpg" alt="Target" class="target-image" />
+          <img v-if="targetImage.includes('ayers')" src="../../assets/ayers-rock.jpg" alt="Target" class="target-image" />
+          <img v-if="targetImage.includes('bamboo')" src="../../assets/bamboo-grove.jpg" alt="Target" class="target-image" />
+          <img v-if="targetImage.includes('bioluminescent')" src="../../assets/bioluminescent-bay.jpg" alt="Target" class="target-image" />
+          <img v-if="targetImage.includes('hole')" src="../../assets/blue-hole.webp" alt="Target" class="target-image" />
+          <img v-if="targetImage.includes('namib')" src="../../assets/namib-desert.webp" alt="Target" class="target-image" />
+          <img v-if="targetImage.includes('machu')" src="../../assets/machu-picchu.jpg" alt="Target" class="target-image" />
+          <img v-if="targetImage.includes('everest')" src="../../assets/mount-everest.webp" alt="Target" class="target-image" />
+          <img v-if="targetImage.includes('cappadocia')" src="../../assets/cappadocia.jpg" alt="Target" class="target-image" />
+          <img v-if="targetImage.includes('ha-long')" src="../../assets/ha-long-bay.jpg" alt="Target" class="target-image" />
+          <img v-if="targetImage.includes('lake')" src="../../assets/lake-moraine.jpg" alt="Target" class="target-image" />
+          <img v-if="targetImage.includes('petra')" src="../../assets/petra.png" alt="Target" class="target-image" />
+          <img v-if="targetImage.includes('salar')" src="../../assets/salar-de-uyuni.jpg" alt="Target" class="target-image" />
+          <img v-if="targetImage.includes('santorini')" src="../../assets/santorini.png" alt="Target" class="target-image" />
+          <img v-if="targetImage.includes('serengeti')" src="../../assets/serengeti.png" alt="Target" class="target-image" />
+          <img v-if="targetImage.includes('taj')" src="../../assets/taj-mahal.png" alt="Target" class="target-image" />
+          <img v-if="targetImage.includes('tromso')" src="../../assets/tromso.png" alt="Target" class="target-image" />
+          <img v-if="targetImage.includes('venice')" src="../../assets/venice.png" alt="Target" class="target-image" />
+          <img v-if="targetImage.includes('victoria')" src="../../assets/victoria-falls.webp" alt="Target" class="target-image" />
+          <img v-if="targetImage.includes('zhangjiajie')" src="../../assets/zhangjiajie.png" alt="Target" class="target-image" />
+          <img v-if="targetImage.includes('canyon')" src="../../assets/grand-canyon.png" alt="Target" class="target-image" />
+          <img v-if="targetImage.includes('barrier')" src="../../assets/great-barrier-reef.jpg" alt="Target" class="target-image" />
+          <img v-if="targetImage.includes('easter')" src="../../assets/easter-island.jpg" alt="Target" class="target-image" />
           <h5>{{ targetName }}</h5>
           <div class="target-description">{{ targetDescription }}</div>
         </div>
@@ -109,9 +109,9 @@
 
 <script setup>
 import { ref, watch } from 'vue';
-import sites from '../data/latLongSites';
-import failMsgs from '../data/failureFeedback';
-import WindowAnimation from './animations/WindowAnimation.vue';
+import sites from '../../data/latLongSites';
+import failMsgs from '../../data/failureFeedback';
+import WindowAnimation from '../animations/WindowAnimation.vue';
 
 // State variables
 const stage = ref('intro');
