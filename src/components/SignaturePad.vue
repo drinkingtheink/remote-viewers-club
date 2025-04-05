@@ -345,6 +345,8 @@ const clearSignature = () => {
 }
 
 const saveSignature = () => {
+  if (!printedName.value) return
+
   saving.value = true
   // Create a temporary canvas to merge signature and drips
   const tempCanvas = document.createElement('canvas')
