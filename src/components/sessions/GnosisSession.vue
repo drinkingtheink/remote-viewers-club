@@ -97,22 +97,22 @@ function startGame() {
   
   gameStarted.value = true
   gameOver.value = false
-  currentRound.value = 1
   score.value = 0
   nextQuestion()
 }
 
 function nextQuestion() {
-  if (currentRound.value > 20) {
+  currentRound.value++
+  
+  if (currentRound.value > 15) {
     gameOver.value = true
     return
-  }
+  } 
   
   currentQuestion.value = paranormalQuestions[currentRound.value - 1]
   userAnswer.value = ''
   feedback.value = ''
   showResults.value = false
-  currentRound.value++
 }
 
 function selectAnswer(choice) {
