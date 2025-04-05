@@ -389,6 +389,7 @@ const submitData = (sigImgData) => {
   document.body.appendChild(iframe);
   document.body.appendChild(form);
   form.submit();
+  localStorage.setItem('rvc-joined', true);
 }
 
 const handleTouchStart = (event) => {
