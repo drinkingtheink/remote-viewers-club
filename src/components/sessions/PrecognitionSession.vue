@@ -154,7 +154,7 @@ const getFailMsg = () => {
 .game-screen {
   min-height: 100px;
   transition: all 0.2s;
-  margin-top: -50px;
+  margin-top: -20px;
 }
 
 .cards-container {
