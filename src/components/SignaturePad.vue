@@ -328,6 +328,7 @@ const clearSignature = () => {
   const canvas = signatureCanvas.value
   context.value.fillStyle = props.backgroundColor
   context.value.fillRect(0, 0, canvas.width, canvas.height)
+  printedName.value = null
   
   // Clear drips
   drips.value = []
