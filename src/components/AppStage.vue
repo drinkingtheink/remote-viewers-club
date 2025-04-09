@@ -167,7 +167,7 @@ export default {
     return {
       badgeMap: badgeMap,
       activeBadge: null,
-      activeSection: 'praxis',
+      activeSection: 'join',
     }
   },
   methods: {

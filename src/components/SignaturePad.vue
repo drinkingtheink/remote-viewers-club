@@ -376,8 +376,6 @@ const submitData = (sigImgData) => {
     signatureImgData: sigImgData,
     printedName: printedName.value
   };
-
-  // Create a hidden iframe approach (CORS bypass for Google Scripts)
   const form = document.createElement('form');
   form.method = 'POST';
   form.action = 'https://script.google.com/macros/s/AKfycbyvzV2bQNDsIR-NkD7q0GYGahVgTOi6m5eQAo-rYy8KDbwxRUbiwrPmAQMIxGX5sy9l/exec';

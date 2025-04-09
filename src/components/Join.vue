@@ -2,8 +2,6 @@
   <div class="join-us">
     <h2 class="intro">There's always room for one more...</h2>
 
-    <CandleAnimation />
-
     <section class="tos" @mousemove="handleMouseMove" @pointermove="handleMouseMove">
       <h2>REMOTE VIEWERS CLUB</h2>
       <h3>MEMBERSHIP AGREEMENT AND TERMS OF PARTICIPATION</h3>
@@ -111,6 +109,8 @@
 IN WITNESS WHEREOF, the parties have executed this Agreement as of the date first written above, or as of the date they psychically became aware of it, whichever came first.
 
 *Note: By signing this document, MEMBER confirms they have read and understood all terms, or have at least attempted to perceive them psychically. This Agreement is binding in this dimension and all parallel realities.*</p>
+    
+      <CandleAnimation class="candle-mover" />
     </section>
 
     <section class="signature">
@@ -149,7 +149,7 @@ export default {
 :root {
   --color-1: rgb(205 205 155 / 1);
   --color-2: rgb(0 0 0 / 0);
-  --mouse-x: 90%;
+  --mouse-x: 10%;
   --mouse-y: 15em;
 	--size: 15em;
 }
@@ -159,8 +159,9 @@ export default {
   width: 90%;
   margin: 0 auto;
   padding: 2rem 3rem;
-  cursor: crosshair;
+  cursor: grab;
   max-width: 1200px;
+  position: relative;
 }
 
 .tos p {
@@ -196,5 +197,13 @@ export default {
 .signature h3 {
   margin: 0;
   padding: 0;
+}
+
+.candle-mover {
+  position: absolute;
+  left: var(--mouse-x);
+  top: var(--mouse-y);
+  width: 90px;
+  height: 100px;
 }
 </style>
