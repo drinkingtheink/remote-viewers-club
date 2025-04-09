@@ -38,12 +38,40 @@ export default {
 </script>
 
 <style scoped>
+
+@keyframes flamin {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 0.9;
+    }
+}
+
+.candle-stage {
+    max-width: 100px;
+}
+
 .candle-stage path {
     fill: var(--the-yellow);
+}
+
+.candle-stage #flame-1,
+.candle-stage #flame-2,
+.candle-stage #flame-3 {
+    animation: flamin 1s infinite alternate-reverse;
 }
 
 .candle-stage #flame-2,
 .candle-stage #flame-3 {
     opacity: 0;
+}
+
+.candle-stage #flame-2 {
+    animation-delay: 1s;
+}
+
+.candle-stage #flame-3 {
+    animation-delay: 2s;
 }
 </style>
