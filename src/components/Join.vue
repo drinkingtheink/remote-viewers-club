@@ -209,5 +209,11 @@ export default {
   left: var(--mouse-x);
   top: calc(var(--mouse-y) + 20px );
   width: 80px;
+  opacity: 0;
+  transition: all 0.5s;
+}
+
+.tos:hover .candle-mover {
+  opacity: 1;
 }
 </style>
