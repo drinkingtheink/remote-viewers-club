@@ -159,7 +159,7 @@ export default {
   width: 90%;
   margin: 0 auto;
   padding: 2rem 3rem;
-  cursor: grab;
+  cursor: grabbing;
   max-width: 1200px;
   position: relative;
 }
@@ -202,7 +202,7 @@ export default {
 .candle-mover {
   position: absolute;
   left: var(--mouse-x);
-  top: var(--mouse-y);
+  top: calc(var(--mouse-y) + 20px );
   width: 90px;
   height: 100px;
 }
