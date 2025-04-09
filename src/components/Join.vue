@@ -31,7 +31,7 @@
 
 ### ARTICLE II: MEMBERSHIP TERMS
 
-2.1 Membership shall commence upon the execution of this Agreement and receipt of the membership fee of $99.99, payable via credit card, PayPal, cryptocurrency, psychically transferred funds, or cosmic energy exchange (the latter two subject to verification).
+2.1 Membership shall commence upon the signing in blood (or other bodily fluid to be determined beforehand on the Astral Plane) of this Agreement.
 
 2.2 MEMBER acknowledges that THE CLUB makes no guarantees regarding the development of psychic abilities or mastery of arcane practices, and that results may vary from "absolutely nothing" to "mild coincidences that could be interpreted as evidence of paranormal phenomena" to "successful communication with beings from other planes of existence."
 
