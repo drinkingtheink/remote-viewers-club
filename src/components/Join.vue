@@ -2,7 +2,11 @@
   <div class="join-us">
     <h2 class="intro">There's always room for one more...</h2>
 
-    <section class="tos" @mousemove="handleMouseMove" @pointermove="handleMouseMove">
+    <section class="tos" 
+      @mousemove="handleMouseMove" 
+      @pointermove="handleMouseMove" 
+      @mouseenter="handleMouseMove"
+    >
       <h2>REMOTE VIEWERS CLUB</h2>
       <h3>MEMBERSHIP AGREEMENT AND TERMS OF PARTICIPATION</h3>
       <p>**WHEREAS**, the undersigned individual (hereinafter referred to as "MEMBER," "PSYCHIC ASPIRANT," "THIRD EYE ENTHUSIAST," or "YOU") wishes to join the organization known as the Remote Viewers Club (hereinafter referred to as "THE CLUB," "THE ORGANIZATION," "THE PSYCHIC COLLECTIVE," or "THOSE WHO SEE BEYOND");
