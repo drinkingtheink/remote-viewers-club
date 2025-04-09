@@ -2,6 +2,8 @@
   <div class="join-us">
     <h2 class="intro">There's always room for one more...</h2>
 
+    <CandleAnimation />
+
     <section class="tos" @mousemove="handleMouseMove" @pointermove="handleMouseMove">
       <h2>REMOTE VIEWERS CLUB</h2>
       <h3>MEMBERSHIP AGREEMENT AND TERMS OF PARTICIPATION</h3>
@@ -121,12 +123,14 @@ IN WITNESS WHEREOF, the parties have executed this Agreement as of the date firs
 </template>
 
 <script>
-import SignaturePad from './SignaturePad.vue'
+import SignaturePad from './SignaturePad'
+import CandleAnimation from './animations/CandleAnimation'
 
 export default {
     name: 'join-us',
     components: {
-      SignaturePad
+      SignaturePad,
+      CandleAnimation
     },
     methods: {
       handleMouseMove(e) {
