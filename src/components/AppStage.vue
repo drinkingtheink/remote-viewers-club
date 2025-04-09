@@ -41,7 +41,7 @@
     
     <main>
       <section class="gallery" v-if="activeSection === 'gallery'" :key='gallery-stage'>
-        <h2 class="intro">Special Teams and Operations badges executed by the best of our club</h2>
+        <h2 class="intro">Special Teams led by legendary members</h2>
         <div class="badge" v-for="badge, index in badgeMap" :key="badge.title">
           <component :is="`Badge${index + 1}`"></component>
 
