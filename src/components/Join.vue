@@ -166,7 +166,7 @@ export default {
   cursor: grabbing;
   max-width: 1200px;
   position: relative;
-}
+} 
 
 .tos p {
   background: radial-gradient(var(--size) var(--size) at var(--mouse-x) var(--mouse-y),  
@@ -178,6 +178,7 @@ export default {
   color: transparent;
 	user-select: none;
 	text-align: left;
+  animation: flameFlicker 4s infinite alternate;
 }
 
 .tos h2,
@@ -207,7 +208,6 @@ export default {
   position: absolute;
   left: var(--mouse-x);
   top: calc(var(--mouse-y) + 20px );
-  width: 90px;
-  height: 100px;
+  width: 80px;
 }
 </style>
