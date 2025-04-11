@@ -72,6 +72,8 @@
         </div>
 
         <setion class="content-section session-stage">
+          <DowsingSession />
+          
           <RemoteViewingSession />
 
           <PrecognitionSession />
@@ -103,10 +105,11 @@ import SeeYouThere from './SeeYouThere.vue'
 import RemoteViewingSession from './sessions/RemoteViewingSession.vue'
 import PrecognitionSession from './sessions/PrecognitionSession.vue'
 import GnosisSession from './sessions/GnosisSession.vue'
+import DowsingSession from './sessions/DowsingSession.vue'
 import Join from './Join.vue'
-import RemoteViewingIcon from './icons/RemoteViewingIcon';
-import PrecogIcon from './icons/PrecognitionIcon';
-import GnosisIcon from './icons/GnosisIcon';
+import RemoteViewingIcon from './icons/RemoteViewingIcon'
+import PrecogIcon from './icons/PrecognitionIcon'
+import GnosisIcon from './icons/GnosisIcon'
 
 const badgeMap = [
   {
@@ -163,13 +166,14 @@ export default {
     GnosisIcon,
     PrecognitionSession,
     Join,
-    GnosisSession
+    GnosisSession,
+    DowsingSession
   },
   data() {
     return {
       badgeMap: badgeMap,
       activeBadge: null,
-      activeSection: 'gallery',
+      activeSection: 'praxis',
     }
   },
   methods: {
