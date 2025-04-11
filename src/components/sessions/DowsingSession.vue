@@ -1,15 +1,13 @@
 <template>
-  <div class="dowsing-simulator">
+  <div class="dowsing-simulator-container stage">
     <h2>Dowsing Simulator</h2>
     
     <!-- Start screen -->
     <div v-if="!gameStarted" class="start-screen">
       <div class="start-content">
-        <h3>Test Your Dowsing Abilities</h3>
-        <p>Dowsing is the ancient practice of finding hidden water, minerals, or objects using intuition and specialized tools.</p>
-        <p>In this simulator, you'll use your intuition to locate hidden sources in a grid.</p>
+        <p class="panel-subheader">Find hidden water, minerals, or objects using your intuition.</p>
         
-        <div class="setup-options">
+        <!-- <div class="setup-options">
           <div class="difficulty-selector">
             <label>Choose Difficulty: </label>
             <select v-model="difficulty">
@@ -27,13 +25,9 @@
               <option value="energy">Energy Points</option>
             </select>
           </div>
-        </div>
+        </div> -->
         
-        <button @click="startGame" class="start-btn">Begin Dowsing</button>
-        
-        <div class="intro-illustration">
-          <div class="dowsing-rod-image">🔮</div>
-        </div>
+        <button @click="startGame" class="start-btn begin-session">Begin Dowsing</button>
       </div>
     </div>
     
@@ -262,40 +256,17 @@ watch(difficulty, () => {
 </script>
 
 <style scoped>
-.dowsing-simulator {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  font-family: Arial, sans-serif;
-}
-
 /* Start Screen Styles */
 .start-screen {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 500px;
-  background-color: #f0f7ff;
-  border-radius: 12px;
-  padding: 20px;
   text-align: center;
   animation: fadeIn 0.5s ease-in-out;
 }
 
 .start-content {
   max-width: 600px;
-}
-
-.start-content h3 {
-  color: #2c3e50;
-  font-size: 28px;
-  margin-bottom: 20px;
-}
-
-.start-content p {
-  color: #546e7a;
-  line-height: 1.6;
-  margin-bottom: 15px;
 }
 
 .setup-options {
@@ -323,33 +294,7 @@ watch(difficulty, () => {
 .difficulty-selector select, .source-selector select {
   width: 100%;
   padding: 10px;
-  border-radius: 4px;
-  border: 1px solid #b0bec5;
-  background-color: white;
-  font-size: 16px;
-}
-
-.start-btn {
-  background-color: #42b883;
-  color: white;
-  border: none;
-  padding: 15px 30px;
-  border-radius: 6px;
-  font-size: 18px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 20px;
-  box-shadow: 0 4px 6px rgba(66, 184, 131, 0.2);
-}
-
-.start-btn:hover {
-  background-color: #369670;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 8px rgba(66, 184, 131, 0.3);
-}
-
-.intro-illustration {
-  margin-top: 30px;
+  background-color: black;
 }
 
 .dowsing-rod-image {
@@ -474,19 +419,6 @@ watch(difficulty, () => {
 .grid-container.disabled {
   opacity: 0.8;
   pointer-events: none;
-}
-
-.reset-btn {
-  background-color: #42b883;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.reset-btn:hover {
-  background-color: #369670;
 }
 
 .instructions {
