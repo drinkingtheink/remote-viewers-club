@@ -40,7 +40,7 @@
     </section>
     
     <main>
-      <section class="gallery" v-if="activeSection === 'gallery'" :key='gallery-stage'>
+      <section class="content-section gallery" v-if="activeSection === 'gallery'" :key='gallery-stage'>
         <h2 class="intro">Special Teams led by legendary members</h2>
         <div class="badge" v-for="badge, index in badgeMap" :key="badge.title">
           <component :is="`Badge${index + 1}`"></component>
@@ -54,7 +54,7 @@
         </div>
       </section>
 
-      <section class="praxis" v-if="activeSection === 'praxis'" :key='praxis-stage'>
+      <section class="content-section praxis" v-if="activeSection === 'praxis'" :key='praxis-stage'>
         <h2 class="intro">Practice your skills and maybe you can make one of the special teams</h2>
         <div class="focii">
           <span class="focus-option">
@@ -65,18 +65,18 @@
             <PrecogIcon />
             <span class="banner">Precognition</span>
           </span>
-          <!-- <span class="focus-option">
-            <PrecogIcon />
-            <span class="banner">Precognition</span>
-          </span> -->
+          <span class="focus-option">
+            <GnosisIcon />
+            <span class="banner">Gnosis</span>
+          </span>
         </div>
 
-        <setion class="session-stage">
-          <GnosisSession />
-          
+        <setion class="content-section session-stage">
           <RemoteViewingSession />
 
-          <PrecognitionSession />`
+          <PrecognitionSession />
+
+          <GnosisSession />
         </setion>
       </section>
 
@@ -106,6 +106,7 @@ import GnosisSession from './sessions/GnosisSession.vue'
 import Join from './Join.vue'
 import RemoteViewingIcon from './icons/RemoteViewingIcon';
 import PrecogIcon from './icons/PrecognitionIcon';
+import GnosisIcon from './icons/GnosisIcon';
 
 const badgeMap = [
   {
@@ -159,6 +160,7 @@ export default {
     RemoteViewingSession,
     PrecogIcon,
     RemoteViewingIcon,
+    GnosisIcon,
     PrecognitionSession,
     Join,
     GnosisSession
@@ -740,6 +742,11 @@ button.disabled {
 
 button.disabled:hover {
   cursor: not-allowed !important;
+}
+
+.content-section {
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 @keyframes wobble {
