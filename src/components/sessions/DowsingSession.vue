@@ -1,6 +1,6 @@
 <template>
   <div class="dowsing-simulator-container stage">
-    <h2>Dowsing Simulator</h2>
+    <h2>Dowsing Session</h2>
     
     <!-- Start screen -->
     <div v-if="!gameStarted" class="start-screen">
