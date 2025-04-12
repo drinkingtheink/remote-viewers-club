@@ -12,25 +12,24 @@
             <div class="start-content">
                 <p class="panel-subheader">Find hidden water , minerals, or objects using your intuition.</p>
                 
-                <!-- <div class="setup-options">
-                <div class="difficulty-selector">
-                    <label>Choose Difficulty: </label>
-                    <select v-model="difficulty">
-                    <option value="easy">Easy (3 sources)</option>
-                    <option value="medium">Medium (2 sources)</option>
-                    <option value="hard">Hard (1 source)</option>
-                    </select>
+                <div class="setup-options">
+                    <div class="difficulty-selector">
+                        <label>Choose Difficulty: </label>
+                        <select v-model="difficulty">
+                        <option value="easy">Easy (3 sources)</option>
+                        <option value="medium">Medium (2 sources)</option>
+                        <option value="hard">Hard (1 source)</option>
+                        </select>
+                    </div>
+                    <div class="source-selector">
+                        <label>What are you searching for? </label>
+                        <select v-model="sourceType">
+                        <option value="water">Water Sources</option>
+                        <option value="mineral">Mineral Deposits</option>
+                        <option value="energy">Energy Points</option>
+                        </select>
+                    </div>
                 </div>
-                
-                <div class="source-selector">
-                    <label>What are you searching for? </label>
-                    <select v-model="sourceType">
-                    <option value="water">Water Sources</option>
-                    <option value="mineral">Mineral Deposits</option>
-                    <option value="energy">Energy Points</option>
-                    </select>
-                </div>
-                </div> -->
                 
                 <button @click="startGame" class="start-btn begin-session">Begin Session</button>
             </div>
@@ -105,7 +104,7 @@
                         </div>
                         <div v-else-if="cell.revealed && !cell.hasSource" class="miss-icon">✘</div>
 
-                        <img v-if="cell.hasPlant && cell.typog === 'grass'" src="../../assets/bush-1.svg" class="cell-bush" />
+                        <img v-if="cell.hasPlant && cell.typog === 'grass' && !cell.revealed" src="../../assets/bush-1.svg" class="cell-bush" />
                     </div>
                 </div>
             </div>
@@ -309,7 +308,7 @@ watch(difficulty, () => {
   flex-direction: column;
   gap: 15px;
   margin: 25px 0;
-  background-color: red;
+  background-color: black;
   padding: 20px;
   border-radius: 8px;
 }

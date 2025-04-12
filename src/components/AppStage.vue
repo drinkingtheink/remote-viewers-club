@@ -72,13 +72,13 @@
         </div>
 
         <setion class="content-section session-stage">
-          <DowsingSession />
-          
           <RemoteViewingSession />
 
           <PrecognitionSession />
 
           <GnosisSession />
+
+          <DowsingSession />
         </setion>
       </section>
 
