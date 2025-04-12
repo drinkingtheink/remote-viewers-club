@@ -370,8 +370,12 @@ watch(difficulty, () => {
     background-color: #72df7b;
 }
 
+.grid-cell.rock {
+    background-color: #7b7c7b;
+}
+
 .grid-cell:hover {
-  background-color: #d0d0d0;
+  border: 2px solid gold;
 }
 
 .grid-cell.revealed {
@@ -379,14 +383,14 @@ watch(difficulty, () => {
 }
 
 .grid-cell.hit {
-  background-color: #a5d6a7;
+  background-color: white;
 }
 
 .grid-cell.miss {
-  background-color: #ef9a9a;
+  background-color: red;
 }
 
-.grid-cell.warm {
+/* .grid-cell.warm {
   border: 2px solid rgba(255, 235, 59, 0.3);
 }
 
@@ -396,14 +400,14 @@ watch(difficulty, () => {
 
 .grid-cell.hot {
   border: 2px solid rgba(244, 67, 54, 0.7);
-}
+} */
 
 .source-icon {
   font-size: 1.5em;
 }
 
 .miss-icon {
-  color: #b71c1c;
+  color: red;
   font-size: 1.2em;
 }
 
@@ -413,7 +417,7 @@ watch(difficulty, () => {
 
 .meter {
   height: 20px;
-  background-color: #e0e0e0;
+  background-color: #858383;
   border-radius: 10px;
   overflow: hidden;
   margin-top: 5px;
@@ -421,7 +425,7 @@ watch(difficulty, () => {
 
 .meter-fill {
   height: 100%;
-  background: linear-gradient(90deg, #81d4fa, #4fc3f7, #29b6f6, #039be5, #0288d1);
+  background: linear-gradient(90deg, #f7c74d, #f78e4d, #f76f4d, #ee522c, red);
   transition: width 0.3s ease;
 }
 
