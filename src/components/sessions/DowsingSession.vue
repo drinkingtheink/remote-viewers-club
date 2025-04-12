@@ -200,9 +200,10 @@ const findClosestSource = (index) => {
 
 // Update proximity based on closeness to sources
 const updateProximity = (event, index) => {
+    console.log(`CURRENT INDEX >>>> ${index}`)
     if (!gameStarted.value) return
 
-    if (!index) { proximity.value = 0 }
+    if (index === false) { proximity.value = 0 }
     else {
         const closestDistance = findClosestSource(index);
         const maxDistance = Math.sqrt(2 * Math.pow(gridSize, 2));
