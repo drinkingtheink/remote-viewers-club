@@ -87,6 +87,7 @@
                         :class="{ 
                             'grass': cell.typog === 'grass',
                             'rock': cell.typog === 'rock',
+                            'hasPlant': cell.typog === 'grass' && cell.hasPlant,
                             'revealed': cell.revealed, 
                             'hit': cell.revealed && cell.hasSource,
                             'miss': cell.revealed && !cell.hasSource,
@@ -98,9 +99,9 @@
                         @mouseenter="(event) => updateProximity(event, index)"
                     >
                         <div v-if="cell.revealed && cell.hasSource" class="source-icon">
-                        <span v-if="sourceType === 'water'">💧</span>
-                        <span v-else-if="sourceType === 'mineral'">💎</span>
-                        <span v-else>✨</span>
+                            <span v-if="sourceType === 'water'">💧</span>
+                            <span v-else-if="sourceType === 'mineral'">💎</span>
+                            <span v-else>✨</span>
                         </div>
                         <div v-else-if="cell.revealed && !cell.hasSource" class="miss-icon">✘</div>
                     </div>
@@ -145,7 +146,8 @@ const initializeGrid = () => {
   grid.value = Array(totalCells.value).fill().map(() => ({
     hasSource: false,
     revealed: false,
-    typog: getTypogClass()
+    typog: getTypogClass(),
+    hasPlant: getPlantPresence()
   }));
   
   // Place sources randomly
@@ -261,6 +263,10 @@ const getTypogClass = () => {
     return classes[Math.floor(Math.random() * classes.length)];
 };
 
+const getPlantPresence = () => {
+    return Math.random() < 0.3;
+}
+
 // Initialize on mount
 onMounted(() => {
   // Don't initialize grid until game starts
@@ -373,11 +379,16 @@ watch(difficulty, () => {
   cursor: pointer;
   transition: all 0.2s ease;
   border-radius: 4px;
+  position: relative;
 }
 
 .grid-cell.grass {
     background-color: #72df7b;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='12' viewBox='0 0 20 12'%3E%3Cg fill-rule='evenodd'%3E%3Cg id='charlie-brown' fill='%230d7e16' fill-opacity='0.83'%3E%3Cpath d='M9.8 12L0 2.2V.8l10 10 10-10v1.4L10.2 12h-.4zm-4 0L0 6.2V4.8L7.2 12H5.8zm8.4 0L20 6.2V4.8L12.8 12h1.4zM9.8 0l.2.2.2-.2h-.4zm-4 0L10 4.2 14.2 0h-1.4L10 2.8 7.2 0H5.8z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.grid-cell.grass.hasPlant {
+    border: 10px solid lime;    
 }
 
 .grid-cell.rock {
@@ -420,8 +431,8 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 }
 
 .miss-icon {
-  color: red;
-  font-size: 1.2em;
+  color: black;
+  font-size: 2.2em;
 }
 
 .proximity-meter {
