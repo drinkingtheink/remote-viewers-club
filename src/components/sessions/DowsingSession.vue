@@ -334,7 +334,8 @@ watch(difficulty, () => {
 
 .grid-container {
   position: relative;
-  margin: 20px 0;
+  margin: 20px auto 0 auto;
+  max-width: 600px;
 }
 
 .grid {
@@ -435,7 +436,8 @@ watch(difficulty, () => {
   background-color: black;
   padding: 15px;
   border-radius: 8px;
-  font-size: 80%;
+  font-size: 70%;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .instructions h3 {
