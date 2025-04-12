@@ -1,103 +1,108 @@
 <template>
-  <div class="dowsing-simulator-container stage">
+  <div class="dowsing-simulator stage"
+    :class="{ 
+        'active': gameStarted
+        }"
+    >
     <h2>Dowsing Session</h2>
     
     <!-- Start screen -->
-    <div v-if="!gameStarted" class="start-screen">
-      <div class="start-content">
-        <p class="panel-subheader">Find hidden water, minerals, or objects using your intuition.</p>
-        
-        <!-- <div class="setup-options">
-          <div class="difficulty-selector">
-            <label>Choose Difficulty: </label>
-            <select v-model="difficulty">
-              <option value="easy">Easy (3 sources)</option>
-              <option value="medium">Medium (2 sources)</option>
-              <option value="hard">Hard (1 source)</option>
-            </select>
-          </div>
-          
-          <div class="source-selector">
-            <label>What are you searching for? </label>
-            <select v-model="sourceType">
-              <option value="water">Water Sources</option>
-              <option value="mineral">Mineral Deposits</option>
-              <option value="energy">Energy Points</option>
-            </select>
-          </div>
-        </div> -->
-        
-        <button @click="startGame" class="start-btn begin-session">Begin Dowsing</button>
-      </div>
-    </div>
-    
-    <!-- Game screen -->
-    <div v-else>
-      <div class="controls">
-        <div class="difficulty-selector">
-          <label>Difficulty: </label>
-          <select v-model="difficulty" @change="resetGame">
-            <option value="easy">Easy (3 sources)</option>
-            <option value="medium">Medium (2 sources)</option>
-            <option value="hard">Hard (1 source)</option>
-          </select>
-        </div>
-        
-        <div class="stats">
-          <p>Attempts: {{ attempts }}</p>
-          <p>Hits: {{ hits }}</p>
-          <p>Score: {{ score }}</p>
-        </div>
-        
-        <button @click="resetGame" class="reset-btn">New Game</button>
-      </div>
-      
-      <div class="game-status" :class="{ 'success': foundAllSources }">
-        <span v-if="foundAllSources">Success! You found all hidden {{ sourceType }} sources!</span>
-        <span v-else>Find the {{ sourceType }} sources hidden in the grid.</span>
-      </div>
-      
-      <div class="grid-container" :class="{ 'disabled': foundAllSources }">
-        <div class="grid" 
-             :style="{ gridTemplateColumns: `repeat(${gridSize}, 1fr)` }">
-          <div v-for="(cell, index) in grid" 
-               :key="index" 
-               class="grid-cell"
-               :class="{ 
-                 'revealed': cell.revealed, 
-                 'hit': cell.revealed && cell.hasSource,
-                 'miss': cell.revealed && !cell.hasSource,
-                 'warm': getWarmthClass(index).includes('warm'),
-                 'warmer': getWarmthClass(index).includes('warmer'),
-                 'hot': getWarmthClass(index).includes('hot')
-               }"
-               @click="checkCell(index)"
-               @mouseover="updateProximity(index)">
-            <div v-if="cell.revealed && cell.hasSource" class="source-icon">
-              <span v-if="sourceType === 'water'">💧</span>
-              <span v-else-if="sourceType === 'mineral'">💎</span>
-              <span v-else>✨</span>
+    <section class="dowsing-simulator-container">
+        <div v-if="!gameStarted" class="start-screen">
+            <div class="start-content">
+                <p class="panel-subheader">Find hidden water, minerals, or objects using your intuition.</p>
+                
+                <!-- <div class="setup-options">
+                <div class="difficulty-selector">
+                    <label>Choose Difficulty: </label>
+                    <select v-model="difficulty">
+                    <option value="easy">Easy (3 sources)</option>
+                    <option value="medium">Medium (2 sources)</option>
+                    <option value="hard">Hard (1 source)</option>
+                    </select>
+                </div>
+                
+                <div class="source-selector">
+                    <label>What are you searching for? </label>
+                    <select v-model="sourceType">
+                    <option value="water">Water Sources</option>
+                    <option value="mineral">Mineral Deposits</option>
+                    <option value="energy">Energy Points</option>
+                    </select>
+                </div>
+                </div> -->
+                
+                <button @click="startGame" class="start-btn begin-session">Begin Session</button>
             </div>
-            <div v-else-if="cell.revealed && !cell.hasSource" class="miss-icon">✘</div>
-          </div>
         </div>
-      </div>
-      
-      <div class="proximity-meter">
-        <div class="meter-label">Dowsing Rod Sensitivity:</div>
-        <div class="meter">
-          <div class="meter-fill" :style="{ width: `${proximity}%` }"></div>
+        
+        <!-- Game screen -->
+        <div v-else>
+            <div class="instructions">
+                <h3>How to Dowse:</h3>
+                <p>1. Focus your intuition on the grid</p>
+                <p>2. Move your cursor slowly across the grid, paying attention to the sensitivity meter</p>
+                <p>3. Click on cells where you sense hidden sources</p>
+                <p>4. Try to find all sources with as few attempts as possible</p>
+            </div>
+            <div class="controls">
+                <div class="difficulty-selector">
+                <label>Difficulty: </label>
+                <select v-model="difficulty" @change="resetGame" class="diff-selector">
+                    <option value="easy">Easy (3 sources)</option>
+                    <option value="medium">Medium (2 sources)</option>
+                    <option value="hard">Hard (1 source)</option>
+                </select>
+                </div>
+                
+                <div class="stats">
+                <p>Attempts: {{ attempts }}</p>
+                <p>Hits: {{ hits }}</p>
+                <p>Score: {{ score }}</p>
+                </div>
+                
+                <button @click="resetGame" class="reset-btn">New Game</button>
+            </div>
+
+            <div class="proximity-meter">
+                <div class="meter-label">Dowsing Rod Sensitivity:</div>
+                <div class="meter">
+                <div class="meter-fill" :style="{ width: `${proximity}%` }"></div>
+                </div>
+            </div>
+            
+            <div class="game-status" :class="{ 'success': foundAllSources }">
+                <span v-if="foundAllSources">Success! You found all hidden {{ sourceType }} sources!</span>
+                <span v-else>Find the {{ sourceType }} sources hidden in the grid.</span>
+            </div>
+            
+            <div class="grid-container" :class="{ 'disabled': foundAllSources }">
+                <div class="grid" 
+                    :style="{ gridTemplateColumns: `repeat(${gridSize}, 1fr)` }">
+                <div v-for="(cell, index) in grid" 
+                    :key="index" 
+                    class="grid-cell"
+                    :class="{ 
+                        'revealed': cell.revealed, 
+                        'hit': cell.revealed && cell.hasSource,
+                        'miss': cell.revealed && !cell.hasSource,
+                        'warm': getWarmthClass(index).includes('warm'),
+                        'warmer': getWarmthClass(index).includes('warmer'),
+                        'hot': getWarmthClass(index).includes('hot')
+                    }"
+                    @click="checkCell(index)"
+                    @mouseover="updateProximity(index)">
+                    <div v-if="cell.revealed && cell.hasSource" class="source-icon">
+                    <span v-if="sourceType === 'water'">💧</span>
+                    <span v-else-if="sourceType === 'mineral'">💎</span>
+                    <span v-else>✨</span>
+                    </div>
+                    <div v-else-if="cell.revealed && !cell.hasSource" class="miss-icon">✘</div>
+                </div>
+                </div>
+            </div>
         </div>
-      </div>
-      
-      <div class="instructions">
-        <h3>How to Dowse:</h3>
-        <p>1. Focus your intuition on the grid</p>
-        <p>2. Move your cursor slowly across the grid, paying attention to the sensitivity meter</p>
-        <p>3. Click on cells where you sense hidden sources</p>
-        <p>4. Try to find all sources with as few attempts as possible</p>
-      </div>
-    </div>
+    </section>
   </div>
 </template>
 
@@ -256,6 +261,11 @@ watch(difficulty, () => {
 </script>
 
 <style scoped>
+.dowsing-simulator-container {
+    max-width: 800px;
+    text-align: center;
+    margin: 0 auto;
+}
 /* Start Screen Styles */
 .start-screen {
   display: flex;
@@ -274,7 +284,7 @@ watch(difficulty, () => {
   flex-direction: column;
   gap: 15px;
   margin: 25px 0;
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: red;
   padding: 20px;
   border-radius: 8px;
 }
@@ -288,13 +298,13 @@ watch(difficulty, () => {
 
 .difficulty-selector label, .source-selector label {
   font-weight: bold;
-  color: #455a64;
 }
 
 .difficulty-selector select, .source-selector select {
   width: 100%;
   padding: 10px;
-  background-color: black;
+  background-color: red;
+  color: white;
 }
 
 .dowsing-rod-image {
@@ -404,7 +414,7 @@ watch(difficulty, () => {
 }
 
 .game-status {
-  background-color: #e3f2fd;
+  background-color: black;
   padding: 10px;
   border-radius: 4px;
   text-align: center;
@@ -422,10 +432,14 @@ watch(difficulty, () => {
 }
 
 .instructions {
-  margin-top: 30px;
-  background-color: #f5f5f5;
+  background-color: black;
   padding: 15px;
   border-radius: 8px;
+  font-size: 80%;
+}
+
+.instructions h3 {
+    margin-top: 0;
 }
 
 /* Responsive adjustments */
