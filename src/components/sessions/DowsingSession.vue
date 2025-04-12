@@ -7,7 +7,7 @@
     <h2>Dowsing Session</h2>
     
     <!-- Start screen -->
-    <section class="dowsing-simulator-container">
+    <section class="dowsing-simulator-container" @mouseover="(event) => updateProximity(event, false)"  >
         <div v-if="!gameStarted" class="start-screen">
             <div class="start-content">
                 <p class="panel-subheader">Find hidden water , minerals, or objects using your intuition.</p>
@@ -76,33 +76,37 @@
                 <span v-else>Find the {{ sourceType }} sources hidden in the grid.</span>
             </div>
             
-            <div class="grid-container" :class="{ 'disabled': foundAllSources }">
+            <div class="grid-container" 
+                :class="{ 'disabled': foundAllSources }"  
+            >
                 <div class="grid" 
                     :style="{ gridTemplateColumns: `repeat(${gridSize}, 1fr)` }">
-                <div v-for="(cell, index) in grid" 
-                    :key="index" 
-                    class="grid-cell"
-                    :class="{ 
-                        'grass': cell.typog === 'grass',
-                        'rock': cell.typog === 'rock',
-                        'revealed': cell.revealed, 
-                        'hit': cell.revealed && cell.hasSource,
-                        'miss': cell.revealed && !cell.hasSource,
-                        'warm': getWarmthClass(index).includes('warm'),
-                        'warmer': getWarmthClass(index).includes('warmer'),
-                        'hot': getWarmthClass(index).includes('hot'),
-                    }"
-                    @click="checkCell(index)"
-                    @mouseover="updateProximity(index)">
-                    <div v-if="cell.revealed && cell.hasSource" class="source-icon">
-                    <span v-if="sourceType === 'water'">💧</span>
-                    <span v-else-if="sourceType === 'mineral'">💎</span>
-                    <span v-else>✨</span>
+                    <div v-for="(cell, index) in grid" 
+                        :key="index" 
+                        class="grid-cell"
+                        :class="{ 
+                            'grass': cell.typog === 'grass',
+                            'rock': cell.typog === 'rock',
+                            'revealed': cell.revealed, 
+                            'hit': cell.revealed && cell.hasSource,
+                            'miss': cell.revealed && !cell.hasSource,
+                            'warm': getWarmthClass(index).includes('warm'),
+                            'warmer': getWarmthClass(index).includes('warmer'),
+                            'hot': getWarmthClass(index).includes('hot'),
+                        }"
+                        @click="checkCell(index)"
+                        @mouseenter="(event) => updateProximity(event, index)"
+                    >
+                        <div v-if="cell.revealed && cell.hasSource" class="source-icon">
+                        <span v-if="sourceType === 'water'">💧</span>
+                        <span v-else-if="sourceType === 'mineral'">💎</span>
+                        <span v-else>✨</span>
+                        </div>
+                        <div v-else-if="cell.revealed && !cell.hasSource" class="miss-icon">✘</div>
                     </div>
-                    <div v-else-if="cell.revealed && !cell.hasSource" class="miss-icon">✘</div>
-                </div>
                 </div>
             </div>
+            <button @click="gameStarted = false" class="close-btn secondary">Close Session</button>
         </div>
     </section>
   </div>
@@ -191,12 +195,17 @@ const findClosestSource = (index) => {
 };
 
 // Update proximity based on closeness to sources
-const updateProximity = (index) => {
-  const closestDistance = findClosestSource(index);
-  const maxDistance = Math.sqrt(2 * Math.pow(gridSize, 2));
-  
-  // Convert to a percentage (closer = higher percentage)
-  proximity.value = Math.max(0, 100 - (closestDistance / maxDistance * 100));
+const updateProximity = (event, index) => {
+    if (!gameStarted.value) return
+
+    if (!index) { proximity.value = 0 }
+    else {
+        const closestDistance = findClosestSource(index);
+        const maxDistance = Math.sqrt(2 * Math.pow(gridSize, 2));
+        
+        // Convert to a percentage (closer = higher percentage)
+        proximity.value = Math.max(0, 100 - (closestDistance / maxDistance * 100));
+    }
 };
 
 // Get warmth class based on proximity to sources
@@ -348,7 +357,7 @@ watch(difficulty, () => {
 
 .grid {
   display: grid;
-  gap: 2px;
+  gap: 0;
   width: 100%;
   aspect-ratio: 1;
   background-color: #533003;
@@ -391,6 +400,7 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 
 .grid-cell.miss {
   background-color: red;
+  background-image: none;
 }
 
 /* .grid-cell.warm {
@@ -476,5 +486,9 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
   .setup-options {
     gap: 10px;
   }
+}
+
+.close-btn {
+    margin-top: 20px;
 }
 </style>
