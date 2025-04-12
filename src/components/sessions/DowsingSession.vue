@@ -10,7 +10,7 @@
     <section class="dowsing-simulator-container">
         <div v-if="!gameStarted" class="start-screen">
             <div class="start-content">
-                <p class="panel-subheader">Find hidden water, minerals, or objects using your intuition.</p>
+                <p class="panel-subheader">Find hidden water , minerals, or objects using your intuition.</p>
                 
                 <!-- <div class="setup-options">
                 <div class="difficulty-selector">
@@ -47,18 +47,18 @@
             </div>
             <div class="controls">
                 <div class="difficulty-selector">
-                <label>Difficulty: </label>
-                <select v-model="difficulty" @change="resetGame" class="diff-selector">
-                    <option value="easy">Easy (3 sources)</option>
-                    <option value="medium">Medium (2 sources)</option>
-                    <option value="hard">Hard (1 source)</option>
-                </select>
+                    <label>Difficulty: </label>
+                    <select v-model="difficulty" @change="resetGame" class="diff-selector">
+                        <option value="easy">Easy (3 sources)</option>
+                        <option value="medium">Medium (2 sources)</option>
+                        <option value="hard">Hard (1 source)</option>
+                    </select>
                 </div>
                 
                 <div class="stats">
-                <p>Attempts: {{ attempts }}</p>
-                <p>Hits: {{ hits }}</p>
-                <p>Score: {{ score }}</p>
+                    <p>Attempts: {{ attempts }}</p>
+                    <p>Hits: {{ hits }}</p>
+                    <p>Score: {{ score }}</p>
                 </div>
                 
                 <button @click="resetGame" class="reset-btn">New Game</button>
@@ -83,12 +83,14 @@
                     :key="index" 
                     class="grid-cell"
                     :class="{ 
+                        'grass': cell.typog === 'grass',
+                        'rock': cell.typog === 'rock',
                         'revealed': cell.revealed, 
                         'hit': cell.revealed && cell.hasSource,
                         'miss': cell.revealed && !cell.hasSource,
                         'warm': getWarmthClass(index).includes('warm'),
                         'warmer': getWarmthClass(index).includes('warmer'),
-                        'hot': getWarmthClass(index).includes('hot')
+                        'hot': getWarmthClass(index).includes('hot'),
                     }"
                     @click="checkCell(index)"
                     @mouseover="updateProximity(index)">
@@ -138,7 +140,8 @@ const foundAllSources = computed(() => hits.value === sourcesCount.value);
 const initializeGrid = () => {
   grid.value = Array(totalCells.value).fill().map(() => ({
     hasSource: false,
-    revealed: false
+    revealed: false,
+    typog: getTypogClass()
   }));
   
   // Place sources randomly
@@ -244,6 +247,11 @@ const resetGame = () => {
   initializeGrid();
 };
 
+const getTypogClass = () => {
+    const classes = ['grass', 'rock', 'grass', 'grass'];
+    return classes[Math.floor(Math.random() * classes.length)];
+};
+
 // Initialize on mount
 onMounted(() => {
   // Don't initialize grid until game starts
@@ -340,16 +348,15 @@ watch(difficulty, () => {
 
 .grid {
   display: grid;
-  gap: 4px;
+  gap: 2px;
   width: 100%;
   aspect-ratio: 1;
-  background-color: #f5f5f5;
+  background-color: #533003;
   border-radius: 8px;
   overflow: hidden;
 }
 
 .grid-cell {
-  background-color: #e0e0e0;
   aspect-ratio: 1;
   display: flex;
   justify-content: center;
@@ -357,6 +364,10 @@ watch(difficulty, () => {
   cursor: pointer;
   transition: all 0.2s ease;
   border-radius: 4px;
+}
+
+.grid-cell.grass {
+    background-color: #72df7b;
 }
 
 .grid-cell:hover {

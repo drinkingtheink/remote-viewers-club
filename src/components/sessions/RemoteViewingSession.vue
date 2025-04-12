@@ -179,7 +179,7 @@ const beginSession = () => {
     } else {
       clearInterval(interval);
     }
-  }, 2);
+  }, 200);
 };
 
 const submitImpression = () => {

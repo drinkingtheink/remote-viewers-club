@@ -676,7 +676,7 @@ button.enlarge:hover {
   line-height: 1.3;
   font-size: 170%;
   color: white;
-  font-family: "Vollkorn", serif;
+  font-family: Arial, Helvetica, sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
@@ -722,6 +722,7 @@ button.enlarge:hover {
 .panel-subheader {
   height: 100px;
   font-size: 20pt !important;
+  font-family: "Vollkorn", serif !important;
 }
 
 button.begin-session {
