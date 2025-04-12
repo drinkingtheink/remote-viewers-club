@@ -423,8 +423,8 @@ watch(difficulty, () => {
 }
 
 .game-status.success {
-  background-color: #dcedc8;
-  color: #33691e;
+  background-color: var(--success);
+  color: white;
 }
 
 .grid-container.disabled {
