@@ -380,7 +380,7 @@ watch(difficulty, () => {
   align-items: center;
   cursor: pointer;
   transition: all 0.2s ease;
-  border-radius: 4px;
+  /* border-radius: 4px; */
   position: relative;
 }
 
@@ -395,7 +395,7 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 }
 
 .grid-cell:hover {
-  border: 2px solid gold;
+  border: 4px solid gold;
 }
 
 .grid-cell.revealed {
