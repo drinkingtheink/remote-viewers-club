@@ -200,7 +200,6 @@ const findClosestSource = (index) => {
 
 // Update proximity based on closeness to sources
 const updateProximity = (event, index) => {
-    console.log(`CURRENT INDEX >>>> ${index}`)
     if (!gameStarted.value) return
 
     if (index === false) { proximity.value = 0 }
