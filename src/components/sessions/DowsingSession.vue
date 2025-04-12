@@ -436,12 +436,16 @@ watch(difficulty, () => {
   background-color: black;
   padding: 15px;
   border-radius: 8px;
-  font-size: 70%;
-  font-family: Arial, Helvetica, sans-serif;
+  font-size: 60%;
+  margin-bottom: 10px;
 }
 
 .instructions h3 {
     margin-top: 0;
+}
+
+.instructions p {
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 /* Responsive adjustments */

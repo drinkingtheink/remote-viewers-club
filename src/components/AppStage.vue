@@ -663,7 +663,7 @@ button.enlarge:hover {
   }
 
   @media only screen and (min-width: 768px) {
-    width: 25%;
+    width: 45%;
     max-width: 1400px;
   }
 }
