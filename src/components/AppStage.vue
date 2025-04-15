@@ -719,6 +719,11 @@ button.enlarge:hover {
   border: 3px solid white;
 }
 
+button.small {
+  font-size: 65%;
+  padding: 5px 10px;
+}
+
 .panel-subheader {
   height: 100px;
   font-size: 20pt !important;
