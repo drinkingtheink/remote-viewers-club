@@ -12,10 +12,10 @@
             <div class="start-content">
                 <p class="panel-subheader">Find hidden water , minerals, or objects using your intuition.</p>
                 
-                <button v-if="!showOptions" @click="showOptions = true" class="small">Options ></button>
-                <button v-if="showOptions" @click="showOptions = false" class="small">Hide Options</button>
+                <!-- <button v-if="!showOptions" @click="showOptions = true" class="small">Options ></button>
+                <button v-if="showOptions" @click="showOptions = false" class="small">Hide Options</button> -->
                 
-                <div class="setup-options" v-show="showOptions">
+                <!-- <div class="setup-options" v-show="showOptions">
                     <div class="difficulty-selector">
                         <label>Choose Difficulty: </label>
                         <select v-model="difficulty">
@@ -32,7 +32,7 @@
                         <option value="energy">Energy Points</option>
                         </select>
                     </div>
-                </div>
+                </div> -->
 
                 <WandAnimation />
 
@@ -129,7 +129,7 @@ const totalCells = computed(() => gridSize * gridSize);
 const grid = ref([]);
 
 // Game settings
-const showOptions = ref(false);
+// const showOptions = ref(false);
 const sourceType = ref('water');
 const difficulty = ref('medium');
 const sourcesCount = computed(() => {

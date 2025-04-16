@@ -725,7 +725,6 @@ button.small {
 }
 
 .panel-subheader {
-  height: 100px;
   font-size: 20pt !important;
   font-family: "Vollkorn", serif !important;
 }

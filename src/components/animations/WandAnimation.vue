@@ -35,16 +35,16 @@
                 <path d="M206.12,112.51l-2.58-6.35,1.76-8.02c1.42,0,1.61,2.82,1.68,3.79.28,3.73-.4,6.96-.85,10.58Z" />
             </g>
             <g id="hoops">
-                <circle id="hoop-1" class="wand-anim-6" cx="179.08" cy="215.89" r="73.74" />
-                <circle id="hoop-2" class="wand-anim-5" cx="179.08" cy="215.89" r="85.31" />
-                <circle id="hoop-3" class="wand-anim-7" cx="179.08" cy="215.89" r="96.88" />
-                <circle id="hoop-4" class="wand-anim-2" cx="179.08" cy="215.89" r="108.45" />
-                <circle id="hoop-5" class="wand-anim-1" cx="179.08" cy="215.89" r="120.02" />
-                <circle id="hoop-6" class="wand-anim-3" cx="179.08" cy="215.89" r="131.59" />
-                <circle id="hoop-7" class="wand-anim-4" cx="179.08" cy="215.89" r="143.16" />
-                <circle id="hoop-8" class="wand-anim-8" cx="179.08" cy="215.89" r="154.73" />
-                <circle id="hoop-9" class="wand-anim-9" cx="179.08" cy="215.89" r="166.3" />
-                <circle id="hoop-10" class="wand-anim-10" cx="179.08" cy="215.89" r="177.87" />
+                <circle style="animation-delay: 0.0s" id="hoop-1" class="wand-anim-6 wand-circ" cx="179.08" cy="215.89" r="73.74" />
+                <!-- <circle style="animation-delay: 0.2s" id="hoop-2" class="wand-anim-5 wand-circ" cx="179.08" cy="215.89" r="85.31" /> -->
+                <circle style="animation-delay: 0.4s" id="hoop-3" class="wand-anim-7 wand-circ" cx="179.08" cy="215.89" r="96.88" />
+                <!-- <circle style="animation-delay: 0.6s" id="hoop-4" class="wand-anim-2 wand-circ" cx="179.08" cy="215.89" r="108.45" /> -->
+                <circle style="animation-delay: 0.8s" id="hoop-5" class="wand-anim-1 wand-circ" cx="179.08" cy="215.89" r="120.02" />
+                <!-- <circle style="animation-delay: 1s" id="hoop-6" class="wand-anim-3 wand-circ" cx="179.08" cy="215.89" r="131.59" /> -->
+                <circle style="animation-delay: 1.2s" id="hoop-7" class="wand-anim-4 wand-circ" cx="179.08" cy="215.89" r="143.16" />
+                <!-- <circle style="animation-delay: 1.4s" id="hoop-8" class="wand-anim-8 wand-circ" cx="179.08" cy="215.89" r="154.73" /> -->
+                <circle style="animation-delay: 1.6s" id="hoop-9" class="wand-anim-9 wand-circ" cx="179.08" cy="215.89" r="166.3" />
+                <!-- <circle style="animation-delay: 1.8s" id="hoop-10" class="wand-anim-10 wand-circ" cx="179.08" cy="215.89" r="177.87" /> -->
             </g>
         </svg>
 
@@ -73,6 +73,23 @@ export default {
     }
 }
 
+@keyframes blip {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 0.7;
+    }
+}
+
+.dowsing-animation-stage * {
+    fill: var(--the-yellow);
+    transition: all 0.2s;
+    width: 250px;
+    margin: 0 auto;
+}
+
+
 .wand-anim-1 {
 	stroke-width: 1.63px;
 }
@@ -88,7 +105,7 @@ export default {
 .wand-anim-9,
 .wand-anim-10 {
 	fill: none;
-	stroke: #000;
+	stroke: var(--the-yellow);
 	stroke-miterlimit: 10;
 }
 
@@ -124,4 +141,24 @@ export default {
 	stroke-width: 2.41px;
 }
 
+.wand-circ {
+    opacity: 0;
+}
+
+#hand-stick {
+    animation: hover 2s infinite alternate;
+    opacity: 0.7;
+    transform: scale(0.4);
+    transform-origin: center;
+}
+
+.dowsing-animation-stage:hover .wand-circ {
+    animation: blip 1s infinite forwards;
+}
+
+.dowsing-animation-stage:hover #hand-stick {
+    animation: none;
+    opacity: 1;
+    transform: scale(0.7);
+}
 </style>
