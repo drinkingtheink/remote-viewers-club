@@ -34,6 +34,8 @@
                     </div>
                 </div>
 
+                <WandAnimation />
+
                 <button @click="startGame" class="start-btn begin-session">Begin Session</button>
             </div>
         </div>
@@ -119,6 +121,7 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue';
+import WandAnimation from '../animations/WandAnimation.vue'
 
 // Grid configuration
 const gridSize = 10;
