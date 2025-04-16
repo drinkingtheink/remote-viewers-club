@@ -13,10 +13,10 @@
                 <path
                     d="M103.53,335.52l-2.94,10.12-2.94-10.12c-.48-1.65-1.77-2.94-3.42-3.42l-10.12-2.94,10.12-2.94c1.65-.48,2.94-1.77,3.42-3.42l2.94-19.74,2.94,19.74c.48,1.65,1.77,2.94,3.42,3.42l10.12,2.94-10.12,2.94c-1.65.48-2.94,1.77-3.42,3.42Z"
                 />
-                <circle cx="95.22" cy="147.17" r="5.37" />
-                <circle cx="264.16" cy="63.15" r="5.37" />
-                <circle cx="267.91" cy="206.45" r="5.37" />
-                <circle cx="217.8" cy="360.61" r="5.37" />
+                <circle style="animation-delay: 0.2s" cx="95.22" cy="147.17" r="5.37" />
+                <circle style="animation-delay: 0.4s" cx="264.16" cy="63.15" r="5.37" />
+                <circle style="animation-delay: 0.6s" cx="267.91" cy="206.45" r="5.37" />
+                <circle style="animation-delay: 0.8s" cx="217.8" cy="360.61" r="5.37" />
             </g>
             <g id="hand-stick">
                 <path
@@ -89,7 +89,6 @@ export default {
     margin: 0 auto;
 }
 
-
 .wand-anim-1 {
 	stroke-width: 1.63px;
 }
@@ -152,6 +151,20 @@ export default {
     transform-origin: center;
 }
 
+.dowsing-animation-stage #bobbles path {
+    display: none;
+}
+
+.dowsing-animation-stage #bobbles circle {
+    animation: wobble 1s infinite alternate;
+    fill: var(--the-yellow);
+}
+
+.dowsing-animation-stage:hover #bobbles circle {
+    animation: none;
+    opacity: 0;
+}
+
 .dowsing-animation-stage:hover .wand-circ {
     animation: blip 1s infinite forwards;
 }
@@ -159,6 +172,6 @@ export default {
 .dowsing-animation-stage:hover #hand-stick {
     animation: none;
     opacity: 1;
-    transform: scale(0.7);
+    transform: scale(0.9);
 }
 </style>
