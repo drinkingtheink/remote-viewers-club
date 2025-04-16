@@ -13,7 +13,7 @@
                 <p class="panel-subheader">Find hidden water , minerals, or objects using your intuition.</p>
                 
                 <button v-if="!showOptions" @click="showOptions = true" class="small">Options ></button>
-                <button v-if="showOptions" @click="showOptions = false" class="small">Close Options</button>
+                <button v-if="showOptions" @click="showOptions = false" class="small">Hide Options</button>
                 
                 <div class="setup-options" v-show="showOptions">
                     <div class="difficulty-selector">
@@ -33,7 +33,7 @@
                         </select>
                     </div>
                 </div>
-                
+
                 <button @click="startGame" class="start-btn begin-session">Begin Session</button>
             </div>
         </div>
