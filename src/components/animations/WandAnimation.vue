@@ -29,16 +29,16 @@
                 <path d="M139.34,141.14l-1.82-4.48,1.24-5.67c1,0,1.13,1.99,1.19,2.68.2,2.63-.28,4.92-.6,7.47Z" />
             </g>
             <g id="hoops">
-                <circle id="hoop-1" class="wand-anim-3 wand-circ" style="animation-delay: 0s" cx="119.03" cy="101.68" r="41.87" />
-                <circle id="hoop-2" class="wand-anim-4 wand-circ" style="animation-delay: 0s" cx="119.03" cy="101.68" r="48.44" />
-                <circle id="hoop-3" class="wand-anim-8 wand-circ" style="animation-delay: 0s" cx="119.03" cy="101.68" r="55.01" />
-                <circle id="hoop-4" class="wand-anim-5 wand-circ" style="animation-delay: 0s" cx="119.03" cy="101.68" r="61.58" />
-                <circle id="hoop-5" class="wand-anim-10 wand-circ" style="animation-delay: 0s" cx="119.03" cy="101.68" r="68.15" />
+                <circle id="hoop-1" class="wand-anim-3 wand-circ" style="animation-delay: 0.4s" cx="119.03" cy="101.68" r="41.87" />
+                <circle id="hoop-2" class="wand-anim-4 wand-circ" style="animation-delay: 0.6s" cx="119.03" cy="101.68" r="48.44" />
+                <circle id="hoop-3" class="wand-anim-8 wand-circ" style="animation-delay: 1.4s" cx="119.03" cy="101.68" r="55.01" />
+                <circle id="hoop-4" class="wand-anim-5 wand-circ" style="animation-delay: 0.8s" cx="119.03" cy="101.68" r="61.58" />
+                <circle id="hoop-5" class="wand-anim-10 wand-circ" style="animation-delay: 1.8s" cx="119.03" cy="101.68" r="68.15" />
                 <circle id="hoop-6" class="wand-anim-1 wand-circ" style="animation-delay: 0s" cx="119.03" cy="101.68" r="74.72" />
-                <circle id="hoop-7" class="wand-anim-6 wand-circ" style="animation-delay: 0s" cx="119.03" cy="101.68" r="81.28" />
-                <circle id="hoop-8" class="wand-anim-7 wand-circ" style="animation-delay: 0s" cx="119.03" cy="101.68" r="87.85" />
-                <circle id="hoop-9" class="wand-anim-9 wand-circ" style="animation-delay: 0s" cx="119.03" cy="101.68" r="94.42" />
-                <circle id="hoop-10" class="wand-anim-2 wand-circ" style="animation-delay: 0s" cx="119.03" cy="101.68" r="100.99" />
+                <circle id="hoop-7" class="wand-anim-6 wand-circ" style="animation-delay: 1s" cx="119.03" cy="101.68" r="81.28" />
+                <circle id="hoop-8" class="wand-anim-7 wand-circ" style="animation-delay: 1.2s" cx="119.03" cy="101.68" r="87.85" />
+                <circle id="hoop-9" class="wand-anim-9 wand-circ" style="animation-delay: 1.6s" cx="119.03" cy="101.68" r="94.42" />
+                <circle id="hoop-10" class="wand-anim-2 wand-circ" style="animation-delay: 0.2s" cx="119.03" cy="101.68" r="100.99" />
             </g>
         </svg>
     </div>

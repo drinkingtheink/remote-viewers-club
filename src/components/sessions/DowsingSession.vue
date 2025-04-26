@@ -10,7 +10,7 @@
     <section class="dowsing-simulator-container" @mouseover="(event) => updateProximity(event, false)"  >
         <div v-if="!gameStarted" class="start-screen">
             <div class="start-content">
-                <p class="panel-subheader">Find hidden water , minerals, or objects using your intuition.</p>
+                <p class="panel-subheader pull-bottom">Find hidden water , minerals, or objects using your intuition.</p>
                 
                 <!-- <button v-if="!showOptions" @click="showOptions = true" class="small">Options ></button>
                 <button v-if="showOptions" @click="showOptions = false" class="small">Hide Options</button> -->
@@ -489,6 +489,10 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 
 .instructions p {
     font-family: Arial, Helvetica, sans-serif;
+}
+
+.pull-bottom {
+  margin-bottom: -50px;
 }
 
 /* Responsive adjustments */
