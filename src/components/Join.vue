@@ -117,11 +117,14 @@ IN WITNESS WHEREOF, the parties have executed this Agreement as of the date firs
       <CandleAnimation class="candle-mover" />
     </section>
 
-    <section class="signature">
+    <section class="signature" v-show="!isMemberAlready">
       <h3>- Sign Here When Ready -</h3>
       <SignaturePad 
         bloodColor="#8B0000"
       />
+    </section>
+    <section class="signature" v-show="isMemberAlready">
+      <h3>So nice to see you return! We knew you were on your way, of course.</h3>
     </section>
   </div>
 </template>
@@ -131,21 +134,29 @@ import SignaturePad from './SignaturePad'
 import CandleAnimation from './animations/CandleAnimation'
 
 export default {
-    name: 'join-us',
-    components: {
-      SignaturePad,
-      CandleAnimation
-    },
-    methods: {
-      handleMouseMove(e) {
-        const root = document.documentElement;
-        let x = e.offsetX;
-        let y = e.offsetY;
-    
-        root.style.setProperty('--mouse-x', `${x}px`);
-        root.style.setProperty('--mouse-y', `${y}px`);
-      }
+  name: 'join-us',
+  components: {
+    SignaturePad,
+    CandleAnimation
+  },
+  methods: {
+    handleMouseMove(e) {
+      const root = document.documentElement;
+      let x = e.offsetX;
+      let y = e.offsetY;
+  
+      root.style.setProperty('--mouse-x', `${x}px`);
+      root.style.setProperty('--mouse-y', `${y}px`);
     }
+  },
+  data() {
+    return {
+      isMemberAlready: false
+    }
+  },
+  mounted() {
+    this.isMemberAlready = localStorage.getItem('rvc-joined') || false
+  }
 }
 </script>
 

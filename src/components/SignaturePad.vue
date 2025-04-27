@@ -91,6 +91,7 @@ const isAnimating = ref(false)
 const printedName = ref(null)
 const saving = ref(false)
 const isSaved = ref(false)
+const isMemberAlready = ref(false)
 // const isAMember = ref(false)
 
 // Methods
@@ -112,6 +113,8 @@ const setupCanvas = () => {
   dripsContext.value = dripsCanvas.value.getContext('2d')
   dripsContext.value.clearRect(0, 0, dripsCanvas.value.width, dripsCanvas.value.height)
 }
+
+
 
 const handleResize = () => {
   const container = canvasContainer.value
@@ -366,8 +369,8 @@ const saveSignature = () => {
   
   // Get combined image data
   const imageData = tempCanvas.toDataURL('image/png')
-  // Save interaction in local storage
   writeToLocalStorage(imageData, printedName.value)
+  isMemberAlready.value = true;
   // emit('save', imageData)
   submitData(imageData)
 }
@@ -376,7 +379,7 @@ const writeToLocalStorage = (signatureData, writtenName) => {
   const storage = typeof localStorage !== 'undefined' ? localStorage : null
 
   if (storage) {
-    storage.setItem('saveSignature', true)
+    storage.setItem('rvc-joined', true)
     storage.setItem('signatureData', signatureData)
     storage.setItem('writtenName', writtenName)
   }
@@ -425,7 +428,6 @@ const submitData = (sigImgData) => {
   document.body.appendChild(iframe);
   document.body.appendChild(form);
   form.submit();
-  localStorage.setItem('rvc-joined', true);
 }
 
 const handleTouchStart = (event) => {
