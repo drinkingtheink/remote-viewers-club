@@ -1,5 +1,8 @@
 <template>
-    <div class="beyond-bounds" :class="{ animate }">
+    <div 
+        class="beyond-bounds" 
+        :class="{ 'animate': doAnimate }"
+    >
         <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 682.9 682.9" style="enable-background:new 0 0 682.9 682.9;" xml:space="preserve">
             <circle id="bg" cx="341" cy="344.4" r="310.6" />
             <g class="floor">
@@ -1993,23 +1996,34 @@
 export default {
     name: 'badge-1',
     data() {
-    return {
-            counter: 0,
-            intervalId: null,
-            animate: false
-        }
-    },
+        return {
+                counter: 0,
+                intervalId: null,
+                doAnimate: false
+            }
+        },
     mounted() {
+        // Run every 30 seconds
         this.intervalId = setInterval(() => {
-            this.counter++
-            console.log('Running every 5 seconds')
-            // Your function here
-        }, 5000)
+            // Add the class
+            this.doAnimate = true
+            
+            // Remove the class after 10 seconds
+            setTimeout(() => {
+                this.doAnimate = false
+            }, 10000)
+        }, 20000)
+            
+        // Optionally trigger it immediately on mount
+        // this.doAnimate = true
+        // setTimeout(() => {
+        //     this.doAnimate = false
+        // }, 10000)
     },
     beforeUnmount() {
         // Clear interval when component unmounts
         clearInterval(this.intervalId)
-    }
+    },
 }
 </script>
 
@@ -2032,6 +2046,7 @@ export default {
     }
 }
 
+.beyond-bounds.animate #eye-color,
 .beyond-bounds:hover #eye-color {
     animation: shifty 1s infinite alternate-reverse;
 }
@@ -2044,6 +2059,10 @@ export default {
     opacity: 0.3;
 }
 
+.beyond-bounds.animate .space-wheel, 
+.beyond-bounds.animate .circ, 
+.beyond-bounds.animate #stars,
+.beyond-bounds.animate .big-eye,
 .beyond-bounds:hover .space-wheel, 
 .beyond-bounds:hover .circ, 
 .beyond-bounds:hover #stars,
@@ -2061,6 +2080,7 @@ export default {
     }
 }
 
+.beyond-bounds.animate .space-wheel,
 .beyond-bounds:hover .space-wheel {
     animation: spin 5s infinite alternate;
     transform-origin: center;
