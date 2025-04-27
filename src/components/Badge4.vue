@@ -1,5 +1,8 @@
 <template>
-    <div class="heads">
+    <div 
+        class="heads"
+        :class="{ 'animate': doAnimate }"
+    >
         <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 699.47 699.47">
             <circle class="cls-5" cx="349.74" cy="349.74" r="349.74" />
             <circle id="badge-bg" class="cls-3" cx="350.37" cy="349.98" r="324.63" />
@@ -79,6 +82,35 @@
 <script>
 export default {
   name: 'badge-4',
+  data() {
+    return {
+            counter: 0,
+            intervalId: null,
+            doAnimate: false
+        }
+    },
+    mounted() {
+        // Run every 30 seconds
+        this.intervalId = setInterval(() => {
+            // Add the class
+            this.doAnimate = true
+            
+            // Remove the class after 10 seconds
+            setTimeout(() => {
+                this.doAnimate = false
+            }, 10000)
+        }, 35000)
+            
+        // Optionally trigger it immediately on mount
+        // this.doAnimate = true
+        // setTimeout(() => {
+        //     this.doAnimate = false
+        // }, 10000)
+    },
+    beforeUnmount() {
+        // Clear interval when component unmounts
+        clearInterval(this.intervalId)
+    },
 }
 </script>
 
@@ -109,10 +141,18 @@ export default {
     }
 }
 
-.heads:hover #psywacs-stars, .heads:hover #spaceship, .heads:hover #ship-path, .heads:hover #heads {
+.heads.animate #psywacs-stars,
+.heads:hover #psywacs-stars, 
+.heads.animate #spaceship,
+.heads:hover #spaceship, 
+.heads.animate #spaceship,
+.heads:hover #spaceship,
+.heads.animate #heads,
+.heads:hover #heads {
     opacity: 1;
 }
 
+.heads.animate #heads path,
 .heads:hover #heads path {
     animation-name: flicker;
     animation-duration: 1s;
@@ -133,6 +173,7 @@ export default {
   }
 }
 
+.heads.animate #ship-path,
 .heads:hover #ship-path {
     opacity: 1;
     stroke-dasharray: 20;
