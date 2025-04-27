@@ -3,7 +3,7 @@
     <div class="intro-wrapper">
       <SeeYouThere class="watcher" />
       <h1>REMOTE VIEWERS CLUB</h1>
-      <p class="introduction">Remote viewing is the practice of seeking impressions about a distant or unseen subject. Anyone can do it!</p>
+      <p class="introduction">Purveyors, practicioners, and pundits of the metaphysical arts</p>
     </div>
     <div v-if="!!activeBadge" class="modal-mask">
       <div class="modal-wrapper">
@@ -336,7 +336,7 @@ p.introduction {
   font-family: "Unica One", sans-serif;
   font-weight: 400;
   font-style: normal;
-  font-size: 200%;
+  font-size: 250%;
   max-width: 800px;
 
   @media only screen and (max-width: 60em) {
