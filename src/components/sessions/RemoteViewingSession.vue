@@ -110,10 +110,12 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, watch, defineProps } from 'vue';
 import sites from '../../data/latLongSites';
 import failMsgs from '../../data/failureFeedback';
 import WindowAnimation from '../animations/WindowAnimation.vue';
+
+const props = defineProps(['scrollToElement'])
 
 // State variables
 const stage = ref('intro');
@@ -151,6 +153,8 @@ const getFailMsg = () => {
 
 const beginSession = () => {
   stage.value = 'coordinates';
+
+  props.scrollToElement('.remote-viewing-container.stage.active');
   
   // This makes it seem random but actually selects based on something deterministic
   // like the current hour of the day or some other factor
