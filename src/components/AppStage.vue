@@ -72,13 +72,13 @@
         </div> -->
 
         <setion class="content-section session-stage">
-          <RemoteViewingSession />
+          <RemoteViewingSession :scrollToElement="this.scrollToElement" />
 
-          <PrecognitionSession />
+          <PrecognitionSession :scrollToElement="this.scrollToElement" />
 
-          <GnosisSession />
+          <GnosisSession :scrollToElement="this.scrollToElement" />
 
-          <DowsingSession />
+          <DowsingSession :scrollToElement="this.scrollToElement" />
         </setion>
       </section>
 
@@ -183,6 +183,12 @@ export default {
     closeActive() {
       this.activeBadge = null;
     },
+    scrollToElement(selector) {
+      setTimeout(() => {
+        const element = document.querySelector(selector)
+        element?.scrollIntoView({ behavior: 'smooth' })
+      }, 250);
+    }
   }
 }
 </script>

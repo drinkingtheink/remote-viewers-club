@@ -58,9 +58,11 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, defineProps } from 'vue'
 import failMsgs from '../../data/failureFeedback'
 import LotusAnimation from '../animations/LotusAnimation.vue'
+
+const props = defineProps(['scrollToElement'])
 
 // Game state
 const gameState = ref('intro'); // 'intro', 'playing', 'result'
@@ -101,14 +103,7 @@ function initializeCards() {
 function startGame() {
   initializeCards();
   gameState.value = 'playing';
-  scrollToElement('.card-game.stage.active');
-}
-
-function scrollToElement(elClass) {
-  setTimeout(() => {
-    const element = document.querySelector(elClass)
-    element?.scrollIntoView({ behavior: 'smooth' })
-  }, 250);
+  props.scrollToElement('.card-game.stage.active');
 }
 
 // Handle card selection
