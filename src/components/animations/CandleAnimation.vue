@@ -18,7 +18,7 @@
                 d="M246.08,205.14c3.77-7.02,8.16-13.79,11.18-21.12,9.93-24.13,15.59-49.13,11.74-75.36-3.45-23.42-13.99-43.19-32.78-58.05-1.89-1.49-5-1.43-7.54-2.09-.44,2.02-1.41,4.09-1.24,6.06,1.62,18.39-4.47,34.27-15.25,48.81-4.48,6.04-8.9,12.19-12.64,18.7-7.74,13.46-8.97,27.53-3.91,42.46,3.36,9.93,8.04,18.87,14.77,26.79,1.66,1.95,3.31,4.27,5.49,5.29,1.8.84,4.38,0,6.61-.08-.11-1.62.02-3.29-.35-4.84-3.37-13.87-3.46-27.81.8-41.38,4.23-13.47,9.34-26.67,14.41-39.85.81-2.12,3.47-3.53,5.27-5.27,1.58,1.95,4.08,3.68,4.59,5.87,4.48,19.31,1.1,38.33-2.27,57.42-1.69,9.54-2.14,19.31-2.82,29-.17,2.35.98,4.78,1.52,7.18.81.16,1.62.31,2.42.47Z"
             />
         </svg>
-
+        <span v-if="isMemberAlready" class="already-agreed">NOTE: You have already agreed to all of this!</span>
     </div>
 </template>
 
@@ -29,11 +29,24 @@ export default {
         getRandomInt(max) {
             return Math.floor(Math.random() * max);
         }
+    },
+    props: { 
+        isMemberAlready: Boolean
     }
 }
 </script>
 
 <style scoped>
+.already-agreed {
+    color: white;
+    font-weight: bold;
+    background-color: rgba(250, 23, 23, 0.7);
+    padding: 5px;
+    display: inline-block;
+    width: 100px;
+    font-size: 70%;
+    border-radius: 5px;
+}
 
 @keyframes flamin {
     from {

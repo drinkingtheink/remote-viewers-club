@@ -114,7 +114,10 @@ IN WITNESS WHEREOF, the parties have executed this Agreement as of the date firs
 
 *Note: By signing this document, MEMBER confirms they have read and understood all terms, or have at least attempted to perceive them psychically. This Agreement is binding in this dimension and all parallel realities.*</p>
     
-      <CandleAnimation class="candle-mover" />
+      <CandleAnimation 
+        class="candle-mover" 
+        :isMemberAlready="isMemberAlready"
+      />
     </section>
 
     <section class="signature" v-show="!isMemberAlready">
@@ -147,6 +150,9 @@ export default {
   
       root.style.setProperty('--mouse-x', `${x}px`);
       root.style.setProperty('--mouse-y', `${y}px`);
+    },
+    checkIfSigSaved() {
+      this.isMemberAlready = localStorage.getItem('rvc-joined') || false
     }
   },
   data() {
@@ -155,6 +161,9 @@ export default {
     }
   },
   mounted() {
+    this.isMemberAlready = localStorage.getItem('rvc-joined') || false
+  },
+  updated() {
     this.isMemberAlready = localStorage.getItem('rvc-joined') || false
   }
 }
