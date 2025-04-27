@@ -120,8 +120,10 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue';
+import { ref, computed, onMounted, watch, defineProps } from 'vue';
 import WandAnimation from '../animations/WandAnimation.vue'
+
+const props = defineProps(['scrollToElement'])
 
 // Grid configuration
 const gridSize = 10;
@@ -253,6 +255,7 @@ const checkCell = (index) => {
 
 // Start the game
 const startGame = () => {
+  props.scrollToElement('.dowsing-simulator.stage.active')
   gameStarted.value = true;
   initializeGrid();
 };
