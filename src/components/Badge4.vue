@@ -43,7 +43,7 @@
                     />
                 </g>
             </g>
-            <g id="stars">
+            <g id="psywacs-stars">
                 <path
                     id="star1"
                     class="cls-4"
@@ -99,7 +99,7 @@ export default {
     opacity: 0;
 }
 
-#stars {
+#psywacs-stars {
     opacity: 0.7;
 }
 
@@ -109,7 +109,7 @@ export default {
     }
 }
 
-.heads:hover #stars, .heads:hover #spaceship, .heads:hover #ship-path, .heads:hover #heads {
+.heads:hover #psywacs-stars, .heads:hover #spaceship, .heads:hover #ship-path, .heads:hover #heads {
     opacity: 1;
 }
 
