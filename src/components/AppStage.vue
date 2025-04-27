@@ -419,8 +419,8 @@ section.gallery {
 .badge-details h4 {
   margin: 5px 0;
   color: white;
-  font-family: 'Sans Serif';
-  font-size: 110%;
+  font-family: 'Unica One', sans-serif;
+  font-size: 130%;
 }
 
 footer {
