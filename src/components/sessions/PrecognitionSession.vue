@@ -157,6 +157,7 @@ const getFailMsg = () => {
   min-height: 100px;
   transition: all 0.2s;
   margin-top: -20px;
+  padding-top: 2rem;
 }
 
 .cards-container {

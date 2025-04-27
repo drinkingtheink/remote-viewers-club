@@ -366,8 +366,20 @@ const saveSignature = () => {
   
   // Get combined image data
   const imageData = tempCanvas.toDataURL('image/png')
+  // Save interaction in local storage
+  writeToLocalStorage(imageData, printedName.value)
   // emit('save', imageData)
   submitData(imageData)
+}
+
+const writeToLocalStorage = (signatureData, writtenName) => {
+  const storage = typeof localStorage !== 'undefined' ? localStorage : null
+
+  if (storage) {
+    storage.setItem('saveSignature', true)
+    storage.setItem('signatureData', signatureData)
+    storage.setItem('writtenName', writtenName)
+  }
 }
 
 const submitData = (sigImgData) => {
