@@ -1997,11 +1997,11 @@ export default {
     name: 'badge-1',
     data() {
         return {
-                counter: 0,
-                intervalId: null,
-                doAnimate: false
-            }
-        },
+            counter: 0,
+            intervalId: null,
+            doAnimate: false
+        }
+    },
     mounted() {
         // Run every 30 seconds
         this.intervalId = setInterval(() => {

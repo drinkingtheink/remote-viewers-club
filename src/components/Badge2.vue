@@ -1,5 +1,8 @@
 <template>
-<div class="remote-viewers">
+<div 
+    class="remote-viewers"
+    :class="{ 'animate': doAnimate }"
+>
     <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
         viewBox="0 0 720 709" style="enable-background:new 0 0 720 709;" xml:space="preserve">
         <circle class="st0" cx="370.3" cy="359.3" r="349.7"/>
@@ -199,6 +202,35 @@
 <script>
 export default {
   name: 'badge-2',
+  data() {
+    return {
+            counter: 0,
+            intervalId: null,
+            doAnimate: false
+        }
+    },
+    mounted() {
+        // Run every 30 seconds
+        this.intervalId = setInterval(() => {
+            // Add the class
+            this.doAnimate = true
+            
+            // Remove the class after 10 seconds
+            setTimeout(() => {
+                this.doAnimate = false
+            }, 10000)
+        }, 25000)
+            
+        // Optionally trigger it immediately on mount
+        // this.doAnimate = true
+        // setTimeout(() => {
+        //     this.doAnimate = false
+        // }, 10000)
+    },
+    beforeUnmount() {
+        // Clear interval when component unmounts
+        clearInterval(this.intervalId)
+    },
 }
 </script>
 
@@ -222,6 +254,7 @@ export default {
     opacity: 0;
 }
 
+.remote-viewers.animate .skull.right,
 .remote-viewers:hover .skull.right {
     opacity: 1;
 }
@@ -235,10 +268,12 @@ export default {
     opacity: 0;
 }
 
+.remote-viewers.animate .skull.left,
 .remote-viewers:hover .skull.left {
     opacity: 0;
 }
 
+.remote-viewers.animate .st3,
 .remote-viewers:hover .st3 {
     stroke-width: 7px;
     stroke: #EA1313;
@@ -260,12 +295,14 @@ export default {
   }
 }
 
+.remote-viewers.animate .laser,
 .remote-viewers:hover .laser {
     animation-name: flicker;
     animation-duration: 0.5s;
     animation-iteration-count: infinite;
 }
 
+.remote-viewers.animate .star,
 .remote-viewers:hover .star {
     animation: flicker 2s;
     animation-iteration-count: infinite;
@@ -279,6 +316,7 @@ export default {
     opacity: 0.2;
 }
 
+.remote-viewers.animate .laser,
 .remote-viewers:hover .laser {
     opacity: 1;
 }
@@ -295,18 +333,21 @@ export default {
     }
 }
 
+.remote-viewers.animate .right#skull-bot,
 .remote-viewers:hover .right#skull-bot {
     animation: jaw 5s;
     animation-iteration-count: infinite;
     animation-direction: alternate;
 }
 
+.remote-viewers.animate #grid,
 .remote-viewers:hover #grid {
     opacity: 1;
     stroke-dasharray: 10;
     animation: dash 50s linear infinite;
 }
 
+.remote-viewers.animate .skull.left,
 .remote-viewers:hover .skull.left {
     display: none;
 } 
