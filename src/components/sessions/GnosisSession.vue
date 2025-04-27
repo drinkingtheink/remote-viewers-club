@@ -74,9 +74,11 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, defineProps } from 'vue'
 import BookAnimation from '../animations/BookAnimation.vue'
 import questions from '../../data/trivia'
+
+const props = defineProps(['scrollToElement'])
 
 const paranormalQuestions = questions
 
@@ -92,6 +94,8 @@ const showResults = ref(false)
 const currentQuestion = ref(null)
 
 function startGame() {
+  props.scrollToElement('.gnosis-container.stage.active')
+
   // Shuffle the questions
   paranormalQuestions.sort(() => Math.random() - 0.5)
   
