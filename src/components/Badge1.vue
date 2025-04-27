@@ -1,5 +1,5 @@
 <template>
-    <div class="beyond-bounds">
+    <div class="beyond-bounds" :class="{ animate }">
         <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 682.9 682.9" style="enable-background:new 0 0 682.9 682.9;" xml:space="preserve">
             <circle id="bg" cx="341" cy="344.4" r="310.6" />
             <g class="floor">
@@ -1992,6 +1992,24 @@
 <script>
 export default {
     name: 'badge-1',
+    data() {
+    return {
+            counter: 0,
+            intervalId: null,
+            animate: false
+        }
+    },
+    mounted() {
+        this.intervalId = setInterval(() => {
+            this.counter++
+            console.log('Running every 5 seconds')
+            // Your function here
+        }, 5000)
+    },
+    beforeUnmount() {
+        // Clear interval when component unmounts
+        clearInterval(this.intervalId)
+    }
 }
 </script>
 
