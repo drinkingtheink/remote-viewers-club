@@ -99,7 +99,7 @@ export default {
             setTimeout(() => {
                 this.doAnimate = false
             }, 10000)
-        }, 35000)
+        }, 25000)
             
         // Optionally trigger it immediately on mount
         // this.doAnimate = true

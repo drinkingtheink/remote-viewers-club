@@ -1,5 +1,8 @@
 <template>
-    <div class="temporal-recon">
+    <div 
+        class="temporal-recon"
+        :class="{ 'animate': doAnimate }"    
+    >
         <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
         viewBox="0 0 682.9 682.9" style="enable-background:new 0 0 682.9 682.9;" xml:space="preserve">
             <circle id="bg" cx="341.5" cy="342.9" r="316.1"/>
@@ -134,6 +137,29 @@
 <script>
 export default {
   name: 'badge-6',
+  data() {
+    return {
+            counter: 0,
+            intervalId: null,
+            doAnimate: false
+        }
+    },
+    mounted() {
+        // Run every 30 seconds
+        this.intervalId = setInterval(() => {
+            // Add the class
+            this.doAnimate = true
+            
+            // Remove the class after 10 seconds
+            setTimeout(() => {
+                this.doAnimate = false
+            }, 10000)
+        }, 35000)
+    },
+    beforeUnmount() {
+        // Clear interval when component unmounts
+        clearInterval(this.intervalId)
+    },
 }
 </script>
 
@@ -168,6 +194,7 @@ export default {
     opacity: 0.4;
 }
 
+.temporal-recon.animate #moons,
 .temporal-recon:hover #moons {
     opacity: 1;
 }
@@ -177,6 +204,7 @@ export default {
     transition: all 2s;
 }
 
+.temporal-recon.animate #hourglass,
 .temporal-recon:hover #hourglass {
     opacity: 1;
     animation: dripsand 10s infinite;
@@ -186,6 +214,7 @@ export default {
     opacity: 0;
 }
 
+.temporal-recon.animate #lotus,
 .temporal-recon:hover #lotus {
     /* animation: dash 30s; */
     stroke-dasharray: 10;
@@ -193,6 +222,7 @@ export default {
     opacity: 0.7;
 }
 
+.temporal-recon.animate #lotus *,
 .temporal-recon:hover #lotus * {
     animation: flicker 3s infinite;
 }
@@ -202,19 +232,23 @@ export default {
     transition: all 0.5s;
 }
 
+.temporal-recon.animate #outer-ring *,
 .temporal-recon:hover #outer-ring * {
     fill:#ED0000;
 }
 
+.temporal-recon.animate #anim1,
 .temporal-recon:hover #anim1 {
     animation: flicker 2s alternate-reverse;
 }
 
+.temporal-recon.animate #anim2,
 .temporal-recon:hover #anim2 {
     animation: flicker 2s alternate-reverse;
     animation-delay: 2s;
 }
 
+.temporal-recon.animate #anim3,
 .temporal-recon:hover #anim3 {
     animation: flicker 2s alternate-reverse;
     animation-delay: 4s;
