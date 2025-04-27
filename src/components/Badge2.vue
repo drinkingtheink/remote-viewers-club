@@ -215,8 +215,8 @@ export default {
             
             setTimeout(() => {
                 this.doAnimate = false
-            }, 10000)
-        }, 20000)
+            }, 8000)
+        }, 15000)
     },
     beforeUnmount() {
         clearInterval(this.intervalId)
