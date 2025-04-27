@@ -1,5 +1,8 @@
 <template>
-    <div class="electronic-phantoms">
+    <div 
+        class="electronic-phantoms"
+        :class="{ 'animate': doAnimate }"    
+    >
         <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 682.89 682.89">
             <circle id="bg" class="cls-3" cx="341.45" cy="342.93" r="316.15"/>
             <g id="lights">
@@ -66,6 +69,35 @@
 <script>
 export default {
   name: 'badge-3',
+  data() {
+    return {
+            counter: 0,
+            intervalId: null,
+            doAnimate: false
+        }
+    },
+    mounted() {
+        // Run every 30 seconds
+        this.intervalId = setInterval(() => {
+            // Add the class
+            this.doAnimate = true
+            
+            // Remove the class after 10 seconds
+            setTimeout(() => {
+                this.doAnimate = false
+            }, 10000)
+        }, 30000)
+            
+        // Optionally trigger it immediately on mount
+        // this.doAnimate = true
+        // setTimeout(() => {
+        //     this.doAnimate = false
+        // }, 10000)
+    },
+    beforeUnmount() {
+        // Clear interval when component unmounts
+        clearInterval(this.intervalId)
+    },
 }
 </script>
 
@@ -108,6 +140,7 @@ export default {
     transition: all 1s;
 }
 
+.electronic-phantoms.animate #phantom,
 .electronic-phantoms:hover #phantom {
     transform: translate(0, 0) scale(1);
     opacity: 1;
@@ -121,12 +154,14 @@ export default {
     opacity: 0;
 }
 
+.electronic-phantoms.animate .star,
 .electronic-phantoms:hover .star {
     opacity: 1;
     animation: flicker 2s;
     animation-iteration-count: infinite;
 }
 
+.electronic-phantoms.animate #lights,
 .electronic-phantoms:hover #lights {
     opacity: 1;
     transition: opacity 0.5s;
@@ -144,7 +179,10 @@ export default {
     transform: translate(-10px, -5px);
 }
 
-.electronic-phantoms:hover #hand, .electronic-phantoms:hover #threads {
+.electronic-phantoms.animate #hand,
+.electronic-phantoms:hover #hand, 
+.electronic-phantoms.animate #threads,
+.electronic-phantoms:hover #threads {
     opacity: 1;
     transform: translate(0, 0);
     transition: all 1.25s;
@@ -154,6 +192,7 @@ export default {
     transition: all 1s;
 }
 
+.electronic-phantoms.animate #tower,
 .electronic-phantoms:hover #tower {
     transform: translateY(50px);
     opacity: 0;
