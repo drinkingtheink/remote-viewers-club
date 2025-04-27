@@ -101,6 +101,14 @@ function initializeCards() {
 function startGame() {
   initializeCards();
   gameState.value = 'playing';
+  scrollToElement('.card-game.stage.active');
+}
+
+function scrollToElement(elClass) {
+  setTimeout(() => {
+    const element = document.querySelector(elClass)
+    element?.scrollIntoView({ behavior: 'smooth' })
+  }, 250);
 }
 
 // Handle card selection
