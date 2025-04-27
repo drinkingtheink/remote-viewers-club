@@ -60,25 +60,15 @@ export default {
         }
     },
     mounted() {
-        // Run every 30 seconds
         this.intervalId = setInterval(() => {
-            // Add the class
             this.doAnimate = true
             
-            // Remove the class after 10 seconds
             setTimeout(() => {
                 this.doAnimate = false
             }, 10000)
-        }, 30000)
-            
-        // Optionally trigger it immediately on mount
-        // this.doAnimate = true
-        // setTimeout(() => {
-        //     this.doAnimate = false
-        // }, 10000)
+        }, 20000)
     },
     beforeUnmount() {
-        // Clear interval when component unmounts
         clearInterval(this.intervalId)
     },
 }
