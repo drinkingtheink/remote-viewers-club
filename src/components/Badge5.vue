@@ -1,5 +1,8 @@
 <template>
-    <div class="eye-ship">
+    <div 
+        class="eye-ship"
+        :class="{ 'animate': doAnimate }"    
+    >
         <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 696.42 693.28">
             <ellipse id="red-bg" class="cls-4" cx="348.21" cy="348.14" rx="319.64" ry="318.18" />
             <polygon
@@ -49,6 +52,35 @@
 <script>
 export default {
   name: 'badge-5',
+  data() {
+    return {
+            counter: 0,
+            intervalId: null,
+            doAnimate: false
+        }
+    },
+    mounted() {
+        // Run every 30 seconds
+        this.intervalId = setInterval(() => {
+            // Add the class
+            this.doAnimate = true
+            
+            // Remove the class after 10 seconds
+            setTimeout(() => {
+                this.doAnimate = false
+            }, 10000)
+        }, 40000)
+            
+        // Optionally trigger it immediately on mount
+        // this.doAnimate = true
+        // setTimeout(() => {
+        //     this.doAnimate = false
+        // }, 10000)
+    },
+    beforeUnmount() {
+        // Clear interval when component unmounts
+        clearInterval(this.intervalId)
+    },
 }
 </script>
 
@@ -83,6 +115,7 @@ export default {
     transition: all 2s;
 }
 
+.eye-ship.animate #bg-flight-lines,
 .eye-ship:hover #bg-flight-lines {
     opacity: 1;
     animation: smear 1s;
@@ -122,6 +155,7 @@ export default {
     transition: all 1s;
 }
 
+.eye-ship.animate #ship,
 .eye-ship:hover #ship {
     transform: translateX(0);
     opacity: 1;
@@ -132,6 +166,7 @@ export default {
     fill: #FFF;
 }
 
+.eye-ship.animate #flight-lines-inner,
 .eye-ship:hover #flight-lines-inner {
     filter: blur(4px);
     animation: smear 1s;
@@ -144,6 +179,7 @@ export default {
     fill: #000;
 }
 
+.eye-ship.animate #red-bg,
 .eye-ship:hover #red-bg {
     fill: #e80000;
 }
