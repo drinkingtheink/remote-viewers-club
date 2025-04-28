@@ -2010,6 +2010,11 @@ export default {
                 this.doAnimate = false
             }, 8000)
         }, 15000)
+
+        this.doAnimate = true
+        setTimeout(() => {
+            this.doAnimate = false
+        }, 5000)
     },
     beforeUnmount() {
         clearInterval(this.intervalId)
