@@ -202,26 +202,26 @@ export default {
 /**** TYPOG ****/
 /* Anta */
 @font-face {
-    font-family: 'Anta';
-    font-style: normal;
-    font-weight: 400;
-    src: url('../assets/fonts/anta/Anta-Regular.ttf') format('truetype');
+  font-family: 'Anta';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../assets/fonts/anta/Anta-Regular.ttf') format('truetype');
 }
 
 /* Vollkorn */
 @font-face {
-    font-family: 'Vollkorn';
-    font-style: normal;
-    font-weight: 600;
-    src: url('../assets/fonts/vollkorn/Vollkorn-Bold.ttf') format('truetype');
+  font-family: 'Vollkorn';
+  font-style: normal;
+  font-weight: 600;
+  src: url('../assets/fonts/vollkorn/Vollkorn-Bold.ttf') format('truetype');
 }
 
 /* Vollkorn */
 @font-face {
-    font-family: 'Unica One';
-    font-style: normal;
-    font-weight: 600;
-    src: url('../assets/fonts/unica-one/UnicaOne-Regular.ttf') format('truetype');
+  font-family: 'Unica One';
+  font-style: normal;
+  font-weight: 600;
+  src: url('../assets/fonts/unica-one/UnicaOne-Regular.ttf') format('truetype');
 }
 
 .modal-mask {
