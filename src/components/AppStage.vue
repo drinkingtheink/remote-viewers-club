@@ -194,13 +194,36 @@ export default {
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Anta&family=Exo:wght@300;700&family=Russo+One&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Vollkorn:ital,wght@0,400..900;1,400..900&display=swap');
- 
 :root {
   --the-yellow: #f1f380;
   --success: #2ecc71;
 }
+
+/**** TYPOG ****/
+/* Anta */
+@font-face {
+    font-family: 'Anta';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../assets/fonts/anta/Anta-Regular.ttf') format('truetype');
+}
+
+/* Vollkorn */
+@font-face {
+    font-family: 'Vollkorn';
+    font-style: normal;
+    font-weight: 600;
+    src: url('../assets/fonts/vollkorn/Vollkorn-Bold.ttf') format('truetype');
+}
+
+/* Vollkorn */
+@font-face {
+    font-family: 'Unica One';
+    font-style: normal;
+    font-weight: 600;
+    src: url('../assets/fonts/unica-one/UnicaOne-Regular.ttf') format('truetype');
+}
+
 .modal-mask {
   position: fixed;
   z-index: 9998;
