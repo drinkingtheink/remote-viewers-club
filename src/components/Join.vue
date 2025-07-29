@@ -129,17 +129,23 @@ IN WITNESS WHEREOF, the parties have executed this Agreement as of the date firs
     <section class="signature" v-show="isMemberAlready">
       <h3>So nice to see you return! We knew you were on your way, of course.</h3>
     </section>
+
+    <section class="signature-gallery">
+      <SignatureGallery />
+    </section>
   </div>
 </template>
 
 <script>
 import SignaturePad from './SignaturePad'
+import SignatureGallery from './SignatureGallery'
 import CandleAnimation from './animations/CandleAnimation'
 
 export default {
   name: 'join-us',
   components: {
     SignaturePad,
+    SignatureGallery,
     CandleAnimation
   },
   methods: {

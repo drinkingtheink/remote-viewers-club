@@ -1,0 +1,436 @@
+<template>
+  <div class="container">
+    <div class="header">
+      <h1>Signature Gallery</h1>
+      <button @click="refreshData" :disabled="loading" class="refresh-btn">
+        {{ loading ? 'Loading...' : 'Refresh Data' }}
+      </button>
+    </div>
+    
+    <div v-if="loading" class="loading">
+      <div class="spinner"></div>
+      <p>Loading signatures...</p>
+    </div>
+    
+    <div v-else-if="error" class="error">
+      <h3>⚠️ Error Loading Data</h3>
+      <p>{{ error }}</p>
+      <button @click="refreshData" class="retry-btn">Try Again</button>
+    </div>
+    
+    <div v-else-if="items.length === 0" class="empty">
+      <h3>📝 No Signatures Found</h3>
+      <p>No signature data found in the spreadsheet.</p>
+      <button @click="refreshData" class="retry-btn">Refresh</button>
+    </div>
+    
+    <div v-else class="content">
+      <div class="stats">
+        <p>Found {{ items.length }} signature{{ items.length !== 1 ? 's' : '' }}</p>
+        <small v-if="lastUpdated">Last updated: {{ formatDate(lastUpdated) }}</small>
+      </div>
+      
+      <div class="items-grid">
+        <div 
+          v-for="(item, index) in items" 
+          :key="item.id || index"
+          class="item-card"
+        >
+          <div class="card-header">
+            <h3>{{ item.title || item.printedName || 'Untitled' }}</h3>
+            <span class="item-id">#{{ item.id }}</span>
+          </div>
+          
+          <div class="image-container">
+            <img 
+              v-if="item.image && isValidBase64Image(item.image)" 
+              :src="item.image" 
+              :alt="`Signature by ${item.title}`"
+              class="signature-image"
+              @error="handleImageError($event, index)"
+              @load="handleImageLoad"
+            />
+            <div v-else class="no-image">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                <polyline points="14,2 14,8 20,8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+                <polyline points="10,9 9,9 8,9"/>
+              </svg>
+              <span>No signature image</span>
+            </div>
+          </div>
+          
+          <div v-if="item.description" class="item-description">
+            {{ item.description }}
+          </div>
+          
+          <div v-if="item.timestamp" class="timestamp">
+            <small>{{ formatDate(item.timestamp) }}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted } from 'vue'
+
+// Reactive data
+const items = ref([])
+const loading = ref(false)
+const error = ref(null)
+const lastUpdated = ref(null)
+
+// Configuration - Replace with your actual Google Apps Script web app URL
+// This should be the URL you got when you deployed your Apps Script as a web app
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/1c_lczLtRyU9dBozm_tO2ylT78duPaj7fVlBQli81ozPqRS9Z4QOSJM00/exec'
+
+// Validate base64 image format
+const isValidBase64Image = (str) => {
+  if (!str || typeof str !== 'string') return false
+  
+  // Check if it's a proper data URL format
+  const dataUrlRegex = /^data:image\/(png|jpg|jpeg|gif|webp|svg\+xml);base64,/
+  return dataUrlRegex.test(str)
+}
+
+// Format date for display
+const formatDate = (dateString) => {
+  try {
+    const date = new Date(dateString)
+    return date.toLocaleString()
+  } catch (e) {
+    return dateString
+  }
+}
+
+// Fetch data from Google Apps Script
+const fetchSheetData = async () => {
+  try {
+    loading.value = true
+    error.value = null
+
+    console.log('Fetching data from Google Apps Script...')
+
+    // Use fetch with no-cors mode to avoid CORS issues
+    const response = await fetch(APPS_SCRIPT_URL, {
+      method: 'GET',
+      mode: 'cors', // Apps Script handles CORS
+      cache: 'no-cache',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    
+    const result = await response.json()
+    
+    console.log('Response from Apps Script:', result)
+    
+    if (!result.success) {
+      throw new Error(result.error || result.message || 'Unknown error from Apps Script')
+    }
+    
+    // Process the successful response
+    items.value = result.data || []
+    lastUpdated.value = result.lastUpdated || new Date().toISOString()
+    
+    console.log(`Successfully loaded ${items.value.length} items`)
+    
+  } catch (err) {
+    console.error('Error fetching sheet data:', err)
+    error.value = err.message
+    
+    // If it's a CORS error, provide helpful message
+    if (err.message.includes('CORS') || err.message.includes('fetch')) {
+      error.value = 'Unable to fetch data. Please make sure your Google Apps Script is deployed correctly and publicly accessible.'
+    }
+  } finally {
+    loading.value = false
+  }
+}
+
+// Alternative approach using JSONP if CORS becomes an issue
+// const fetchWithJSONP = () => {
+//   return new Promise((resolve, reject) => {
+//     const callbackName = 'jsonp_callback_' + Math.round(100000 * Math.random())
+    
+//     // Create script element
+//     const script = document.createElement('script')
+//     script.src = `${APPS_SCRIPT_URL}?callback=${callbackName}`
+    
+//     // Set up callback
+//     window[callbackName] = (data) => {
+//       delete window[callbackName]
+//       document.body.removeChild(script)
+//       resolve(data)
+//     }
+    
+//     // Handle errors
+//     script.onerror = () => {
+//       delete window[callbackName]
+//       document.body.removeChild(script)
+//       reject(new Error('JSONP request failed'))
+//     }
+    
+//     // Add script to document
+//     document.body.appendChild(script)
+    
+//     // Cleanup after timeout
+//     setTimeout(() => {
+//       if (window[callbackName]) {
+//         delete window[callbackName]
+//         document.body.removeChild(script)
+//         reject(new Error('JSONP request timeout'))
+//       }
+//     }, 10000)
+//   })
+// }
+
+// Handle image loading errors
+const handleImageError = (event, index) => {
+  console.error(`Image failed to load for item ${index}:`, event.target.src)
+  event.target.style.display = 'none'
+}
+
+// Handle successful image load
+const handleImageLoad = () => {
+  console.log('Signature image loaded successfully')
+}
+
+// Refresh data method
+const refreshData = () => {
+  fetchSheetData()
+}
+
+// Fetch data on component mount
+onMounted(() => {
+  refreshData()
+})
+</script>
+
+<style scoped>
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.header h1 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.refresh-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.refresh-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.refresh-btn:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.loading {
+  text-align: center;
+  padding: 60px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error, .empty {
+  text-align: center;
+  padding: 40px 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 1px solid #dee2e6;
+}
+
+.error {
+  background: #fff5f5;
+  border-color: #fed7d7;
+  color: #c53030;
+}
+
+.error h3, .empty h3 {
+  margin: 0 0 12px 0;
+  font-size: 20px;
+}
+
+.retry-btn {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 16px;
+  font-size: 14px;
+}
+
+.content {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.stats {
+  background: #f8f9fa;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.stats p {
+  margin: 0 0 4px 0;
+  font-weight: 500;
+  color: #495057;
+}
+
+.stats small {
+  color: #6c757d;
+}
+
+.items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 24px;
+}
+
+.item-card {
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.item-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.card-header h3 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 18px;
+  font-weight: 600;
+  flex: 1;
+}
+
+.item-id {
+  background: #e9ecef;
+  color: #6c757d;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.image-container {
+  margin-bottom: 16px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f8f9fa;
+}
+
+.signature-image {
+  width: 100%;
+  height: 200px;
+  object-fit: contain;
+  background: white;
+  border: 1px solid #e9ecef;
+}
+
+.no-image {
+  width: 100%;
+  height: 200px;
+  background: #f8f9fa;
+  border: 1px dashed #dee2e6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #6c757d;
+  gap: 8px;
+}
+
+.item-description {
+  color: #6c757d;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.timestamp {
+  padding-top: 12px;
+  border-top: 1px solid #e9ecef;
+}
+
+.timestamp small {
+  color: #6c757d;
+  font-size: 12px;
+}
+</style>
