@@ -3,7 +3,7 @@
     <div class="intro-wrapper">
       <SeeYouThere class="watcher" />
       <h1>REMOTE VIEWERS CLUB</h1>
-      <p class="introduction">Purveyors, practicioners, and pundits of the metaphysical arts</p>
+      <p class="introduction">Purveyors, practicioners, and pundits of the metaphysical arts &amp; sciences</p>
     </div>
     <div v-if="!!activeBadge" class="modal-mask">
       <div class="modal-wrapper">

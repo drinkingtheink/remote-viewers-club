@@ -2,7 +2,9 @@
   <div class="join-us">
     <h2 class="intro">There's always room for one more...</h2>
 
-    <section class="tos" 
+    <section 
+      class="tos" 
+      :class="{ 'user-is-member': isMemberAlready }"
       @mousemove="handleMouseMove" 
       @pointermove="handleMouseMove" 
       @mouseenter="handleMouseMove"
@@ -222,6 +224,11 @@ export default {
 .tos h3 {
   font-weight: 200;
   font-size: 1.25rem;
+}
+
+.tos .user-is-member {
+  max-height: 20rem;
+  text-overflow: ellipsis;
 }
 
 .signature {
