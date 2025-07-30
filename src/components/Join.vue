@@ -130,7 +130,7 @@ IN WITNESS WHEREOF, the parties have executed this Agreement as of the date firs
       <h3>So nice to see you return! We knew you were on your way, of course.</h3>
     </section>
 
-    <section v-if="isMemberAlready || checkIfSigSaved" class="signature-gallery">
+    <section v-if="isMemberAlready" class="signature-gallery">
       <SignatureGallery />
     </section>
   </div>
@@ -140,6 +140,7 @@ IN WITNESS WHEREOF, the parties have executed this Agreement as of the date firs
 import SignaturePad from './SignaturePad'
 import SignatureGallery from './SignatureGallery'
 import CandleAnimation from './animations/CandleAnimation'
+import { eventBus } from '../EventBus'
 
 export default {
   name: 'join-us',
@@ -159,6 +160,9 @@ export default {
     },
     checkIfSigSaved() {
       this.isMemberAlready = localStorage.getItem('rvc-joined') || false
+    },
+    confirmSigSaved() {
+      this.isMemberAlready = true;
     }
   },
   data() {
@@ -168,6 +172,8 @@ export default {
   },
   mounted() {
     this.isMemberAlready = localStorage.getItem('rvc-joined') || false
+
+    eventBus.on('confirmSigSaved', this.confirmSigSaved)
   },
   updated() {
     this.isMemberAlready = localStorage.getItem('rvc-joined') || false
