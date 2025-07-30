@@ -1,7 +1,7 @@
 <template>
-  <div class="container">
+  <div class="sig-gallery-container stage">
     <div class="header">
-      <h1>Signature Gallery</h1>
+      <h3>Membership:</h3>
       <button @click="refreshData" :disabled="loading">
         {{ loading ? 'Loading...' : 'Refresh Data' }}
       </button>
@@ -110,7 +110,7 @@ const formatDate = (dateString) => {
   }
 }
 
-// Fetch data from Google Apps Script using JSONP to avoid CORS
+// Fetch data from Google Apps Script using a more reliable approach
 const fetchSheetData = async () => {
   try {
     loading.value = true
@@ -124,40 +124,71 @@ const fetchSheetData = async () => {
       throw new Error('Please update APPS_SCRIPT_URL with your actual Google Apps Script deployment URL')
     }
 
-    // Use JSONP approach to avoid CORS issues
-    console.log('📡 Using JSONP method to avoid CORS...')
+    // Method 1: Try with no-cors mode (this often works with Apps Script)
+    console.log('📡 Attempting fetch with no-cors mode...')
     
-    const result = await fetchWithJSONP()
-    
-    console.log('📦 Parsed result:', result)
-    
-    if (!result.success) {
-      throw new Error(result.error || result.message || 'Unknown error from Apps Script')
+    try {
+      const response = await fetch(APPS_SCRIPT_URL, {
+        method: 'GET',
+        mode: 'no-cors',
+        cache: 'no-cache'
+      })
+      
+      console.log('📨 No-cors response received:', response)
+      
+      // With no-cors, we can't read the response, so let's try a different approach
+      throw new Error('no-cors mode limits response access')
+      
+    } catch (noCorsError) {
+      console.log('📡 No-cors failed, trying cors mode...')
+      
+      // Method 2: Try regular CORS request
+      const response = await fetch(APPS_SCRIPT_URL + '?_=' + Date.now(), {
+        method: 'GET',
+        mode: 'cors',
+        credentials: 'omit',
+        headers: {
+          'Accept': 'application/json'
+        }
+      })
+      
+      console.log('📨 Response status:', response.status)
+      console.log('📨 Response URL:', response.url)
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`)
+      }
+      
+      console.log('✅ Response received, parsing JSON...')
+      const result = await response.json()
+      
+      console.log('📦 Parsed result:', result)
+      
+      if (!result.success) {
+        throw new Error(result.error || result.message || 'Unknown error from Apps Script')
+      }
+      
+      // Process the successful response
+      items.value = result.data || []
+      lastUpdated.value = result.lastUpdated || new Date().toISOString()
+      
+      console.log(`✨ Successfully loaded ${items.value.length} items`)
     }
-    
-    // Process the successful response
-    items.value = result.data || []
-    lastUpdated.value = result.lastUpdated || new Date().toISOString()
-    
-    console.log(`✨ Successfully loaded ${items.value.length} items`)
     
   } catch (err) {
     console.error('❌ Error fetching sheet data:', err)
-    console.error('❌ Error details:', {
-      message: err.message,
-      stack: err.stack,
-      name: err.name
-    })
     
     error.value = err.message
     
     // Provide helpful error messages based on common issues
     if (err.message.includes('YOUR_ACTUAL_SCRIPT_ID_HERE')) {
       error.value = '❌ Please update the APPS_SCRIPT_URL with your actual Google Apps Script deployment URL.'
-    } else if (err.message.includes('timeout')) {
-      error.value = '❌ Request timeout. Please check your Google Apps Script URL and try again.'
+    } else if (err.message.includes('Failed to fetch')) {
+      error.value = '❌ Network error. Your Google Apps Script may not be deployed correctly or may not be publicly accessible.'
+    } else if (err.message.includes('CORS')) {
+      error.value = '❌ CORS error. Please check that your Google Apps Script is deployed with "Anyone" access and try refreshing the page.'
     } else {
-      error.value = `❌ ${err.message}`
+      error.value = `❌ ${err.message}. Please verify your Google Apps Script deployment settings.`
     }
   } finally {
     loading.value = false
@@ -165,51 +196,51 @@ const fetchSheetData = async () => {
 }
 
 // Enhanced JSONP method that works with Google Apps Script
-const fetchWithJSONP = () => {
-  return new Promise((resolve, reject) => {
-    const callbackName = 'jsonp_callback_' + Math.round(100000 * Math.random())
+// const fetchWithJSONP = () => {
+//   return new Promise((resolve, reject) => {
+//     const callbackName = 'jsonp_callback_' + Math.round(100000 * Math.random())
     
-    console.log('📞 Creating JSONP request with callback:', callbackName)
+//     console.log('📞 Creating JSONP request with callback:', callbackName)
     
-    // Create script element
-    const script = document.createElement('script')
-    script.src = `${APPS_SCRIPT_URL}?callback=${callbackName}&timestamp=${Date.now()}`
+//     // Create script element
+//     const script = document.createElement('script')
+//     script.src = `${APPS_SCRIPT_URL}?callback=${callbackName}&timestamp=${Date.now()}`
     
-    console.log('📞 JSONP URL:', script.src)
+//     console.log('📞 JSONP URL:', script.src)
     
-    // Set up callback
-    window[callbackName] = (data) => {
-      console.log('📞 JSONP callback received data:', data)
-      delete window[callbackName]
-      document.body.removeChild(script)
-      resolve(data)
-    }
+//     // Set up callback
+//     window[callbackName] = (data) => {
+//       console.log('📞 JSONP callback received data:', data)
+//       delete window[callbackName]
+//       document.body.removeChild(script)
+//       resolve(data)
+//     }
     
-    // Handle errors
-    script.onerror = () => {
-      console.error('📞 JSONP script failed to load')
-      delete window[callbackName]
-      document.body.removeChild(script)
-      reject(new Error('JSONP request failed - script could not be loaded'))
-    }
+//     // Handle errors
+//     script.onerror = () => {
+//       console.error('📞 JSONP script failed to load')
+//       delete window[callbackName]
+//       document.body.removeChild(script)
+//       reject(new Error('JSONP request failed - script could not be loaded'))
+//     }
     
-    // Add script to document
-    document.body.appendChild(script)
-    console.log('📞 JSONP script added to document')
+//     // Add script to document
+//     document.body.appendChild(script)
+//     console.log('📞 JSONP script added to document')
     
-    // Cleanup after timeout
-    setTimeout(() => {
-      if (window[callbackName]) {
-        console.error('📞 JSONP request timeout')
-        delete window[callbackName]
-        if (document.body.contains(script)) {
-          document.body.removeChild(script)
-        }
-        reject(new Error('JSONP request timeout - no response received within 15 seconds'))
-      }
-    }, 15000) // 15 second timeout
-  })
-}
+//     // Cleanup after timeout
+//     setTimeout(() => {
+//       if (window[callbackName]) {
+//         console.error('📞 JSONP request timeout')
+//         delete window[callbackName]
+//         if (document.body.contains(script)) {
+//           document.body.removeChild(script)
+//         }
+//         reject(new Error('JSONP request timeout - no response received within 15 seconds'))
+//       }
+//     }, 15000) // 15 second timeout
+//   })
+// }
 
 // Handle image loading errors
 const handleImageError = (event, index) => {
@@ -248,37 +279,6 @@ onMounted(() => {
   margin-bottom: 24px;
   padding-bottom: 16px;
   border-bottom: 2px solid #e9ecef;
-}
-
-.header h1 {
-  margin: 0;
-  color: #2c3e50;
-  font-size: 28px;
-  font-weight: 600;
-}
-
-.refresh-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.refresh-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-}
-
-.refresh-btn:disabled {
-  background: #6c757d;
-  cursor: not-allowed;
-  transform: none;
 }
 
 .loading {
@@ -321,17 +321,6 @@ onMounted(() => {
 .error h3, .empty h3 {
   margin: 0 0 12px 0;
   font-size: 20px;
-}
-
-.retry-btn {
-  background: #dc3545;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-top: 16px;
-  font-size: 14px;
 }
 
 .content {
@@ -450,5 +439,10 @@ onMounted(() => {
 .timestamp small {
   color: #6c757d;
   font-size: 12px;
+}
+
+.sig-gallery-container {
+    width: 90%;
+    margin: 3rem auto;
 }
 </style>
