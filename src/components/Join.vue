@@ -130,7 +130,7 @@ IN WITNESS WHEREOF, the parties have executed this Agreement as of the date firs
       <h3>So nice to see you return! We knew you were on your way, of course.</h3>
     </section>
 
-    <section v-if="isMemberAlready" class="signature-gallery">
+    <section v-if="isMemberAlready || checkIfSigSaved" class="signature-gallery">
       <SignatureGallery />
     </section>
   </div>

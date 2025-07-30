@@ -26,7 +26,7 @@
     
     <div v-else class="content">
       <div class="stats">
-        <p>Found {{ items.length }} member{{ items.length !== 1 ? 's' : '' }}</p>
+        <p>{{ items.length }} member{{ items.length !== 1 ? 's' : '' }}</p>
         <small v-if="lastUpdated">Last updated: {{ formatDate(lastUpdated) }}</small>
       </div>
       
@@ -38,7 +38,7 @@
         >
           <div class="card-header">
             <h3>{{ item.title || item.printedName || 'Untitled' }}</h3>
-            <span class="item-id">#{{ items.length - item.id + 1 }}</span>
+            <span class="item-id">#{{ item.id }}</span>
           </div>
           
           <div class="image-container">
@@ -164,7 +164,7 @@ const fetchSheetData = async () => {
       }
       
       // Process the successful response
-      items.value = result.data || []
+      items.value = result.data.reverse() || []
       lastUpdated.value = result.lastUpdated || new Date().toISOString()
       
       console.log(`✨ Successfully loaded ${items.value.length} items`)
@@ -260,14 +260,14 @@ onMounted(() => {
 </script>
 
 <style>
-.container {
+.sig-gallery-container .container {
   max-width: 1400px;
   margin: 0 auto;
   padding: 20px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-.header {
+.sig-gallery-container .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -276,7 +276,7 @@ onMounted(() => {
   border-bottom: 0.5px solid #e9ecef;
 }
 
-.loading {
+.sig-gallery-container .loading {
   text-align: center;
   padding: 60px 20px;
   display: flex;
@@ -285,11 +285,11 @@ onMounted(() => {
   gap: 16px;
 }
 
-.spinner {
+.sig-gallery-container .spinner {
   width: 40px;
   height: 40px;
   border: 4px solid #f3f3f3;
-  border-top: 4px solid #667eea;
+  border-top: 4px solid red;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -299,24 +299,24 @@ onMounted(() => {
   100% { transform: rotate(360deg); }
 }
 
-.error, .empty {
+.sig-gallery-container .error, .sig-gallery-container .empty {
   text-align: center;
   padding: 40px 20px;
   border-radius: 12px;
   border: 1px solid #dee2e6;
 }
 
-.error {
+.sig-gallery-container .error {
   border-color: #fed7d7;
   color: #c53030;
 }
 
-.error h3, .empty h3 {
+.sig-gallery-container .error h3, .sig-gallery-container .empty h3 {
   margin: 0 0 12px 0;
   font-size: 20px;
 }
 
-.content {
+.sig-gallery-container .content {
   animation: fadeIn 0.5s ease-in;
 }
 
@@ -325,25 +325,25 @@ onMounted(() => {
   to { opacity: 1; transform: translateY(0); }
 }
 
-.stats {
+.sig-gallery-container .stats {
   padding: 16px;
   border-radius: 8px;
   margin-bottom: 24px;
   text-align: center;
 }
 
-.stats p {
+.sig-gallery-container .stats p {
   margin: 0 0 4px 0;
   font-weight: 500;
 }
 
-.items-grid {
+.sig-gallery-container .items-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 24px;
 }
 
-.item-card {
+.sig-gallery-container .item-card {
   border: 1px solid #454647;
   border-radius: 16px;
   padding: 24px;
@@ -354,47 +354,47 @@ onMounted(() => {
   background-color: rgba(0,0,0,0.35);
 }
 
-.item-card:hover {
+.sig-gallery-container .item-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 24px rgba(0,0,0,0.85);
   background-color: rgba(0,0,0,0.8);
 }
 
-.card-header {
+.sig-gallery-container .card-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 16px;
 }
 
-.card-header h3 {
+.sig-gallery-container .card-header h3 {
   margin: 0;
   font-size: 18px;
   font-weight: 600;
   flex: 1;
 }
 
-.item-id {
+.sig-gallery-container .item-id {
   padding: 4px 8px;
   border-radius: 12px;
   font-size: 12px;
   font-weight: 500;
 }
 
-.image-container {
+.sig-gallery-container .image-container {
   margin-bottom: 16px;
   border-radius: 12px;
   overflow: hidden;
 }
 
-.signature-image {
+.sig-gallery-container .signature-image {
   width: 100%;
   height: 200px;
   object-fit: contain;
   border: 1px solid #373738;
 }
 
-.no-image {
+.sig-gallery-container .no-image {
   width: 100%;
   height: 200px;
   border: 1px dashed #dee2e6;
@@ -405,18 +405,18 @@ onMounted(() => {
   gap: 8px;
 }
 
-.item-description {
+.sig-gallery-container .item-description {
   font-size: 14px;
   line-height: 1.5;
   margin-bottom: 12px;
 }
 
-.timestamp {
+.sig-gallery-container .timestamp {
   padding-top: 12px;
   border-top: 0.5px solid rgba(0,0,0,0.08);
 }
 
-.timestamp small {
+.sig-gallery-container .timestamp small {
   font-size: 12px;
 }
 
