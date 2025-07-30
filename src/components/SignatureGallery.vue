@@ -1,7 +1,7 @@
 <template>
   <div class="sig-gallery-container stage">
     <div class="header">
-      <h3>Membership:</h3>
+      <h3>Club Membership Roll:</h3>
       <button @click="refreshData" :disabled="loading">
         {{ loading ? 'Loading...' : 'Refresh Data' }}
       </button>
@@ -9,7 +9,7 @@
     
     <div v-if="loading" class="loading">
       <div class="spinner"></div>
-      <p>Loading signatures...</p>
+      <p>Loading members...</p>
     </div>
     
     <div v-else-if="error" class="error">
@@ -19,14 +19,14 @@
     </div>
     
     <div v-else-if="items.length === 0" class="empty">
-      <h3>📝 No Signatures Found</h3>
-      <p>No signature data found in the spreadsheet.</p>
+      <h3>📝 No Members Found</h3>
+      <p>No data found in the spreadsheet.</p>
       <button @click="refreshData">Refresh</button>
     </div>
     
     <div v-else class="content">
       <div class="stats">
-        <p>Found {{ items.length }} signature{{ items.length !== 1 ? 's' : '' }}</p>
+        <p>Found {{ items.length }} member{{ items.length !== 1 ? 's' : '' }}</p>
         <small v-if="lastUpdated">Last updated: {{ formatDate(lastUpdated) }}</small>
       </div>
       
@@ -61,13 +61,8 @@
               <span>No signature image</span>
             </div>
           </div>
-          
-          <div v-if="item.description" class="item-description">
-            {{ item.description }}
-          </div>
-          
           <div v-if="item.timestamp" class="timestamp">
-            <small>{{ formatDate(item.timestamp) }}</small>
+            <small><bold>JOINED:</bold> {{ formatDate(item.timestamp) }}</small>
           </div>
         </div>
       </div>
@@ -278,7 +273,7 @@ onMounted(() => {
   align-items: center;
   margin-bottom: 24px;
   padding-bottom: 16px;
-  border-bottom: 2px solid #e9ecef;
+  border-bottom: 0.5px solid #e9ecef;
 }
 
 .loading {
@@ -307,13 +302,11 @@ onMounted(() => {
 .error, .empty {
   text-align: center;
   padding: 40px 20px;
-  background: #f8f9fa;
   border-radius: 12px;
   border: 1px solid #dee2e6;
 }
 
 .error {
-  background: #fff5f5;
   border-color: #fed7d7;
   color: #c53030;
 }
@@ -333,7 +326,6 @@ onMounted(() => {
 }
 
 .stats {
-  background: #f8f9fa;
   padding: 16px;
   border-radius: 8px;
   margin-bottom: 24px;
@@ -343,11 +335,6 @@ onMounted(() => {
 .stats p {
   margin: 0 0 4px 0;
   font-weight: 500;
-  color: #495057;
-}
-
-.stats small {
-  color: #6c757d;
 }
 
 .items-grid {
@@ -357,19 +344,20 @@ onMounted(() => {
 }
 
 .item-card {
-  background: white;
-  border: 1px solid #e9ecef;
+  border: 1px solid #454647;
   border-radius: 16px;
   padding: 24px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  background-color: rgba(0,0,0,0.35);
 }
 
 .item-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.85);
+  background-color: rgba(0,0,0,0.8);
 }
 
 .card-header {
@@ -381,15 +369,12 @@ onMounted(() => {
 
 .card-header h3 {
   margin: 0;
-  color: #2c3e50;
   font-size: 18px;
   font-weight: 600;
   flex: 1;
 }
 
 .item-id {
-  background: #e9ecef;
-  color: #6c757d;
   padding: 4px 8px;
   border-radius: 12px;
   font-size: 12px;
@@ -400,32 +385,27 @@ onMounted(() => {
   margin-bottom: 16px;
   border-radius: 12px;
   overflow: hidden;
-  background: #f8f9fa;
 }
 
 .signature-image {
   width: 100%;
   height: 200px;
   object-fit: contain;
-  background: white;
-  border: 1px solid #e9ecef;
+  border: 1px solid #373738;
 }
 
 .no-image {
   width: 100%;
   height: 200px;
-  background: #f8f9fa;
   border: 1px dashed #dee2e6;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: #6c757d;
   gap: 8px;
 }
 
 .item-description {
-  color: #6c757d;
   font-size: 14px;
   line-height: 1.5;
   margin-bottom: 12px;
@@ -433,16 +413,15 @@ onMounted(() => {
 
 .timestamp {
   padding-top: 12px;
-  border-top: 1px solid #e9ecef;
+  border-top: 0.5px solid rgba(0,0,0,0.08);
 }
 
 .timestamp small {
-  color: #6c757d;
   font-size: 12px;
 }
 
 .sig-gallery-container {
-    width: 90%;
-    margin: 3rem auto;
+    width: 90% !important;
+    margin: 3rem auto 0 auto !important;
 }
 </style>
