@@ -38,7 +38,7 @@
         >
           <div class="card-header">
             <h3>{{ item.title || item.printedName || 'Untitled' }}</h3>
-            <span class="item-id">#{{ item.id }}</span>
+            <span class="item-id">#{{ items.length - item.id + 1 }}</span>
           </div>
           
           <div class="image-container">
