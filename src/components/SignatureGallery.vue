@@ -72,6 +72,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { eventBus } from '../EventBus'
 
 // Reactive data
 const items = ref([])
@@ -256,6 +257,7 @@ const refreshData = () => {
 // Fetch data on component mount
 onMounted(() => {
   refreshData()
+  eventBus.on('confirmSigSaved', refreshData)
 })
 </script>
 

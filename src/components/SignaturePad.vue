@@ -40,6 +40,7 @@
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount, defineProps, defineEmits, watch } from 'vue'
+import { eventBus } from '../EventBus'
 
 // Props
 const props = defineProps({
@@ -414,7 +415,7 @@ const submitData = (sigImgData) => {
     try {
       saving.value = false
       isSaved.value = true
-      emit('confirmSigSaved')
+      emitToBus()
     } catch (error) {
       console.error("Error during iframe load:", error);
     } 
@@ -439,6 +440,12 @@ const handleTouchStart = (event) => {
 const handleTouchMove = (event) => {
   event.preventDefault()
   draw(event)
+}
+
+const emitToBus = () => {
+  if(eventBus) {
+    eventBus.emit('confirmSigSaved', true)
+  }
 }
 
 // Set up a default drip to make sure the dripping effect is visible immediately
