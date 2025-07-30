@@ -150,6 +150,8 @@ const badgeMap = [
   },
 ];
 
+const initialFocus = 'praxis';
+
 export default {
   name: 'AppStage',
   components: {
@@ -188,8 +190,20 @@ export default {
         const element = document.querySelector(selector)
         element?.scrollIntoView({ behavior: 'smooth' })
       }, 250);
-    }
-  }
+    },
+    checkForQueryStrings: function() {
+      let queryParams = new URLSearchParams(window.location.search);
+      let focusQuery = queryParams.get('focus');
+      
+      if (focusQuery) this.activeSection = focusQuery;
+      else {  
+        this.activeSection = initialFocus; 
+      }
+    },
+  },
+  mounted() {
+    this.checkForQueryStrings();
+  },
 }
 </script>
 
