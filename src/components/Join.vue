@@ -4,11 +4,18 @@
 
     <section 
       class="tos" 
-      :class="{ 'user-is-member': isMemberAlready }"
+      :class="{ 'user-is-member': isMemberAlready , 'open' : openTOS}"
       @mousemove="handleMouseMove" 
       @pointermove="handleMouseMove" 
       @mouseenter="handleMouseMove"
     >
+
+    <button 
+      v-show="isMemberAlready"
+      class="tos-handler"
+      @click="handleTOSToggle">
+      {{ openTOS ? 'Close Terms you already agreed to' : 'Review Terms - No Backsies!'}}
+    </button>
       <h2>REMOTE VIEWERS CLUB</h2>
       <h3>MEMBERSHIP AGREEMENT AND TERMS OF PARTICIPATION</h3>
       <p>**WHEREAS**, the undersigned individual (hereinafter referred to as "MEMBER," "PSYCHIC ASPIRANT," "THIRD EYE ENTHUSIAST," or "YOU") wishes to join the organization known as the Remote Viewers Club (hereinafter referred to as "THE CLUB," "THE ORGANIZATION," "THE PSYCHIC COLLECTIVE," or "THOSE WHO SEE BEYOND");
@@ -128,9 +135,6 @@ IN WITNESS WHEREOF, the parties have executed this Agreement as of the date firs
         bloodColor="#8B0000"
       />
     </section>
-    <section class="signature" v-show="isMemberAlready">
-      <h3>So nice to see you return! We knew you were on your way, of course.</h3>
-    </section>
 
     <section v-if="isMemberAlready" class="signature-gallery">
       <SignatureGallery />
@@ -165,11 +169,15 @@ export default {
     },
     confirmSigSaved() {
       this.isMemberAlready = true;
+    },
+    handleTOSToggle() {
+      this.openTOS = !this.openTOS;
     }
   },
   data() {
     return {
-      isMemberAlready: false
+      isMemberAlready: false,
+      openTOS: false,
     }
   },
   mounted() {
@@ -200,6 +208,7 @@ export default {
   cursor: grabbing;
   max-width: 1200px;
   position: relative;
+  transition: all 0.5s;
 } 
 
 .tos p {
@@ -226,9 +235,14 @@ export default {
   font-size: 1.25rem;
 }
 
-.tos .user-is-member {
+.tos.user-is-member {
   max-height: 20rem;
   text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.tos.user-is-member.open {
+  max-height: 50rem;
 }
 
 .signature {
@@ -248,5 +262,20 @@ export default {
   left: var(--mouse-x);
   top: calc(var(--mouse-y) + 20px );
   width: 80px;
+}
+
+.tos-handler {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  background: red;
+  color: white;
+  border-radius: 5px;
+  padding: 0.5rem 0.75rem;
+  border: none;
+  width: 300px;
+  text-transform: uppercase;
 }
 </style>
