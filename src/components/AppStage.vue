@@ -195,14 +195,28 @@ export default {
       let queryParams = new URLSearchParams(window.location.search);
       let focusQuery = queryParams.get('focus');
       
-      if (focusQuery) this.activeSection = focusQuery;
+      if (focusQuery) { 
+        this.activeSection = focusQuery;
+        this.updateFocusUrlQueryString(focusQuery);
+      }
       else {  
         this.activeSection = initialFocus; 
       }
     },
+    updateFocusUrlQueryString: function(val) {
+      let queryParams = new URLSearchParams(window.location.search);
+      queryParams.set(`focus`, val);
+      history.replaceState(null, null, `?${queryParams.toString()}`);
+    },
   },
   mounted() {
     this.checkForQueryStrings();
+  },
+  watch: {
+    activeSection(newSection) {
+      console.log(`NEW SECTION TO NAV TO: ${newSection}`)
+      this.updateFocusUrlQueryString(newSection);
+    }
   },
 }
 </script>
