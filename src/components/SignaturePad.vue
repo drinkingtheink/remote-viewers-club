@@ -393,7 +393,7 @@ const submitData = (sigImgData) => {
   };
   const form = document.createElement('form');
   form.method = 'POST';
-  form.action = 'https://script.google.com/macros/s/1OyNI-Xwlmc1geIxJBfAVg2SdrSoAmxbBrdY8T4IpivQ/exec';
+  form.action = 'https://script.google.com/macros/s/AKfycbwpZu_9Pb4_Qm6FgsWy5HuSg_hDnFGH3MLb3EspqBThRqOV3ZRiBa1a43fZqLMMhzc/exec';
   form.target = 'hidden-iframe';
   form.style.display = 'none';
   

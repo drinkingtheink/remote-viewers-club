@@ -2,7 +2,7 @@
   <div class="container">
     <div class="header">
       <h1>Signature Gallery</h1>
-      <button @click="refreshData" :disabled="loading" class="refresh-btn">
+      <button @click="refreshData" :disabled="loading">
         {{ loading ? 'Loading...' : 'Refresh Data' }}
       </button>
     </div>
@@ -15,13 +15,13 @@
     <div v-else-if="error" class="error">
       <h3>⚠️ Error Loading Data</h3>
       <p>{{ error }}</p>
-      <button @click="refreshData" class="retry-btn">Try Again</button>
+      <button @click="refreshData">Try Again</button>
     </div>
     
     <div v-else-if="items.length === 0" class="empty">
       <h3>📝 No Signatures Found</h3>
       <p>No signature data found in the spreadsheet.</p>
-      <button @click="refreshData" class="retry-btn">Refresh</button>
+      <button @click="refreshData">Refresh</button>
     </div>
     
     <div v-else class="content">
@@ -86,7 +86,10 @@ const lastUpdated = ref(null)
 
 // Configuration - Replace with your actual Google Apps Script web app URL
 // This should be the URL you got when you deployed your Apps Script as a web app
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/1c_lczLtRyU9dBozm_tO2ylT78duPaj7fVlBQli81ozPqRS9Z4QOSJM00/exec'
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxKQRUEBU8e1skP35pZzZslfgWLtkeeAqdL57M1oSwEqw-pEhQ1jksIrzhwd_KraiSt/exec'
+
+// Add this for debugging - remove in production
+console.log('Apps Script URL being used:', APPS_SCRIPT_URL)
 
 // Validate base64 image format
 const isValidBase64Image = (str) => {
@@ -107,31 +110,26 @@ const formatDate = (dateString) => {
   }
 }
 
-// Fetch data from Google Apps Script
+// Fetch data from Google Apps Script using JSONP to avoid CORS
 const fetchSheetData = async () => {
   try {
     loading.value = true
     error.value = null
 
-    console.log('Fetching data from Google Apps Script...')
+    console.log('🚀 Starting fetch from Google Apps Script...')
+    console.log('📍 URL:', APPS_SCRIPT_URL)
 
-    // Use fetch with no-cors mode to avoid CORS issues
-    const response = await fetch(APPS_SCRIPT_URL, {
-      method: 'GET',
-      mode: 'cors', // Apps Script handles CORS
-      cache: 'no-cache',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
+    // Check if URL is properly configured
+    if (APPS_SCRIPT_URL.includes('YOUR_ACTUAL_SCRIPT_ID_HERE')) {
+      throw new Error('Please update APPS_SCRIPT_URL with your actual Google Apps Script deployment URL')
     }
+
+    // Use JSONP approach to avoid CORS issues
+    console.log('📡 Using JSONP method to avoid CORS...')
     
-    const result = await response.json()
+    const result = await fetchWithJSONP()
     
-    console.log('Response from Apps Script:', result)
+    console.log('📦 Parsed result:', result)
     
     if (!result.success) {
       throw new Error(result.error || result.message || 'Unknown error from Apps Script')
@@ -141,57 +139,77 @@ const fetchSheetData = async () => {
     items.value = result.data || []
     lastUpdated.value = result.lastUpdated || new Date().toISOString()
     
-    console.log(`Successfully loaded ${items.value.length} items`)
+    console.log(`✨ Successfully loaded ${items.value.length} items`)
     
   } catch (err) {
-    console.error('Error fetching sheet data:', err)
+    console.error('❌ Error fetching sheet data:', err)
+    console.error('❌ Error details:', {
+      message: err.message,
+      stack: err.stack,
+      name: err.name
+    })
+    
     error.value = err.message
     
-    // If it's a CORS error, provide helpful message
-    if (err.message.includes('CORS') || err.message.includes('fetch')) {
-      error.value = 'Unable to fetch data. Please make sure your Google Apps Script is deployed correctly and publicly accessible.'
+    // Provide helpful error messages based on common issues
+    if (err.message.includes('YOUR_ACTUAL_SCRIPT_ID_HERE')) {
+      error.value = '❌ Please update the APPS_SCRIPT_URL with your actual Google Apps Script deployment URL.'
+    } else if (err.message.includes('timeout')) {
+      error.value = '❌ Request timeout. Please check your Google Apps Script URL and try again.'
+    } else {
+      error.value = `❌ ${err.message}`
     }
   } finally {
     loading.value = false
   }
 }
 
-// Alternative approach using JSONP if CORS becomes an issue
-// const fetchWithJSONP = () => {
-//   return new Promise((resolve, reject) => {
-//     const callbackName = 'jsonp_callback_' + Math.round(100000 * Math.random())
+// Enhanced JSONP method that works with Google Apps Script
+const fetchWithJSONP = () => {
+  return new Promise((resolve, reject) => {
+    const callbackName = 'jsonp_callback_' + Math.round(100000 * Math.random())
     
-//     // Create script element
-//     const script = document.createElement('script')
-//     script.src = `${APPS_SCRIPT_URL}?callback=${callbackName}`
+    console.log('📞 Creating JSONP request with callback:', callbackName)
     
-//     // Set up callback
-//     window[callbackName] = (data) => {
-//       delete window[callbackName]
-//       document.body.removeChild(script)
-//       resolve(data)
-//     }
+    // Create script element
+    const script = document.createElement('script')
+    script.src = `${APPS_SCRIPT_URL}?callback=${callbackName}&timestamp=${Date.now()}`
     
-//     // Handle errors
-//     script.onerror = () => {
-//       delete window[callbackName]
-//       document.body.removeChild(script)
-//       reject(new Error('JSONP request failed'))
-//     }
+    console.log('📞 JSONP URL:', script.src)
     
-//     // Add script to document
-//     document.body.appendChild(script)
+    // Set up callback
+    window[callbackName] = (data) => {
+      console.log('📞 JSONP callback received data:', data)
+      delete window[callbackName]
+      document.body.removeChild(script)
+      resolve(data)
+    }
     
-//     // Cleanup after timeout
-//     setTimeout(() => {
-//       if (window[callbackName]) {
-//         delete window[callbackName]
-//         document.body.removeChild(script)
-//         reject(new Error('JSONP request timeout'))
-//       }
-//     }, 10000)
-//   })
-// }
+    // Handle errors
+    script.onerror = () => {
+      console.error('📞 JSONP script failed to load')
+      delete window[callbackName]
+      document.body.removeChild(script)
+      reject(new Error('JSONP request failed - script could not be loaded'))
+    }
+    
+    // Add script to document
+    document.body.appendChild(script)
+    console.log('📞 JSONP script added to document')
+    
+    // Cleanup after timeout
+    setTimeout(() => {
+      if (window[callbackName]) {
+        console.error('📞 JSONP request timeout')
+        delete window[callbackName]
+        if (document.body.contains(script)) {
+          document.body.removeChild(script)
+        }
+        reject(new Error('JSONP request timeout - no response received within 15 seconds'))
+      }
+    }, 15000) // 15 second timeout
+  })
+}
 
 // Handle image loading errors
 const handleImageError = (event, index) => {
@@ -215,7 +233,7 @@ onMounted(() => {
 })
 </script>
 
-<style scoped>
+<style>
 .container {
   max-width: 1400px;
   margin: 0 auto;
