@@ -74,7 +74,7 @@ const props = defineProps({
 })
 
 // Emits
-const emit = defineEmits(['save', 'clear'])
+const emit = defineEmits(['save', 'clear', 'confirmSigSaved'])
 
 // Refs
 const canvasContainer = ref(null)
@@ -414,6 +414,7 @@ const submitData = (sigImgData) => {
     try {
       saving.value = false
       isSaved.value = true
+      emit('confirmSigSaved')
     } catch (error) {
       console.error("Error during iframe load:", error);
     } 
