@@ -430,5 +430,4 @@ onMounted(() => {
 .sig-gallery-container h3 {
     margin-top: 0;
 }
-
 </style>

@@ -289,6 +289,7 @@ export default {
   opacity: 0.85;
   transform: scale(0.95);
   transition: all 0.5s;
+  font-weight: bold;
 }
 
 .tos-handler:hover {

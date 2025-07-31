@@ -758,6 +758,7 @@ button.enlarge:hover {
   cursor: pointer;
   transition: all 0.3s;
   text-transform: uppercase;
+  font-weight: bold;
 }
 
 .stage button:hover {
