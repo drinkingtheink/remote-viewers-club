@@ -282,11 +282,18 @@ export default {
   border-radius: 5px;
   padding: 0.5rem 0.75rem;
   border: none;
-  width: 300px;
+  width: 450px;
   text-transform: uppercase;
+  font-size: 120%;
+  border: 5px solid rgba(0,0,0,0.8);
+  opacity: 0.85;
+  transform: scale(0.95);
+  transition: all 0.5s;
 }
 
 .tos-handler:hover {
   cursor: pointer;
+  opacity: 1;
+  transform: scale(1);
 }
 </style>
