@@ -279,7 +279,7 @@ export default {
   margin: 0 auto;
   background: red;
   color: white;
-  border-radius: 5px;
+  border-radius: 10px;
   padding: 0.5rem 0.75rem;
   border: none;
   width: 450px;
