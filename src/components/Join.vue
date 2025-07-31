@@ -242,7 +242,7 @@ export default {
 }
 
 .tos.user-is-member.open {
-  max-height: 50rem;
+  max-height: 100rem;
 }
 
 .signature {
@@ -277,5 +277,9 @@ export default {
   border: none;
   width: 300px;
   text-transform: uppercase;
+}
+
+.tos-handler:hover {
+  cursor: pointer;
 }
 </style>
