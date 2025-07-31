@@ -10,12 +10,6 @@
       @mouseenter="handleMouseMove"
     >
 
-    <button 
-      v-show="isMemberAlready"
-      class="tos-handler"
-      @click="handleTOSToggle">
-      {{ openTOS ? 'Close Terms you already agreed to' : 'Review Terms - No Backsies!'}}
-    </button>
       <h2>REMOTE VIEWERS CLUB</h2>
       <h3>MEMBERSHIP AGREEMENT AND TERMS OF PARTICIPATION</h3>
       <p>**WHEREAS**, the undersigned individual (hereinafter referred to as "MEMBER," "PSYCHIC ASPIRANT," "THIRD EYE ENTHUSIAST," or "YOU") wishes to join the organization known as the Remote Viewers Club (hereinafter referred to as "THE CLUB," "THE ORGANIZATION," "THE PSYCHIC COLLECTIVE," or "THOSE WHO SEE BEYOND");
@@ -129,6 +123,15 @@ IN WITNESS WHEREOF, the parties have executed this Agreement as of the date firs
       />
     </section>
 
+    <section class="members-toggle">
+      <button 
+        v-show="isMemberAlready"
+        class="tos-handler"
+        @click="handleTOSToggle">
+        {{ openTOS ? 'Close Terms you already agreed to' : 'Review Terms - No Backsies!'}}
+      </button>
+    </section>
+
     <section class="signature" v-show="!isMemberAlready">
       <h3>- Sign Here When Ready -</h3>
       <SignaturePad 
@@ -208,7 +211,7 @@ export default {
   cursor: grabbing;
   max-width: 1200px;
   position: relative;
-  transition: all 0.5s;
+  transition: all 2s;
 } 
 
 .tos p {
@@ -264,12 +267,16 @@ export default {
   width: 80px;
 }
 
+.members-toggle {
+  display: flex;
+  align-content: center;
+  margin-top: -1rem;
+  position: relative;
+  z-index: 10;
+}
+
 .tos-handler {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
+  margin: 0 auto;
   background: red;
   color: white;
   border-radius: 5px;
