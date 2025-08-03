@@ -139,7 +139,12 @@ IN WITNESS WHEREOF, the parties have executed this Agreement as of the date firs
       />
     </section>
 
-    <section v-if="isMemberAlready" class="signature-gallery">
+    <section>
+      <button v-show="!showMembershipRoll" @click="enableShowMembershipRoll">Show Roll</button>
+      <button v-show="showMembershipRoll" @click="showMembershipRoll = false">Hide Roll</button>
+    </section>
+
+    <section v-if="isMemberAlready || showMembershipRoll" class="signature-gallery">
       <SignatureGallery />
     </section>
   </div>
@@ -175,12 +180,16 @@ export default {
     },
     handleTOSToggle() {
       this.openTOS = !this.openTOS;
+    },
+    enableShowMembershipRoll() {
+      this.showMembershipRoll = true;
     }
   },
   data() {
     return {
       isMemberAlready: false,
       openTOS: false,
+      showMembershipRoll: false,
     }
   },
   mounted() {

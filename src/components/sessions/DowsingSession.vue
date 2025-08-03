@@ -98,6 +98,7 @@
                             'warm': getWarmthClass(index).includes('warm'),
                             'warmer': getWarmthClass(index).includes('warmer'),
                             'hot': getWarmthClass(index).includes('hot'),
+                            'hasSecretButton': cell.hasSecretButton,
                         }"
                         @click="checkCell(index)"
                         @mouseenter="(event) => updateProximity(event, index)"
@@ -108,8 +109,9 @@
                             <span v-else>✨</span>
                         </div>
                         <div v-else-if="cell.revealed && !cell.hasSource" class="miss-icon">✘</div>
-
                         <img v-if="cell.hasPlant && cell.typog === 'grass' && !cell.revealed" src="../../assets/bush-1.svg" class="cell-bush" />
+
+                        <button v-if="cell.hasSecretButton" @click="console.log('Arthur and Graham are kewl!!!')"> * </button>
                     </div>
                 </div>
             </div>
@@ -157,7 +159,8 @@ const initializeGrid = () => {
     hasSource: false,
     revealed: false,
     typog: getTypogClass(),
-    hasPlant: getPlantPresence()
+    hasPlant: getPlantPresence(),
+    hasSecretButton: getButtonPresence(),
   }));
   
   // Place sources randomly
@@ -276,6 +279,10 @@ const getTypogClass = () => {
 
 const getPlantPresence = () => {
     return Math.random() < 0.3;
+}
+
+const getButtonPresence = () => {
+    return Math.random() < 0.5;
 }
 
 // Initialize on mount
@@ -401,6 +408,10 @@ watch(difficulty, () => {
 .grid-cell.rock {
 background-color: #9b9d9b;
 background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%232f2f2f' fill-opacity='0.4' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+}
+
+.grid-cell.hasSecretButton {
+  border: 2px solid rgba(0,0,0,0.8);
 }
 
 .grid-cell:hover {
