@@ -194,60 +194,60 @@ export default {
 }
 
 /* Main Eyes - First to blink */
-#OPEN-EYE {
+.animate #OPEN-EYE {
   animation: blink 8s infinite;
   animation-delay: 0s;
 }
 
-#CLOSED-EYE {
+.animate #CLOSED-EYE {
   opacity: 0;
   animation: blink-inverse 8s infinite;
   animation-delay: 0s;
 }
 
 /* Right Wing Eyes - Second to blink */
-#RW-OPEN-EYE {
+.animate #RW-OPEN-EYE {
   animation: blink 8s infinite;
   animation-delay: 0.3s;
 }
 
-#RW-CLOSED-EYE {
+.animate #RW-CLOSED-EYE {
   opacity: 0;
   animation: blink-inverse 8s infinite;
   animation-delay: 0.3s;
 }
 
 /* Top Wing Eyes - Third to blink */
-#TW-OPEN-EYE {
+.animate #TW-OPEN-EYE {
   animation: blink 8s infinite;
   animation-delay: 0.6s;
 }
 
-#TW-CLOSED-EYE {
+.animate #TW-CLOSED-EYE {
   opacity: 0;
   animation: blink-inverse 8s infinite;
   animation-delay: 0.6s;
 }
 
 /* Left Wing Eyes - Fourth to blink */
-#LW-OPEN-EYE {
+.animate #LW-OPEN-EYE {
   animation: blink 8s infinite;
   animation-delay: 0.9s;
 }
 
-#LW-CLOSED-EYE {
+.animate #LW-CLOSED-EYE {
   opacity: 0;
   animation: blink-inverse 8s infinite;
   animation-delay: 0.9s;
 }
 
 /* Bottom Wing Eyes - Fifth to blink */
-#BW-OPEN-EYE {
+.animate #BW-OPEN-EYE {
   animation: blink 8s infinite;
   animation-delay: 1.2s;
 }
 
-#BW-CLOSED-EYE {
+.animate #BW-CLOSED-EYE {
   opacity: 0;
   animation: blink-inverse 8s infinite;
   animation-delay: 1.2s;
@@ -262,7 +262,7 @@ export default {
   }
 }
 
-#seraphim-container {
+.animate #seraphim-container {
   animation: float 3s infinite alternate;
 }
 
@@ -275,41 +275,24 @@ export default {
 }
 
 /* EYE COLORS */
-#main-iris {
+.animate #main-iris {
     fill: #FFFF00;
 }
 
-#main-iris-2 {
+.animate #main-iris-2 {
     fill: #00FF00;
 }
 
-#main-iris-3 {
+.animate #main-iris-3 {
     fill: #00FFFF;
 }
 
-#main-iris-4 {
+.animate #main-iris-4 {
     fill: #0040FF;
 }
 
-#main-iris-5 {
+.animate #main-iris-5 {
     fill: #FF0080;
-}
-
-/* Hover to close eyes */
-#RW-OPEN-EYE:hover,
-#LW-OPEN-EYE:hover,
-#OPEN-EYE:hover,
-#TW-OPEN-EYE:hover,
-#BW-OPEN-EYE:hover {
-    opacity: 0 !important;
-}
-
-#RW-CLOSED-EYE:hover,
-#LW-CLOSED-EYE:hover,
-#CLOSED-EYE:hover,
-#TW-CLOSED-EYE:hover,
-#BW-CLOSED-EYE:hover {
-    opacity: 1 !important;
 }
 
 /* Wing flapping animation */
@@ -323,17 +306,17 @@ export default {
     50% { transform: rotate(15deg); }
 }
 
-#RIGHT-WING {
+.animate #RIGHT-WING {
     transform-origin: center center;
     animation: flap-right 1.5s ease-in-out infinite;
 }
 
-#LEFT-WING {
+.animate #LEFT-WING {
     transform-origin: center center;
     animation: flap-left 1.5s ease-in-out infinite;
 }
 
-#MAIN-BODY {
+.animate #MAIN-BODY {
     transition: transform 0.3s ease-out;
 }
 
