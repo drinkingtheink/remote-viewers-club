@@ -1,6 +1,6 @@
 <template>
     <div 
-        class="temporal-recon"
+        class="seraphim-wrapper"
         :class="{ 'animate': doAnimate }"    
     >
         <svg id="seraphim" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 877.84 967.37">
@@ -181,6 +181,40 @@ export default {
 </script>
 
 <style scoped>
+:root {
+    --seraphDim: 328px;
+}
+
+* {
+    transition: all 0.2s;
+}
+
+.seraphim-wrapper {
+  --circle-size: 328px;
+  position: relative;
+  /* Your other container styles */
+}
+
+.seraphim-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: var(--circle-size);
+  height: var(--circle-size);
+  border-radius: 50%;
+  background-color: #065656;
+  background-image: url("data:image/svg+xml,%3Csvg width='84' height='84' viewBox='0 0 84 84' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23008b8b' fill-opacity='0.58'%3E%3Cpath d='M84 23c-4.417 0-8-3.584-8-7.998V8h-7.002C64.58 8 61 4.42 61 0H23c0 4.417-3.584 8-7.998 8H8v7.002C8 19.42 4.42 23 0 23v38c4.417 0 8 3.584 8 7.998V76h7.002C19.42 76 23 79.58 23 84h38c0-4.417 3.584-8 7.998-8H76v-7.002C76 64.58 79.58 61 84 61V23zM59.05 83H43V66.95c5.054-.5 9-4.764 9-9.948V52h5.002c5.18 0 9.446-3.947 9.95-9H83v16.05c-5.054.5-9 4.764-9 9.948V74h-5.002c-5.18 0-9.446 3.947-9.95 9zm-34.1 0H41V66.95c-5.053-.502-9-4.768-9-9.948V52h-5.002c-5.184 0-9.447-3.946-9.95-9H1v16.05c5.053.502 9 4.768 9 9.948V74h5.002c5.184 0 9.447 3.946 9.95 9zm0-82H41v16.05c-5.054.5-9 4.764-9 9.948V32h-5.002c-5.18 0-9.446 3.947-9.95 9H1V24.95c5.054-.5 9-4.764 9-9.948V10h5.002c5.18 0 9.446-3.947 9.95-9zm34.1 0H43v16.05c5.053.502 9 4.768 9 9.948V32h5.002c5.184 0 9.447 3.946 9.95 9H83V24.95c-5.053-.502-9-4.768-9-9.948V10h-5.002c-5.184 0-9.447-3.946-9.95-9zM50 50v7.002C50 61.42 46.42 65 42 65c-4.417 0-8-3.584-8-7.998V50h-7.002C22.58 50 19 46.42 19 42c0-4.417 3.584-8 7.998-8H34v-7.002C34 22.58 37.58 19 42 19c4.417 0 8 3.584 8 7.998V34h7.002C61.42 34 65 37.58 65 42c0 4.417-3.584 8-7.998 8H50z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  z-index: -1; /* Sits behind content */
+  border: 20px solid gold;
+}
+
+.animate .seraphim-wrapper::before {
+  background: black;
+  border-color: red;
+}
+
 @keyframes blink {
   0%, 8% { opacity: 1; }
   9%, 11% { opacity: 0; }
@@ -199,10 +233,19 @@ export default {
   animation-delay: 0s;
 }
 
+#CLOSED-EYE,
+#TW-CLOSED-EYE,
+#LW-CLOSED-EYE,
+#BW-CLOSED-EYE {
+    fill: red;
+    transition: all 0.001s;
+}
+
 .animate #CLOSED-EYE {
   opacity: 0;
   animation: blink-inverse 8s infinite;
   animation-delay: 0s;
+  fill: black;
 }
 
 /* Right Wing Eyes - Second to blink */
@@ -267,10 +310,18 @@ export default {
 }
 
 .cls-1 {
-  fill: white;
+  fill: black;
 }
 
 .cls-2 {
+  fill: black;
+}
+
+.animate .cls-1 {
+  fill: white;
+}
+
+.animate .cls-2 {
   fill: #fff;
 }
 
@@ -374,5 +425,20 @@ export default {
 
 #seraphim-container {
     position: relative;
+}
+
+#MAIN-FEATHERS,
+#RIGHT-WING-BG,
+#LEFT-WING-FEATHERS {
+    fill: red;
+}
+
+.animate #MAIN-FEATHERS,
+.animate #LEFT-WING-FEATHERS {
+    fill: black;
+}
+
+.animate #RIGHT-WING-BG {
+    fill: white;
 }
 </style>
