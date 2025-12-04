@@ -247,7 +247,7 @@ export default {
 }
 
 .seraphim-wrapper {
-    --closedEye: rgb(152, 151, 151);
+    --closedEye: rgb(99, 97, 97);
 }
 
 #CLOSED-EYE,
