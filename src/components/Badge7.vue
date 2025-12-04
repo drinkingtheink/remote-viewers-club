@@ -173,10 +173,139 @@ export default {
         setTimeout(() => {
             this.doAnimate = false
         }, 5000)
+
+        this.castSpells();
     },
     beforeUnmount() {
         clearInterval(this.intervalId)
     },
+    methods: {
+        castSpells() {
+            const seraphim = document.getElementById('seraphim');
+            const container = document.querySelector('.seraphim-wrapper');
+
+            // Store the center position
+            let centerX = 0;
+            let centerY = 0;
+
+            // Calculate center on load and resize
+            function updateCenter() {
+                const rect = container.getBoundingClientRect();
+                centerX = rect.left + rect.width / 2;
+                centerY = rect.top + rect.height / 2;
+            }
+
+            updateCenter();
+            window.addEventListener('resize', updateCenter);
+
+            // Track mouse movement
+            container.addEventListener('mousemove', (e) => {
+                const mouseX = e.clientX;
+                const mouseY = e.clientY;
+                
+                // Calculate distance from center
+                const deltaX = mouseX - centerX;
+                const deltaY = mouseY - centerY;
+                
+                // Calculate distance
+                const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+                
+                // Move away from mouse (inverse direction, scaled down)
+                const pushStrength = 90; // How far it moves (in pixels)
+                const maxDistance = 300; // Maximum effective distance
+                
+                const factor = Math.min(distance / maxDistance, 1);
+                const moveX = -(deltaX / distance) * pushStrength * factor;
+                const moveY = -(deltaY / distance) * pushStrength * factor;
+                
+                seraphim.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            });
+
+            // Return to center when mouse leaves
+            container.addEventListener('mouseleave', () => {
+                seraphim.style.transform = 'translate(0, 0)';
+            });
+
+            // Array of mystical symbols
+            const symbols = ['✦', '✧', '✨', '⚡', '☆', '★', '◆', '◇', '○', '●', '▲', '△', '☽', '☾', '✵', '✶', '❋', '✹', '⊹', '※'];
+
+            // Function to get the center position of the seraphim
+            function getSeraphimCenter() {
+                const rect = container.getBoundingClientRect();
+                return {
+                    x: rect.width / 2,
+                    y: rect.height / 2
+                };
+            }
+
+            // Function to create and animate a spell symbol
+            function castSpell() {
+                const center = getSeraphimCenter();
+                const symbol = document.createElement('div');
+                symbol.className = 'spell-symbol';
+                
+                // Random symbol from array
+                symbol.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                
+                // Random color
+                const colors = ['#00FFFF', '#FF00FF', '#FFFF00', '#00FF00', '#FF0080', '#0080FF'];
+                symbol.style.color = colors[Math.floor(Math.random() * colors.length)];
+                
+                // Start from center
+                symbol.style.left = center.x + 'px';
+                symbol.style.top = center.y + 'px';
+                
+                // Random direction and distance
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 150 + Math.random() * 500;
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance;
+                const rotation = Math.random() * 720 - 360;
+                
+                // Set CSS variables for animation
+                symbol.style.setProperty('--tx', `${tx}px`);
+                symbol.style.setProperty('--ty', `${ty}px`);
+                symbol.style.setProperty('--rotation', `${rotation}deg`);
+                
+                container.appendChild(symbol);
+                
+                // Remove element after animation completes
+                setTimeout(() => {
+                    symbol.remove();
+                }, 3000);
+            }
+
+            // Function to create a burst of symbols
+            function symbolBurst() {
+                const burstCount = 8 + Math.floor(Math.random() * 8); // 8-15 symbols
+                for (let i = 0; i < burstCount; i++) {
+                    setTimeout(() => {
+                        castSpell();
+                    }, i * 50); // Stagger by 50ms
+                }
+            }
+
+            // Cast spells periodically
+            function startCasting() {
+                symbolBurst(); // Initial burst
+                
+                // Random intervals between 3-7 seconds
+                const nextCast = 3000 + Math.random() * 4000;
+                setTimeout(() => {
+                    startCasting();
+                }, nextCast);
+            }
+
+            // Start the spell casting
+            startCasting();
+
+            // Optional: Cast on eye blink (sync with blink animation)
+            // Trigger when main eye blinks
+            setInterval(() => {
+                castSpell();
+            }, 8000); // Matches the 8s blink cycle
+        }
+    }
 }
 </script>
 
@@ -192,7 +321,17 @@ export default {
 .seraphim-wrapper {
   --circle-size: 328px;
   position: relative;
-  /* Your other container styles */
+}
+
+@keyframes holeSwirl {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+    filter: blur(0px);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(0.95) rotate(180deg);
+    filter: blur(1px);
+  }
 }
 
 .seraphim-wrapper::before {
@@ -211,8 +350,11 @@ export default {
 }
 
 .animate .seraphim-wrapper::before {
-  background: black;
-  border-color: red;
+  animation: holeSwirl 4s ease-in-out infinite;
+}
+
+.animate svg {
+    animation: float 3s infinite alternate;
 }
 
 @keyframes blink {
@@ -233,11 +375,15 @@ export default {
   animation-delay: 0s;
 }
 
+.seraphim-wrapper {
+    --closedEye: rgb(152, 151, 151);
+}
+
 #CLOSED-EYE,
 #TW-CLOSED-EYE,
 #LW-CLOSED-EYE,
 #BW-CLOSED-EYE {
-    fill: red;
+    fill: var(--closedEye);
     transition: all 0.001s;
 }
 
@@ -367,27 +513,27 @@ export default {
     animation: flap-left 1.5s ease-in-out infinite;
 }
 
-.animate #MAIN-BODY {
+.animate #seraphim {
     transition: transform 0.3s ease-out;
 }
 
 /* Soft, subtle shadow */
-#MAIN-BODY {
+#seraphim {
     filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.2));
 }
 
 /* Dramatic, larger shadow */
-#MAIN-BODY {
+#seraphim {
     filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.5));
 }
 
 /* Colored shadow (e.g., blue glow) */
-#MAIN-BODY {
+#seraphim {
     filter: drop-shadow(0 10px 30px rgba(0, 100, 255, 0.4));
 }
 
 /* Multiple shadows */
-#MAIN-BODY {
+#seraphim {
     filter: 
         drop-shadow(0 5px 10px rgba(0, 0, 0, 0.3))
         drop-shadow(0 15px 30px rgba(0, 0, 0, 0.2));
@@ -430,7 +576,7 @@ export default {
 #MAIN-FEATHERS,
 #RIGHT-WING-BG,
 #LEFT-WING-FEATHERS {
-    fill: red;
+    fill: var(--closedEye);
 }
 
 .animate #MAIN-FEATHERS,
@@ -440,5 +586,14 @@ export default {
 
 .animate #RIGHT-WING-BG {
     fill: white;
+}
+
+@keyframes float {
+  from {
+    transform: translateY(-20px);
+  }
+  to {
+    transform: translateY(20px);
+  }
 }
 </style>
