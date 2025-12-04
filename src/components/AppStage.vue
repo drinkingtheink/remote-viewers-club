@@ -101,6 +101,7 @@ import Badge3 from './Badge3.vue'
 import Badge4 from './Badge4.vue'
 import Badge5 from './Badge5.vue'
 import Badge6 from './Badge6.vue'
+import Badge7 from './Badge7.vue'
 import SeeYouThere from './SeeYouThere.vue'
 import RemoteViewingSession from './sessions/RemoteViewingSession.vue'
 import PrecognitionSession from './sessions/PrecognitionSession.vue'
@@ -148,6 +149,12 @@ const badgeMap = [
     inspo: 'https://twitter.com/arpitingle/status/1698709125088088109',
     id: 6,
   },
+  {
+    title: 'One Wax Wing',
+    desc: 'The Broadcast Continues Regardless',
+    inspo: 'https://twitter.com/arpitingle/status/1698709125088088109',
+    id: 7,
+  },
 ];
 
 const initialFocus = 'gallery';
@@ -161,6 +168,7 @@ export default {
     Badge4,
     Badge5,
     Badge6,
+    Badge7,
     SeeYouThere,
     RemoteViewingSession,
     PrecogIcon,
