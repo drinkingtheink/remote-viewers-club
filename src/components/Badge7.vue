@@ -146,7 +146,9 @@
                 <path d="M439.61,667.68s2.36-.09,5.48-5.7c3.12-5.61,2.72-6.64,2.72-6.64,0,0-4.63,10.04-8.2,12.33Z"/>
                 </g>
             </g>
-            </svg>
+        </svg>
+
+        <div v-show="doAnimate" class="symbols" />
     </div>
 </template>
 
@@ -157,7 +159,7 @@ export default {
     return {
             counter: 0,
             intervalId: null,
-            doAnimate: false
+            doAnimate: false,
         }
     },
     mounted() {
@@ -177,140 +179,6 @@ export default {
     beforeUnmount() {
         clearInterval(this.intervalId)
     },
-    watch: {
-        doAnimate() {
-            if(this.doAnimate) {
-                this.castSpells();
-            }
-        }
-    },
-    methods: {
-        castSpells() {
-            const seraphim = document.getElementById('seraphim');
-            const container = document.querySelector('.seraphim-wrapper');
-
-            // Store the center position
-            let centerX = 0;
-            let centerY = 0;
-
-            // Calculate center on load and resize
-            function updateCenter() {
-                const rect = container.getBoundingClientRect();
-                centerX = rect.left + rect.width / 2;
-                centerY = rect.top + rect.height / 2;
-            }
-
-            updateCenter();
-            window.addEventListener('resize', updateCenter);
-
-            // Track mouse movement
-            container.addEventListener('mousemove', (e) => {
-                const mouseX = e.clientX;
-                const mouseY = e.clientY;
-                
-                // Calculate distance from center
-                const deltaX = mouseX - centerX;
-                const deltaY = mouseY - centerY;
-                
-                // Calculate distance
-                const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-                
-                // Move away from mouse (inverse direction, scaled down)
-                const pushStrength = 90; // How far it moves (in pixels)
-                const maxDistance = 300; // Maximum effective distance
-                
-                const factor = Math.min(distance / maxDistance, 1);
-                const moveX = -(deltaX / distance) * pushStrength * factor;
-                const moveY = -(deltaY / distance) * pushStrength * factor;
-                
-                seraphim.style.transform = `translate(${moveX}px, ${moveY}px)`;
-            });
-
-            // Return to center when mouse leaves
-            container.addEventListener('mouseleave', () => {
-                seraphim.style.transform = 'translate(0, 0)';
-            });
-
-            // Array of mystical symbols
-            const symbols = ['✦', '✧', '✨', '⚡', '☆', '★', '◆', '◇', '○', '●', '▲', '△', '☽', '☾', '✵', '✶', '❋', '✹', '⊹', '※'];
-
-            // Function to get the center position of the seraphim
-            function getSeraphimCenter() {
-                const rect = container.getBoundingClientRect();
-                return {
-                    x: rect.width / 2,
-                    y: rect.height / 2
-                };
-            }
-
-            // Function to create and animate a spell symbol
-            function castSpell() {
-                const center = getSeraphimCenter();
-                const symbol = document.createElement('div');
-                symbol.className = 'spell-symbol';
-                
-                // Random symbol from array
-                symbol.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-                
-                // Random color
-                const colors = ['#00FFFF', '#FF00FF', '#FFFF00', '#00FF00', '#FF0080', '#0080FF'];
-                symbol.style.color = colors[Math.floor(Math.random() * colors.length)];
-                
-                // Start from center
-                symbol.style.left = center.x + 'px';
-                symbol.style.top = center.y + 'px';
-                
-                // Random direction and distance
-                const angle = Math.random() * Math.PI * 2;
-                const distance = 150 + Math.random() * 500;
-                const tx = Math.cos(angle) * distance;
-                const ty = Math.sin(angle) * distance;
-                const rotation = Math.random() * 720 - 360;
-                
-                // Set CSS variables for animation
-                symbol.style.setProperty('--tx', `${tx}px`);
-                symbol.style.setProperty('--ty', `${ty}px`);
-                symbol.style.setProperty('--rotation', `${rotation}deg`);
-                
-                container.appendChild(symbol);
-                
-                // Remove element after animation completes
-                setTimeout(() => {
-                    symbol.remove();
-                }, 3000);
-            }
-
-            // Function to create a burst of symbols
-            function symbolBurst() {
-                const burstCount = 8 + Math.floor(Math.random() * 8); // 8-15 symbols
-                for (let i = 0; i < burstCount; i++) {
-                    setTimeout(() => {
-                        castSpell();
-                    }, i * 50); // Stagger by 50ms
-                }
-            }
-
-            // Cast spells periodically
-            function startCasting() {
-                symbolBurst(); // Initial burst
-                
-                // Random intervals between 3-7 seconds
-                const nextCast = 3000 + Math.random() * 4000;
-                setTimeout(() => {
-                    startCasting();
-                }, nextCast);
-            }
-
-            // Start the spell casting
-            startCasting();
-
-            // Optional: Cast on eye blink (sync with blink animation)
-            // Trigger when main eye blinks
-            setInterval(() => {
-                castSpell();
-            }, 8000); // Matches the 8s blink cycle
-        }
-    }
 }
 </script>
 
@@ -328,17 +196,6 @@ export default {
   position: relative;
 }
 
-@keyframes holeSwirl {
-  0%, 100% {
-    transform: translate(-50%, -50%) scale(1) rotate(0deg);
-    filter: blur(0px);
-  }
-  50% {
-    transform: translate(-50%, -50%) scale(0.95) rotate(180deg);
-    filter: blur(1px);
-  }
-}
-
 .seraphim-wrapper::before {
   content: '';
   position: absolute;
@@ -352,10 +209,6 @@ export default {
   background-image: url("data:image/svg+xml,%3Csvg width='84' height='84' viewBox='0 0 84 84' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23008b8b' fill-opacity='0.58'%3E%3Cpath d='M84 23c-4.417 0-8-3.584-8-7.998V8h-7.002C64.58 8 61 4.42 61 0H23c0 4.417-3.584 8-7.998 8H8v7.002C8 19.42 4.42 23 0 23v38c4.417 0 8 3.584 8 7.998V76h7.002C19.42 76 23 79.58 23 84h38c0-4.417 3.584-8 7.998-8H76v-7.002C76 64.58 79.58 61 84 61V23zM59.05 83H43V66.95c5.054-.5 9-4.764 9-9.948V52h5.002c5.18 0 9.446-3.947 9.95-9H83v16.05c-5.054.5-9 4.764-9 9.948V74h-5.002c-5.18 0-9.446 3.947-9.95 9zm-34.1 0H41V66.95c-5.053-.502-9-4.768-9-9.948V52h-5.002c-5.184 0-9.447-3.946-9.95-9H1v16.05c5.053.502 9 4.768 9 9.948V74h5.002c5.184 0 9.447 3.946 9.95 9zm0-82H41v16.05c-5.054.5-9 4.764-9 9.948V32h-5.002c-5.18 0-9.446 3.947-9.95 9H1V24.95c5.054-.5 9-4.764 9-9.948V10h5.002c5.18 0 9.446-3.947 9.95-9zm34.1 0H43v16.05c5.053.502 9 4.768 9 9.948V32h5.002c5.184 0 9.447 3.946 9.95 9H83V24.95c-5.053-.502-9-4.768-9-9.948V10h-5.002c-5.184 0-9.447-3.946-9.95-9zM50 50v7.002C50 61.42 46.42 65 42 65c-4.417 0-8-3.584-8-7.998V50h-7.002C22.58 50 19 46.42 19 42c0-4.417 3.584-8 7.998-8H34v-7.002C34 22.58 37.58 19 42 19c4.417 0 8 3.584 8 7.998V34h7.002C61.42 34 65 37.58 65 42c0 4.417-3.584 8-7.998 8H50z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
   z-index: -1; /* Sits behind content */
   border: 20px solid gold;
-}
-
-.animate .seraphim-wrapper::before {
-  animation: holeSwirl 4s ease-in-out infinite;
 }
 
 .animate svg {
