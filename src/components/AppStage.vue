@@ -150,7 +150,7 @@ const badgeMap = [
   },
 ];
 
-const initialFocus = 'praxis';
+const initialFocus = 'gallery';
 
 export default {
   name: 'AppStage',
