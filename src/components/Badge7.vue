@@ -1,7 +1,7 @@
 <template>
     <div 
         class="seraphim-wrapper"
-        :class="{ 'animate2': doAnimate }"    
+        :class="{ 'animate': doAnimate }"    
     >
         <svg id="seraphim" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 877.84 967.37">
             <g id="RIGHT-WING">
