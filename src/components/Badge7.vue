@@ -173,11 +173,16 @@ export default {
         setTimeout(() => {
             this.doAnimate = false
         }, 5000)
-
-        this.castSpells();
     },
     beforeUnmount() {
         clearInterval(this.intervalId)
+    },
+    watch: {
+        doAnimate() {
+            if(this.doAnimate) {
+                this.castSpells();
+            }
+        }
     },
     methods: {
         castSpells() {
@@ -596,4 +601,41 @@ export default {
     transform: translateY(20px);
   }
 }
+
+/**** SPELLS */
+
+/* Symbol animation styles */
+.spell-symbol {
+    position: absolute;
+    font-size: 80px;
+    pointer-events: none;
+    opacity: 0;
+    animation: cast-spell 3s ease-out forwards;
+}
+
+@keyframes cast-spell {
+    0% {
+        opacity: 0;
+        transform: translate(0, 0) rotate(0deg) scale(0);
+    }
+    10% {
+        opacity: 1;
+        transform: translate(0, 0) rotate(0deg) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(var(--tx), var(--ty)) rotate(var(--rotation)) scale(0.5);
+    }
+}
+
+/* Glow effect for symbols */
+.spell-symbol {
+    filter: drop-shadow(0 0 8px currentColor);
+    text-shadow: 0 0 10px currentColor;
+}
+
+.seraphim-wrapper {
+    position: relative;
+}
+
 </style>
