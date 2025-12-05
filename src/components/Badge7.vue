@@ -148,8 +148,15 @@
             </g>
         </svg>
 
-        <div class="symbols">
-            <span v-for="symbol in symbols" :key="symbol"> {{ symbol }}</span>
+        <div class="symbol-circle">
+            <span 
+                v-for="(symbol, index) in symbols" 
+                :key="index"
+                class="symbol"
+                :style="getSymbolPosition(index)"
+            >
+                {{ symbol }}
+            </span>
         </div>
     </div>
 </template>
@@ -180,10 +187,45 @@ export default {
         setTimeout(() => {
             this.doAnimate = false
         }, 5000)
+
+        setInterval(this.swapOppositeSymbols, 2000); // Swap spell symbols every 2 seconds
     },
     beforeUnmount() {
         clearInterval(this.intervalId)
     },
+    methods: {
+        getSymbolPosition (index) {
+            const totalSymbols = symbols.length;
+            const angle = (index / totalSymbols) * 2 * Math.PI - Math.PI / 2; // Start from top
+            const radius = 180; // Adjust this to change circle size
+            
+            const x = Math.cos(angle) * radius;
+            const y = Math.sin(angle) * radius;
+            
+            return {
+                    left: `calc(50% + ${x}px)`,
+                    top: `calc(50% + ${y}px)`,
+                    transform: 'translate(-50%, -50%)'
+            };
+        },
+        swapOppositeSymbols() {
+            if (!symbols.value || !Array.isArray(symbols.value)) return;
+            
+            const current = symbols.value;
+            const newSymbols = [];
+            const half = Math.floor(current.length / 2);
+            
+            for (let i = 0; i < current.length; i++) {
+                if (i < half) {
+                newSymbols[i] = current[i + half];
+                } else {
+                newSymbols[i] = current[i - half];
+                }
+            }
+            
+            symbols.value = newSymbols;
+        }
+    }
 }
 </script>
 
@@ -512,5 +554,32 @@ export default {
 .seraphim-wrapper {
     position: relative;
 }
+
+/* CAST SPELLS */
+
+.symbol-circle {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  animation: rotate 30s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.symbol {
+  /* Counter-rotate so symbols stay upright */
+  animation: counter-rotate 30s linear infinite;
+}
+
+@keyframes counter-rotate {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(-360deg); }
+}
+/* '#00FFFF', '#FF00FF', '#FFFF00', '#00FF00', '#FF0080', '#0080FF' */
 
 </style>
