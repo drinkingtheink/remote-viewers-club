@@ -1,6 +1,6 @@
 <template>
     <div 
-        class="seraphim-wrapper animate"
+        class="seraphim-wrapper"
         :class="{ 'animate': doAnimate }"    
     >
         <svg id="seraphim" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 877.84 967.37">
@@ -148,7 +148,7 @@
             </g>
         </svg>
 
-        <div class="symbol-circle">
+        <div v-show="doAnimate" class="symbol-circle">
             <div 
                 v-for="(symbol, index) in symbols" 
                 :key="`symbol-${index}`"
@@ -554,9 +554,10 @@ export default {
 /* CAST SPELLS */
 
 .symbol-circle {
+--symCirclDim: 320px;
   position: absolute;
-  width: 400px;
-  height: 400px;
+  width: var(--symCirclDim);
+  height: var(--symCirclDim);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -574,13 +575,16 @@ export default {
 
 .symbol {
   position: absolute;
-  font-size: 24px;
-  color: gold;
-  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-  top: 0;
-  left: 50%;
-  transform: translate(-50%, 0) rotate(calc(-1 * var(--angle)));
+  font-size: 40px;
+  text-shadow: 
+    0 0 5px currentColor,
+    0 0 10px currentColor,
+    0 0 20px currentColor,
+    0 0 40px currentColor,
+    0 0 80px currentColor;
   transform-origin: center;
+  animation: crossCenter 4s ease-in-out infinite;
+  animation-delay: inherit;
 }
 
 @keyframes swapPositions {
@@ -590,6 +594,56 @@ export default {
   50% {
     transform: rotate(var(--opposite-angle));
   }
+}
+
+.symbol-wrapper:nth-child(1) .symbol {
+  color: #FFD700; /* Gold */
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+}
+
+.symbol-wrapper:nth-child(2) .symbol {
+  color: #FF6B9D; /* Pink */
+  text-shadow: 0 0 10px rgba(255, 107, 157, 0.7);
+}
+
+.symbol-wrapper:nth-child(3) .symbol {
+  color: #4ECDC4; /* Turquoise */
+  text-shadow: 0 0 10px rgba(78, 205, 196, 0.7);
+}
+
+.symbol-wrapper:nth-child(4) .symbol {
+  color: #A78BFA; /* Purple */
+  text-shadow: 0 0 10px rgba(167, 139, 250, 0.7);
+}
+
+.symbol-wrapper:nth-child(5) .symbol {
+  color: #F97316; /* Orange */
+  text-shadow: 0 0 10px rgba(249, 115, 22, 0.7);
+}
+
+.symbol-wrapper:nth-child(6) .symbol {
+  color: #10B981; /* Green */
+  text-shadow: 0 0 10px rgba(16, 185, 129, 0.7);
+}
+
+.symbol-wrapper:nth-child(7) .symbol {
+  color: #3B82F6; /* Blue */
+  text-shadow: 0 0 10px rgba(59, 130, 246, 0.7);
+}
+
+.symbol-wrapper:nth-child(8) .symbol {
+  color: #EF4444; /* Red */
+  text-shadow: 0 0 10px rgba(239, 68, 68, 0.7);
+}
+
+.symbol-wrapper:nth-child(9) .symbol {
+  color: #FBBF24; /* Amber */
+  text-shadow: 0 0 10px rgba(251, 191, 36, 0.7);
+}
+
+.symbol-wrapper:nth-child(10) .symbol {
+  color: #8B5CF6; /* Violet */
+  text-shadow: 0 0 10px rgba(139, 92, 246, 0.7);
 }
 
 /* '#00FFFF', '#FF00FF', '#FFFF00', '#00FF00', '#FF0080', '#0080FF' */
