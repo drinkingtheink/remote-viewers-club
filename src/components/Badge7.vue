@@ -1,6 +1,6 @@
 <template>
     <div 
-        class="seraphim-wrapper"
+        class="seraphim-wrapper animate"
         :class="{ 'animate': doAnimate }"    
     >
         <svg id="seraphim" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 877.84 967.37">
@@ -148,11 +148,15 @@
             </g>
         </svg>
 
-        <div v-show="doAnimate" class="symbols" />
+        <div class="symbols">
+            <span v-for="symbol in symbols" :key="symbol"> {{ symbol }}</span>
+        </div>
     </div>
 </template>
 
 <script>
+const symbols = ['✧', '⚡', '☆', '◇', '○', '△', '☾', '✶', '❋', '⊹'];
+
 export default {
   name: 'badge-7',
   data() {
@@ -160,6 +164,7 @@ export default {
             counter: 0,
             intervalId: null,
             doAnimate: false,
+            symbols
         }
     },
     mounted() {
@@ -323,7 +328,7 @@ export default {
 }
 
 .animate #seraphim-container {
-  animation: float 3s infinite alternate;
+  animation: float 1s infinite alternate;
 }
 
 .cls-1 {
