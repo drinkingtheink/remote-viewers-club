@@ -149,20 +149,21 @@
         </svg>
 
         <div class="symbol-circle">
-            <span 
+            <div 
                 v-for="(symbol, index) in symbols" 
-                :key="index"
-                class="symbol"
-                :style="getSymbolPosition(index)"
+                :key="`symbol-${index}`"
+                class="symbol-wrapper"
+                :style="getWrapperStyle(index)"
             >
-                {{ symbol }}
-            </span>
+                <span class="symbol">{{ symbol }}</span>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
 const symbols = ['✧', '⚡', '☆', '◇', '○', '△', '☾', '✶', '❋', '⊹'];
+const totalSymbols = symbols.length;
 
 export default {
   name: 'badge-7',
@@ -194,18 +195,13 @@ export default {
         clearInterval(this.intervalId)
     },
     methods: {
-        getSymbolPosition (index) {
-            const totalSymbols = symbols.length;
-            const angle = (index / totalSymbols) * 2 * Math.PI - Math.PI / 2; // Start from top
-            const radius = 180; // Adjust this to change circle size
-            
-            const x = Math.cos(angle) * radius;
-            const y = Math.sin(angle) * radius;
+        getWrapperStyle(index) {
+            const angle = (index / totalSymbols) * 360 - 90; // degrees, starting from top
             
             return {
-                    left: `calc(50% + ${x}px)`,
-                    top: `calc(50% + ${y}px)`,
-                    transform: 'translate(-50%, -50%)'
+                '--angle': `${angle}deg`,
+                '--opposite-angle': `${angle + 180}deg`,
+                animationDelay: `${(index % 2) * 2}s` // Alternate timing for pairs
             };
         },
         swapOppositeSymbols() {
@@ -559,27 +555,43 @@ export default {
 
 .symbol-circle {
   position: absolute;
+  width: 400px;
+  height: 400px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.symbol-wrapper {
+  position: absolute;
   width: 100%;
   height: 100%;
   top: 0;
   left: 0;
-  animation: rotate 30s linear infinite;
-}
-
-@keyframes rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  animation: swapPositions 4s ease-in-out infinite;
+  transform: rotate(var(--angle));
 }
 
 .symbol {
-  /* Counter-rotate so symbols stay upright */
-  animation: counter-rotate 30s linear infinite;
+  position: absolute;
+  font-size: 24px;
+  color: gold;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, 0) rotate(calc(-1 * var(--angle)));
+  transform-origin: center;
 }
 
-@keyframes counter-rotate {
-  from { transform: translate(-50%, -50%) rotate(0deg); }
-  to { transform: translate(-50%, -50%) rotate(-360deg); }
+@keyframes swapPositions {
+  0%, 100% {
+    transform: rotate(var(--angle));
+  }
+  50% {
+    transform: rotate(var(--opposite-angle));
+  }
 }
+
 /* '#00FFFF', '#FF00FF', '#FFFF00', '#00FF00', '#FF0080', '#0080FF' */
 
 </style>
