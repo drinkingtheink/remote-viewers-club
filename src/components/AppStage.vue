@@ -150,9 +150,9 @@ const badgeMap = [
     id: 6,
   },
   {
-    title: 'One Wax Wing',
+    title: '227th Spectral Comms',
     desc: 'The Broadcast Continues Regardless',
-    inspo: 'https://twitter.com/arpitingle/status/1698709125088088109',
+    inspo: 'https://codepen.io/drinkingtheink/pen/vEGdJew',
     id: 7,
   },
 ];

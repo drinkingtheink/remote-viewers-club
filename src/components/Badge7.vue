@@ -565,7 +565,6 @@ export default {
     0 0 40px currentColor,
     0 0 80px currentColor;
   transform-origin: center;
-  animation: crossCenter 4s ease-in-out infinite;
   animation-delay: inherit;
   opacity: 0;
   transition-duration: 2s;
