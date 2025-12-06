@@ -121,7 +121,7 @@ const badgeMap = [
   },
   {
     title: 'Remote Viewing Task Force',
-    desc: 'Fort Stillwater',
+    desc: 'See You There',
     inspo: 'https://twitter.com/CassetteDyne/status/1735694599262192051',
     id: 2,
   },
