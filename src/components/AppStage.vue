@@ -115,13 +115,13 @@ import GnosisIcon from './icons/GnosisIcon'
 const badgeMap = [
   {
     title: 'Beyond All Bounds',
-    desc: '24th Omnidimensional Operations Squadron',
+    desc: '24th Omnidimensional Operations',
     inspo: 'https://twitter.com/arpitingle/status/1698709125088088109',
     id: 1,
   },
   {
     title: 'Remote Viewing Task Force',
-    desc: 'See You There',
+    desc: '88th Ecoacoustics Squadron',
     inspo: 'https://twitter.com/CassetteDyne/status/1735694599262192051',
     id: 2,
   },
