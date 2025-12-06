@@ -162,7 +162,7 @@
 </template>
 
 <script>
-const symbols = ['✧', '⚡', '☆', '◇', '○', '△', '☾', '✶', '❋', '⊹'];
+const symbols = ['✧', '☆', '◇', '○', '△', '☾', '⊹', '✧', '☆', '◇'];
 const totalSymbols = symbols.length;
 
 export default {
@@ -199,7 +199,7 @@ export default {
             return {
                 '--angle': `${angle}deg`,
                 '--opposite-angle': `${angle + 180}deg`,
-                animationDelay: `${(index % 2) * 0.2}s` // Alternate timing for pairs
+                animationDelay: `${(index % 2) * 0.3}s` // Alternate timing for pairs
             };
         }
     }
