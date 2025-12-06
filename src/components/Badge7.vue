@@ -188,8 +188,6 @@ export default {
         setTimeout(() => {
             this.doAnimate = false
         }, 5000)
-
-        setInterval(this.swapOppositeSymbols, 2000); // Swap spell symbols every 2 seconds
     },
     beforeUnmount() {
         clearInterval(this.intervalId)
@@ -203,23 +201,6 @@ export default {
                 '--opposite-angle': `${angle + 180}deg`,
                 animationDelay: `${(index % 2) * 2}s` // Alternate timing for pairs
             };
-        },
-        swapOppositeSymbols() {
-            if (!symbols.value || !Array.isArray(symbols.value)) return;
-            
-            const current = symbols.value;
-            const newSymbols = [];
-            const half = Math.floor(current.length / 2);
-            
-            for (let i = 0; i < current.length; i++) {
-                if (i < half) {
-                newSymbols[i] = current[i + half];
-                } else {
-                newSymbols[i] = current[i - half];
-                }
-            }
-            
-            symbols.value = newSymbols;
         }
     }
 }

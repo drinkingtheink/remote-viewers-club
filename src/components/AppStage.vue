@@ -150,7 +150,7 @@ const badgeMap = [
     id: 6,
   },
   {
-    title: '227th Spectral Comms',
+    title: '227th Silent Spectral Comms',
     desc: 'The Broadcast Continues Regardless',
     inspo: 'https://codepen.io/drinkingtheink/pen/vEGdJew',
     id: 7,
