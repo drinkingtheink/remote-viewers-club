@@ -136,6 +136,15 @@ export default {
     opacity: 1;
 }
 
+#all-knowing-eye {
+    transform: translateY(-20px);
+}
+
+.animate #all-knowing-eye,
+#pyramid-wrapper:hover #all-knowing-eye {
+    transform: translateY(0);
+}
+
 .animate #galaxy {
     opacity: 0;
 }
@@ -154,7 +163,8 @@ export default {
     }
 }
 
-.animate #eye {
+.animate #eye,
+#pyramid-wrapper:hover #eye {
     animation: blink 4s ease-in-out infinite;
     transform-origin: center;
 }
