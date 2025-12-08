@@ -159,6 +159,10 @@ export default {
     transform-origin: center;
 }
 
+.animate #front-border {
+    fill: white;
+}
+
 /* Starburst rotation and swell animation */
 @keyframes starburst-spin {
     0% {
