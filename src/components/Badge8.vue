@@ -280,7 +280,11 @@ export default {
 }
 
 .pyramid-16 {
-	fill: #efdbb9;
+    fill: #202769;
+}
+
+.animate .pyramid-16 {
+    fill: #efdbb9;
 }
 
 .pyramid-17 {

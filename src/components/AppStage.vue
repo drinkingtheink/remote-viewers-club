@@ -157,8 +157,8 @@ const badgeMap = [
     id: 7,
   },
   {
-    title: 'Pyramid',
-    desc: 'We Love Pyramids Club',
+    title: 'Project Stargate',
+    desc: '44th Boundless Sight SQ',
     inspo: 'https://codepen.io/drinkingtheink/pen/vEGdJew',
     id: 8,
   },
