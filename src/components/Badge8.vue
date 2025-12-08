@@ -152,6 +152,25 @@ export default {
     transform-origin: center;
 }
 
+/* Starburst rotation and swell animation */
+@keyframes starburst-spin {
+    0% {
+        transform: rotate(0deg) scale(1);
+    }
+    50% {
+        transform: rotate(180deg) scale(1.15);
+    }
+    100% {
+        transform: rotate(360deg) scale(1);
+    }
+}
+
+.animate #starburst {
+    opacity: 1;
+    animation: starburst-spin 8s ease-in-out infinite;
+    transform-origin: center;
+}
+
 .cls-1 {
 	fill: url(#radial-gradient-7);
 }
