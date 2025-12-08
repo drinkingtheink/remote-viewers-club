@@ -169,8 +169,9 @@ export default {
 
 .animate #eye,
 #pyramid-wrapper:hover #eye {
-    animation: blink 4s ease-in-out infinite;
+    animation: blink 2s ease-in-out infinite;
     transform-origin: center;
+    transition: opacity 0;
 }
 
 .animate #front-border {
@@ -206,7 +207,7 @@ export default {
 
 #stars {
     transform: translateY(20px);
-    opacity: 0.6;
+    opacity: 0;
 }
 
 .animate #stars,
@@ -215,43 +216,37 @@ export default {
     transform: translateY(0);
 }
 
-#stars circle,
-#stars polygon {
-    fill: var(--darkBlue) !important;
-}
-
-.animate #stars circle,
-#pyramid-wrapper:hover #stars circle,
-.animate #stars polygon,
-#pyramid-wrapper:hover #stars polygon {
-    fill: white !important;
-}
-
 @keyframes twinkle {
     0%, 100% {
         opacity: 1;
+        transform: translateY(0);
     }
     50% {
         opacity: 0.2;
+        transform: translateY(10px);
     }
 }
-
+#pyramid-wrapper:hover #star-1, 
 .animate #star-1 {
     animation: twinkle 1.8s ease-in-out infinite;
 }
 
+#pyramid-wrapper:hover #star-2,
 .animate #star-2 {
     animation: twinkle 2.3s ease-in-out infinite 0.4s;
 }
 
+#pyramid-wrapper:hover #star-3,
 .animate #star-3 {
     animation: twinkle 1.5s ease-in-out infinite 0.9s;
 }
 
+#pyramid-wrapper:hover #star-4,
 .animate #star-4 {
     animation: twinkle 2.1s ease-in-out infinite 1.2s;
 }
 
+#pyramid-wrapper:hover #large-star,
 .animate #large-star {
     animation: twinkle 2.5s ease-in-out infinite 0.6s;
 }
