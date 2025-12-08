@@ -102,6 +102,7 @@ import Badge4 from './Badge4.vue'
 import Badge5 from './Badge5.vue'
 import Badge6 from './Badge6.vue'
 import Badge7 from './Badge7.vue'
+import Badge8 from './Badge8.vue'
 import SeeYouThere from './SeeYouThere.vue'
 import RemoteViewingSession from './sessions/RemoteViewingSession.vue'
 import PrecognitionSession from './sessions/PrecognitionSession.vue'
@@ -155,6 +156,12 @@ const badgeMap = [
     inspo: 'https://codepen.io/drinkingtheink/pen/vEGdJew',
     id: 7,
   },
+  {
+    title: 'Pyramid',
+    desc: 'We Love Pyramids Club',
+    inspo: 'https://codepen.io/drinkingtheink/pen/vEGdJew',
+    id: 8,
+  },
 ];
 
 const initialFocus = 'gallery';
@@ -169,6 +176,7 @@ export default {
     Badge5,
     Badge6,
     Badge7,
+    Badge8,
     SeeYouThere,
     RemoteViewingSession,
     PrecogIcon,
