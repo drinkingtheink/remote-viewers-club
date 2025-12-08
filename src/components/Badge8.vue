@@ -1,6 +1,6 @@
 <template>
     <div 
-        class="pyramid-wrapper"
+        class="pyramid-wrapper animate"
         :class="{ 'animate': doAnimate }"    
     >
         <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 698.38 698.38">
@@ -116,6 +116,42 @@ export default {
 </script>
 
 <style scoped>
+
+#pyramid-wrapper * {
+    transition: all 0.2s;
+}
+
+#all-knowing-eye,
+#starburst,
+#pyramid-shadow {
+    opacity: 0;
+}
+
+.animate #all-knowing-eye,
+.animate #starburst,
+.animate #pyramid-shadow {
+    opacity: 1;
+}
+
+.animate #galaxy {
+    opacity: 0;
+}
+
+/* Eye blink animation */
+@keyframes blink {
+    0%, 90%, 100% {
+        opacity: 1;
+    }
+    95% {
+        opacity: 0;
+    }
+}
+
+.animate #eye {
+    animation: blink 4s ease-in-out infinite;
+    transform-origin: center;
+}
+
 .cls-1 {
 	fill: url(#radial-gradient-7);
 }

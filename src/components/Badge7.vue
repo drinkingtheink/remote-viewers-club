@@ -218,6 +218,7 @@ export default {
 .seraphim-wrapper {
   --circle-size: 328px;
   position: relative;
+  padding: 0 20px;
 }
 
 .seraphim-wrapper::before {
