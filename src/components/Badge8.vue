@@ -1,7 +1,7 @@
 <template>
     <div 
         id="pyramid-wrapper"
-        :class="{ 'animate': doAnimate }"    
+        :class="{ 'animat2e': doAnimate }"    
     >
         <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 698.38 698.38">
             <defs>
@@ -117,6 +117,10 @@ export default {
 
 <style>
 
+#pyramid-wrapper {
+    --darkBlue: #111642;
+}
+
 #pyramid-wrapper * {
     transition: all 0.3s;
 }
@@ -198,6 +202,29 @@ export default {
 
 .animate #ground {
     fill: #adbc88;
+}
+
+#stars {
+    transform: translateY(20px);
+    opacity: 0.6;
+}
+
+.animate #stars,
+#pyramid-wrapper:hover #stars {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#stars circle,
+#stars polygon {
+    fill: var(--darkBlue) !important;
+}
+
+.animate #stars circle,
+#pyramid-wrapper:hover #stars circle,
+.animate #stars polygon,
+#pyramid-wrapper:hover #stars polygon {
+    fill: white !important;
 }
 
 @keyframes twinkle {
@@ -286,7 +313,7 @@ export default {
 }
 
 .pyramid-15 {
-	fill: #111642;
+	fill: var(--darkBlue);
 }
 
 .pyramid-16 {
