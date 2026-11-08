@@ -48,7 +48,6 @@
               :alt="`Signature by ${item.title}`"
               class="signature-image"
               @error="handleImageError($event, index)"
-              @load="handleImageLoad"
             />
             <div v-else class="no-image">
               <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -84,9 +83,6 @@ const lastUpdated = ref(null)
 // This should be the URL you got when you deployed your Apps Script as a web app
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxKQRUEBU8e1skP35pZzZslfgWLtkeeAqdL57M1oSwEqw-pEhQ1jksIrzhwd_KraiSt/exec'
 
-// Add this for debugging - remove in production
-console.log('Apps Script URL being used:', APPS_SCRIPT_URL)
-
 // Validate base64 image format
 const isValidBase64Image = (str) => {
   if (!str || typeof str !== 'string') return false
@@ -106,147 +102,54 @@ const formatDate = (dateString) => {
   }
 }
 
-// Fetch data from Google Apps Script using a more reliable approach
+// Fetch the membership roll from Google Apps Script.
 const fetchSheetData = async () => {
   try {
     loading.value = true
     error.value = null
 
-    console.log('🚀 Starting fetch from Google Apps Script...')
-    console.log('📍 URL:', APPS_SCRIPT_URL)
+    // Cache-busted so a returning member sees signatures added since last visit.
+    const response = await fetch(`${APPS_SCRIPT_URL}?_=${Date.now()}`, {
+      method: 'GET',
+      mode: 'cors',
+      credentials: 'omit',
+      headers: {
+        'Accept': 'application/json'
+      }
+    })
 
-    // Check if URL is properly configured
-    if (APPS_SCRIPT_URL.includes('YOUR_ACTUAL_SCRIPT_ID_HERE')) {
-      throw new Error('Please update APPS_SCRIPT_URL with your actual Google Apps Script deployment URL')
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`)
     }
 
-    // Method 1: Try with no-cors mode (this often works with Apps Script)
-    console.log('📡 Attempting fetch with no-cors mode...')
-    
-    try {
-      const response = await fetch(APPS_SCRIPT_URL, {
-        method: 'GET',
-        mode: 'no-cors',
-        cache: 'no-cache'
-      })
-      
-      console.log('📨 No-cors response received:', response)
-      
-      // With no-cors, we can't read the response, so let's try a different approach
-      throw new Error('no-cors mode limits response access')
-      
-    } catch (noCorsError) {
-      console.log('📡 No-cors failed, trying cors mode...')
-      
-      // Method 2: Try regular CORS request
-      const response = await fetch(APPS_SCRIPT_URL + '?_=' + Date.now(), {
-        method: 'GET',
-        mode: 'cors',
-        credentials: 'omit',
-        headers: {
-          'Accept': 'application/json'
-        }
-      })
-      
-      console.log('📨 Response status:', response.status)
-      console.log('📨 Response URL:', response.url)
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`)
-      }
-      
-      console.log('✅ Response received, parsing JSON...')
-      const result = await response.json()
-      
-      console.log('📦 Parsed result:', result)
-      
-      if (!result.success) {
-        throw new Error(result.error || result.message || 'Unknown error from Apps Script')
-      }
-      
-      // Process the successful response
-      items.value = result.data.reverse() || []
-      lastUpdated.value = result.lastUpdated || new Date().toISOString()
-      
-      console.log(`✨ Successfully loaded ${items.value.length} items`)
+    const result = await response.json()
+
+    if (!result.success) {
+      throw new Error(result.error || result.message || 'Unknown error from Apps Script')
     }
-    
+
+    // Newest signatures first.
+    items.value = (result.data || []).reverse()
+    lastUpdated.value = result.lastUpdated || new Date().toISOString()
   } catch (err) {
-    console.error('❌ Error fetching sheet data:', err)
-    
-    error.value = err.message
-    
-    // Provide helpful error messages based on common issues
-    if (err.message.includes('YOUR_ACTUAL_SCRIPT_ID_HERE')) {
-      error.value = '❌ Please update the APPS_SCRIPT_URL with your actual Google Apps Script deployment URL.'
-    } else if (err.message.includes('Failed to fetch')) {
-      error.value = '❌ Network error. Your Google Apps Script may not be deployed correctly or may not be publicly accessible.'
+    console.error('Error fetching the membership roll:', err)
+
+    if (err.message.includes('Failed to fetch')) {
+      error.value = 'Network error. The membership roll could not be reached.'
     } else if (err.message.includes('CORS')) {
-      error.value = '❌ CORS error. Please check that your Google Apps Script is deployed with "Anyone" access and try refreshing the page.'
+      error.value = 'CORS error. The membership roll could not be reached.'
     } else {
-      error.value = `❌ ${err.message}. Please verify your Google Apps Script deployment settings.`
+      error.value = err.message
     }
   } finally {
     loading.value = false
   }
 }
 
-// Enhanced JSONP method that works with Google Apps Script
-// const fetchWithJSONP = () => {
-//   return new Promise((resolve, reject) => {
-//     const callbackName = 'jsonp_callback_' + Math.round(100000 * Math.random())
-    
-//     console.log('📞 Creating JSONP request with callback:', callbackName)
-    
-//     // Create script element
-//     const script = document.createElement('script')
-//     script.src = `${APPS_SCRIPT_URL}?callback=${callbackName}&timestamp=${Date.now()}`
-    
-//     console.log('📞 JSONP URL:', script.src)
-    
-//     // Set up callback
-//     window[callbackName] = (data) => {
-//       console.log('📞 JSONP callback received data:', data)
-//       delete window[callbackName]
-//       document.body.removeChild(script)
-//       resolve(data)
-//     }
-    
-//     // Handle errors
-//     script.onerror = () => {
-//       console.error('📞 JSONP script failed to load')
-//       delete window[callbackName]
-//       document.body.removeChild(script)
-//       reject(new Error('JSONP request failed - script could not be loaded'))
-//     }
-    
-//     // Add script to document
-//     document.body.appendChild(script)
-//     console.log('📞 JSONP script added to document')
-    
-//     // Cleanup after timeout
-//     setTimeout(() => {
-//       if (window[callbackName]) {
-//         console.error('📞 JSONP request timeout')
-//         delete window[callbackName]
-//         if (document.body.contains(script)) {
-//           document.body.removeChild(script)
-//         }
-//         reject(new Error('JSONP request timeout - no response received within 15 seconds'))
-//       }
-//     }, 15000) // 15 second timeout
-//   })
-// }
-
 // Handle image loading errors
 const handleImageError = (event, index) => {
   console.error(`Image failed to load for item ${index}:`, event.target.src)
   event.target.style.display = 'none'
-}
-
-// Handle successful image load
-const handleImageLoad = () => {
-  console.log('Signature image loaded successfully')
 }
 
 // Refresh data method
