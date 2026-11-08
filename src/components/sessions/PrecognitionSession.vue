@@ -10,7 +10,7 @@
 
           <LotusAnimation class="lotus-anim-stage" />
           
-          <button @click="startGame" class="btn begin-session">Begin Session</button>
+          <button @click="startGame" class="begin-session">Begin Session</button>
         </div>
         
         <div v-else-if="gameState === 'playing'" class="game-screen">
@@ -41,7 +41,7 @@
         
         <div v-else-if="gameState === 'result'" class="game-screen">
           <p>{{ getResultMessage() }}</p>
-          <button @click="resetGame" class="btn">Play Again</button>
+          <button @click="resetGame">Play Again</button>
         </div>
       </transition>
       
@@ -51,7 +51,7 @@
       
       <!-- Start Over button (visible when not on intro screen) -->
       <div v-if="gameState !== 'intro'" class="start-over-container">
-        <button @click="startOver" class="btn secondary">Start Over</button>
+        <button @click="startOver" class="secondary">Start Over</button>
       </div>
     </div>
   </div>

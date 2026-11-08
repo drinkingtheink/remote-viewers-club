@@ -29,8 +29,7 @@
             'selected': userAnswer === choice,
             'correct': showResults && choice === currentQuestion.keyword,
             'incorrect': showResults && userAnswer === choice && choice !== currentQuestion.keyword
-          }"
-        >
+          }">
           {{ choice }}
         </button>
       </div>
@@ -239,14 +238,6 @@ function resetGame() {
 }
 
 .next-btn {
-  padding: 10px 20px;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
   margin-bottom: 10px;
-}
-
-.next-btn:hover {
-  background-color: #e94560;
 }
 </style>

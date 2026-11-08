@@ -28,8 +28,7 @@
         :class="{ 'disabled': printedName == null || printedName == undefined, 'saving': saving }" 
         type="button" 
         class="save-button" 
-        @click="saveSignature"
-      > 
+        @click="saveSignature"> 
         <span v-if="!saving && !isSaved">Save</span>
         <span v-if="saving">Saving</span>
         <span v-if="isSaved">SAVED!</span>
@@ -531,32 +530,6 @@ canvas {
   margin-top: 1rem;
 }
 
-.sig-controls button {
-  background-color: red;
-  color: white;
-  border: none;
-  padding: 10px 50px;
-  border-radius: 4px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: all 0.3s;
-  text-transform: uppercase;
-}
-
-.sig-controls button:hover {
-  background-color: #830b02;
-}
-
-.sig-controls button.secondary {
-  background-color: black;
-  color: red;
-  border: 3px solid red;
-}
-
-.sig-controls button.secondary:hover {
-  color: white;
-  border: 3px solid white;
-}
 
 @keyframes blink {
   from {

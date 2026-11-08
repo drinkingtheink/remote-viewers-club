@@ -7,7 +7,7 @@
 
       <ZenerAnimation />
 
-      <button @click="beginRun" class="btn-primary begin-session">Begin Session</button>
+      <button @click="beginRun" class="begin-session">Begin Session</button>
     </div>
 
     <div v-else-if="phase === 'running'" class="zener-run">
@@ -42,8 +42,7 @@
           class="zener-choice"
           :disabled="!!revealed"
           :aria-label="symbol.name"
-          @click="guess(symbol.id)"
-        >
+          @click="guess(symbol.id)">
           <ZenerSymbol :symbol="symbol.id" />
           <span class="zener-choice-name">{{ symbol.name }}</span>
         </button>
@@ -355,11 +354,11 @@ onBeforeUnmount(() => clearTimeout(revealTimer))
 }
 
 .zener-session .zener-choice {
-  background: #000 !important;
+  background: #000;
   color: var(--the-yellow);
-  border: 2px solid var(--the-yellow) !important;
+  border: 2px solid var(--the-yellow);
   border-radius: 8px;
-  padding: 10px !important;
+  padding: 10px;
   width: 90px;
   display: flex;
   flex-direction: column;
@@ -374,12 +373,12 @@ onBeforeUnmount(() => clearTimeout(revealTimer))
 }
 
 .zener-session .zener-choice-name {
-  font-size: 11px;
+  font-size: var(--text-xs);
   letter-spacing: 0.05em;
 }
 
 .zener-session .zener-choice:hover:not(:disabled) {
-  background: var(--the-yellow) !important;
+  background: var(--the-yellow);
   color: #000;
   transform: translateY(-3px);
 }

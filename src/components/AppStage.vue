@@ -301,9 +301,8 @@ export default {
 }
 
 .close-active {
-  font-size: 80%;
+  font-size: var(--text-sm);
   margin: 1rem 0;
-  text-transform: uppercase;
   padding: 1rem 2rem;
 }
 
@@ -501,13 +500,11 @@ footer a:hover {
 }
 
 button.enlarge {
-  color: white;
   width: 60%;
   border-radius: 40px;
   margin: 5px auto 0 auto;
-  border: none;
-  text-transform: uppercase;
-  transition: all 0.2s;
+  /* stated rather than inherited from the `.badge-details *` wildcard */
+  background-color: rgba(0, 0, 0, 0.6);
 }
 
 @media only screen and (max-width: 767px) {
@@ -516,27 +513,19 @@ button.enlarge {
   }
 }
 
-button.enlarge:hover {
-  background: red;
-}
-
 .sections {
   padding-top: 1rem;
 }
 
 .sections button {
-  font-size: 150%;
+  font-size: var(--text-lg);
   background: black;
   color: white;
   margin: 5px;
   display: inline-block;
-  border: 5px solid transparent;
   padding: 1rem 4rem;
-  transition: all 0.2s;
   border-radius: 10px;
-  font-family: "Anta", sans-serif;
-  text-transform: uppercase;
-  border: 6px solid rgba(0,0,0,0.6);
+  border: 6px solid rgba(0, 0, 0, 0.6);
   width: 300px;
   position: relative;
 
@@ -736,38 +725,6 @@ button.enlarge:hover {
   border-bottom: 1px solid red;
 }
 
-.stage button {
-  background-color: red;
-  color: white;
-  border: none;
-  padding: 10px 50px;
-  border-radius: 4px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: all 0.3s;
-  text-transform: uppercase;
-  font-weight: bold;
-}
-
-.stage button:hover {
-  background-color: #830b02;
-}
-
-.stage button.secondary {
-  background-color: black;
-  color: red;
-  border: 3px solid red;
-}
-
-.stage button.secondary:hover {
-  color: white;
-  border: 3px solid white;
-}
-
-button.small {
-  font-size: 65%;
-  padding: 5px 10px;
-}
 
 .panel-subheader {
   font-size: var(--text-xl);
@@ -787,15 +744,6 @@ input {
   padding: 10px;
   color: red;
   font-size: var(--text-md);
-}
-
-button.disabled {
-  pointer-events: none;
-  opacity: 0.7;
-}
-
-button.disabled:hover {
-  cursor: not-allowed !important;
 }
 
 .content-section {

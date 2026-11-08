@@ -9,7 +9,7 @@
         <WindowAnimation class="window-anim-stage" />
       </section>
 
-      <button @click="beginSession" class="btn-primary begin-session">Begin Session</button>
+      <button @click="beginSession" class="begin-session">Begin Session</button>
     </div>
 
     <div v-else-if="stage === 'coordinates'" class="coordinates">
@@ -25,7 +25,7 @@
       </section>
 
       <p class="status-text">{{ statusMessage }}</p>
-      <button @click="submitImpression" :disabled="!canSubmit" class="btn-primary">
+      <button @click="submitImpression" :disabled="!canSubmit">
         Submit Impression
       </button>
     </div>
@@ -56,7 +56,7 @@
         id="textualImpression"
       >
       </textarea>
-      <button @click="revealTarget" class="btn-primary">Reveal Target</button>
+      <button @click="revealTarget">Reveal Target</button>
     </div>
 
     <div v-else-if="stage === 'reveal'" class="reveal">
@@ -81,7 +81,7 @@
         </div>
         <p class="accuracy-notes">{{ accuracyNotes }}</p>
       </div>
-      <button @click="resetSession" class="btn-primary">Start New Session</button>
+      <button @click="resetSession">Start New Session</button>
     </div>
   </div>
 </template>
@@ -348,10 +348,6 @@ watch(penSize, () => {
   margin-top: 0;
 }
 
-.remote-viewing-container .btn-primary:disabled {
-  background-color: #cccccc;
-  cursor: not-allowed;
-}
 
 .remote-viewing-container .coordinate-display {
   font-family: var(--font-mono);
@@ -408,12 +404,6 @@ watch(penSize, () => {
   align-items: center;
 }
 
-.remote-viewing-container .canvas-container .canvas-tools .btn-tool {
-  border: none;
-  padding: 5px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-}
 
 .remote-viewing-container .canvas-container .canvas-tools .color-picker {
   width: 40px;

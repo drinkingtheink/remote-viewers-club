@@ -1,0 +1,119 @@
+/*
+ * One button system.
+ *
+ * This replaces five overlapping definitions: `.stage button` and
+ * `.sig-controls button` were near-identical copies of each other,
+ * `.sections button` was its own thing, `.btn` / `.btn-primary` /
+ * `.next-btn` / `.enlarge` / `.tos-handler` each did their own,
+ * and the buttons in Join and the membership roll had no styling at
+ * all so they fell back to the browser's.
+ *
+ * The base selector is the bare `button` element, so an unstyled button
+ * is already a correct one. `.btn` and `.btn-primary` are kept as
+ * aliases for markup that still names them.
+ */
+
+:root {
+  --btn-accent: #ED0000;
+  --btn-accent-hover: #830b02;
+  --btn-surface: #000;
+  --btn-ink: #fff;
+  --btn-radius: 4px;
+  --btn-border-width: 3px;
+  --btn-padding-y: 0.7rem;
+  --btn-padding-x: 2rem;
+}
+
+button,
+.btn,
+.btn-primary {
+  font-family: var(--font-ui);
+  font-size: var(--text-base);
+  /* Anta ships one weight; asking for bold only gets a synthesized one */
+  font-weight: 400;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--btn-ink);
+  background-color: var(--btn-accent);
+  border: var(--btn-border-width) solid transparent;
+  border-radius: var(--btn-radius);
+  padding: var(--btn-padding-y) var(--btn-padding-x);
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+button:hover,
+.btn:hover,
+.btn-primary:hover {
+  background-color: var(--btn-accent-hover);
+}
+
+/* the quieter half of a pair: cancel next to save, close next to begin */
+button.secondary,
+.btn.secondary {
+  background-color: var(--btn-surface);
+  color: var(--btn-accent);
+  border-color: var(--btn-accent);
+}
+
+button.secondary:hover,
+.btn.secondary:hover {
+  background-color: var(--btn-surface);
+  color: var(--btn-ink);
+  border-color: var(--btn-ink);
+}
+
+button.small,
+.btn.small {
+  font-size: var(--text-sm);
+  padding: 0.4rem 1rem;
+  border-width: 2px;
+}
+
+/*
+ * One disabled treatment. There were three: an opacity rule, a grey
+ * #cccccc fill, and markup that styled nothing at all.
+ *
+ * `.disabled` keeps pointer-events: none because it is cosmetic only --
+ * nothing else stops the click handler firing. The real [disabled]
+ * attribute already blocks the click, so it can show not-allowed.
+ */
+button:disabled,
+button.disabled,
+.btn:disabled,
+.btn.disabled {
+  opacity: 0.45;
+}
+
+button:disabled,
+.btn:disabled {
+  cursor: not-allowed;
+}
+
+button.disabled,
+.btn.disabled {
+  pointer-events: none;
+}
+
+button:disabled:hover,
+.btn:disabled:hover {
+  background-color: var(--btn-accent);
+}
+
+button.secondary:disabled:hover,
+.btn.secondary:disabled:hover {
+  background-color: var(--btn-surface);
+  color: var(--btn-accent);
+  border-color: var(--btn-accent);
+}
+
+button:focus-visible,
+.btn:focus-visible {
+  outline: 3px solid var(--the-yellow, #f1f380);
+  outline-offset: 2px;
+}

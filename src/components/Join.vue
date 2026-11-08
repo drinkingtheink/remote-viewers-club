@@ -609,23 +609,17 @@ export default {
 
 .tos-handler {
   margin: 0 auto;
-  background: red;
-  color: white;
-  border-radius: 10px;
-  padding: 0.5rem 0.75rem;
-  border: none;
   width: 450px;
-  text-transform: uppercase;
-  font-size: 120%;
-  border: 5px solid rgba(0,0,0,0.8);
+  max-width: 100%;
+  font-size: var(--text-md);
+  border-radius: 10px;
+  border-color: rgba(0, 0, 0, 0.8);
   opacity: 0.85;
   transform: scale(0.95);
-  transition: all 0.5s;
-  font-weight: bold;
+  transition: opacity 0.5s ease, transform 0.5s ease, background-color 0.2s ease;
 }
 
 .tos-handler:hover {
-  cursor: pointer;
   opacity: 1;
   transform: scale(1);
 }
