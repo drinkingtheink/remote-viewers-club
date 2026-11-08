@@ -354,8 +354,8 @@ watch(penSize, () => {
 }
 
 .remote-viewing-container .coordinate-display {
-  font-family: 'Courier New', monospace;
-  font-size: 230%;
+  font-family: var(--font-mono);
+  font-size: var(--text-2xl);
   padding: 15px;
   background-color: #000000;
   color: #fff;

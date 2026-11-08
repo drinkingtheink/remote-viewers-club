@@ -215,7 +215,7 @@ function resetGame() {
 .feedback {
   margin-bottom: 15px;
   font-weight: bold;
-  font-size: 1.4rem;
+  font-size: var(--text-lg);
 }
 
 .feedback.correct {

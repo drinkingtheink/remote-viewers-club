@@ -519,7 +519,7 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 }
 
 .instructions p {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: var(--font-body);
 }
 
 .pull-bottom {

@@ -246,31 +246,6 @@ export default {
   --success: #2ecc71;
 }
 
-/**** TYPOG ****/
-/* Anta */
-@font-face {
-  font-family: 'Anta';
-  font-style: normal;
-  font-weight: 400;
-  src: url('../assets/fonts/anta/Anta-Regular.ttf') format('truetype');
-}
-
-/* Vollkorn */
-@font-face {
-  font-family: 'Vollkorn';
-  font-style: normal;
-  font-weight: 600;
-  src: url('../assets/fonts/vollkorn/Vollkorn-Bold.ttf') format('truetype');
-}
-
-/* Vollkorn */
-@font-face {
-  font-family: 'Unica One';
-  font-style: normal;
-  font-weight: 600;
-  src: url('../assets/fonts/unica-one/UnicaOne-Regular.ttf') format('truetype');
-}
-
 .modal-mask {
   position: fixed;
   z-index: 9998;
@@ -350,14 +325,7 @@ body {
 }
 
 h1, h2, h3, h4 {
-  font-family: "Vollkorn", serif;
-  font-optical-sizing: auto;
-  font-weight: 600;
-  font-style: normal;
-  text-transform: uppercase;
-  font-size: 160%;
   padding-top: 0;
-  margin-top: 0;
 }
 
 h3 {
@@ -408,10 +376,11 @@ h1 {
 
 p.introduction {
   margin: 0 auto;
-  font-family: "Unica One", sans-serif;
+  font-family: var(--font-display);
   font-weight: 400;
   font-style: normal;
-  font-size: 250%;
+  font-size: var(--text-3xl);
+  line-height: var(--leading-snug);
   max-width: 800px;
 
   @media only screen and (max-width: 60em) {
@@ -487,15 +456,15 @@ section.gallery {
 .badge-details h3 {
   margin: 0;
   text-transform: uppercase;
-  font-size: 1.25rem;
-  line-height: 1.2;
+  font-size: var(--text-md);
+  line-height: var(--leading-tight);
 }
 
 .badge-details h4 {
   margin: 5px 0;
   color: white;
-  font-family: 'Unica One', sans-serif;
-  font-size: 130%;
+  font-family: var(--font-display);
+  font-size: var(--text-md);
 }
 
 footer {
@@ -590,7 +559,7 @@ button.enlarge:hover {
 }
 
 .intro {
-  font-family: "Unica One", sans-serif;
+  font-family: var(--font-display);
 }
 
 @keyframes fadeIn {
@@ -748,10 +717,10 @@ button.enlarge:hover {
 }
 
 .stage p {
-  line-height: 1.3;
-  font-size: 170%;
+  line-height: var(--leading-snug);
+  font-size: var(--text-xl);
   color: white;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body);
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
@@ -801,8 +770,8 @@ button.small {
 }
 
 .panel-subheader {
-  font-size: 20pt !important;
-  font-family: "Vollkorn", serif !important;
+  font-size: var(--text-xl);
+  font-family: var(--font-heading);
 }
 
 button.begin-session {
@@ -817,7 +786,7 @@ button.begin-session {
 input {
   padding: 10px;
   color: red;
-  font-size: 1.2rem;
+  font-size: var(--text-md);
 }
 
 button.disabled {
