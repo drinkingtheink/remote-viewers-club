@@ -3,6 +3,7 @@
     <h2 class="intro">There's always room for one more...</h2>
 
     <section 
+      ref="tos"
       class="tos" 
       :class="{ 'user-is-member': isMemberAlready , 'open' : openTOS}"
       @mousemove="handleMouseMove" 
@@ -12,7 +13,7 @@
 
       <h2>REMOTE VIEWERS CLUB</h2>
       <h3>MEMBERSHIP AGREEMENT AND TERMS OF PARTICIPATION</h3>
-      <div class="tos-body">
+      <div class="tos-body" ref="tosBody">
         <p class="recital">
           <strong>WHEREAS</strong>, the undersigned individual (hereinafter referred to as
           &ldquo;MEMBER,&rdquo; &ldquo;PSYCHIC ASPIRANT,&rdquo; &ldquo;THIRD EYE ENTHUSIAST,&rdquo;
@@ -331,12 +332,36 @@ export default {
   },
   methods: {
     handleMouseMove(e) {
+      // offsetX/offsetY are relative to whatever element the pointer happens to
+      // be over, so the origin snaps every time the cursor crosses a clause.
+      // Keep the viewport coords and measure against fixed boxes instead.
+      this.pointerX = e.clientX;
+      this.pointerY = e.clientY;
+
+      // mousemove and pointermove both fire for a mouse; collapse them (and any
+      // bursts between paints) into a single write per frame
+      if (this.pointerFrame === null) {
+        this.pointerFrame = requestAnimationFrame(this.trackPointer);
+      }
+    },
+    trackPointer() {
+      this.pointerFrame = null;
+
+      const section = this.$refs.tos;
+      if (!section) return;
+
       const root = document.documentElement;
-      let x = e.offsetX;
-      let y = e.offsetY;
-  
-      root.style.setProperty('--mouse-x', `${x}px`);
-      root.style.setProperty('--mouse-y', `${y}px`);
+      const sectionBox = section.getBoundingClientRect();
+      // the gradient is painted on .tos-body, so it has to be placed in that
+      // box's coordinates or the lit spot drifts away from the flame
+      const bodyBox = (this.$refs.tosBody || section).getBoundingClientRect();
+
+      root.style.setProperty('--mouse-x', `${this.pointerX - bodyBox.left}px`);
+      root.style.setProperty('--mouse-y', `${this.pointerY - bodyBox.top}px`);
+
+      // the candle is absolutely positioned against .tos
+      root.style.setProperty('--candle-x', `${this.pointerX - sectionBox.left}px`);
+      root.style.setProperty('--candle-y', `${this.pointerY - sectionBox.top}px`);
     },
     checkIfSigSaved() {
       this.isMemberAlready = localStorage.getItem('rvc-joined') || false
@@ -356,12 +381,18 @@ export default {
       isMemberAlready: false,
       openTOS: false,
       showMembershipRoll: false,
+      pointerX: 0,
+      pointerY: 0,
+      pointerFrame: null,
     }
   },
   mounted() {
     this.isMemberAlready = localStorage.getItem('rvc-joined') || false
 
     eventBus.on('confirmSigSaved', this.confirmSigSaved)
+  },
+  beforeUnmount() {
+    if (this.pointerFrame !== null) cancelAnimationFrame(this.pointerFrame)
   },
   updated() {
     this.isMemberAlready = localStorage.getItem('rvc-joined') || false
@@ -370,12 +401,47 @@ export default {
 </script>
 
 <style>
+/* registering these makes them real <length> values rather than raw tokens,
+   which is what lets the transition below interpolate them instead of
+   snapping the gradient and the candle to each new pointer sample */
+@property --mouse-x {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+
+@property --mouse-y {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+
+@property --candle-x {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+
+@property --candle-y {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+
 :root {
   --color-1: rgb(205 205 155 / 1);
   --color-2: rgb(0 0 0 / 0);
-  --mouse-x: 10%;
-  --mouse-y: 15em;
-	--size: 15em;
+  --mouse-x: 160px;
+  --mouse-y: 150px;
+  --candle-x: 208px;
+  --candle-y: 260px;
+  --size: 15em;
+
+  transition:
+    --mouse-x 0.2s ease-out,
+    --mouse-y 0.2s ease-out,
+    --candle-x 0.2s ease-out,
+    --candle-y 0.2s ease-out;
 }
 
 .tos {
@@ -523,9 +589,14 @@ export default {
 
 .candle-mover {
   position: absolute;
-  left: var(--mouse-x);
-  top: calc(var(--mouse-y) + 20px );
+  left: 0;
+  top: 0;
+  /* translate rather than left/top: it rides the same eased vars as the
+     gradient, so flame and lit text stay locked together, and it moves
+     without relaying out the contract on every frame */
+  translate: var(--candle-x) calc(var(--candle-y) + 20px);
   width: 80px;
+  will-change: translate;
 }
 
 .members-toggle {
