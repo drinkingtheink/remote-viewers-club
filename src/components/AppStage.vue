@@ -40,7 +40,7 @@
     </section>
     
     <main>
-      <section class="content-section gallery" v-if="activeSection === 'gallery'" :key='gallery-stage'>
+      <section class="content-section gallery" v-if="activeSection === 'gallery'" key="gallery-stage">
         <h2 class="intro">Special Teams led by legendary members</h2>
         <div class="badge" v-for="badge, index in badgeMap" :key="badge.title">
           <component :is="`Badge${index + 1}`"></component>
@@ -54,7 +54,7 @@
         </div>
       </section>
 
-      <section class="content-section praxis" v-if="activeSection === 'praxis'" :key='praxis-stage'>
+      <section class="content-section praxis" v-if="activeSection === 'praxis'" key="praxis-stage">
         <h2 class="intro">Practice your skills and maybe you can make one of the special teams</h2>
         <!-- <div class="focii">
           <span class="focus-option">
@@ -71,7 +71,7 @@
           </span>
         </div> -->
 
-        <setion class="content-section session-stage">
+        <section class="content-section session-stage">
           <RemoteViewingSession :scrollToElement="this.scrollToElement" />
 
           <PrecognitionSession :scrollToElement="this.scrollToElement" />
@@ -79,10 +79,10 @@
           <GnosisSession :scrollToElement="this.scrollToElement" />
 
           <DowsingSession :scrollToElement="this.scrollToElement" />
-        </setion>
+        </section>
       </section>
 
-      <section class="join" v-if="activeSection === 'join'" :key='join'>
+      <section class="join" v-if="activeSection === 'join'" key="join-stage">
         <Join />
       </section>
     </main>
@@ -230,7 +230,6 @@ export default {
   },
   watch: {
     activeSection(newSection) {
-      console.log(`NEW SECTION TO NAV TO: ${newSection}`)
       this.updateFocusUrlQueryString(newSection);
     }
   },

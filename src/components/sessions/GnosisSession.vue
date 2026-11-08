@@ -37,7 +37,7 @@
 
       <div class="score-section">
         <span>Score: {{ score }}</span>
-        <span>Round: {{ currentRound }}/20</span>
+        <span>Round: {{ currentRound }}/{{ roundsPerGame }}</span>
       </div>
       
       <div v-if="showResults" class="feedback-section">
@@ -65,7 +65,7 @@
     
     <div v-else class="game-over-screen">
       <h2>Game Over!</h2>
-      <p>Final Score: {{ score }}/20</p>
+      <p>Final Score: {{ score }}/{{ roundsPerGame }}</p>
       <div class="game-over-buttons">
         <button @click="resetGame">New Game</button>
       </div>
@@ -80,7 +80,10 @@ import questions from '../../data/trivia'
 
 const props = defineProps(['scrollToElement'])
 
-const paranormalQuestions = questions
+// One round per available question. The deck is a per-game copy so shuffling
+// doesn't mutate the array exported by data/trivia.js.
+const roundsPerGame = questions.length
+const deck = ref([])
 
 const gameStarted = ref(false)
 const gameOver = ref(false)
@@ -96,8 +99,7 @@ const currentQuestion = ref(null)
 function startGame() {
   props.scrollToElement('.gnosis-container.stage.active')
 
-  // Shuffle the questions
-  paranormalQuestions.sort(() => Math.random() - 0.5)
+  deck.value = [...questions].sort(() => Math.random() - 0.5)
   
   gameStarted.value = true
   gameOver.value = false
@@ -108,12 +110,12 @@ function startGame() {
 function nextQuestion() {
   currentRound.value++
 
-  if (currentRound.value > 15) {
+  if (currentRound.value > roundsPerGame) {
     gameOver.value = true
     return
   } 
   
-  currentQuestion.value = paranormalQuestions[currentRound.value - 1]
+  currentQuestion.value = deck.value[currentRound.value - 1]
   userAnswer.value = ''
   feedback.value = ''
   showResults.value = false

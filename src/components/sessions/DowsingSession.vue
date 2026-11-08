@@ -95,9 +95,9 @@
                             'revealed': cell.revealed, 
                             'hit': cell.revealed && cell.hasSource,
                             'miss': cell.revealed && !cell.hasSource,
-                            'warm': getWarmthClass(index).includes('warm'),
-                            'warmer': getWarmthClass(index).includes('warmer'),
-                            'hot': getWarmthClass(index).includes('hot'),
+                            'warm': cell.warmth === 'warm',
+                            'warmer': cell.warmth === 'warmer',
+                            'hot': cell.warmth === 'hot',
                             'hasSecretButton': cell.hasSecretButton,
                         }"
                         @click="checkCell(index)"
@@ -111,7 +111,7 @@
                         <div v-else-if="cell.revealed && !cell.hasSource" class="miss-icon">✘</div>
                         <img v-if="cell.hasPlant && cell.typog === 'grass' && !cell.revealed" src="../../assets/bush-1.svg" class="cell-bush" />
 
-                        <button v-if="cell.hasSecretButton" @click="console.log('Arthur and Graham are kewl!!!')"> * </button>
+                        <button v-if="cell.hasSecretButton" class="secret-button" @click.stop="revealSecret"> * </button>
                     </div>
                 </div>
             </div>
@@ -160,7 +160,8 @@ const initializeGrid = () => {
     revealed: false,
     typog: getTypogClass(),
     hasPlant: getPlantPresence(),
-    hasSecretButton: getButtonPresence(),
+    hasSecretButton: false,
+    warmth: null,
   }));
   
   // Place sources randomly
@@ -172,6 +173,14 @@ const initializeGrid = () => {
       placedSources++;
     }
   }
+
+  // Warmth depends only on where the sources landed, so resolve it once here.
+  grid.value.forEach((cell, index) => {
+    cell.warmth = getWarmth(index);
+  });
+
+  // Exactly one easter egg per game.
+  grid.value[Math.floor(Math.random() * totalCells.value)].hasSecretButton = true;
 };
 
 // Get cell coordinates
@@ -223,14 +232,14 @@ const updateProximity = (event, index) => {
     }
 };
 
-// Get warmth class based on proximity to sources
-const getWarmthClass = (index) => {
+// Warmth band for a cell, by distance to the nearest source.
+const getWarmth = (index) => {
   const closestDistance = findClosestSource(index);
-  
-  if (closestDistance <= 1) return ['hot'];
-  if (closestDistance <= 2) return ['warmer'];
-  if (closestDistance <= 3) return ['warm'];
-  return [];
+
+  if (closestDistance <= 1) return 'hot';
+  if (closestDistance <= 2) return 'warmer';
+  if (closestDistance <= 3) return 'warm';
+  return null;
 };
 
 // Check cell when clicked
@@ -251,8 +260,8 @@ const checkCell = (index) => {
     // Calculate score based on attempts and hits
     const attemptsPerHit = attempts.value / hits.value;
     const efficiency = 1 / attemptsPerHit;
-    const basePoints = 100 * difficulty.value === 'hard' ? 3 : (difficulty.value === 'medium' ? 2 : 1);
-    score.value = Math.round(basePoints * sourcesCount.value * efficiency * 100);
+    const difficultyMultiplier = difficulty.value === 'hard' ? 3 : (difficulty.value === 'medium' ? 2 : 1);
+    score.value = Math.round(100 * difficultyMultiplier * sourcesCount.value * efficiency);
   }
 };
 
@@ -281,8 +290,8 @@ const getPlantPresence = () => {
     return Math.random() < 0.3;
 }
 
-const getButtonPresence = () => {
-    return Math.random() < 0.5;
+const revealSecret = () => {
+    console.log('Arthur and Graham are kewl!!!');
 }
 
 // Initialize on mount
@@ -408,6 +417,14 @@ watch(difficulty, () => {
 .grid-cell.rock {
 background-color: #9b9d9b;
 background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%232f2f2f' fill-opacity='0.4' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+}
+
+.secret-button {
+  all: unset;
+  cursor: pointer;
+  font-size: 1.4em;
+  line-height: 0;
+  color: rgba(0, 0, 0, 0.55);
 }
 
 .grid-cell.hasSecretButton {
