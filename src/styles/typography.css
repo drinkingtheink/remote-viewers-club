@@ -96,3 +96,19 @@ select {
   font-family: var(--font-body);
   font-size: var(--text-md);
 }
+
+/*
+ * Text for screen readers only -- used where a visual mark (a hit/miss square,
+ * an icon) carries meaning that has no accessible name of its own.
+ */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

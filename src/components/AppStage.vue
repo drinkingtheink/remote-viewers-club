@@ -80,7 +80,6 @@
 
           <DowsingSession :scrollToElement="this.scrollToElement" />
 
-          <ZenerSession :scrollToElement="this.scrollToElement" />
         </section>
       </section>
 
@@ -110,7 +109,6 @@ import RemoteViewingSession from './sessions/RemoteViewingSession.vue'
 import PrecognitionSession from './sessions/PrecognitionSession.vue'
 import GnosisSession from './sessions/GnosisSession.vue'
 import DowsingSession from './sessions/DowsingSession.vue'
-import ZenerSession from './sessions/ZenerSession.vue'
 import Join from './Join.vue'
 import RemoteViewingIcon from './icons/RemoteViewingIcon'
 import PrecogIcon from './icons/PrecognitionIcon'
@@ -188,8 +186,7 @@ export default {
     PrecognitionSession,
     Join,
     GnosisSession,
-    DowsingSession,
-    ZenerSession
+    DowsingSession
   },
   data() {
     return {

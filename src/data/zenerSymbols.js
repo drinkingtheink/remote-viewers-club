@@ -8,8 +8,6 @@ const zenerSymbols = [
   { id: 'star', name: 'Star' },
 ]
 
-export const ZENER_SYMBOL_IDS = zenerSymbols.map((symbol) => symbol.id)
-
 export const zenerSymbolName = (id) =>
   (zenerSymbols.find((symbol) => symbol.id === id) || {}).name || id
 
