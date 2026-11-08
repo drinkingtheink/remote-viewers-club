@@ -446,7 +446,7 @@ onBeforeUnmount(() => clearTimeout(revealTimer))
 
 .zener-session .zener-stats dt {
   font-family: 'Anta', sans-serif;
-  font-size: 11px;
+  font-size: var(--text-xs);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: #fff;

@@ -218,7 +218,7 @@ onMounted(() => {
 
 .sig-gallery-container .error h3, .sig-gallery-container .empty h3 {
   margin: 0 0 12px 0;
-  font-size: 20px;
+  font-size: var(--text-md);
 }
 
 .sig-gallery-container .content {
@@ -274,7 +274,7 @@ onMounted(() => {
 
 .sig-gallery-container .card-header h3 {
   margin: 0;
-  font-size: 18px;
+  font-size: var(--text-md);
   font-weight: 600;
   flex: 1;
 }
@@ -282,7 +282,7 @@ onMounted(() => {
 .sig-gallery-container .item-id {
   padding: 4px 8px;
   border-radius: 12px;
-  font-size: 12px;
+  font-size: var(--text-xs);
   font-weight: 500;
 }
 
@@ -311,7 +311,7 @@ onMounted(() => {
 }
 
 .sig-gallery-container .item-description {
-  font-size: 14px;
+  font-size: var(--text-sm);
   line-height: 1.5;
   margin-bottom: 12px;
 }
@@ -322,7 +322,7 @@ onMounted(() => {
 }
 
 .sig-gallery-container .timestamp small {
-  font-size: 12px;
+  font-size: var(--text-xs);
 }
 
 .sig-gallery-container {

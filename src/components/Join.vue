@@ -467,8 +467,8 @@ export default {
   text-align: left;
   animation: flameFlicker 4s infinite alternate;
   margin-top: 1.5rem;
-  font-size: 0.95rem;
-  line-height: 1.6;
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
 }
 
 /* the gradient is painted once on .tos-body and clipped to all of its text,
@@ -492,7 +492,7 @@ export default {
 
 .tos-body .article-title {
   margin: 2.25rem 0 1rem;
-  font-size: 1rem;
+  font-size: var(--text-base);
   font-weight: bold;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -538,7 +538,7 @@ export default {
 
 .tos-body .tos-note {
   font-style: italic;
-  font-size: 0.875rem;
+  font-size: var(--text-sm);
   text-align: center;
   max-width: 55ch;
   margin: 1.5rem auto 0;
@@ -561,8 +561,8 @@ export default {
 }
 
 .tos h3 {
-  font-weight: 200;
-  font-size: 1.25rem;
+  font-weight: 400;
+  font-size: var(--text-md);
 }
 
 .tos.user-is-member {

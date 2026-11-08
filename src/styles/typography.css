@@ -39,9 +39,6 @@
   --tracking-normal: 0;
   --tracking-wide: 0.08em;
   --tracking-wider: 0.14em;
-
-  /* the longest comfortable line for running text */
-  --measure: 70ch;
 }
 
 body {

@@ -603,7 +603,7 @@ button.enlarge {
 
 /* HTML: <div class="ribbon">Your text content</div> */
 .focii .banner {
-  font-size: 15px;
+  font-size: var(--text-sm);
   font-weight: bold;
   color: #fff;
   padding-left: 20px;
