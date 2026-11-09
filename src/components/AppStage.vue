@@ -25,7 +25,7 @@
         </div>
 
         <figcaption class="specimen-label" aria-live="polite">
-          <p class="specimen-cat">{{ catalogueNo(activeBadge.id) }}</p>
+          <p class="specimen-cat">{{ activeBadge.cat }}</p>
           <h3 class="specimen-name">{{ activeBadge.title }}</h3>
           <p class="specimen-unit" v-if="activeBadge.desc">{{ activeBadge.desc }}</p>
 
@@ -89,7 +89,7 @@
           </div>
 
           <figcaption class="specimen-label">
-            <p class="specimen-cat">{{ catalogueNo(badge.id) }}</p>
+            <p class="specimen-cat">{{ badge.cat }}</p>
             <h3 class="specimen-name">{{ badge.title }}</h3>
             <p class="specimen-unit" v-if="badge.desc">{{ badge.desc }}</p>
             <p class="specimen-actions">
@@ -188,48 +188,56 @@ const badgeMap = [
     desc: '24th Omnidimensional Operations',
     inspo: 'https://twitter.com/arpitingle/status/1698709125088088109',
     id: 1,
+    cat: 'RVC 1961.44.7',
   },
   {
     title: 'Remote Viewing Task Force',
     desc: '88th Ecoacoustics SQ',
     inspo: 'https://twitter.com/CassetteDyne/status/1735694599262192051',
     id: 2,
+    cat: 'RVC 1972.08.2',
   },
   {
     title: 'Electronic Phantoms',
     desc: '9716th Radar Decoy SQ',
     inspo: 'https://twitter.com/CassetteDyne/status/1735694599262192051',
     id: 3,
+    cat: 'RVC 1958.17.1',
   },
   {
     title: 'PSYWACs',
     desc: '960th Psychological Warfare SQ',
     inspo: 'https://twitter.com/CassetteDyne/status/1735694599262192051',
     id: 4,
+    cat: 'RVC 1967.31.5',
   },
   {
     title: 'Vigilance and Speed',
     desc: '3rd Special Interceptor SQ',
     inspo: 'https://twitter.com/CassetteDyne/status/1735694599262192051',
     id: 5,
+    cat: 'RVC 1953.02.9',
   },
   {
     title: 'See You Yesterday',
     desc: '37th Temporal Reconaissance Wing',
     inspo: 'https://twitter.com/arpitingle/status/1698709125088088109',
     id: 6,
+    cat: 'RVC 1979.60.3',
   },
   {
     title: 'Infinite Broadcast',
     desc: '227th Silent Spectral Comms',
     inspo: 'https://codepen.io/drinkingtheink/pen/vEGdJew',
     id: 7,
+    cat: 'RVC 1984.13.6',
   },
   {
     title: 'Project Stargate',
     desc: '44th Boundless Sight SQ',
     inspo: 'https://codepen.io/drinkingtheink/pen/vEGdJew',
     id: 8,
+    cat: 'RVC 1991.77.4',
   },
 ];
 
@@ -281,10 +289,6 @@ export default {
     }
   },
   methods: {
-    // an accession number, as a specimen in a collection would carry
-    catalogueNo(id) {
-      return `RVC-${String(id).padStart(3, '0')}`
-    },
     handleBadgeClick(badge) {
       this.activeBadge = badge;
       // The dialog only has content to size itself around after the re-render.
