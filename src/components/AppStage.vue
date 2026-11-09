@@ -42,8 +42,8 @@
     <main>
       <section class="content-section gallery" v-if="activeSection === 'gallery'" key="gallery-stage">
         <h2 class="intro">Special Teams led by legendary members</h2>
-        <div class="badge" v-for="badge, index in badgeMap" :key="badge.title">
-          <component :is="`Badge${index + 1}`"></component>
+        <div class="badge" v-for="badge in badgeMap" :key="badge.id">
+          <component :is="`Badge${badge.id}`"></component>
 
           <div class="badge-details">
             <h3>{{ badge.title }}</h3>
@@ -165,7 +165,16 @@ const badgeMap = [
   },
 ];
 
+const SECTIONS = ['gallery', 'praxis', 'join'];
 const initialFocus = 'gallery';
+
+// Resolved before the first render rather than in mounted(), which used to
+// paint the Join section -- the whole contract, the signature pad and, for
+// signed members, a membership-roll fetch -- before throwing it away.
+function sectionFromUrl() {
+  const focusQuery = new URLSearchParams(window.location.search).get('focus');
+  return SECTIONS.includes(focusQuery) ? focusQuery : initialFocus;
+}
 
 export default {
   name: 'AppStage',
@@ -192,7 +201,7 @@ export default {
     return {
       badgeMap: badgeMap,
       activeBadge: null,
-      activeSection: 'join',
+      activeSection: sectionFromUrl(),
     }
   },
   methods: {
@@ -208,18 +217,6 @@ export default {
         element?.scrollIntoView({ behavior: 'smooth' })
       }, 250);
     },
-    checkForQueryStrings: function() {
-      let queryParams = new URLSearchParams(window.location.search);
-      let focusQuery = queryParams.get('focus');
-      
-      if (focusQuery) { 
-        this.activeSection = focusQuery;
-        this.updateFocusUrlQueryString(focusQuery);
-      }
-      else {  
-        this.activeSection = initialFocus; 
-      }
-    },
     updateFocusUrlQueryString: function(val) {
       let queryParams = new URLSearchParams(window.location.search);
       queryParams.set(`focus`, val);
@@ -227,7 +224,8 @@ export default {
     },
   },
   mounted() {
-    this.checkForQueryStrings();
+    // Rewrites an absent or unrecognised ?focus= to whatever we actually show.
+    this.updateFocusUrlQueryString(this.activeSection);
   },
   watch: {
     activeSection(newSection) {
