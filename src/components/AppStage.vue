@@ -460,9 +460,37 @@ section.gallery > .intro {
  * flex item that root collapses to zero, which drops the whole illustration
  * on top of the label.
  */
+/*
+ * A square mount of a fixed size, with the patch fitted inside it. The
+ * artwork isn't uniform -- most viewBoxes are square, but Remote Viewing
+ * Task Force is 720x709 and Infinite Broadcast is 877x967 -- so without
+ * this the mounts come out different heights and the plates below them
+ * start on slightly different lines.
+ */
 .specimen-mount {
-  padding-bottom: 1rem;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  margin-bottom: 1rem;
   transition: transform var(--dur-base) var(--ease-settle);
+}
+
+.specimen-mount > * {
+  width: 100%;
+  height: 100%;
+  /* grid items default to min-height: auto, which lets a tall patch stretch
+     the row past the aspect-ratio instead of fitting inside it */
+  min-height: 0;
+}
+
+.specimen-mount svg {
+  display: block;
+  width: 100%;
+  /* the ratio goes on the svg itself: height: 100% here resolves against a
+     container whose own height isn't definite, so a portrait viewBox wins */
+  height: auto;
+  aspect-ratio: 1;
+  min-height: 0;
 }
 
 .badge:hover .specimen-mount {
@@ -489,11 +517,12 @@ section.gallery > .intro {
  * dossier's typewriter, the name in small caps, the designation in italic
  * like a binomial.
  *
- * margin-top: auto keeps the plates aligned along the bottom of the row
- * however tall the specimen above them happens to be.
+ * The plate sits straight under its mount rather than being pushed to the
+ * bottom of the cell, so every plate's top edge lines up across a row; a
+ * two-line name grows the plate downwards.
  */
 .specimen-label {
-  margin-top: auto;
+  margin-top: 0;
   padding: 1rem 1.15rem 1.15rem;
   background: rgba(10, 8, 6, 0.88);
   border-top: 2px solid var(--gilt-dim);
