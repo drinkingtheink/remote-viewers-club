@@ -115,24 +115,6 @@ p {
   line-height: var(--leading-relaxed);
 }
 
-/*
- * Labels that are stamped rather than written: nav, buttons, captions on the
- * patches. Real small caps, not uppercase at a smaller size.
- */
-.stamped {
-  font-family: var(--font-ui);
-  font-variant-caps: all-small-caps;
-  font-variant-numeric: lining-nums;
-  letter-spacing: var(--tracking-wider);
-}
-
-/* display lead-ins */
-.display-lead {
-  font-family: var(--font-display);
-  font-weight: 400;
-  line-height: var(--leading-snug);
-}
-
 input,
 textarea,
 select {
