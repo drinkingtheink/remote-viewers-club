@@ -55,18 +55,24 @@ button:hover,
 }
 
 /* the quieter half of a pair: cancel next to save, close next to begin */
+/*
+ * The quiet half of a pair reads as quiet through its fill and border, not by
+ * dimming its label. Oxblood type on near-black measures 1.8:1 -- it was
+ * legible only while the accent was a brighter red, and the palette pass
+ * darkened it without re-checking this variant.
+ */
 button.secondary,
 .btn.secondary {
   background-color: var(--btn-surface);
-  color: var(--btn-accent);
+  color: var(--btn-ink);
   border-color: var(--btn-accent);
 }
 
 button.secondary:hover,
 .btn.secondary:hover {
-  background-color: var(--btn-surface);
+  background-color: var(--btn-accent);
   color: var(--btn-ink);
-  border-color: var(--btn-ink);
+  border-color: var(--btn-accent);
 }
 
 button.small,
@@ -109,7 +115,7 @@ button:disabled:hover,
 button.secondary:disabled:hover,
 .btn.secondary:disabled:hover {
   background-color: var(--btn-surface);
-  color: var(--btn-accent);
+  color: var(--btn-ink);
   border-color: var(--btn-accent);
 }
 

@@ -398,42 +398,52 @@ a:hover {
   text-decoration: none;
 }
 
+/*
+ * A real grid rather than wrapped flex. Centred flex left the final row of
+ * two straddling the columns above it, and the gutters came from an
+ * asymmetric `1rem 1rem 0 0` on each badge, so spacing sat only on one side.
+ */
 section.gallery {
-  padding: 0 3rem 10rem;
-  margin: 0 auto;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  position: relative;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2.5rem 1.5rem;
   max-width: 1200px;
+  box-sizing: border-box;
+  margin: 0 auto;
+  padding: 0 3rem 10rem;
+  position: relative;
+}
+
+/* the section heading is a grid child too; without this it takes the first
+   cell and shunts the opening row a column to the right */
+section.gallery > .intro {
+  grid-column: 1 / -1;
 }
 
 @media only screen and (max-width: 60em) {
   section.gallery {
-    display: block;
     text-align: center;
-    padding: 0;
+    padding: 0 1rem 6rem;
+    gap: 2rem 1rem;
   }
 }
 
 .badge {
   filter: drop-shadow(10px 0 10px #111);
-  width: 30%;
-  padding: 1rem 1rem 0 0;
-  margin: 1rem 1rem 0 0;
+  display: flex;
+  flex-direction: column;
   position: relative;
 }
 
 @media only screen and (max-width: 60em) {
   .badge {
-    padding: 1rem 0;
-    margin: 0 auto;
     width: 100%;
   }
 }
 
 .badge-details {
-  margin-top: 20px;
+  margin-top: auto;
+  padding-top: 20px;
 }
 
 .badge-details * {

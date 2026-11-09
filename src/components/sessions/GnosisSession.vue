@@ -184,27 +184,30 @@ function resetGame() {
 }
 
 .choices-section button {
-  color: var(--cinnabar);
+  color: var(--parchment);
   background-color: var(--leather-deep);
 }
 
 .choices-section button.selected {
-  background-color: #1a2b5a;
+  background-color: var(--leather-raised);
   border: 4px solid var(--gilt-bright);
 }
 
 .choices-section button.correct {
   background-color: var(--success);
-  color: black;
+  color: var(--leather-deep);
 }
 
 .choices-section button.correct:hover {
   background-color: var(--success);
-  color: black;
+  color: var(--leather-deep);
 }
 
-.choices-section button.incorrect {
-  background-color: #e74c3c;
+/* cinnabar rather than the off-palette #e74c3c, and light type on top */
+.choices-section button.incorrect,
+.choices-section button.incorrect:hover {
+  background-color: var(--cinnabar);
+  color: var(--parchment);
 }
 
 .feedback-section {
@@ -218,11 +221,11 @@ function resetGame() {
 }
 
 .feedback.correct {
-  color: var(--success);
+  color: var(--signal-right);
 }
 
 .feedback.incorrect {
-  color: #e74c3c;
+  color: var(--signal-wrong);
 }
 
 .details-section {

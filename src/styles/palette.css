@@ -37,6 +37,14 @@
   --warning: #c08a2e;
 
   /*
+   * Signal colours for text. --success and --cinnabar are fill colours:
+   * dark enough to carry light type on top, and so too dark to BE type on a
+   * near-black panel. These are their legible-on-dark counterparts.
+   */
+  --signal-right: #94c47d;
+  --signal-wrong: #e2705f;
+
+  /*
    * Kept as an alias so everything that already reads --the-yellow follows
    * the palette instead of the old acid yellow.
    */
