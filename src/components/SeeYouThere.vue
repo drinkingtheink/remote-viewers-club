@@ -6,6 +6,19 @@
             xmlns="http://www.w3.org/2000/svg" 
             viewBox="0 0 494.75 493.77">
             <defs>
+                <!--
+                  userSpaceOnUse, spanning the whole seal: the iris has to
+                  sample the same gradient as the ribbon face, because it is
+                  standing in for a hole that used to show the ribbon through.
+                  Per-object (the default) would give the iris its own
+                  compressed light-to-dark ramp and break that.
+                -->
+                <radialGradient id="syt-seal-face" gradientUnits="userSpaceOnUse" cx="178" cy="138" r="405">
+                    <stop offset="0" stop-color="var(--seal-face-hi)" />
+                    <stop offset="0.58" stop-color="var(--seal-face)" />
+                    <stop offset="1" stop-color="var(--seal-face-lo)" />
+                </radialGradient>
+
                 <clipPath id="syt-eye-opening">
                     <path d="M239.98,183.92c31.43,0,56.68,11.6,79.6,28.83,9.41,7.07,17.79,15.53,26.56,23.44,2.33,2.1,3.9,4.39.93,7.5-21.68,22.69-46.43,40.6-77.02,49.36-28.6,8.19-55.67,3.26-81.63-10-18.96-9.69-35.4-22.74-50.18-37.98-3.25-3.35-3.46-5.77-.08-9.22,23.43-23.97,49.93-42.74,83.41-49.94,1.81-.39,3.61-.9,5.43-1.06,4.97-.43,9.96-.71,12.98-.92Z" />
                 </clipPath>
@@ -150,12 +163,24 @@ export default {
 
 <style scoped>
 /*
- * The seal predates the leather/gilt/oxblood skin and still carried the old
- * pillar-box red and acid yellow, which read as bloodshot against it.
+ * The seal's own colours, so it can be tuned without dragging the nav
+ * sparkle, the session artwork and the icons along with it -- all of which
+ * also read --the-yellow.
+ *
+ * cls-1/2/3 are Illustrator export names: cls-1 is the lettering, cls-2 the
+ * ink, cls-3 the struck face. cls-3 covers both the ribbon and the iris, and
+ * they must stay identical for the reason given on the gradient above.
  */
-.cls-1{stroke:var(--oxblood);stroke-miterlimit:10;}
-.cls-2,.cls-3{stroke-width:5px;stroke:var(--oxblood)}
-.cls-3{fill:var(--the-yellow);}
+.see-you-there {
+  --seal-ink: var(--oxblood);
+  --seal-face: var(--gilt-bright);
+  --seal-face-hi: var(--candle);
+  --seal-face-lo: var(--gilt);
+}
+
+.cls-1{stroke:var(--seal-ink);stroke-miterlimit:10;}
+.cls-2,.cls-3{stroke-width:5px;stroke:var(--seal-ink)}
+.cls-3{fill:url(#syt-seal-face);}
 
 /*
  * The eyeball drifts left and right. Its 9s cycle deliberately doesn't divide
