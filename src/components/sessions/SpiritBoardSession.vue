@@ -437,7 +437,7 @@ onBeforeUnmount(stopLoop)
 
 .seance-instruction {
   font-family: var(--font-ui);
-  font-size: var(--text-sm) !important;
+  font-size: var(--text-base) !important;
   letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
   min-height: 1.6em;
@@ -537,7 +537,7 @@ onBeforeUnmount(stopLoop)
 
 .seance-motion dt {
   font-family: var(--font-ui);
-  font-size: var(--text-xs);
+  font-size: var(--text-sm);
   text-transform: uppercase;
   letter-spacing: var(--tracking-wide);
   opacity: 0.7;

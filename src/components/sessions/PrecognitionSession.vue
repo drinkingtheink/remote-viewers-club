@@ -286,7 +286,7 @@ onBeforeUnmount(() => clearTimeout(revealTimer))
   max-width: 420px;
   margin: 0 auto;
   font-family: var(--font-ui);
-  font-size: var(--text-sm);
+  font-size: var(--text-base);
   letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
   color: var(--the-yellow);
@@ -493,7 +493,7 @@ onBeforeUnmount(() => clearTimeout(revealTimer))
 
 .run-stats dt {
   font-family: var(--font-ui);
-  font-size: var(--text-xs);
+  font-size: var(--text-sm);
   text-transform: uppercase;
   letter-spacing: var(--tracking-wide);
   color: #fff;
@@ -514,8 +514,8 @@ onBeforeUnmount(() => clearTimeout(revealTimer))
 
 .run-protocol,
 .run-lifetime {
-  font-size: var(--text-sm);
-  opacity: 0.75;
+  font-size: var(--text-base);
+  opacity: 0.8;
   max-width: var(--measure);
   margin-inline: auto;
 }

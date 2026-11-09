@@ -46,9 +46,9 @@
                 <h3>How to Dowse</h3>
                 <ol class="dowse-steps">
                     <li>Focus your intuition on the grid.</li>
-                    <li>Move slowly, watching the sensitivity meter.</li>
+                    <li>Move slowly, watching the meter.</li>
                     <li>Click where you sense a hidden source.</li>
-                    <li>Find them all in as few attempts as you can.</li>
+                    <li>Find them all in as few tries as you can.</li>
                 </ol>
             </div>
             <div class="controls">
@@ -415,7 +415,7 @@ watch(difficulty, () => {
 
 .stats dt {
   font-family: var(--font-ui);
-  font-size: var(--text-xs);
+  font-size: var(--text-sm);
   text-transform: uppercase;
   letter-spacing: var(--tracking-wide);
   color: var(--parchment);
@@ -562,7 +562,7 @@ watch(difficulty, () => {
 
 .meter-label {
   font-family: var(--font-ui);
-  font-size: var(--text-xs);
+  font-size: var(--text-sm);
   text-transform: uppercase;
   letter-spacing: var(--tracking-wide);
   color: var(--gilt-bright);
@@ -571,7 +571,7 @@ watch(difficulty, () => {
 
 .difficulty-selector label {
   font-family: var(--font-ui);
-  font-size: var(--text-xs);
+  font-size: var(--text-sm);
   text-transform: uppercase;
   letter-spacing: var(--tracking-wide);
   color: var(--parchment);
@@ -602,7 +602,7 @@ watch(difficulty, () => {
   border-radius: 4px;
   text-align: center;
   margin: 0.75rem auto !important;
-  font-size: var(--text-sm) !important;
+  font-size: var(--text-base) !important;
   letter-spacing: var(--tracking-wide);
 }
 
@@ -625,8 +625,8 @@ watch(difficulty, () => {
 }
 
 .instructions h3 {
-  margin: 0 0 0.5rem 0;
-  font-size: var(--text-base);
+  margin: 0 0 0.6rem 0;
+  font-size: var(--text-md);
   letter-spacing: var(--tracking-wide);
   color: var(--gilt-bright);
 }
@@ -635,11 +635,12 @@ watch(difficulty, () => {
 .dowse-steps {
   margin: 0;
   padding-left: 1.3rem;
-  font-size: var(--text-sm);
+  font-size: var(--text-md);
   line-height: var(--leading-normal);
   color: var(--parchment);
   columns: 2;
-  column-gap: 2rem;
+  column-gap: 3.5rem;
+  column-rule: 1px solid rgba(224, 189, 106, 0.12);
 }
 
 .dowse-steps li {

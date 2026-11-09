@@ -437,7 +437,7 @@ watch(penSize, () => {
   margin: 0 auto 1rem auto;
   color: #fff;
   font-family: var(--font-ui);
-  font-size: var(--text-sm);
+  font-size: var(--text-base);
   cursor: pointer;
 }
 
