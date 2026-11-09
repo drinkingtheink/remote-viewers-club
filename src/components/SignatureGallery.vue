@@ -27,6 +27,9 @@
     <div v-else class="content">
       <div class="stats">
         <p>{{ items.length }} member{{ items.length !== 1 ? 's' : '' }}</p>
+        <p v-if="you" class="your-place">
+          You are member <span class="roll-no">&#8470;&nbsp;{{ you.id }}</span>. {{ yourPlace }}
+        </p>
         <small v-if="lastUpdated">Last updated: {{ formatDate(lastUpdated) }}</small>
       </div>
       
@@ -35,6 +38,7 @@
           v-for="(item, index) in items" 
           :key="item.id || index"
           class="item-card"
+          :class="{ 'is-you': you && item.id === you.id }"
         >
           <div class="card-header">
             <h3>{{ item.title || item.printedName || 'Untitled' }}</h3>
@@ -70,7 +74,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { eventBus } from '../EventBus'
 
 // Reactive data
@@ -81,6 +85,44 @@ const lastUpdated = ref(null)
 
 // Configuration - Replace with your actual Google Apps Script web app URL
 // This should be the URL you got when you deployed your Apps Script as a web app
+/*
+ * The roll counts you.
+ *
+ * Signing writes the name to localStorage, so the viewer can be found among
+ * the real signatures rather than being told a number we made up. Matching is
+ * on the written name because that is the only thing both sides hold.
+ */
+const signedAs = (() => {
+  try {
+    return (localStorage.getItem('writtenName') || '').trim().toLowerCase()
+  } catch (e) {
+    // private windows and blocked storage both throw rather than return null
+    return ''
+  }
+})()
+
+const nameOf = (item) => (item.title || item.printedName || '').trim().toLowerCase()
+
+const you = computed(() => {
+  if (!signedAs) return null
+  return items.value.find((item) => nameOf(item) === signedAs) || null
+})
+
+const precede = computed(() => {
+  if (!you.value) return 0
+  const mine = Number(you.value.id)
+  if (Number.isNaN(mine)) return 0
+  return items.value.filter((item) => Number(item.id) < mine).length
+})
+
+const yourPlace = computed(() => {
+  if (!you.value) return ''
+  const n = precede.value
+  if (n === 0) return 'Yours is the first name on the roll.'
+  if (n === 1) return 'One signature precedes yours.'
+  return `${n} signatures precede yours.`
+})
+
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxKQRUEBU8e1skP35pZzZslfgWLtkeeAqdL57M1oSwEqw-pEhQ1jksIrzhwd_KraiSt/exec'
 
 // Validate base64 image format
@@ -277,6 +319,63 @@ onMounted(() => {
   font-size: var(--text-md);
   font-weight: 600;
   flex: 1;
+}
+
+/* the roll naming the reader back */
+.sig-gallery-container .your-place {
+  margin: 0.4rem 0 0;
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: var(--text-md);
+  color: var(--gilt-bright);
+}
+
+.sig-gallery-container .roll-no {
+  font-style: normal;
+  font-variant-numeric: lining-nums;
+  letter-spacing: var(--tracking-wide);
+}
+
+/* your own signature, singled out of the collection */
+.sig-gallery-container .item-card.is-you {
+  border-color: var(--gilt);
+  box-shadow: 0 0 0 1px rgba(201, 162, 39, 0.35), 0 2px 14px rgba(0, 0, 0, 0.5);
+}
+
+/*
+ * A signature signs itself again when you look at it. The mask is three times
+ * the card wide, so sliding it from one end to the other draws the ink on
+ * left to right; at rest the opaque end covers everything and the signature
+ * simply sits there, as a record should.
+ */
+@keyframes re-sign {
+  from {
+    -webkit-mask-position: 100% 0;
+    mask-position: 100% 0;
+  }
+  to {
+    -webkit-mask-position: 0 0;
+    mask-position: 0 0;
+  }
+}
+
+.sig-gallery-container .signature-image {
+  -webkit-mask-image: linear-gradient(90deg, #000 0 34%, transparent 52%);
+  mask-image: linear-gradient(90deg, #000 0 34%, transparent 52%);
+  -webkit-mask-size: 300% 100%;
+  mask-size: 300% 100%;
+  -webkit-mask-position: 0 0;
+  mask-position: 0 0;
+}
+
+.sig-gallery-container .item-card:hover .signature-image {
+  animation: re-sign 1.5s var(--ease-out) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sig-gallery-container .item-card:hover .signature-image {
+    animation: none;
+  }
 }
 
 .sig-gallery-container .item-id {
