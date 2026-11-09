@@ -388,6 +388,16 @@ export default {
  * the fold on a short window. Capping it against the viewport height keeps
  * the whole card -- specimen and plate together -- on screen.
  */
+.badge-dialog .specimen-name {
+  /* Two lines held open whether the name needs them or not. Only Remote
+     Viewing Task Force wraps, but its plate was 32px taller than the rest,
+     and a centred plate turns that into a 16px jump in everything below it. */
+  min-height: calc(2 * var(--text-xl) * var(--leading-tight));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .badge-dialog .specimen-mount {
   /* Stacked, the art still shares the viewport with the plate below it, so it
      keeps a height cap; side by side it doesn't need one. */
@@ -404,7 +414,17 @@ export default {
     gap: 2.5rem;
   }
 
-  .badge-dialog .specimen-mount {
+  .badge-dialog .specimen-name {
+  /* Two lines held open whether the name needs them or not. Only Remote
+     Viewing Task Force wraps, but its plate was 32px taller than the rest,
+     and a centred plate turns that into a 16px jump in everything below it. */
+  min-height: calc(2 * var(--text-xl) * var(--leading-tight));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.badge-dialog .specimen-mount {
     flex: 0 0 auto;
     width: min(80vh, 52vw);
     margin-bottom: 0;
