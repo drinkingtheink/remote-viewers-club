@@ -56,6 +56,11 @@
         id="textualImpression"
       >
       </textarea>
+      <label class="archive-opt-in">
+        <input type="checkbox" v-model="shareWithArchive" />
+        <span>File this impression with the Club archive</span>
+      </label>
+
       <button @click="revealTarget">Reveal Target</button>
     </div>
 
@@ -102,6 +107,9 @@ const focusProgress = ref(0);
 const statusMessage = ref('Beginning mental focusing...');
 const canSubmit = ref(false);
 const textualImpression = ref('');
+// Impressions used to be uploaded on every reveal with nothing on screen to
+// say so. Nothing leaves the browser now unless this is ticked.
+const shareWithArchive = ref(false);
 const userDrawingImage = ref('');
 const targetImage = ref('');
 const targetName = ref('');
@@ -259,7 +267,9 @@ const revealTarget = () => {
     accuracyNotes.value = accuracyNotes.value + ' At least try entering a description.';
   }
   
-  submitData();
+  if (shareWithArchive.value) {
+    submitData();
+  }
 
   stage.value = 'reveal';
 };
@@ -272,6 +282,7 @@ const resetSession = () => {
   statusMessage.value = 'Beginning mental focusing...';
   canSubmit.value = false;
   textualImpression.value = '';
+  shareWithArchive.value = false;
   userDrawingImage.value = '';
   isDrawing.value = false;
   ctx.value = null;
@@ -416,6 +427,27 @@ watch(penSize, () => {
 
 .remote-viewing-container .canvas-container .canvas-tools .pen-size {
   width: 100px;
+}
+
+.remote-viewing-container .archive-opt-in {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 0 auto 1rem auto;
+  color: #fff;
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  cursor: pointer;
+}
+
+/* the global `input` rule pads text fields; a checkbox wants none of it */
+.remote-viewing-container .archive-opt-in input {
+  padding: 0;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--btn-accent, #ED0000);
+  cursor: pointer;
 }
 
 .remote-viewing-container .impression-textarea {
