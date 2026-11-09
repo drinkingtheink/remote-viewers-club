@@ -302,15 +302,13 @@ export default {
 
 <style>
 /*
- * A square specimen is limited by height, not width, so the dialog is sized
- * against the viewport height too. Sizing it on width alone leaves the art
- * stranded in the middle of a much wider card -- in the gallery the specimen
- * fills its card, and this should read the same way, only larger.
+ * A square specimen is limited by height. Stacked under its plate it has to
+ * share the viewport with it, which caps the art at roughly what the gallery
+ * already shows -- barely a close-up. Laid out beside the plate instead, the
+ * art gets the full height and the card gets wider, which is the point of it.
  */
 .badge-dialog {
-  /* 58 rather than 64: a two-line name (Remote Viewing Task Force) needs
-     the headroom, or the card scrolls just to show its own plate */
-  width: min(94vw, 58vh, 780px);
+  width: min(94vw, 1180px);
   /* without this the padding is added outside the width, and the card ends up
      taller than the viewport cap it was sized against */
   box-sizing: border-box;
@@ -340,8 +338,31 @@ export default {
  * the whole card -- specimen and plate together -- on screen.
  */
 .badge-dialog .specimen-mount {
-  width: 100%;
+  /* Stacked, the art still shares the viewport with the plate below it, so it
+     keeps a height cap; side by side it doesn't need one. */
+  width: min(100%, 58vh);
+  margin-inline: auto;
   filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.6));
+}
+
+/* Side by side only where there is both width to spare and height to use. */
+@media only screen and (min-width: 900px) and (min-height: 600px) {
+  .badge-dialog-figure {
+    flex-direction: row;
+    align-items: center;
+    gap: 2.5rem;
+  }
+
+  .badge-dialog .specimen-mount {
+    flex: 0 0 auto;
+    width: min(80vh, 52vw);
+    margin-bottom: 0;
+  }
+
+  .badge-dialog .specimen-label {
+    flex: 1 1 0;
+    min-width: 17rem;
+  }
 }
 
 .inspo {
