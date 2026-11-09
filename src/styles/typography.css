@@ -1,17 +1,20 @@
 /*
  * Type tokens and base element typography.
  *
- * Roles follow how the three bundled faces were already being used:
- * Vollkorn sets headings, Unica One sets display lead-ins, Anta sets
- * controls. Everything that reached for Avenir, Arial or the system stack
- * ad hoc now resolves through --font-body.
+ * The app is a tome with a file folded into it, and the type says so:
+ * Vollkorn sets everything that is read -- body, headings, labels -- Unica
+ * One carries the display lead-ins, and the monospace is reserved for the
+ * agency half, the coordinates and readouts that belong to a dossier.
+ *
+ * Vollkorn has true small caps, so labels and section heads are set with
+ * font-variant-caps rather than faked with text-transform and letterspacing.
  */
 
 :root {
   --font-heading: 'Vollkorn', Georgia, 'Times New Roman', serif;
+  --font-body: 'Vollkorn', Georgia, 'Times New Roman', serif;
   --font-display: 'Unica One', Haettenschweiler, Impact, sans-serif;
-  --font-ui: 'Anta', 'Avenir Next', Helvetica, Arial, sans-serif;
-  --font-body: Avenir, 'Avenir Next', 'Segoe UI', Helvetica, Arial, sans-serif;
+  --font-ui: 'Vollkorn', Georgia, 'Times New Roman', serif;
   --font-mono: 'Courier New', Courier, monospace;
 
   /*
@@ -43,8 +46,10 @@
 
 body {
   font-family: var(--font-body);
-  font-size: var(--text-base);
-  line-height: var(--leading-normal);
+  font-size: var(--text-md);
+  line-height: var(--leading-relaxed);
+  /* oldstyle figures sit on the baseline with lowercase, as a book sets them */
+  font-variant-numeric: oldstyle-nums;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -52,6 +57,11 @@ body {
 /*
  * The old rule sized h1 through h4 identically at 160%, so a heading nested
  * inside a panel carried no hierarchy -- an h4 was as loud as the h1 above it.
+ *
+ * It also set them all in uppercase. Full caps now belong to the masthead and
+ * the contract's title, where the volume is the point; everything below that
+ * is set in small caps, which keeps the formality without the shouting and
+ * reads far better at length.
  */
 h1,
 h2,
@@ -64,23 +74,56 @@ h6 {
   font-style: normal;
   font-optical-sizing: auto;
   line-height: var(--leading-tight);
-  text-transform: uppercase;
+  /* lining figures in headings: oldstyle dips below a cap-height line */
+  font-variant-numeric: lining-nums;
   margin-top: 0;
 }
 
-h1 { font-size: var(--text-3xl); }
-h2 { font-size: var(--text-2xl); }
-h3 { font-size: var(--text-xl); }
-h4 { font-size: var(--text-lg); }
+h1 {
+  font-size: var(--text-3xl);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+h2 {
+  font-size: var(--text-2xl);
+  font-variant-caps: all-small-caps;
+  letter-spacing: var(--tracking-wide);
+}
+
+h3 {
+  font-size: var(--text-xl);
+  font-variant-caps: all-small-caps;
+  letter-spacing: var(--tracking-wide);
+}
+
+h4 {
+  font-size: var(--text-lg);
+  font-variant-caps: all-small-caps;
+  letter-spacing: var(--tracking-wide);
+}
+
 h5 { font-size: var(--text-md); }
 
 h6 {
   font-size: var(--text-base);
+  font-variant-caps: all-small-caps;
   letter-spacing: var(--tracking-wide);
 }
 
 p {
   line-height: var(--leading-relaxed);
+}
+
+/*
+ * Labels that are stamped rather than written: nav, buttons, captions on the
+ * patches. Real small caps, not uppercase at a smaller size.
+ */
+.stamped {
+  font-family: var(--font-ui);
+  font-variant-caps: all-small-caps;
+  font-variant-numeric: lining-nums;
+  letter-spacing: var(--tracking-wider);
 }
 
 /* display lead-ins */

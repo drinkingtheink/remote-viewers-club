@@ -28,12 +28,13 @@ button,
 .btn,
 .btn-primary {
   font-family: var(--font-ui);
-  font-size: var(--text-base);
-  /* Anta ships one weight; asking for bold only gets a synthesized one */
-  font-weight: 400;
+  font-size: var(--text-md);
+  font-weight: 700;
   line-height: 1;
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-wide);
+  /* real small caps, not uppercase shrunk down */
+  font-variant-caps: all-small-caps;
+  font-variant-numeric: lining-nums;
+  letter-spacing: var(--tracking-wider);
   color: var(--btn-ink);
   background-color: var(--btn-accent);
   border: var(--btn-border-width) solid transparent;

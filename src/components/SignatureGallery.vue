@@ -284,6 +284,8 @@ onMounted(() => {
   border-radius: 12px;
   font-size: var(--text-xs);
   font-weight: 500;
+  /* an id is data, not prose: lining figures, not the oldstyle body uses */
+  font-variant-numeric: lining-nums tabular-nums;
 }
 
 .sig-gallery-container .image-container {
@@ -323,6 +325,7 @@ onMounted(() => {
 
 .sig-gallery-container .timestamp small {
   font-size: var(--text-xs);
+  font-variant-numeric: lining-nums tabular-nums;
 }
 
 .sig-gallery-container {
