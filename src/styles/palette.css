@@ -128,6 +128,11 @@ body {
  * The gilt pass. The same tooling in gold leaf, masked to the part of the
  * page the candle actually reaches, so the trellis flares where the light
  * falls and drops back to a blind impression at the edges of the volume.
+ *
+ * --page-x/--page-y are driven by usePointerLight: the flame is carried, so
+ * the gold catches wherever the reader is. The fallback values are the fixed
+ * pool this used before, which is what anyone who asked for reduced motion
+ * keeps -- the composable never starts for them.
  */
 body::before {
   content: "";
@@ -139,8 +144,14 @@ body::before {
   background-size: 120px 120px;
   background-attachment: fixed;
   opacity: 0.55;
-  -webkit-mask-image: radial-gradient(ellipse at 50% 36%, #000 0%, rgba(0, 0, 0, 0.45) 38%, transparent 70%);
-  mask-image: radial-gradient(ellipse at 50% 36%, #000 0%, rgba(0, 0, 0, 0.45) 38%, transparent 70%);
+  --page-light: radial-gradient(
+    38rem 32rem at var(--page-x, 50vw) var(--page-y, 36vh),
+    #000 0%,
+    rgba(0, 0, 0, 0.5) 34%,
+    transparent 72%
+  );
+  -webkit-mask-image: var(--page-light);
+  mask-image: var(--page-light);
 }
 
 /*
@@ -160,4 +171,27 @@ body::after {
     rgba(0, 0, 0, 0.30) 68%,
     rgba(0, 0, 0, 0.62) 100%
   );
+}
+
+/*
+ * Gone still. The room does not wait up: the shadows close in and the gold
+ * dims, until something moves again. usePresence sets the flag, and only
+ * when motion is welcome.
+ */
+:root[data-idle] body::after {
+  background: radial-gradient(
+    ellipse at 50% 38%,
+    transparent 16%,
+    rgba(0, 0, 0, 0.46) 54%,
+    rgba(0, 0, 0, 0.78) 100%
+  );
+}
+
+:root[data-idle] body::before {
+  opacity: 0.3;
+}
+
+body::after,
+body::before {
+  transition: opacity 2.4s ease-in-out, background 2.4s ease-in-out;
 }

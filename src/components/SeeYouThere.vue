@@ -1,5 +1,5 @@
 <template>
-    <div class="see-you-there" >
+    <div class="see-you-there" :class="{ watching }" ref="seal">
         <svg 
             id="Layer_1" 
             :class="{ 'closed': blink }"
@@ -87,12 +87,15 @@ export default {
     data() {
         return {
             blink: false,
+            watching: false,
             intervalId: null,
             timeoutId: null,
+            watchFrame: null,
         }
     },
     mounted() {
-        this.startBlinkCycle();    
+        this.startBlinkCycle();
+        this.startWatching();
     },
     beforeUnmount() {
         if (this.intervalId) {
@@ -101,8 +104,37 @@ export default {
         if (this.timeoutId) {
             clearTimeout(this.timeoutId)
         }
+        if (this.watchFrame !== null) {
+            cancelAnimationFrame(this.watchFrame)
+        }
+        window.removeEventListener('pointermove', this.onPointerMove)
     },
     methods: {
+        startWatching() {
+            // a drifting eye is the right behaviour when there is no pointer
+            // in the room at all -- a touch screen, or a reader who has not
+            // moved yet. It only starts watching once something moves.
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+            window.addEventListener('pointermove', this.onPointerMove, { passive: true })
+        },
+        onPointerMove(event) {
+            this.pointer = { x: event.clientX, y: event.clientY }
+            if (this.watchFrame === null) {
+                this.watchFrame = requestAnimationFrame(this.aimEye)
+            }
+        },
+        aimEye() {
+            this.watchFrame = null
+            const seal = this.$refs.seal
+            if (!seal || !this.pointer) return
+
+            // measured per frame rather than cached: the seal scrolls with
+            // the masthead, so its centre is not a fixed point
+            const box = seal.getBoundingClientRect()
+            seal.style.setProperty('--watch-x', `${this.pointer.x - (box.left + box.width / 2)}px`)
+            seal.style.setProperty('--watch-y', `${this.pointer.y - (box.top + box.height / 2)}px`)
+            this.watching = true
+        },
         startBlinkCycle() {
             this.intervalId = setInterval(() => {
                 this.blink = true
@@ -129,6 +161,10 @@ export default {
  * The eyeball drifts left and right. Its 9s cycle deliberately doesn't divide
  * into the 7s blink, so the two keep falling out of step rather than locking
  * into an obvious loop.
+ *
+ * It only drifts while nothing is there to look at. Once a pointer is in the
+ * room the eye tracks it instead, and the drift is switched off so the two
+ * are never fighting over the same transform.
  */
 @keyframes glance {
     0%, 12%   { transform: translateX(0); }
@@ -142,9 +178,25 @@ export default {
     animation: glance 9s ease-in-out infinite;
 }
 
+/*
+ * Tracking. --watch-x/--watch-y are the pointer's offset from the seal's own
+ * centre, in px; the clamp keeps the eye inside its lid however far away the
+ * reader is, and the divisor is what stops it darting.
+ */
+.watching #iris {
+    animation: none;
+    transform:
+        translateX(clamp(-19px, calc(var(--watch-x, 0px) / 14), 19px))
+        translateY(clamp(-11px, calc(var(--watch-y, 0px) / 20), 11px));
+    transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 @media (prefers-reduced-motion: reduce) {
-    #iris {
+    #iris,
+    .watching #iris {
         animation: none;
+        transform: none;
+        transition: none;
     }
 }
 

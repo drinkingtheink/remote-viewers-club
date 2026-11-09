@@ -6,5 +6,10 @@ import './styles/motion.css'
 
 import { createApp } from 'vue'
 import App from './App.vue'
+import { startPointerLight } from './composables/usePointerLight'
+import { startPresence } from './composables/usePresence'
+
+startPointerLight()
+startPresence()
 
 createApp(App).mount('#app')
