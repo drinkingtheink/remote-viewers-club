@@ -553,6 +553,31 @@ button.enlarge {
   }
 }
 
+/*
+ * Where the browser can drive an animation from scroll position, the cards
+ * arrive as the reader reaches them instead of running their stagger off
+ * screen and being over before anyone scrolls down. The time-based stagger
+ * above stays as the fallback.
+ *
+ * The range is measured in `cover`, not `entry`, and that choice is the
+ * whole trick. A card on screen at load starts mid-range, so the range has
+ * to be one it has already finished by then or it sits permanently half
+ * faded -- worse than no animation at all. At load the top row is already
+ * ~40% through `cover` but, being cut off by the fold, has not finished
+ * `entry` at all. Ending at `cover 18%` means anything visible is done,
+ * and anything below the fold still gets its reveal.
+ */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .badge {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 18%;
+      animation-delay: 0ms;
+    }
+  }
+}
+
 .intro {
   margin: 1rem auto;
 

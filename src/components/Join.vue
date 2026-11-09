@@ -428,6 +428,13 @@ export default {
   initial-value: 0px;
 }
 
+/* registered so flameFlicker can interpolate the flame's reach */
+@property --size {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 15em;
+}
+
 :root {
   --color-1: var(--candle);
   --color-2: rgb(0 0 0 / 0);
@@ -452,7 +459,7 @@ export default {
   cursor: grabbing;
   max-width: 1200px;
   position: relative;
-  transition: all 2s;
+  transition: max-height 1.1s var(--ease-in-out);
 } 
 
 .tos-body {
@@ -465,7 +472,7 @@ export default {
   color: transparent;
   user-select: none;
   text-align: left;
-  animation: flameFlicker 4s infinite alternate;
+  animation: flameFlicker 7s var(--ease-in-out) infinite;
   margin-top: 1.5rem;
   font-size: var(--text-base);
   line-height: var(--leading-relaxed);
@@ -585,6 +592,36 @@ export default {
 .signature h3 {
   margin: 0;
   padding: 0;
+}
+
+/*
+ * A candle does not pulse evenly, so the stops are deliberately uneven and
+ * the cycle length is prime-ish against the page's other motion -- it never
+ * lines up with itself twice the same way. The flame's reach is what moves,
+ * not its brightness, which is what the eye actually reads as guttering.
+ *
+ * This animation was referenced here long before it existed; the contract
+ * has been asking for it.
+ */
+@keyframes flameFlicker {
+  0%   { --size: 15em; }
+  9%   { --size: 14.4em; }
+  17%  { --size: 15.3em; }
+  26%  { --size: 13.9em; }
+  34%  { --size: 15.1em; }
+  47%  { --size: 15.8em; }
+  55%  { --size: 14.6em; }
+  63%  { --size: 15.4em; }
+  71%  { --size: 14.1em; }
+  84%  { --size: 15.6em; }
+  92%  { --size: 14.8em; }
+  100% { --size: 15em; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tos-body {
+    animation: none;
+  }
 }
 
 .candle-mover {

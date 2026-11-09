@@ -1,0 +1,158 @@
+/*
+ * Motion.
+ *
+ * The app moved like a web app: `transition: all` at three different
+ * durations, a 50px fadeIn on section change, and a candle flicker that was
+ * declared but never written. A book moves differently -- things settle
+ * rather than slide, and nothing travels far.
+ *
+ * Two rules hold it together: travel is short (nothing moves more than about
+ * 10px), and entrances decelerate hard, so motion arrives and rests instead
+ * of easing in and out like a carousel.
+ */
+
+:root {
+  /* a strong decelerate: most of the distance covered immediately, then rest */
+  --ease-settle: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out: cubic-bezier(0.33, 1, 0.68, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  --dur-quick: 140ms; /* press, state flips */
+  --dur-base: 260ms;  /* hover, small moves */
+  --dur-slow: 520ms;  /* entrances */
+  --dur-page: 420ms;  /* a section arriving */
+
+  --lift: 10px; /* the only travel distance worth having */
+}
+
+/*
+ * Entrances. `both` so the element holds the start state before it runs,
+ * which is what stops a staggered grid flashing at full opacity first.
+ */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(var(--lift));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes settle-in {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--lift) * 0.6)) scale(0.994);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/*
+ * A section arriving. Vue swaps one for the other with mode="out-in", so the
+ * leaving half is quick and the arriving half gets the room.
+ */
+.leaf-enter-active {
+  animation: settle-in var(--dur-page) var(--ease-settle) both;
+}
+
+.leaf-leave-active {
+  transition: opacity calc(var(--dur-page) * 0.4) var(--ease-out);
+}
+
+.leaf-leave-to {
+  opacity: 0;
+}
+
+/*
+ * Buttons are stamps. They press in rather than lighting up, which suits a
+ * seal better than a glow.
+ */
+button:active,
+.btn:active {
+  transform: translateY(1px);
+  transition-duration: var(--dur-quick);
+}
+
+button:disabled:active,
+button.disabled:active {
+  transform: none;
+}
+
+/*
+ * The badge dialog. @starting-style plus allow-discrete gives a native
+ * <dialog> a real entrance; browsers without it simply get the old instant
+ * open, which is the behaviour being replaced anyway.
+ */
+.badge-dialog {
+  opacity: 0;
+  transform: scale(0.97) translateY(var(--lift));
+  transition:
+    opacity var(--dur-base) var(--ease-settle),
+    transform var(--dur-base) var(--ease-settle),
+    overlay var(--dur-base) allow-discrete,
+    display var(--dur-base) allow-discrete;
+}
+
+.badge-dialog[open] {
+  opacity: 1;
+  transform: none;
+}
+
+@starting-style {
+  .badge-dialog[open] {
+    opacity: 0;
+    transform: scale(0.97) translateY(var(--lift));
+  }
+}
+
+.badge-dialog::backdrop {
+  opacity: 0;
+  transition:
+    opacity var(--dur-base) var(--ease-out),
+    overlay var(--dur-base) allow-discrete,
+    display var(--dur-base) allow-discrete;
+}
+
+.badge-dialog[open]::backdrop {
+  opacity: 1;
+}
+
+@starting-style {
+  .badge-dialog[open]::backdrop {
+    opacity: 0;
+  }
+}
+
+/*
+ * Reduced motion. Not "animation: none" everywhere -- that would strip the
+ * fades too, and a thing appearing from nowhere is worse than a thing fading
+ * in. Travel and looping ambience go; opacity stays.
+ */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --lift: 0px;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: var(--dur-quick) !important;
+    scroll-behavior: auto !important;
+  }
+
+  .leaf-enter-active {
+    animation: none;
+    transition: opacity var(--dur-base) var(--ease-out);
+  }
+
+  button:active,
+  .btn:active {
+    transform: none;
+  }
+}
