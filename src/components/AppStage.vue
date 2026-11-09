@@ -405,7 +405,9 @@ a:hover {
  */
 section.gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  /* min() so the 320px floor can never exceed the container and
+     force a horizontal scroll on a narrow phone */
+  grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
   gap: 2.5rem 1.5rem;
   max-width: 1200px;
   box-sizing: border-box;
