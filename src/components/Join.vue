@@ -283,14 +283,6 @@
           dimension and all parallel realities.
         </p>
       </div>
-    
-      <!--
-        A second hand, added to the document long after it was drawn up.
-        It sits outside .tos-body on purpose: the printed contract is lit
-        only by the candle, but ink added later does not need lighting.
-      -->
-      <p class="marginalia marginalia-one" aria-hidden="true">Do not read this aloud after dark.</p>
-      <p class="marginalia marginalia-two" aria-hidden="true">Article V is not exhaustive.</p>
 
       <CandleAnimation 
         class="candle-mover" 
@@ -629,49 +621,6 @@ export default {
 @media (prefers-reduced-motion: reduce) {
   .tos-body {
     animation: none;
-  }
-}
-
-/*
- * Marginalia. Angled and loose, in a redder ink than the printed body, as a
- * reader's note rather than a clause -- and light enough to be read against
- * the panel, which oxblood at this size would not be.
- *
- * aria-hidden: it is atmosphere, and a screen reader announcing it between
- * contract clauses would read as part of the agreement.
- */
-.marginalia {
-  position: absolute;
-  margin: 0;
-  max-width: 8.5rem;
-  font-family: var(--font-body);
-  font-style: italic;
-  font-size: var(--text-sm);
-  line-height: var(--leading-snug);
-  color: var(--signal-wrong);
-  opacity: 0.72;
-  pointer-events: none;
-  user-select: none;
-}
-
-.marginalia-one {
-  top: 15%;
-  right: -0.5rem;
-  transform: rotate(4.5deg);
-  text-align: left;
-}
-
-.marginalia-two {
-  top: 46%;
-  left: -0.5rem;
-  transform: rotate(-3.5deg);
-  text-align: right;
-}
-
-/* the margins vanish on narrow screens, and so should the notes */
-@media only screen and (max-width: 900px) {
-  .marginalia {
-    display: none;
   }
 }
 
