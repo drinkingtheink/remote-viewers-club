@@ -408,19 +408,19 @@ watch(difficulty, () => {
 }
 
 /*
- * The board is a survey plate, not a tile map. The gap lets the dark board
- * show between cells as ruled lines, which is what makes it read as a
- * surveyed grid rather than a field of squares.
+ * An overworld board. Bright and saturated on purpose -- the dowsing field
+ * is a game inside the book, and it is allowed to look like one. The dark
+ * seam between cells is the tile edge, not a survey rule.
  */
 .grid {
   display: grid;
   gap: 1px;
   width: 100%;
   aspect-ratio: 1;
-  padding: 1px;
-  background-color: rgba(138, 111, 46, 0.45);
-  border: 1px solid var(--gilt-dim);
-  border-radius: 4px;
+  padding: 2px;
+  background-color: #1d5a22;
+  border: 3px solid var(--gilt-dim);
+  border-radius: 6px;
   overflow: hidden;
 }
 
@@ -436,17 +436,21 @@ watch(difficulty, () => {
 }
 
 .grid-cell.grass {
-    background-color: #2c3a28;
-    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='52' height='52' viewBox='0 0 52 52'><g fill='none' stroke='%236d8a5f' stroke-opacity='.42' stroke-width='1.1' stroke-linecap='round'><path d='M7 9 l-2.6 -5.4 M7 9 l0 -6.2 M7 9 l2.6 -5.4'/><path d='M26 20 l-2.6 -5.4 M26 20 l0 -6.2 M26 20 l2.6 -5.4'/><path d='M14 31 l-2.6 -5.4 M14 31 l0 -6.2 M14 31 l2.6 -5.4'/><path d='M33 38 l-2.6 -5.4 M33 38 l0 -6.2 M33 38 l2.6 -5.4'/><path d='M4 24 l-2.6 -5.4 M4 24 l0 -6.2 M4 24 l2.6 -5.4'/><path d='M22 5 l-2.6 -5.4 M22 5 l0 -6.2 M22 5 l2.6 -5.4'/><path d='M36 13 l-2.6 -5.4 M36 13 l0 -6.2 M36 13 l2.6 -5.4'/><path d='M18 44 l-2.6 -5.4 M18 44 l0 -6.2 M18 44 l2.6 -5.4'/><path d='M41 30 l-2.6 -5.4 M41 30 l0 -6.2 M41 30 l2.6 -5.4'/><path d='M29 47 l-2.6 -5.4 M29 47 l0 -6.2 M29 47 l2.6 -5.4'/></g></svg>");
+    background-color: #5ec75e;
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='52' height='52' viewBox='0 0 52 52'><g fill='none' stroke='%232f9e3f' stroke-opacity='.55' stroke-width='1.6' stroke-linecap='round'><path d='M7 9 l-2.6 -5.4 M7 9 l0 -6.2 M7 9 l2.6 -5.4'/><path d='M26 20 l-2.6 -5.4 M26 20 l0 -6.2 M26 20 l2.6 -5.4'/><path d='M14 31 l-2.6 -5.4 M14 31 l0 -6.2 M14 31 l2.6 -5.4'/><path d='M33 38 l-2.6 -5.4 M33 38 l0 -6.2 M33 38 l2.6 -5.4'/><path d='M4 24 l-2.6 -5.4 M4 24 l0 -6.2 M4 24 l2.6 -5.4'/><path d='M22 5 l-2.6 -5.4 M22 5 l0 -6.2 M22 5 l2.6 -5.4'/><path d='M36 13 l-2.6 -5.4 M36 13 l0 -6.2 M36 13 l2.6 -5.4'/><path d='M18 44 l-2.6 -5.4 M18 44 l0 -6.2 M18 44 l2.6 -5.4'/><path d='M41 30 l-2.6 -5.4 M41 30 l0 -6.2 M41 30 l2.6 -5.4'/><path d='M29 47 l-2.6 -5.4 M29 47 l0 -6.2 M29 47 l2.6 -5.4'/></g></svg>");
     background-size: 52px 52px;
     background-position: calc(var(--grain-x, 0) * -1px) calc(var(--grain-y, 0) * -1px);
 }
 
 .grid-cell.rock {
-  background-color: #463f37;
-  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><g fill='%238c8275' fill-opacity='.4'><circle cx='7.8' cy='3.6' r='0.89'/><circle cx='1.7' cy='12.9' r='0.72'/><circle cx='1.4' cy='12.2' r='0.52'/><circle cx='10.4' cy='1.7' r='0.55'/><circle cx='10.2' cy='19.8' r='0.57'/><circle cx='5.4' cy='15.1' r='1.07'/><circle cx='13.9' cy='9.5' r='1.09'/><circle cx='1.1' cy='20.6' r='0.67'/><circle cx='3.5' cy='2.8' r='0.69'/><circle cx='19.6' cy='4.3' r='0.85'/><circle cx='15.3' cy='8.9' r='0.83'/><circle cx='1.5' cy='1.4' r='0.62'/><circle cx='16.3' cy='10.3' r='0.69'/><circle cx='14.1' cy='10.9' r='0.68'/><circle cx='19.1' cy='16.8' r='0.65'/><circle cx='13.8' cy='12.6' r='1.03'/><circle cx='17.5' cy='6.9' r='1.09'/><circle cx='2.8' cy='10.0' r='0.95'/><circle cx='3.6' cy='11.7' r='0.52'/><circle cx='16.0' cy='18.3' r='0.84'/><circle cx='21.0' cy='7.5' r='0.92'/><circle cx='14.3' cy='13.9' r='0.77'/><circle cx='20.2' cy='22.7' r='0.78'/><circle cx='15.9' cy='1.5' r='0.92'/><circle cx='15.5' cy='23.8' r='0.99'/><circle cx='6.8' cy='9.3' r='0.9'/></g></svg>");
+  background-color: #cf9242;
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><g fill='%238a5a24' fill-opacity='.45'><rect x='9.0' y='11.2' width='4' height='3' rx='.6'/><rect x='10.2' y='11.7' width='3' height='3' rx='.6'/><rect x='12.6' y='15.9' width='2' height='3' rx='.6'/><rect x='6.1' y='1.8' width='2' height='3' rx='.6'/><rect x='19.3' y='13.1' width='3' height='2' rx='.6'/><rect x='16.6' y='1.3' width='2' height='2' rx='.6'/><rect x='17.6' y='12.0' width='4' height='3' rx='.6'/><rect x='8.8' y='16.8' width='3' height='3' rx='.6'/><rect x='10.0' y='13.2' width='4' height='3' rx='.6'/><rect x='8.1' y='11.0' width='2' height='3' rx='.6'/><rect x='6.3' y='4.6' width='3' height='2' rx='.6'/><rect x='1.4' y='15.3' width='4' height='2' rx='.6'/><rect x='16.9' y='7.7' width='2' height='2' rx='.6'/><rect x='4.3' y='18.5' width='2' height='3' rx='.6'/></g></svg>");
   background-size: 24px 24px;
   background-position: calc(var(--grain-x, 0) * -1px) calc(var(--grain-y, 0) * -1px);
+  /* a lit top edge and a shadowed bottom: a block, not a square */
+  box-shadow:
+    inset 0 3px 0 rgba(255, 226, 170, 0.55),
+    inset 0 -3px 0 rgba(123, 74, 20, 0.5);
 }
 
 /*
@@ -460,11 +464,10 @@ watch(difficulty, () => {
 .cell-bush {
   width: 62%;
   height: 62%;
-  background-color: color-mix(in srgb, #7fa36b calc(62% + var(--bush-tint, 0) * 1%), #38472f);
+  background-color: color-mix(in srgb, #1f8a35 calc(62% + var(--bush-tint, 0) * 1%), #0f5e23);
   -webkit-mask: url("../../assets/bush-1.svg") center / contain no-repeat;
   mask: url("../../assets/bush-1.svg") center / contain no-repeat;
   rotate: calc(var(--bush-turn, 0) * 1deg);
-  opacity: 0.88;
   pointer-events: none;
 }
 
@@ -489,19 +492,19 @@ watch(difficulty, () => {
 }
 
 .grid-cell.hit {
-  background-color: var(--parchment);
+  background-color: #3ca5e0;
   background-image: none;
+  box-shadow:
+    inset 0 3px 0 rgba(190, 233, 255, 0.6),
+    inset 0 -3px 0 rgba(20, 95, 145, 0.5);
 }
 
-/*
- * A struck square, not a red tile. Cinnabar at full strength was the one
- * loud thing left on a muted plate; oxblood sits in the survey while the
- * parchment cross keeps the mark just as readable.
- */
 .grid-cell.miss {
-  background-color: var(--oxblood);
+  background-color: #e03131;
   background-image: none;
-  box-shadow: inset 0 0 0 1px rgba(232, 220, 192, 0.18);
+  box-shadow:
+    inset 0 3px 0 rgba(255, 180, 180, 0.5),
+    inset 0 -3px 0 rgba(140, 22, 22, 0.55);
 }
 
 /* .grid-cell.warm {
@@ -521,8 +524,7 @@ watch(difficulty, () => {
 }
 
 .miss-icon {
-  color: var(--parchment);
-  opacity: 0.86;
+  color: #fff;
   font-size: 2.2em;
 }
 
