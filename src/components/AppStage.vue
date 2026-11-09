@@ -17,15 +17,22 @@
       @close="activeBadge = null"
       @click="handleDialogClick"
     >
-      <div v-if="activeBadge" class="badge-dialog-inner">
-        <div class="badge-dialog-art">
+      <!-- the same mount and plate the gallery uses, at a size you can read -->
+      <figure v-if="activeBadge" class="badge-dialog-figure">
+        <div class="specimen-mount">
           <component :is="`Badge${activeBadge.id}`"></component>
         </div>
-        <p class="specimen-cat">{{ catalogueNo(activeBadge.id) }}</p>
-        <h3 class="badge-dialog-title specimen-name">{{ activeBadge.title }}</h3>
-        <p v-if="activeBadge.desc" class="badge-dialog-desc specimen-unit">{{ activeBadge.desc }}</p>
-        <button class="close-active" @click="closeActive">Back to Gallery</button>
-      </div>
+
+        <figcaption class="specimen-label">
+          <p class="specimen-cat">{{ catalogueNo(activeBadge.id) }}</p>
+          <h3 class="specimen-name">{{ activeBadge.title }}</h3>
+          <p class="specimen-unit" v-if="activeBadge.desc">{{ activeBadge.desc }}</p>
+          <p class="specimen-actions">
+            <a class="inspo" :href="activeBadge.inspo" target="_blank">Origin</a>
+            <button class="close-active" autofocus @click="closeActive">Back to Gallery</button>
+          </p>
+        </figcaption>
+      </figure>
     </dialog>
 
     <section class="sections">
@@ -290,38 +297,47 @@ export default {
 </script>
 
 <style>
+/*
+ * A square specimen is limited by height, not width, so the dialog is sized
+ * against the viewport height too. Sizing it on width alone leaves the art
+ * stranded in the middle of a much wider card -- in the gallery the specimen
+ * fills its card, and this should read the same way, only larger.
+ */
 .badge-dialog {
-  width: min(92vw, 640px);
-  max-height: 92vh;
+  /* 58 rather than 64: a two-line name (Remote Viewing Task Force) needs
+     the headroom, or the card scrolls just to show its own plate */
+  width: min(94vw, 58vh, 780px);
+  /* without this the padding is added outside the width, and the card ends up
+     taller than the viewport cap it was sized against */
+  box-sizing: border-box;
+  max-height: 94vh;
   overflow-y: auto;
-  padding: 1.5rem;
+  padding: 1.75rem;
   border: none;
-  border-radius: 8px;
-  background-color: rgba(8, 6, 5, 0.88);
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);
+  border-radius: 10px;
+  background-color: rgba(10, 8, 6, 0.94);
+  box-shadow: 0 2px 30px rgba(0, 0, 0, 0.7);
   color: var(--the-yellow);
 }
 
 .badge-dialog::backdrop {
-  background-color: var(--panel-sunk);
+  background-color: rgba(0, 0, 0, 0.78);
 }
 
-.badge-dialog-art {
-  max-width: 420px;
-  margin: 0 auto;
-  filter: drop-shadow(10px 0 10px #111);
+.badge-dialog-figure {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
 }
 
-.badge-dialog-title {
-  margin: 1.25rem 0 0 0;
-  text-transform: uppercase;
-}
-
-.badge-dialog-desc {
-  margin: 0.25rem 0 0 0;
-  color: var(--parchment);
-  font-family: var(--font-display);
-  font-size: var(--text-md);
+/*
+ * The mount is square, so sizing it on width alone can push the plate below
+ * the fold on a short window. Capping it against the viewport height keeps
+ * the whole card -- specimen and plate together -- on screen.
+ */
+.badge-dialog .specimen-mount {
+  width: 100%;
+  filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.6));
 }
 
 .inspo {
