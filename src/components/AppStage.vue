@@ -580,6 +580,7 @@ section.gallery > .intro {
  * two-line name grows the plate downwards.
  */
 .specimen-label {
+  position: relative;
   margin-top: 0;
   padding: 1rem 1.15rem 1.15rem;
   background: rgba(10, 8, 6, 0.88);
@@ -588,6 +589,50 @@ section.gallery > .intro {
     inset 0 1px 0 rgba(224, 189, 106, 0.16),
     0 2px 10px rgba(0, 0, 0, 0.5);
   text-align: center;
+}
+
+/*
+ * The sheen.
+ *
+ * A specular highlight that travels across the plate as the pointer moves
+ * over the card, driven by useSpecimenSheen writing its position as a
+ * percentage. `screen` so it adds light rather than painting over anything,
+ * which on a near-black plate reads as varnish or glass catching a lamp.
+ *
+ * The patch itself is deliberately left alone: it is the specimen, and
+ * glazing it would make it look reproduced rather than mounted.
+ *
+ * Inert until the card is hovered or holds focus, and pointer-events: none
+ * so it never sits between a reader and the button underneath.
+ */
+.specimen-label::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  mix-blend-mode: screen;
+  transition: opacity var(--dur-base) var(--ease-out);
+  background: radial-gradient(
+    54% 160% at var(--sheen-x, 50%) var(--sheen-y, 50%),
+    rgba(255, 243, 214, 0.20) 0%,
+    rgba(255, 234, 186, 0.08) 42%,
+    transparent 74%
+  );
+}
+
+.badge:hover .specimen-label::after,
+.badge:focus-within .specimen-label::after {
+  opacity: 1;
+}
+
+/*
+ * Reaching a card by keyboard gives no pointer to follow, so the highlight
+ * sits where a light above the shelf would put it.
+ */
+.badge:focus-within .specimen-label {
+  --sheen-x: 50%;
+  --sheen-y: 12%;
 }
 
 .specimen-cat {
