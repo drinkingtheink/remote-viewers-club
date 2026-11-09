@@ -38,10 +38,25 @@
         <p class="watcher-status" aria-live="polite">{{ statusLine }}</p>
       </div>
 
-      <button class="watcher-press" @click="feelIt">I feel it</button>
+      <button class="watcher-press" :class="{ struck }" @click="feelIt">I feel it</button>
 
+      <p class="watcher-marks" aria-live="polite">{{ markLabel }}</p>
+
+      <!--
+        Pressing lays a mark on the run's track, at the same position in the
+        run that the record will later plot it. It confirms the press landed
+        and shows where it fell, while saying nothing about whether it was
+        right -- that would make this a reaction test. Every mark looks the
+        same here; they are only told apart afterwards.
+      -->
       <div class="watcher-progress" role="progressbar" :aria-valuenow="Math.round(progress * 100)" aria-valuemin="0" aria-valuemax="100">
-        <span :style="{ width: `${progress * 100}%` }"></span>
+        <span class="watcher-fill" :style="{ width: `${progress * 100}%` }"></span>
+        <span
+          v-for="(mark, i) in presses"
+          :key="`m${i}`"
+          class="watcher-mark"
+          :style="{ left: pct(mark.t) }"
+        ></span>
       </div>
 
       <button class="secondary small" @click="endSession">Close Session</button>
@@ -112,10 +127,12 @@ const { phase, isActive, begin, goTo, reset } = useSession({
 const schedule = ref([])
 const presses = ref([])
 const progress = ref(0)
+const struck = ref(false)
 
 let startedAt = 0
 let runLength = 0
 let frame = null
+let struckTimer = null
 
 const between = ([min, max]) => min + Math.random() * (max - min)
 
@@ -173,6 +190,14 @@ const feelIt = () => {
   const t = performance.now() - startedAt
   if (t > runLength) return
 
+  // Acknowledge the press itself. Deliberately says nothing about the
+  // schedule: it fires identically whether or not a window is open.
+  struck.value = true
+  clearTimeout(struckTimer)
+  struckTimer = setTimeout(() => {
+    struck.value = false
+  }, 260)
+
   // A window can only be felt once; a second press inside the same one is a
   // stray, which is what stops leaning on the button from reading as a hit.
   const open = schedule.value.find((w) => t >= w.start && t <= w.end && !w.hit)
@@ -190,6 +215,12 @@ const endSession = () => {
   stopClock()
   reset()
 }
+
+const markLabel = computed(() => {
+  const count = presses.value.length
+  if (!count) return 'No marks yet'
+  return count === 1 ? '1 mark laid' : `${count} marks laid`
+})
 
 const hits = computed(() => schedule.value.filter((w) => w.hit).length)
 const falseAlarms = computed(() => presses.value.filter((p) => !p.hit).length)
@@ -214,7 +245,10 @@ const statusLine = computed(() =>
 
 const pct = (ms) => `${(ms / runLength) * 100}%`
 
-onBeforeUnmount(stopClock)
+onBeforeUnmount(() => {
+  stopClock()
+  clearTimeout(struckTimer)
+})
 </script>
 
 <style>
@@ -254,22 +288,58 @@ onBeforeUnmount(stopClock)
 
 .watcher-session .watcher-press {
   min-width: 16rem;
-  margin-bottom: 1.25rem;
+  margin-bottom: 0.6rem;
+  transition: background-color 0.12s ease, color 0.12s ease, transform 0.12s ease;
+}
+
+.watcher-session .watcher-press.struck {
+  background-color: var(--gilt-bright);
+  color: var(--leather-deep);
+  transform: scale(0.97);
+}
+
+.watcher-session .watcher-marks {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm) !important;
+  letter-spacing: var(--tracking-wide);
+  color: var(--ash);
+  margin: 0 auto 1rem !important;
 }
 
 .watcher-session .watcher-progress {
+  position: relative;
   width: min(28rem, 80%);
-  height: 4px;
+  /* taller than a bare progress bar needs: it carries the marks now */
+  height: 9px;
   margin: 0 auto 1.5rem;
   background: var(--leather-raised);
   border-radius: 2px;
   overflow: hidden;
 }
 
-.watcher-session .watcher-progress span {
+.watcher-session .watcher-fill {
   display: block;
   height: 100%;
   background: var(--gilt-dim);
+}
+
+.watcher-session .watcher-mark {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--gilt-bright);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .watcher-session .watcher-press {
+    transition: none;
+  }
+
+  .watcher-session .watcher-press.struck {
+    transform: none;
+  }
 }
 
 /* --- the record --- */
