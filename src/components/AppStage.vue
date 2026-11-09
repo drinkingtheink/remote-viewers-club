@@ -471,7 +471,8 @@ section.gallery > .intro {
   aspect-ratio: 1;
   display: grid;
   place-items: center;
-  margin-bottom: 1rem;
+  /* the specimen is mounted above its plate, not resting on it */
+  margin-bottom: 2rem;
   transition: transform var(--dur-base) var(--ease-settle);
 }
 
