@@ -49,9 +49,15 @@
     </section>
     
     <main>
+      <Transition name="leaf" mode="out-in">
       <section class="content-section gallery" v-if="activeSection === 'gallery'" key="gallery-stage">
         <h2 class="intro">Special Teams led by legendary members</h2>
-        <div class="badge" v-for="badge in badgeMap" :key="badge.id">
+        <div
+          class="badge"
+          v-for="(badge, i) in badgeMap"
+          :key="badge.id"
+          :style="{ '--stagger': i }"
+        >
           <component :is="`Badge${badge.id}`"></component>
 
           <div class="badge-details">
@@ -63,7 +69,7 @@
         </div>
       </section>
 
-      <section class="content-section praxis" v-if="activeSection === 'praxis'" key="praxis-stage">
+      <section class="content-section praxis" v-else-if="activeSection === 'praxis'" key="praxis-stage">
         <h2 class="intro">Practice your skills and maybe you can make one of the special teams</h2>
         <!-- <div class="focii">
           <span class="focus-option">
@@ -92,9 +98,10 @@
         </section>
       </section>
 
-      <section class="join" v-if="activeSection === 'join'" key="join-stage">
+      <section class="join" v-else-if="activeSection === 'join'" key="join-stage">
         <Join />
       </section>
+      </Transition>
     </main>
 
     <footer>
@@ -382,7 +389,7 @@ li {
 a {
   color: var(--gilt);
   text-decoration: none;
-  transition: all 0.3s;
+  transition: color var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
   text-transform: uppercase;
 }
 
@@ -531,21 +538,19 @@ button.enlarge {
   font-family: var(--font-display);
 }
 
-@keyframes fadeIn {
-  0% { 
-    opacity: 0;
-    transform: translateY(50px); 
-  }
-  100% { 
-    opacity: 1; 
-    transform: translateY(0); 
-  }
+/*
+ * The badges deal in rather than arriving together. The delay is capped so a
+ * long grid does not keep the reader waiting on the last card.
+ */
+.badge {
+  animation: rise var(--dur-slow) var(--ease-settle) both;
+  animation-delay: calc(min(var(--stagger, 0) * 55ms, 440ms));
 }
 
-.gallery,
-.praxis,
-.join {
-  animation: fadeIn 0.3s;
+@media (prefers-reduced-motion: reduce) {
+  .badge {
+    animation-delay: 0ms;
+  }
 }
 
 .intro {
@@ -628,7 +633,7 @@ button.enlarge {
   height: 24px;
   width: 20px;
   flex: 0 0 auto;
-  background: #EDC951;
+  background: var(--gilt-bright);
   mask: radial-gradient(#0000 71%, #000 72%) 10000% 10000%/99.5% 99.5%;
   /* Held in the layout even when inactive, so switching tabs doesn't
      shuffle the labels sideways. */
@@ -669,8 +674,8 @@ button.enlarge {
   border-bottom: 3px solid var(--oxblood);
   margin: 10px;
   position: relative;
-  transition: all 0.2s;
-  position: relative;
+  /* the only thing that changes is the width, when a session opens */
+  transition: width var(--dur-slow) var(--ease-settle);
 
   @media only screen and (max-width: 767px) {
     width: 100%;

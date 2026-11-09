@@ -446,7 +446,7 @@ watch(penSize, () => {
   padding: 0;
   width: 18px;
   height: 18px;
-  accent-color: var(--btn-accent, #ED0000);
+  accent-color: var(--btn-accent);
   cursor: pointer;
 }
 
@@ -476,7 +476,7 @@ watch(penSize, () => {
 .remote-viewing-container .results-container .user-impression,
 .remote-viewing-container .results-container .actual-target {
   flex: 1;
-  background-color: black;
+  background-color: var(--leather-deep);
   padding: 15px;
   border-radius: 6px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -504,7 +504,7 @@ watch(penSize, () => {
 }
 
 .remote-viewing-container .accuracy-container {
-  background-color: black;
+  background-color: var(--leather-deep);
   padding: 15px;
   border-radius: 6px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -522,7 +522,7 @@ watch(penSize, () => {
 
 .remote-viewing-container .accuracy-container .accuracy-score .score {
   font-weight: bold;
-  color: white;
+  color: var(--parchment);
 }
 
 .remote-viewing-container .accuracy-container .accuracy-notes {
@@ -532,7 +532,7 @@ watch(penSize, () => {
 .intro {
   background: rgba(0,0,0,0.6);
   padding: 10px 0.5rem;
-  border-bottom: 3px solid red;
+  border-bottom: 3px solid var(--oxblood);
 }
 
 .rv-icon {

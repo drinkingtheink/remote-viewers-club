@@ -63,16 +63,16 @@ export default {
 }
 
 .cls-2 {
-    stroke: #f1f380;
+    stroke: var(--the-yellow);
     stroke-miterlimit: 10;
 }
 
 #triangle-base {
-    fill: #f1f380;
+    fill: var(--the-yellow);
 }
 
 #star {
-    fill: #f1f380;
+    fill: var(--the-yellow);
     opacity: 0;
 }
 

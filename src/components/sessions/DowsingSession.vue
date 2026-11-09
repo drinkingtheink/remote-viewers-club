@@ -404,7 +404,7 @@ watch(difficulty, () => {
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background-color var(--dur-base) var(--ease-out), border-color var(--dur-quick) var(--ease-out);
   /* border-radius: 4px; */
   position: relative;
 }
@@ -440,7 +440,7 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 }
 
 .grid-cell.hit {
-  background-color: white;
+  background-color: var(--parchment);
   background-image: none;
 }
 

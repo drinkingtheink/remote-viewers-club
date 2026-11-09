@@ -194,7 +194,7 @@ onMounted(() => {
   width: 40px;
   height: 40px;
   border: 4px solid var(--leather-raised);
-  border-top: 4px solid red;
+  border-top: 4px solid var(--oxblood);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -212,8 +212,8 @@ onMounted(() => {
 }
 
 .sig-gallery-container .error {
-  border-color: #fed7d7;
-  color: #c53030;
+  border-color: var(--cinnabar);
+  color: var(--cinnabar);
 }
 
 .sig-gallery-container .error h3, .sig-gallery-container .empty h3 {
@@ -249,11 +249,11 @@ onMounted(() => {
 }
 
 .sig-gallery-container .item-card {
-  border: 1px solid #454647;
+  border: 1px solid var(--leather-raised);
   border-radius: 16px;
   padding: 24px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  transition: all 0.3s ease;
+  transition: transform var(--dur-base) var(--ease-settle), box-shadow var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
   position: relative;
   overflow: hidden;
   background-color: rgba(0,0,0,0.35);
@@ -298,7 +298,7 @@ onMounted(() => {
   width: 100%;
   height: 200px;
   object-fit: contain;
-  border: 1px solid #373738;
+  border: 1px solid var(--leather-raised);
 }
 
 .sig-gallery-container .no-image {

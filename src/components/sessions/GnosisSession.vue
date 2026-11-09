@@ -194,12 +194,12 @@ function resetGame() {
 }
 
 .choices-section button.correct {
-  background-color: #2ecc71;
+  background-color: var(--success);
   color: black;
 }
 
 .choices-section button.correct:hover {
-  background-color: #2ecc71;
+  background-color: var(--success);
   color: black;
 }
 
@@ -218,7 +218,7 @@ function resetGame() {
 }
 
 .feedback.correct {
-  color: #2ecc71;
+  color: var(--success);
 }
 
 .feedback.incorrect {

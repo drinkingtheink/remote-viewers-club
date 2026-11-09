@@ -503,7 +503,7 @@ watch(isSaved, () => {
 }
 
 .canvas-container {
-  border: 1px solid #ccc;
+  border: 1px solid var(--ash);
   border-radius: 4px;
   margin-bottom: 10px;
   width: 100%;

@@ -123,12 +123,12 @@ export default {
 }
 
 .cls-1 {
-    stroke: #f1f380;
+    stroke: var(--the-yellow);
     stroke-miterlimit: 10;
 }
 
 #crystal-ball * {
-    fill: #f1f380;
+    fill: var(--the-yellow);
 }
 
 #star {

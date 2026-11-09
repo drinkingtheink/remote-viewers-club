@@ -115,6 +115,6 @@ button.secondary:disabled:hover,
 
 button:focus-visible,
 .btn:focus-visible {
-  outline: 3px solid var(--the-yellow, #f1f380);
+  outline: 3px solid var(--the-yellow);
   outline-offset: 2px;
 }
