@@ -12,6 +12,8 @@
         tell you afterwards whether you were right.
       </p>
 
+      <EyeAnimation />
+
       <button @click="startRun" class="begin-session">Begin Session</button>
     </div>
 
@@ -96,6 +98,7 @@
 <script setup>
 import { computed, onBeforeUnmount, ref, defineProps } from 'vue'
 import SessionStage from '../SessionStage.vue'
+import EyeAnimation from '../animations/EyeAnimation.vue'
 import { useSession } from '../../composables/useSession'
 import { WINDOWS, WINDOW_MS, GAP_MS, SETTLE_MS, verdictFor } from '../../data/watcherVerdicts'
 
