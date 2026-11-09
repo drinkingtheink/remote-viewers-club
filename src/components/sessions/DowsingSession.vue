@@ -43,11 +43,13 @@
         <!-- Game screen -->
         <div v-else>
             <div class="instructions">
-                <h3>How to Dowse:</h3>
-                <p>1. Focus your intuition on the grid</p>
-                <p>2. Move your cursor slowly across the grid, paying attention to the sensitivity meter</p>
-                <p>3. Click on cells where you sense hidden sources</p>
-                <p>4. Try to find all sources with as few attempts as possible</p>
+                <h3>How to Dowse</h3>
+                <ol class="dowse-steps">
+                    <li>Focus your intuition on the grid.</li>
+                    <li>Move slowly, watching the sensitivity meter.</li>
+                    <li>Click where you sense a hidden source.</li>
+                    <li>Find them all in as few attempts as you can.</li>
+                </ol>
             </div>
             <div class="controls">
                 <div class="difficulty-selector">
@@ -59,26 +61,26 @@
                     </select>
                 </div>
                 
-                <div class="stats">
-                    <p>Attempts: {{ attempts }}</p>
-                    <p>Hits: {{ hits }}</p>
-                    <p>Score: {{ score }}</p>
-                </div>
+                <dl class="stats">
+                    <div><dt>Attempts</dt><dd>{{ attempts }}</dd></div>
+                    <div><dt>Hits</dt><dd>{{ hits }}</dd></div>
+                    <div><dt>Score</dt><dd>{{ score }}</dd></div>
+                </dl>
                 
                 <button @click="resetGame" class="reset-btn">New Game</button>
             </div>
 
             <div class="proximity-meter">
-                <div class="meter-label">Dowsing Rod Sensitivity:</div>
+                <div class="meter-label">Dowsing Rod Sensitivity</div>
                 <div class="meter">
                 <div class="meter-fill" :style="{ width: `${proximity}%` }"></div>
                 </div>
             </div>
             
-            <div class="game-status" :class="{ 'success': foundAllSources }">
+            <p class="game-status" :class="{ 'success': foundAllSources }">
                 <span v-if="foundAllSources">Success! You found all hidden {{ sourceType }} sources!</span>
                 <span v-else>Find the {{ sourceType }} sources hidden in the grid.</span>
-            </div>
+            </p>
             
             <div class="grid-container" 
                 :class="{ 'disabled': foundAllSources }"  
@@ -396,9 +398,35 @@ watch(difficulty, () => {
 /* Game Screen Styles */
 .controls {
   display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.5rem;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 1rem;
+}
+
+/* The running totals are meta, not headlines; same compact row the other
+   sessions use for their tallies. */
+.stats {
+  display: flex;
+  gap: 1.25rem;
+  margin: 0;
+}
+
+.stats dt {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--parchment);
+  opacity: 0.7;
+}
+
+.stats dd {
+  margin: 2px 0 0 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-lg);
+  color: var(--gilt-bright);
 }
 
 .grid-container {
@@ -529,29 +557,53 @@ watch(difficulty, () => {
 }
 
 .proximity-meter {
-  margin: 20px 0;
+  margin: 1rem 0;
+}
+
+.meter-label {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--gilt-bright);
+  text-align: left;
+}
+
+.difficulty-selector label {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--parchment);
+  opacity: 0.7;
+  display: block;
+  margin-bottom: 4px;
+  text-align: left;
 }
 
 .meter {
-  height: 20px;
-  background-color: #858383;
+  height: 14px;
+  background-color: var(--leather-deep);
+  border: 1px solid var(--gilt-dim);
   border-radius: 10px;
   overflow: hidden;
-  margin-top: 5px;
+  margin-top: 6px;
 }
 
 .meter-fill {
   height: 100%;
-  background: linear-gradient(90deg, #f7c74d, #f78e4d, #f76f4d, #ee522c, red);
+  background: linear-gradient(90deg, var(--gilt-dim), var(--gilt), var(--gilt-bright), var(--cinnabar));
   transition: width 0.3s ease;
 }
 
 .game-status {
   background-color: var(--leather-deep);
-  padding: 10px;
+  padding: 0.6rem 1rem;
   border-radius: 4px;
   text-align: center;
-  margin: 10px 0;
+  margin: 0.75rem auto !important;
+  font-size: var(--text-sm) !important;
+  letter-spacing: var(--tracking-wide);
 }
 
 .game-status.success {
@@ -566,10 +618,40 @@ watch(difficulty, () => {
 
 .instructions {
   background-color: var(--leather-deep);
-  padding: 15px;
+  padding: 1rem 1.25rem;
   border-radius: 8px;
-  font-size: 60%;
-  margin-bottom: 10px;
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.instructions h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: var(--text-base);
+  letter-spacing: var(--tracking-wide);
+  color: var(--gilt-bright);
+}
+
+/* Two columns where there's room: four steps shouldn't out-rank the grid. */
+.dowse-steps {
+  margin: 0;
+  padding-left: 1.3rem;
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  color: var(--parchment);
+  columns: 2;
+  column-gap: 2rem;
+}
+
+.dowse-steps li {
+  display: list-item;
+  margin: 0 0 0.3rem 0;
+  break-inside: avoid;
+}
+
+@media only screen and (max-width: 767px) {
+  .dowse-steps {
+    columns: 1;
+  }
 }
 
 .instructions h3 {

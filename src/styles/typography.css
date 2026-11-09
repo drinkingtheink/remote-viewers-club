@@ -42,6 +42,10 @@
   --tracking-normal: 0;
   --tracking-wide: 0.08em;
   --tracking-wider: 0.14em;
+
+  /* Comfortable line length for running text. Panels in Praxis open to
+     ~1300px, which is roughly twice what anyone can read a line of. */
+  --measure: 68ch;
 }
 
 body {

@@ -947,20 +947,38 @@ button.enlarge:hover {
   width: 90vw;
 }
 
+/*
+ * Body copy inside a session panel. This used to be --text-xl, a size meant
+ * for the one hero line an intro carries, applied to every paragraph --
+ * instructions, running totals, status lines and all. It also beat any
+ * relative sizing a session tried to set on a container, because an absolute
+ * font-size on the child wins: Dowsing asked for 60% on its instructions and
+ * got 28px steps anyway.
+ *
+ * A panel's one loud line opts in with .panel-subheader; everything else
+ * reads at a body size, and .session-note is for the quiet end.
+ */
 .stage p {
-  line-height: var(--leading-snug);
-  font-size: var(--text-xl);
+  line-height: var(--leading-normal);
+  font-size: var(--text-md);
   color: var(--parchment);
   font-family: var(--font-body);
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
   margin: 0 auto 1rem auto;
+  /* An active panel is ~1300px wide; a paragraph running its full width is
+     the single worst thing for reading here, whatever size it is set at. */
+  max-width: var(--measure);
 
   @media only screen and (max-width: 767px) {
     width: 85%;
-    font-size: 130%;
   }
+}
+
+.stage p.session-note {
+  font-size: var(--text-sm);
+  opacity: 0.78;
 }
 
 .stage h2 {
@@ -970,7 +988,9 @@ button.enlarge:hover {
 
 .panel-subheader {
   font-size: var(--text-xl);
+  line-height: var(--leading-snug);
   font-family: var(--font-heading);
+  max-width: 34ch;
 }
 
 button.begin-session {

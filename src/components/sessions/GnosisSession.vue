@@ -171,9 +171,16 @@ function resetGame() {
   padding-top: 1rem;
 }
 
-.description {
+/*
+ * The clue is the exercise, not supporting copy; it carries the panel.
+ * Container-prefixed because this block is unscoped, so a bare .description
+ * loses to the global `.stage p` on specificity -- the same convention
+ * RemoteViewingSession already follows.
+ */
+.gnosis-container .description {
   font-style: italic;
-  color: #c7c7c7;
+  font-size: var(--text-lg);
+  color: var(--parchment);
 }
 
 .choices-section {
