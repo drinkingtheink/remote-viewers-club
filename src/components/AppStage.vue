@@ -114,6 +114,21 @@
       <a href="https://github.com/drinkingtheink/remote-viewers-club" target="_blank">About this App</a>
       <a href="https://www.drinkingtheink.com/" target="_blank">About the Author</a>
     </footer>
+
+    <!-- what a bound volume carries at the back -->
+    <aside class="colophon">
+      <h2 class="colophon-head">Colophon</h2>
+      <p>
+        Set in <em>Vollkorn</em>, with <em>Unica One</em> for the display lines
+        and a typewriter face kept for the coordinates.
+      </p>
+      <p>
+        The boards are blind-tooled in a diaper lattice and struck again in
+        gold, which the candle finds as it is carried across them. No part of
+        the binding is photographed; all of it is drawn by the page itself.
+      </p>
+      <p class="colophon-mark">Remote Viewers Club &middot; bound in the year 2026</p>
+    </aside>
   </div>
 </template>
 
@@ -506,6 +521,48 @@ section.gallery > .intro {
   .badge {
     width: 100%;
   }
+}
+
+/*
+ * The colophon. A bound volume says what it is made of at the back, and this
+ * one has more to own up to than most -- the whole binding is generated.
+ */
+.colophon {
+  max-width: 44ch;
+  margin: 4rem auto 6rem;
+  padding: 1.75rem 2rem 2rem;
+  border-top: 2px solid var(--gilt-dim);
+  background: rgba(10, 8, 6, 0.74);
+  box-shadow: inset 0 1px 0 rgba(224, 189, 106, 0.16);
+  color: var(--parchment);
+  text-align: center;
+}
+
+.colophon-head {
+  font-size: var(--text-md);
+  color: var(--gilt);
+  margin-bottom: 1rem;
+}
+
+.colophon p {
+  margin: 0 0 0.9rem;
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+}
+
+.colophon em {
+  font-style: italic;
+  color: var(--gilt-bright);
+}
+
+.colophon-mark {
+  margin: 1.2rem 0 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-wide);
+  font-variant-numeric: lining-nums;
+  /* --gilt-dim measured 4.14:1 here, just under AA for text this size */
+  color: var(--gilt);
 }
 
 /*
