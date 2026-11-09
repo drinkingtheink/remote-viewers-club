@@ -195,3 +195,37 @@ body::after,
 body::before {
   transition: opacity 2.4s ease-in-out, background 2.4s ease-in-out;
 }
+
+/*
+ * The eye in the binding. Driven by useWatchingLattice, which only ever puts
+ * it on a quatrefoil's centre, and only while someone is here to see it.
+ *
+ * It sits on the same layer as the gilt pass, behind everything, so it can
+ * only ever appear in the margins -- never over a word.
+ */
+.lattice-eye {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+  translate: var(--eye-x, -100px) var(--eye-y, -100px);
+  pointer-events: none;
+  opacity: 0;
+  background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='34' height='34' viewBox='0 0 34 34'><g fill='none' stroke='%23e8c87a' stroke-width='1.6' stroke-linecap='round'><path d='M2.5 17C7 10.5 11.8 7.5 17 7.5S27 10.5 31.5 17C27 23.5 22.2 26.5 17 26.5S7 23.5 2.5 17Z'/></g><circle cx='17' cy='17' r='5.4' fill='%23e8c87a' fill-opacity='.75'/><circle cx='17' cy='17' r='2.2' fill='%230e0b09'/></svg>") center / contain no-repeat;
+}
+
+.lattice-eye.is-open {
+  animation: lattice-blink 5.4s var(--ease-in-out) both;
+}
+
+/* open slowly, hold, close -- a lid, not a flash */
+@keyframes lattice-blink {
+  0% { opacity: 0; transform: scaleY(0.1); }
+  14% { opacity: 0.62; transform: scaleY(1); }
+  70% { opacity: 0.62; transform: scaleY(1); }
+  86% { opacity: 0.5; transform: scaleY(0.08); }
+  100% { opacity: 0; transform: scaleY(0.08); }
+}
