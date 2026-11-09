@@ -1,15 +1,8 @@
 <template>
-  <SessionStage title="Watcher Test" container-class="watcher-session" :is-active="isActive">
+  <SessionStage title="Watcher Session" container-class="watcher-session" :is-active="isActive">
     <div v-if="phase === 'intro'" class="panel">
       <p class="panel-subheader">
         The Club will watch you. Report the moments you feel it.
-      </p>
-
-      <p class="watcher-brief">
-        Over the course of one run you will be observed
-        {{ WINDOWS }} times, at intervals you are not told. The observation
-        leaves no mark on this page. Press when you feel it, and the Club will
-        tell you afterwards whether you were right.
       </p>
 
       <EyeAnimation />
@@ -18,6 +11,13 @@
     </div>
 
     <div v-else-if="phase === 'watching'" class="watcher-run">
+      <p class="watcher-brief">
+        Over the course of one run you will be observed
+        {{ WINDOWS }} times, at intervals you are not told. The observation
+        leaves no mark on this page. Press when you feel it, and the Club will
+        tell you afterwards whether you were right.
+      </p>
+
       <div class="watcher-field">
         <svg class="watcher-eye" viewBox="0 0 120 64" aria-hidden="true">
           <path
