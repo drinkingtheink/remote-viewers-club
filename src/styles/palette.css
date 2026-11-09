@@ -44,18 +44,30 @@
 }
 
 /*
- * Leather grain, generated rather than shipped: fractal noise desaturated
- * to grey, laid over warm mottling so the ground reads as a worn cover
- * instead of flat color.
+ * The binding.
+ *
+ * A blind-tooled diaper lattice -- the diamond stamped into each tile joins
+ * its neighbours into a continuous trellis, with a quatrefoil in one diamond
+ * and a single point in the next. Each figure is struck twice, black pushed
+ * down a pixel and gold where the light would catch, so it reads as pressed
+ * into the leather rather than printed on it.
+ *
+ * Over that: fractal-noise grain for the hide, and warm mottling for the way
+ * an old cover darkens unevenly. All generated, nothing shipped.
+ *
+ * The tooling colors are literals because a data URI cannot see a custom
+ * property; they are --gilt, dimmed.
  */
 body {
   background-color: var(--leather);
   background-image:
+    url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'><g fill='none' stroke-width='1.1'><path d='M40 0 80 40 40 80 0 40Z' stroke='%23000' stroke-opacity='.55' transform='translate%280 1%29'/><path d='M40 0 80 40 40 80 0 40Z' stroke='%23e0bd6a' stroke-opacity='.13'/></g><g fill='%23000' fill-opacity='.45' transform='translate%280 1%29'><circle cx='40' cy='34.5' r='3.1'/><circle cx='45.5' cy='40' r='3.1'/><circle cx='40' cy='45.5' r='3.1'/><circle cx='34.5' cy='40' r='3.1'/><circle cx='0' cy='0' r='2.2'/><circle cx='80' cy='0' r='2.2'/><circle cx='0' cy='80' r='2.2'/><circle cx='80' cy='80' r='2.2'/></g><g fill='%23e0bd6a' fill-opacity='.12'><circle cx='40' cy='34.5' r='3.1'/><circle cx='45.5' cy='40' r='3.1'/><circle cx='40' cy='45.5' r='3.1'/><circle cx='34.5' cy='40' r='3.1'/><circle cx='0' cy='0' r='2.2'/><circle cx='80' cy='0' r='2.2'/><circle cx='0' cy='80' r='2.2'/><circle cx='80' cy='80' r='2.2'/></g></svg>"),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='320' height='320' filter='url(%23g)' opacity='0.26'/%3E%3C/svg%3E"),
     radial-gradient(ellipse at 18% 8%, rgba(104, 76, 44, 0.20), transparent 58%),
     radial-gradient(ellipse at 82% 72%, rgba(62, 40, 24, 0.26), transparent 52%);
+  background-size: 80px 80px, 320px 320px, auto, auto;
+  background-repeat: repeat, repeat, no-repeat, no-repeat;
   background-attachment: fixed;
-  background-repeat: repeat, no-repeat, no-repeat;
 }
 
 /*
