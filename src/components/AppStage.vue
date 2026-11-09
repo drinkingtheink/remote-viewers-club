@@ -5,18 +5,27 @@
       <h1>REMOTE VIEWERS CLUB</h1>
       <p class="introduction">Purveyors, practicioners, and pundits of the metaphysical arts &amp; sciences</p>
     </div>
-    <div v-if="!!activeBadge" class="modal-mask">
-      <div class="modal-wrapper">
-        <div class="modal-container">
-          <div class="active-badge">
-            <section class="modal-content">
-              <button class="close-active" @click="closeActive">Back to Gallery</button>
-              <component :is="`Badge${activeBadge.id}`"></component>
-            </section>
-          </div>
+    <!--
+      A native <dialog> rather than a hand-rolled overlay: Esc to dismiss,
+      the focus trap, and returning focus to the badge you came from are all
+      the platform's job here, not ours.
+    -->
+    <dialog
+      ref="badgeDialog"
+      class="badge-dialog"
+      :aria-label="activeBadge ? `${activeBadge.title}, enlarged` : undefined"
+      @close="activeBadge = null"
+      @click="handleDialogClick"
+    >
+      <div v-if="activeBadge" class="badge-dialog-inner">
+        <div class="badge-dialog-art">
+          <component :is="`Badge${activeBadge.id}`"></component>
         </div>
+        <h3 class="badge-dialog-title">{{ activeBadge.title }}</h3>
+        <h4 v-if="activeBadge.desc" class="badge-dialog-desc">{{ activeBadge.desc }}</h4>
+        <button class="close-active" @click="closeActive">Back to Gallery</button>
       </div>
-    </div>
+    </dialog>
 
     <section class="sections">
       <button 
@@ -207,9 +216,18 @@ export default {
   methods: {
     handleBadgeClick(badge) {
       this.activeBadge = badge;
+      // The dialog only has content to size itself around after the re-render.
+      this.$nextTick(() => this.$refs.badgeDialog?.showModal());
     },
     closeActive() {
-      this.activeBadge = null;
+      // Clearing activeBadge is the @close handler's job, so Esc and this
+      // button take exactly the same path.
+      this.$refs.badgeDialog?.close();
+    },
+    handleDialogClick(event) {
+      // A click only lands on the dialog element itself when it fell outside
+      // the content box, i.e. on the backdrop.
+      if (event.target === this.$refs.badgeDialog) this.closeActive();
     },
     scrollToElement(selector) {
       setTimeout(() => {
@@ -241,64 +259,38 @@ export default {
   --success: #2ecc71;
 }
 
-.modal-mask {
-  position: fixed;
-  z-index: 9998;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: table;
-  transition: opacity 0.3s ease;
+.badge-dialog {
+  width: min(92vw, 640px);
+  max-height: 92vh;
+  overflow-y: auto;
+  padding: 1.5rem;
+  border: none;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.85);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);
+  color: var(--the-yellow);
 }
 
-.modal-wrapper {
-  display: table-cell;
-  vertical-align: middle;
+.badge-dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.72);
 }
 
-.modal-container {
-  width: 1000px;
-  margin: 0px auto;
-  padding: 20px 30px;
-  background-color: rgba(0,0,0,0.6);
-  border-radius: 2px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
-  transition: all 0.3s ease;
+.badge-dialog-art {
+  max-width: 420px;
+  margin: 0 auto;
+  filter: drop-shadow(10px 0 10px #111);
 }
 
-.modal-header h3 {
-  margin-top: 0;
-  color: #42b983;
+.badge-dialog-title {
+  margin: 1.25rem 0 0 0;
+  text-transform: uppercase;
 }
 
-.modal-body {
-  margin: 20px 0;
-}
-
-.modal-enter {
-  opacity: 0;
-}
-
-.modal-leave-active {
-  opacity: 0;
-}
-
-.modal-enter .modal-container,
-.modal-leave-active .modal-container {
-  -webkit-transform: scale(1.1);
-  transform: scale(1.1);
-}
-
-.active-badge {
-  padding: 0 20%;
-}
-
-.close-active {
-  font-size: var(--text-sm);
-  margin: 1rem 0;
-  padding: 1rem 2rem;
+.badge-dialog-desc {
+  margin: 0.25rem 0 0 0;
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: var(--text-md);
 }
 
 .inspo {
@@ -500,12 +492,6 @@ button.enlarge {
   margin: 5px auto 0 auto;
   /* stated rather than inherited from the `.badge-details *` wildcard */
   background-color: rgba(0, 0, 0, 0.6);
-}
-
-@media only screen and (max-width: 767px) {
-  button.enlarge {
-    display: none;
-  }
 }
 
 .sections {
