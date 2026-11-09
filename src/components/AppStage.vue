@@ -101,6 +101,8 @@
 
           <DowsingSession :scrollToElement="this.scrollToElement" />
 
+          <SpiritBoardSession :scrollToElement="this.scrollToElement" />
+
         </section>
       </section>
 
@@ -146,6 +148,7 @@ import RemoteViewingSession from './sessions/RemoteViewingSession.vue'
 import PrecognitionSession from './sessions/PrecognitionSession.vue'
 import GnosisSession from './sessions/GnosisSession.vue'
 import DowsingSession from './sessions/DowsingSession.vue'
+import SpiritBoardSession from './sessions/SpiritBoardSession.vue'
 import Join from './Join.vue'
 import RemoteViewingIcon from './icons/RemoteViewingIcon'
 import PrecogIcon from './icons/PrecognitionIcon'
@@ -232,7 +235,8 @@ export default {
     PrecognitionSession,
     Join,
     GnosisSession,
-    DowsingSession
+    DowsingSession,
+    SpiritBoardSession
   },
   data() {
     return {
