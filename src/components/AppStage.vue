@@ -14,8 +14,9 @@
       ref="badgeDialog"
       class="badge-dialog"
       :aria-label="activeBadge ? `${activeBadge.title}, enlarged` : undefined"
-      @close="activeBadge = null"
+      @close="handleDialogClose"
       @click="handleDialogClick"
+      @keydown="handleDialogKeydown"
     >
       <!-- the same mount and plate the gallery uses, at a size you can read -->
       <figure v-if="activeBadge" class="badge-dialog-figure">
@@ -23,10 +24,27 @@
           <component :is="`Badge${activeBadge.id}`"></component>
         </div>
 
-        <figcaption class="specimen-label">
+        <figcaption class="specimen-label" aria-live="polite">
           <p class="specimen-cat">{{ catalogueNo(activeBadge.id) }}</p>
           <h3 class="specimen-name">{{ activeBadge.title }}</h3>
           <p class="specimen-unit" v-if="activeBadge.desc">{{ activeBadge.desc }}</p>
+
+          <p class="specimen-nav">
+            <button
+              type="button"
+              class="specimen-step"
+              aria-label="Previous badge"
+              @click="stepBadge(-1)"
+            >&#9664;</button>
+            <span class="specimen-count">{{ activeIndex + 1 }} of {{ badgeMap.length }}</span>
+            <button
+              type="button"
+              class="specimen-step"
+              aria-label="Next badge"
+              @click="stepBadge(1)"
+            >&#9654;</button>
+          </p>
+
           <p class="specimen-actions">
             <a class="inspo" :href="activeBadge.inspo" target="_blank">Origin</a>
             <button class="close-active" autofocus @click="closeActive">Back to Gallery</button>
@@ -76,7 +94,7 @@
             <p class="specimen-unit" v-if="badge.desc">{{ badge.desc }}</p>
             <p class="specimen-actions">
               <a class="inspo" :href="badge.inspo" target="_blank">Origin</a>
-              <button class="enlarge" @click="handleBadgeClick(badge)">Enlarge</button>
+              <button class="enlarge" :data-badge="badge.id" @click="handleBadgeClick(badge)">Enlarge</button>
             </p>
           </figcaption>
         </figure>
@@ -256,6 +274,12 @@ export default {
       activeSection: sectionFromUrl(),
     }
   },
+  computed: {
+    activeIndex() {
+      if (!this.activeBadge) return -1
+      return this.badgeMap.findIndex((badge) => badge.id === this.activeBadge.id)
+    }
+  },
   methods: {
     // an accession number, as a specimen in a collection would carry
     catalogueNo(id) {
@@ -266,10 +290,37 @@ export default {
       // The dialog only has content to size itself around after the re-render.
       this.$nextTick(() => this.$refs.badgeDialog?.showModal());
     },
+    // Wraps, so the collection has no dead end at either tail.
+    stepBadge(delta) {
+      if (!this.activeBadge) return;
+      const count = this.badgeMap.length;
+      const next = (this.activeIndex + delta + count) % count;
+      this.activeBadge = this.badgeMap[next];
+    },
+    handleDialogKeydown(event) {
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        this.stepBadge(-1);
+      } else if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        this.stepBadge(1);
+      }
+      // Escape is the dialog's own; it needs nothing from us.
+    },
     closeActive() {
       // Clearing activeBadge is the @close handler's job, so Esc and this
       // button take exactly the same path.
       this.$refs.badgeDialog?.close();
+    },
+    handleDialogClose() {
+      const landedOn = this.activeBadge?.id;
+      this.activeBadge = null;
+
+      // The platform returns focus to the button that opened the dialog. If
+      // you browsed on from there, that is no longer the badge on screen.
+      this.$nextTick(() => {
+        document.querySelector(`[data-badge="${landedOn}"]`)?.focus({ preventScroll: false });
+      });
     },
     handleDialogClick(event) {
       // A click only lands on the dialog element itself when it fell outside
@@ -710,6 +761,44 @@ section.gallery > .intro {
 }
 
 /* a hairline rule between the record and the things you can do with it */
+.specimen-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 0.9rem 0 0;
+  padding-top: 0.8rem;
+  border-top: 1px solid rgba(224, 189, 106, 0.22);
+}
+
+/* Quiet until wanted: the specimen is the thing being looked at. */
+.specimen-step {
+  background: transparent;
+  color: var(--gilt);
+  border: 1px solid rgba(224, 189, 106, 0.35);
+  border-radius: 4px;
+  padding: 0.3rem 0.75rem;
+  font-size: var(--text-sm);
+  line-height: 1;
+  transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.specimen-step:hover {
+  background: transparent;
+  color: var(--gilt-bright);
+  border-color: var(--gilt-bright);
+}
+
+.specimen-count {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  letter-spacing: var(--tracking-wide);
+  color: var(--parchment);
+  opacity: 0.75;
+  min-width: 5.5rem;
+  text-align: center;
+}
+
 .specimen-actions {
   display: flex;
   align-items: center;
