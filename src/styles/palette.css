@@ -49,28 +49,90 @@
 /*
  * The binding.
  *
- * A blind-tooled diaper lattice -- the diamond stamped into each tile joins
- * its neighbours into a continuous trellis, with a quatrefoil in one diamond
- * and a single point in the next. Each figure is struck twice, black pushed
- * down a pixel and gold where the light would catch, so it reads as pressed
- * into the leather rather than printed on it.
+ * A blind-tooled diaper lattice: the diamond stamped into each 120px tile
+ * joins its neighbours into a continuous trellis, double-ruled the way a
+ * finishing tool leaves a bold line beside a hairline. A quatrefoil is
+ * struck in each diamond; the tile corners fall at the centres of the
+ * adjoining diamonds, so an eight-point star lands in every other cell.
  *
- * Over that: fractal-noise grain for the hide, and warm mottling for the way
- * an old cover darkens unevenly. All generated, nothing shipped.
+ * Every figure is struck twice -- black pushed down two pixels, gold where
+ * the light catches -- so it reads as pressed into the hide rather than
+ * printed on it. Over that goes fractal-noise grain, then the warm mottling
+ * of a cover that has darkened unevenly. All generated, nothing shipped.
  *
- * The tooling colors are literals because a data URI cannot see a custom
- * property; they are --gilt, dimmed.
+ * The gold is a literal because a data URI cannot read a custom property;
+ * it is --gilt-bright, warmed. The encoded tile below is this, with the
+ * opacities swapped for the gilt pass:
+ *
+ *   <svg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'>
+ *   <g transform='translate(0 2)'>
+ *   <g fill='none' stroke='#000' stroke-opacity='.78'>
+ *   <path d='M60 0 120 60 60 120 0 60Z' stroke-width='2.6'/>
+ *   <path d='M60 13 107 60 60 107 13 60Z' stroke-width='1.1'/>
+ *   </g>
+ *   <g fill='#000' fill-opacity='.78' stroke='none'>
+ *   <circle cx='60' cy='49' r='6.4'/>
+ *   <circle cx='71' cy='60' r='6.4'/>
+ *   <circle cx='60' cy='71' r='6.4'/>
+ *   <circle cx='49' cy='60' r='6.4'/>
+ *   <circle cx='60' cy='60' r='3.2'/>
+ *   <path d='M0 -8 L2.4 -2.4 L8 0 L2.4 2.4 L0 8 L-2.4 2.4 L-8 0 L-2.4 -2.4Z'/>
+ *   <path d='M120 -8 L122.4 -2.4 L128 0 L122.4 2.4 L120 8 L117.6 2.4 L112 0 L117.6 -2.4Z'/>
+ *   <path d='M0 112 L2.4 117.6 L8 120 L2.4 122.4 L0 128 L-2.4 122.4 L-8 120 L-2.4 117.6Z'/>
+ *   <path d='M120 112 L122.4 117.6 L128 120 L122.4 122.4 L120 128 L117.6 122.4 L112 120 L117.6 117.6Z'/>
+ *   </g>
+ *   </g>
+ *   <g fill='none' stroke='#e8c87a' stroke-opacity='.20'>
+ *   <path d='M60 0 120 60 60 120 0 60Z' stroke-width='2.6'/>
+ *   <path d='M60 13 107 60 60 107 13 60Z' stroke-width='1.1'/>
+ *   </g>
+ *   <g fill='#e8c87a' fill-opacity='.20' stroke='none'>
+ *   <circle cx='60' cy='49' r='6.4'/>
+ *   <circle cx='71' cy='60' r='6.4'/>
+ *   <circle cx='60' cy='71' r='6.4'/>
+ *   <circle cx='49' cy='60' r='6.4'/>
+ *   <circle cx='60' cy='60' r='3.2'/>
+ *   <path d='M0 -8 L2.4 -2.4 L8 0 L2.4 2.4 L0 8 L-2.4 2.4 L-8 0 L-2.4 -2.4Z'/>
+ *   <path d='M120 -8 L122.4 -2.4 L128 0 L122.4 2.4 L120 8 L117.6 2.4 L112 0 L117.6 -2.4Z'/>
+ *   <path d='M0 112 L2.4 117.6 L8 120 L2.4 122.4 L0 128 L-2.4 122.4 L-8 120 L-2.4 117.6Z'/>
+ *   <path d='M120 112 L122.4 117.6 L128 120 L122.4 122.4 L120 128 L117.6 122.4 L112 120 L117.6 117.6Z'/>
+ *   </g>
+ *   </svg>
  */
+:root {
+  --tooling-blind: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'><g transform='translate%280 2%29'><g fill='none' stroke='%23000' stroke-opacity='.78'><path d='M60 0 120 60 60 120 0 60Z' stroke-width='2.6'/><path d='M60 13 107 60 60 107 13 60Z' stroke-width='1.1'/></g><g fill='%23000' fill-opacity='.78' stroke='none'><circle cx='60' cy='49' r='6.4'/><circle cx='71' cy='60' r='6.4'/><circle cx='60' cy='71' r='6.4'/><circle cx='49' cy='60' r='6.4'/><circle cx='60' cy='60' r='3.2'/><path d='M0 -8 L2.4 -2.4 L8 0 L2.4 2.4 L0 8 L-2.4 2.4 L-8 0 L-2.4 -2.4Z'/><path d='M120 -8 L122.4 -2.4 L128 0 L122.4 2.4 L120 8 L117.6 2.4 L112 0 L117.6 -2.4Z'/><path d='M0 112 L2.4 117.6 L8 120 L2.4 122.4 L0 128 L-2.4 122.4 L-8 120 L-2.4 117.6Z'/><path d='M120 112 L122.4 117.6 L128 120 L122.4 122.4 L120 128 L117.6 122.4 L112 120 L117.6 117.6Z'/></g></g><g fill='none' stroke='%23e8c87a' stroke-opacity='.20'><path d='M60 0 120 60 60 120 0 60Z' stroke-width='2.6'/><path d='M60 13 107 60 60 107 13 60Z' stroke-width='1.1'/></g><g fill='%23e8c87a' fill-opacity='.20' stroke='none'><circle cx='60' cy='49' r='6.4'/><circle cx='71' cy='60' r='6.4'/><circle cx='60' cy='71' r='6.4'/><circle cx='49' cy='60' r='6.4'/><circle cx='60' cy='60' r='3.2'/><path d='M0 -8 L2.4 -2.4 L8 0 L2.4 2.4 L0 8 L-2.4 2.4 L-8 0 L-2.4 -2.4Z'/><path d='M120 -8 L122.4 -2.4 L128 0 L122.4 2.4 L120 8 L117.6 2.4 L112 0 L117.6 -2.4Z'/><path d='M0 112 L2.4 117.6 L8 120 L2.4 122.4 L0 128 L-2.4 122.4 L-8 120 L-2.4 117.6Z'/><path d='M120 112 L122.4 117.6 L128 120 L122.4 122.4 L120 128 L117.6 122.4 L112 120 L117.6 117.6Z'/></g></svg>");
+  --tooling-gilt: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'><g transform='translate%280 2%29'><g fill='none' stroke='%23000' stroke-opacity='.30'><path d='M60 0 120 60 60 120 0 60Z' stroke-width='2.6'/><path d='M60 13 107 60 60 107 13 60Z' stroke-width='1.1'/></g><g fill='%23000' fill-opacity='.30' stroke='none'><circle cx='60' cy='49' r='6.4'/><circle cx='71' cy='60' r='6.4'/><circle cx='60' cy='71' r='6.4'/><circle cx='49' cy='60' r='6.4'/><circle cx='60' cy='60' r='3.2'/><path d='M0 -8 L2.4 -2.4 L8 0 L2.4 2.4 L0 8 L-2.4 2.4 L-8 0 L-2.4 -2.4Z'/><path d='M120 -8 L122.4 -2.4 L128 0 L122.4 2.4 L120 8 L117.6 2.4 L112 0 L117.6 -2.4Z'/><path d='M0 112 L2.4 117.6 L8 120 L2.4 122.4 L0 128 L-2.4 122.4 L-8 120 L-2.4 117.6Z'/><path d='M120 112 L122.4 117.6 L128 120 L122.4 122.4 L120 128 L117.6 122.4 L112 120 L117.6 117.6Z'/></g></g><g fill='none' stroke='%23e8c87a' stroke-opacity='.85'><path d='M60 0 120 60 60 120 0 60Z' stroke-width='2.6'/><path d='M60 13 107 60 60 107 13 60Z' stroke-width='1.1'/></g><g fill='%23e8c87a' fill-opacity='.85' stroke='none'><circle cx='60' cy='49' r='6.4'/><circle cx='71' cy='60' r='6.4'/><circle cx='60' cy='71' r='6.4'/><circle cx='49' cy='60' r='6.4'/><circle cx='60' cy='60' r='3.2'/><path d='M0 -8 L2.4 -2.4 L8 0 L2.4 2.4 L0 8 L-2.4 2.4 L-8 0 L-2.4 -2.4Z'/><path d='M120 -8 L122.4 -2.4 L128 0 L122.4 2.4 L120 8 L117.6 2.4 L112 0 L117.6 -2.4Z'/><path d='M0 112 L2.4 117.6 L8 120 L2.4 122.4 L0 128 L-2.4 122.4 L-8 120 L-2.4 117.6Z'/><path d='M120 112 L122.4 117.6 L128 120 L122.4 122.4 L120 128 L117.6 122.4 L112 120 L117.6 117.6Z'/></g></svg>");
+}
+
 body {
   background-color: var(--leather);
   background-image:
-    url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'><g fill='none' stroke-width='1.1'><path d='M40 0 80 40 40 80 0 40Z' stroke='%23000' stroke-opacity='.55' transform='translate%280 1%29'/><path d='M40 0 80 40 40 80 0 40Z' stroke='%23e0bd6a' stroke-opacity='.13'/></g><g fill='%23000' fill-opacity='.45' transform='translate%280 1%29'><circle cx='40' cy='34.5' r='3.1'/><circle cx='45.5' cy='40' r='3.1'/><circle cx='40' cy='45.5' r='3.1'/><circle cx='34.5' cy='40' r='3.1'/><circle cx='0' cy='0' r='2.2'/><circle cx='80' cy='0' r='2.2'/><circle cx='0' cy='80' r='2.2'/><circle cx='80' cy='80' r='2.2'/></g><g fill='%23e0bd6a' fill-opacity='.12'><circle cx='40' cy='34.5' r='3.1'/><circle cx='45.5' cy='40' r='3.1'/><circle cx='40' cy='45.5' r='3.1'/><circle cx='34.5' cy='40' r='3.1'/><circle cx='0' cy='0' r='2.2'/><circle cx='80' cy='0' r='2.2'/><circle cx='0' cy='80' r='2.2'/><circle cx='80' cy='80' r='2.2'/></g></svg>"),
+    var(--tooling-blind),
     var(--grain),
     radial-gradient(ellipse at 18% 8%, rgba(104, 76, 44, 0.20), transparent 58%),
     radial-gradient(ellipse at 82% 72%, rgba(62, 40, 24, 0.26), transparent 52%);
-  background-size: 80px 80px, 320px 320px, auto, auto;
+  background-size: 120px 120px, 320px 320px, auto, auto;
   background-repeat: repeat, repeat, no-repeat, no-repeat;
   background-attachment: fixed;
+}
+
+/*
+ * The gilt pass. The same tooling in gold leaf, masked to the part of the
+ * page the candle actually reaches, so the trellis flares where the light
+ * falls and drops back to a blind impression at the edges of the volume.
+ */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: var(--tooling-gilt);
+  background-size: 120px 120px;
+  background-attachment: fixed;
+  opacity: 0.55;
+  -webkit-mask-image: radial-gradient(ellipse at 50% 36%, #000 0%, rgba(0, 0, 0, 0.45) 38%, transparent 70%);
+  mask-image: radial-gradient(ellipse at 50% 36%, #000 0%, rgba(0, 0, 0, 0.45) 38%, transparent 70%);
 }
 
 /*
