@@ -294,7 +294,7 @@ onBeforeUnmount(() => clearTimeout(revealTimer))
 
 .run-progress-bar {
   height: 10px;
-  background-color: #e9ecef;
+  background-color: var(--leather-raised);
   border-radius: 5px;
   overflow: hidden;
   margin: 10px auto 0 auto;

@@ -374,7 +374,7 @@ watch(penSize, () => {
 
 .remote-viewing-container .progress-bar {
   height: 10px;
-  background-color: #e9ecef;
+  background-color: var(--leather-raised);
   border-radius: 5px;
   overflow: hidden;
   margin: 20px 0;
@@ -382,7 +382,7 @@ watch(penSize, () => {
 
 .remote-viewing-container .progress-bar .progress {
   height: 100%;
-  background-color: red;
+  background-color: var(--cinnabar);
   transition: width 0.3s ease;
 }
 
@@ -399,7 +399,7 @@ watch(penSize, () => {
 }
 
 .remote-viewing-container .canvas-container canvas {
-  border: 1px solid #ccc;
+  border: 1px solid var(--gilt-dim);
   background-color: #fff;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   cursor: crosshair;
@@ -454,7 +454,7 @@ watch(penSize, () => {
   width: 90%;
   min-height: 100px;
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--gilt-dim);
   border-radius: 4px;
   resize: vertical;
   font-family: inherit;

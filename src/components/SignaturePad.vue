@@ -533,7 +533,7 @@ canvas {
 
 @keyframes blink {
   from {
-    background-color: red;
+    background-color: var(--oxblood);
   }
   to {
     background-color: rgb(255, 240, 105);

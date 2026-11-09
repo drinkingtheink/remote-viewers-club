@@ -334,7 +334,7 @@ watch(difficulty, () => {
   flex-direction: column;
   gap: 15px;
   margin: 25px 0;
-  background-color: black;
+  background-color: var(--leather-deep);
   padding: 20px;
   border-radius: 8px;
 }
@@ -353,8 +353,8 @@ watch(difficulty, () => {
 .difficulty-selector select, .source-selector select {
   width: 100%;
   padding: 10px;
-  background-color: red;
-  color: white;
+  background-color: var(--oxblood);
+  color: var(--parchment);
 }
 
 .dowsing-rod-image {
@@ -432,7 +432,7 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 }
 
 .grid-cell:hover {
-  border: 4px solid gold;
+  border: 4px solid var(--gilt);
 }
 
 .grid-cell.revealed {
@@ -445,7 +445,7 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 }
 
 .grid-cell.miss {
-  background-color: red;
+  background-color: var(--cinnabar);
   background-image: none;
 }
 
@@ -489,7 +489,7 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 }
 
 .game-status {
-  background-color: black;
+  background-color: var(--leather-deep);
   padding: 10px;
   border-radius: 4px;
   text-align: center;
@@ -498,7 +498,7 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 
 .game-status.success {
   background-color: var(--success);
-  color: white;
+  color: var(--parchment);
 }
 
 .grid-container.disabled {
@@ -507,7 +507,7 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 }
 
 .instructions {
-  background-color: black;
+  background-color: var(--leather-deep);
   padding: 15px;
   border-radius: 8px;
   font-size: 60%;

@@ -14,10 +14,10 @@
  */
 
 :root {
-  --btn-accent: #ED0000;
-  --btn-accent-hover: #830b02;
-  --btn-surface: #000;
-  --btn-ink: #fff;
+  --btn-accent: var(--oxblood);
+  --btn-accent-hover: var(--oxblood-deep);
+  --btn-surface: var(--leather-deep);
+  --btn-ink: var(--parchment);
   --btn-radius: 4px;
   --btn-border-width: 3px;
   --btn-padding-y: 0.7rem;

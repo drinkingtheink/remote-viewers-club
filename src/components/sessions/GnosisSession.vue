@@ -158,7 +158,7 @@ function resetGame() {
   justify-content: space-between;
   margin-bottom: 20px;
   color: var(--the-yellow);
-  background-color: black;
+  background-color: var(--leather-deep);
   padding: 10px;
 }
 
@@ -184,13 +184,13 @@ function resetGame() {
 }
 
 .choices-section button {
-  color: red;
-  background-color: black;
+  color: var(--cinnabar);
+  background-color: var(--leather-deep);
 }
 
 .choices-section button.selected {
   background-color: #1a2b5a;
-  border: 4px solid white;
+  border: 4px solid var(--gilt-bright);
 }
 
 .choices-section button.correct {
@@ -226,7 +226,7 @@ function resetGame() {
 }
 
 .details-section {
-  background: black;
+  background: var(--leather-deep);
   padding: 15px;
   border-radius: 5px;
   margin-bottom: 20px;

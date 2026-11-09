@@ -1,0 +1,78 @@
+/*
+ * The occult-agency palette.
+ *
+ * The register is a government file wrapped around something older: the
+ * mission-patch framing and declassified language stay, but the surfaces
+ * become leather and candlelight rather than flat charcoal, and the
+ * fire-engine red of a web button becomes the oxblood of a wax seal.
+ *
+ * Artwork keeps its own colors. These tokens are for chrome.
+ */
+
+:root {
+  /* --- surfaces: the bound volume --- */
+  --leather: #1a1512;
+  --leather-deep: #0e0b09;
+  --leather-raised: #241d18;
+  --panel: rgba(14, 11, 9, 0.86);
+  --panel-sunk: rgba(8, 6, 5, 0.72);
+
+  /* --- gilt: tooled gold on a spine --- */
+  --gilt: #c9a227;
+  --gilt-bright: #e3c87d;
+  --gilt-dim: #8a6f2e;
+
+  /* --- oxblood: wax, ink and the stamp --- */
+  --oxblood: #7b1113;
+  --oxblood-deep: #4e0a0c;
+  --cinnabar: #a8201a;
+  --blood: #8b0000;
+
+  /* --- light --- */
+  --candle: #f0d9a0;
+  --parchment: #e8dcc0;
+  --ash: #9b9188;
+
+  --success: #6f9e5c;
+  --warning: #c08a2e;
+
+  /*
+   * Kept as an alias so everything that already reads --the-yellow follows
+   * the palette instead of the old acid yellow.
+   */
+  --the-yellow: var(--gilt-bright);
+}
+
+/*
+ * Leather grain, generated rather than shipped: fractal noise desaturated
+ * to grey, laid over warm mottling so the ground reads as a worn cover
+ * instead of flat color.
+ */
+body {
+  background-color: var(--leather);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='320' height='320' filter='url(%23g)' opacity='0.26'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse at 18% 8%, rgba(104, 76, 44, 0.20), transparent 58%),
+    radial-gradient(ellipse at 82% 72%, rgba(62, 40, 24, 0.26), transparent 52%);
+  background-attachment: fixed;
+  background-repeat: repeat, no-repeat, no-repeat;
+}
+
+/*
+ * Candlelight falloff. The contract already lights itself with a candle;
+ * this carries the same idea to the whole page, so the edges of the volume
+ * sit in shadow.
+ */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at 50% 38%,
+    transparent 30%,
+    rgba(0, 0, 0, 0.30) 68%,
+    rgba(0, 0, 0, 0.62) 100%
+  );
+}

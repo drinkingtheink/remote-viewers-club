@@ -178,7 +178,7 @@ onMounted(() => {
   align-items: center;
   margin-bottom: 24px;
   padding-bottom: 16px;
-  border-bottom: 0.5px solid #e9ecef;
+  border-bottom: 0.5px solid var(--gilt-dim);
 }
 
 .sig-gallery-container .loading {
@@ -193,7 +193,7 @@ onMounted(() => {
 .sig-gallery-container .spinner {
   width: 40px;
   height: 40px;
-  border: 4px solid #f3f3f3;
+  border: 4px solid var(--leather-raised);
   border-top: 4px solid red;
   border-radius: 50%;
   animation: spin 1s linear infinite;
@@ -208,7 +208,7 @@ onMounted(() => {
   text-align: center;
   padding: 40px 20px;
   border-radius: 12px;
-  border: 1px solid #dee2e6;
+  border: 1px solid var(--gilt-dim);
 }
 
 .sig-gallery-container .error {
@@ -302,7 +302,7 @@ onMounted(() => {
 .sig-gallery-container .no-image {
   width: 100%;
   height: 200px;
-  border: 1px dashed #dee2e6;
+  border: 1px dashed var(--gilt-dim);
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -429,7 +429,7 @@ export default {
 }
 
 :root {
-  --color-1: rgb(205 205 155 / 1);
+  --color-1: var(--candle);
   --color-2: rgb(0 0 0 / 0);
   --mouse-x: 160px;
   --mouse-y: 150px;
@@ -445,7 +445,7 @@ export default {
 }
 
 .tos {
-  background-color: rgba(0,0,0,0.8);
+  background-color: var(--panel);
   width: 90%;
   margin: 0 auto;
   padding: 2rem 3rem;
@@ -577,7 +577,7 @@ export default {
 
 .signature {
   margin: 0 auto;
-  background-color: rgba(0,0,0,0.8);
+  background-color: var(--panel);
   padding: 2rem;
   max-width: 500px;
 }
