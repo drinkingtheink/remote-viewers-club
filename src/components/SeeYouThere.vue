@@ -117,9 +117,13 @@ export default {
 </script>
 
 <style scoped>
-.cls-1{stroke:#ED0000;stroke-miterlimit:10;}
-.cls-2,.cls-3{stroke-width:5px;stroke:#ED0000}
-.cls-3{fill:#f1f380;}
+/*
+ * The seal predates the leather/gilt/oxblood skin and still carried the old
+ * pillar-box red and acid yellow, which read as bloodshot against it.
+ */
+.cls-1{stroke:var(--oxblood);stroke-miterlimit:10;}
+.cls-2,.cls-3{stroke-width:5px;stroke:var(--oxblood)}
+.cls-3{fill:var(--the-yellow);}
 
 /*
  * The eyeball drifts left and right. Its 9s cycle deliberately doesn't divide
