@@ -100,6 +100,12 @@
                             'hot': cell.warmth === 'hot',
                             'hasSecretButton': cell.hasSecretButton,
                         }"
+                        :style="{
+                            '--bush-tint': cell.plantTint,
+                            '--bush-turn': cell.plantTurn,
+                            '--grain-x': cell.grainX,
+                            '--grain-y': cell.grainY,
+                        }"
                         @click="checkCell(index)"
                         @mouseenter="(event) => updateProximity(event, index)"
                     >
@@ -109,7 +115,13 @@
                             <span v-else>✨</span>
                         </div>
                         <div v-else-if="cell.revealed && !cell.hasSource" class="miss-icon">✘</div>
-                        <img v-if="cell.hasPlant && cell.typog === 'grass' && !cell.revealed" src="../../assets/bush-1.svg" class="cell-bush" />
+                        <!-- masked rather than an <img>, so the scrub can be
+                             coloured to the terrain instead of arriving black -->
+                        <span
+                            v-if="cell.hasPlant && cell.typog === 'grass' && !cell.revealed"
+                            class="cell-bush"
+                            aria-hidden="true"
+                        ></span>
 
                         <button v-if="cell.hasSecretButton" class="secret-button" @click.stop="revealSecret"> * </button>
                     </div>
@@ -160,6 +172,13 @@ const initializeGrid = () => {
     revealed: false,
     typog: getTypogClass(),
     hasPlant: getPlantPresence(),
+    // so neighbouring scrub is never quite the same plant
+    plantTint: Math.floor(Math.random() * 34) - 17,
+    plantTurn: Math.floor(Math.random() * 20) - 10,
+    // each cell paints its own background from its own origin, so without a
+    // per-cell offset every square shows an identical arrangement of tufts
+    grainX: Math.floor(Math.random() * 52),
+    grainY: Math.floor(Math.random() * 52),
     hasSecretButton: false,
     warmth: null,
   }));
@@ -388,13 +407,20 @@ watch(difficulty, () => {
   max-width: 600px;
 }
 
+/*
+ * The board is a survey plate, not a tile map. The gap lets the dark board
+ * show between cells as ruled lines, which is what makes it read as a
+ * surveyed grid rather than a field of squares.
+ */
 .grid {
   display: grid;
-  gap: 0;
+  gap: 1px;
   width: 100%;
   aspect-ratio: 1;
-  background-color: #533003;
-  border-radius: 8px;
+  padding: 1px;
+  background-color: rgba(138, 111, 46, 0.45);
+  border: 1px solid var(--gilt-dim);
+  border-radius: 4px;
   overflow: hidden;
 }
 
@@ -410,13 +436,36 @@ watch(difficulty, () => {
 }
 
 .grid-cell.grass {
-    background-color: #72df7b;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='12' viewBox='0 0 20 12'%3E%3Cg fill-rule='evenodd'%3E%3Cg id='charlie-brown' fill='%230d7e16' fill-opacity='0.83'%3E%3Cpath d='M9.8 12L0 2.2V.8l10 10 10-10v1.4L10.2 12h-.4zm-4 0L0 6.2V4.8L7.2 12H5.8zm8.4 0L20 6.2V4.8L12.8 12h1.4zM9.8 0l.2.2.2-.2h-.4zm-4 0L10 4.2 14.2 0h-1.4L10 2.8 7.2 0H5.8z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background-color: #2c3a28;
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='52' height='52' viewBox='0 0 52 52'><g fill='none' stroke='%236d8a5f' stroke-opacity='.42' stroke-width='1.1' stroke-linecap='round'><path d='M7 9 l-2.6 -5.4 M7 9 l0 -6.2 M7 9 l2.6 -5.4'/><path d='M26 20 l-2.6 -5.4 M26 20 l0 -6.2 M26 20 l2.6 -5.4'/><path d='M14 31 l-2.6 -5.4 M14 31 l0 -6.2 M14 31 l2.6 -5.4'/><path d='M33 38 l-2.6 -5.4 M33 38 l0 -6.2 M33 38 l2.6 -5.4'/><path d='M4 24 l-2.6 -5.4 M4 24 l0 -6.2 M4 24 l2.6 -5.4'/><path d='M22 5 l-2.6 -5.4 M22 5 l0 -6.2 M22 5 l2.6 -5.4'/><path d='M36 13 l-2.6 -5.4 M36 13 l0 -6.2 M36 13 l2.6 -5.4'/><path d='M18 44 l-2.6 -5.4 M18 44 l0 -6.2 M18 44 l2.6 -5.4'/><path d='M41 30 l-2.6 -5.4 M41 30 l0 -6.2 M41 30 l2.6 -5.4'/><path d='M29 47 l-2.6 -5.4 M29 47 l0 -6.2 M29 47 l2.6 -5.4'/></g></svg>");
+    background-size: 52px 52px;
+    background-position: calc(var(--grain-x, 0) * -1px) calc(var(--grain-y, 0) * -1px);
 }
 
 .grid-cell.rock {
-background-color: #9b9d9b;
-background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%232f2f2f' fill-opacity='0.4' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+  background-color: #463f37;
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><g fill='%238c8275' fill-opacity='.4'><circle cx='7.8' cy='3.6' r='0.89'/><circle cx='1.7' cy='12.9' r='0.72'/><circle cx='1.4' cy='12.2' r='0.52'/><circle cx='10.4' cy='1.7' r='0.55'/><circle cx='10.2' cy='19.8' r='0.57'/><circle cx='5.4' cy='15.1' r='1.07'/><circle cx='13.9' cy='9.5' r='1.09'/><circle cx='1.1' cy='20.6' r='0.67'/><circle cx='3.5' cy='2.8' r='0.69'/><circle cx='19.6' cy='4.3' r='0.85'/><circle cx='15.3' cy='8.9' r='0.83'/><circle cx='1.5' cy='1.4' r='0.62'/><circle cx='16.3' cy='10.3' r='0.69'/><circle cx='14.1' cy='10.9' r='0.68'/><circle cx='19.1' cy='16.8' r='0.65'/><circle cx='13.8' cy='12.6' r='1.03'/><circle cx='17.5' cy='6.9' r='1.09'/><circle cx='2.8' cy='10.0' r='0.95'/><circle cx='3.6' cy='11.7' r='0.52'/><circle cx='16.0' cy='18.3' r='0.84'/><circle cx='21.0' cy='7.5' r='0.92'/><circle cx='14.3' cy='13.9' r='0.77'/><circle cx='20.2' cy='22.7' r='0.78'/><circle cx='15.9' cy='1.5' r='0.92'/><circle cx='15.5' cy='23.8' r='0.99'/><circle cx='6.8' cy='9.3' r='0.9'/></g></svg>");
+  background-size: 24px 24px;
+  background-position: calc(var(--grain-x, 0) * -1px) calc(var(--grain-y, 0) * -1px);
+}
+
+/*
+ * Scrub. The asset is a silhouette, so it is used as a mask and filled with
+ * a colour that belongs to the terrain -- as an <img> it could only ever be
+ * the flat near-black it was drawn in.
+ *
+ * The tint and the slight rotation are keyed off the cell index, so no two
+ * neighbouring bushes are quite the same plant.
+ */
+.cell-bush {
+  width: 62%;
+  height: 62%;
+  background-color: color-mix(in srgb, #7fa36b calc(62% + var(--bush-tint, 0) * 1%), #38472f);
+  -webkit-mask: url("../../assets/bush-1.svg") center / contain no-repeat;
+  mask: url("../../assets/bush-1.svg") center / contain no-repeat;
+  rotate: calc(var(--bush-turn, 0) * 1deg);
+  opacity: 0.88;
+  pointer-events: none;
 }
 
 .secret-button {
@@ -444,9 +493,15 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
   background-image: none;
 }
 
+/*
+ * A struck square, not a red tile. Cinnabar at full strength was the one
+ * loud thing left on a muted plate; oxblood sits in the survey while the
+ * parchment cross keeps the mark just as readable.
+ */
 .grid-cell.miss {
-  background-color: var(--cinnabar);
+  background-color: var(--oxblood);
   background-image: none;
+  box-shadow: inset 0 0 0 1px rgba(232, 220, 192, 0.18);
 }
 
 /* .grid-cell.warm {
@@ -466,7 +521,8 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 }
 
 .miss-icon {
-  color: black;
+  color: var(--parchment);
+  opacity: 0.86;
   font-size: 2.2em;
 }
 
