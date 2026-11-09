@@ -21,8 +21,9 @@
         <div class="badge-dialog-art">
           <component :is="`Badge${activeBadge.id}`"></component>
         </div>
-        <h3 class="badge-dialog-title">{{ activeBadge.title }}</h3>
-        <h4 v-if="activeBadge.desc" class="badge-dialog-desc">{{ activeBadge.desc }}</h4>
+        <p class="specimen-cat">{{ catalogueNo(activeBadge.id) }}</p>
+        <h3 class="badge-dialog-title specimen-name">{{ activeBadge.title }}</h3>
+        <p v-if="activeBadge.desc" class="badge-dialog-desc specimen-unit">{{ activeBadge.desc }}</p>
         <button class="close-active" @click="closeActive">Back to Gallery</button>
       </div>
     </dialog>
@@ -52,21 +53,26 @@
       <Transition name="leaf" mode="out-in">
       <section class="content-section gallery" v-if="activeSection === 'gallery'" key="gallery-stage">
         <h2 class="intro">Special Teams led by legendary members</h2>
-        <div
+        <figure
           class="badge"
           v-for="(badge, i) in badgeMap"
           :key="badge.id"
           :style="{ '--stagger': i }"
         >
-          <component :is="`Badge${badge.id}`"></component>
-
-          <div class="badge-details">
-            <h3>{{ badge.title }}</h3>
-            <h4 v-if="badge.desc">{{ badge.desc }}</h4>
-            <a class="inspo" :href="badge.inspo" target="_blank">Origin</a>
-            <button class="enlarge" @click="handleBadgeClick(badge)">Enlarge</button>
+          <div class="specimen-mount">
+            <component :is="`Badge${badge.id}`"></component>
           </div>
-        </div>
+
+          <figcaption class="specimen-label">
+            <p class="specimen-cat">{{ catalogueNo(badge.id) }}</p>
+            <h3 class="specimen-name">{{ badge.title }}</h3>
+            <p class="specimen-unit" v-if="badge.desc">{{ badge.desc }}</p>
+            <p class="specimen-actions">
+              <a class="inspo" :href="badge.inspo" target="_blank">Origin</a>
+              <button class="enlarge" @click="handleBadgeClick(badge)">Enlarge</button>
+            </p>
+          </figcaption>
+        </figure>
       </section>
 
       <section class="content-section praxis" v-else-if="activeSection === 'praxis'" key="praxis-stage">
@@ -168,7 +174,7 @@ const badgeMap = [
     id: 6,
   },
   {
-    title: 'The Broadcast Continues',
+    title: 'Infinite Broadcast',
     desc: '227th Silent Spectral Comms',
     inspo: 'https://codepen.io/drinkingtheink/pen/vEGdJew',
     id: 7,
@@ -221,6 +227,10 @@ export default {
     }
   },
   methods: {
+    // an accession number, as a specimen in a collection would carry
+    catalogueNo(id) {
+      return `RVC-${String(id).padStart(3, '0')}`
+    },
     handleBadgeClick(badge) {
       this.activeBadge = badge;
       // The dialog only has content to size itself around after the re-render.
@@ -296,8 +306,11 @@ export default {
 }
 
 .inspo {
-  display: block;
-  border-bottom: 3px solid transparent;
+  font-size: var(--text-sm);
+  font-variant-caps: all-small-caps;
+  letter-spacing: var(--tracking-wide);
+  border-bottom: 2px solid transparent;
+  padding-bottom: 1px;
 }
 
 .inspo:hover {
@@ -435,6 +448,29 @@ section.gallery > .intro {
   display: flex;
   flex-direction: column;
   position: relative;
+  /* it is a <figure> now, and the UA default margin is 18px 40px */
+  margin: 0;
+}
+
+/*
+ * The specimen sits above its plate and lifts off it on hover.
+ *
+ * Deliberately a block, not a flex container: each badge draws itself from
+ * absolutely positioned children sized against its root's WIDTH, and as a
+ * flex item that root collapses to zero, which drops the whole illustration
+ * on top of the label.
+ */
+.specimen-mount {
+  padding-bottom: 1rem;
+  transition: transform var(--dur-base) var(--ease-settle);
+}
+
+.badge:hover .specimen-mount {
+  transform: translateY(calc(var(--lift) * -0.4));
+}
+
+.badge:hover .specimen-label {
+  border-top-color: var(--gilt);
 }
 
 @media only screen and (max-width: 60em) {
@@ -443,28 +479,68 @@ section.gallery > .intro {
   }
 }
 
-.badge-details {
+/*
+ * The specimen label.
+ *
+ * This was four stacked bars, each one its own dark rectangle because
+ * `.badge-details *` put a background on every child, at 18px for both the
+ * name and the unit so neither led. It is one plate now, engraved the way a
+ * catalogue card under a mounted specimen is: accession number in the
+ * dossier's typewriter, the name in small caps, the designation in italic
+ * like a binomial.
+ *
+ * margin-top: auto keeps the plates aligned along the bottom of the row
+ * however tall the specimen above them happens to be.
+ */
+.specimen-label {
   margin-top: auto;
-  padding-top: 20px;
+  padding: 1rem 1.15rem 1.15rem;
+  background: rgba(10, 8, 6, 0.88);
+  border-top: 2px solid var(--gilt-dim);
+  box-shadow:
+    inset 0 1px 0 rgba(224, 189, 106, 0.16),
+    0 2px 10px rgba(0, 0, 0, 0.5);
+  text-align: center;
 }
 
-.badge-details * {
-  background: rgba(0,0,0,0.6);
-  padding: 10px 5px;
+.specimen-cat {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  letter-spacing: var(--tracking-wider);
+  font-variant-numeric: lining-nums tabular-nums;
+  color: var(--gilt);
 }
 
-.badge-details h3 {
+.specimen-name {
   margin: 0;
-  text-transform: uppercase;
-  font-size: var(--text-md);
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  font-variant-caps: all-small-caps;
+  letter-spacing: var(--tracking-wide);
   line-height: var(--leading-tight);
+  color: var(--gilt-bright);
+  text-transform: none;
 }
 
-.badge-details h4 {
-  margin: 5px 0;
-  color: var(--parchment);
-  font-family: var(--font-display);
+.specimen-unit {
+  margin: 0.3rem 0 0;
+  font-family: var(--font-body);
+  font-style: italic;
   font-size: var(--text-md);
+  line-height: var(--leading-snug);
+  color: var(--parchment);
+}
+
+/* a hairline rule between the record and the things you can do with it */
+.specimen-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
+  margin: 0.9rem 0 0;
+  padding-top: 0.8rem;
+  border-top: 1px solid rgba(224, 189, 106, 0.22);
 }
 
 footer {
@@ -501,11 +577,17 @@ footer a:hover {
 }
 
 button.enlarge {
-  width: 60%;
+  font-size: var(--text-sm);
+  padding: 0.35rem 1.1rem;
   border-radius: 40px;
-  margin: 5px auto 0 auto;
-  /* stated rather than inherited from the `.badge-details *` wildcard */
-  background-color: rgba(0, 0, 0, 0.6);
+  border-width: 2px;
+  border-color: var(--gilt-dim);
+  background-color: transparent;
+}
+
+button.enlarge:hover {
+  background-color: var(--oxblood);
+  border-color: var(--oxblood);
 }
 
 .sections {
