@@ -550,6 +550,9 @@ footer .footer-about {
   font-size: inherit;
   font-weight: inherit;
   letter-spacing: normal;
+  /* the button system sets real small caps; its neighbour here is a plain
+     uppercased link, and the two sat at different cap heights */
+  font-variant-caps: normal;
   text-transform: uppercase;
 }
 
