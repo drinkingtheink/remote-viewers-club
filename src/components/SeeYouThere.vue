@@ -1,5 +1,5 @@
 <template>
-    <div class="see-you-there" :class="{ watching }" ref="seal">
+    <div class="see-you-there" :class="{ watching, adrift, settled }" ref="seal">
         <svg 
             id="Layer_1" 
             :class="{ 'closed': blink }"
@@ -95,20 +95,38 @@
 </template>
 
 <script>
+// How far down before the seal follows (px), how long it waits before casting
+// off and how long it stays (ms), how long the float home takes (ms), and how
+// much further you must scroll before it will come again (px).
+const PAST = 320
+const BEAT = 900
+const STAY = 9000
+const RETURN = 1200
+const AGAIN = 600
+
 export default {
     name: 'SeeYouThere',
     data() {
         return {
             blink: false,
             watching: false,
+            adrift: false,
+            settled: false,
             intervalId: null,
             timeoutId: null,
             watchFrame: null,
+            scrollFrame: null,
+            beatTimer: null,
+            stayTimer: null,
+            returnTimer: null,
+            // re-arms once the reader has scrolled down again after a visit
+            armedAt: 0,
         }
     },
     mounted() {
         this.startBlinkCycle();
         this.startWatching();
+        this.startRoving();
     },
     beforeUnmount() {
         if (this.intervalId) {
@@ -121,8 +139,66 @@ export default {
             cancelAnimationFrame(this.watchFrame)
         }
         window.removeEventListener('pointermove', this.onPointerMove)
+        window.removeEventListener('scroll', this.onScroll)
+        if (this.scrollFrame !== null) cancelAnimationFrame(this.scrollFrame)
+        for (const t of [this.beatTimer, this.stayTimer, this.returnTimer]) clearTimeout(t)
     },
     methods: {
+        /*
+         * The seal comes with you.
+         *
+         * Scroll past the masthead and, after a beat, it floats down into the
+         * corner and keeps watching; after a while it goes back up. It will do
+         * it again, but only once you have scrolled on -- re-arming on time
+         * alone would make it a nag rather than a presence.
+         */
+        startRoving() {
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+            this.armedAt = 0
+            window.addEventListener('scroll', this.onScroll, { passive: true })
+        },
+        onScroll() {
+            if (this.scrollFrame === null) {
+                this.scrollFrame = requestAnimationFrame(this.considerRoving)
+            }
+        },
+        considerRoving() {
+            this.scrollFrame = null
+            const y = window.scrollY
+
+            if (this.adrift) return
+
+            // back up at the top: forget the visit entirely and start over
+            if (y < PAST) {
+                this.armedAt = 0
+                clearTimeout(this.beatTimer)
+                this.beatTimer = null
+                return
+            }
+
+            // scrolled down, but not yet far enough past the last visit
+            if (y < this.armedAt) return
+
+            if (this.beatTimer === null) {
+                this.beatTimer = setTimeout(this.castOff, BEAT)
+            }
+        },
+        castOff() {
+            this.beatTimer = null
+            this.adrift = true
+            // a frame apart, so the browser has a start position to move from
+            requestAnimationFrame(() => requestAnimationFrame(() => { this.settled = true }))
+            this.stayTimer = setTimeout(this.goHome, STAY)
+        },
+        goHome() {
+            this.stayTimer = null
+            this.settled = false
+            this.returnTimer = setTimeout(() => {
+                this.adrift = false
+                // only comes back after another stretch of scrolling down
+                this.armedAt = window.scrollY + AGAIN
+            }, RETURN)
+        },
         startWatching() {
             // a drifting eye is the right behaviour when there is no pointer
             // in the room at all -- a touch screen, or a reader who has not
@@ -176,6 +252,44 @@ export default {
   --seal-face: var(--gilt-bright);
   --seal-face-hi: var(--candle);
   --seal-face-lo: var(--gilt);
+}
+
+/*
+ * Adrift: the seal leaves the masthead and keeps station in the corner.
+ *
+ * `top` carries the move rather than a transform, because the seal is already
+ * rotated where it sits and a transform here would throw that away. It starts
+ * above the viewport so it arrives from where it was, rather than fading in
+ * somewhere it has never been.
+ */
+.see-you-there.adrift {
+    position: fixed;
+    top: -190px;
+    right: 2.5rem;
+    left: auto;
+    bottom: auto;
+    width: 118px;
+    margin: 0;
+    z-index: 40;
+    transition: top 1.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.see-you-there.adrift.settled {
+    top: 56vh;
+}
+
+@media only screen and (max-width: 60em) {
+    .see-you-there.adrift {
+        width: 84px;
+        right: 1rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .see-you-there.adrift {
+        position: static;
+        width: auto;
+    }
 }
 
 .cls-1{stroke:var(--seal-ink);stroke-miterlimit:10;}
