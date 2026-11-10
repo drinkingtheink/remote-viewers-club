@@ -1,7 +1,8 @@
 <template>
   <div class="app-stage">
     <div class="intro-wrapper">
-      <SeeYouThere class="watcher" />
+      <!-- the seal is the summons; nothing says so, which is the point -->
+      <SeeYouThere class="watcher" @click="summonArms" />
       <h1>REMOTE VIEWERS CLUB</h1>
       <p class="introduction">Purveyors, practicioners, and pundits of the metaphysical arts &amp; sciences</p>
     </div>
@@ -344,6 +345,9 @@ export default {
     }
   },
   methods: {
+    summonArms() {
+      this.$refs.skeletonArms?.summon();
+    },
     handleBadgeClick(badge) {
       this.activeBadge = badge;
       // The dialog only has content to size itself around after the re-render.

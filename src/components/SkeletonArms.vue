@@ -60,6 +60,10 @@
       tabindex="-1"
       @click="strike(arm, $event)"
     >
+      <span class="arm-health">
+        <i v-for="n in HITS_TO_CLEAR" :key="n" :class="{ 'is-spent': n <= arm.hits }"></i>
+      </span>
+
       <span class="skeleton-arm-lunge">
         <span class="skeleton-arm-tremor"><SkeletonArm /></span>
       </span>
@@ -80,10 +84,9 @@ const EMERGE_MS = 900
 
 // Where each one comes from, how high up, and how far off square it hangs.
 const PLAN = [
-  { side: 'left', top: 22, tilt: -5, phase: -0.4 },
-  { side: 'right', top: 46, tilt: 3, phase: -1.7 },
-  { side: 'left', top: 68, tilt: 4, phase: -2.9 },
-  { side: 'right', top: 15, tilt: -3, phase: -1.1 }
+  { side: 'left', top: 20, tilt: -5, phase: -0.4 },
+  { side: 'right', top: 48, tilt: 3, phase: -1.7 },
+  { side: 'left', top: 74, tilt: 4, phase: -2.9 }
 ]
 
 const SCRATCH_LIFE_MS = 3600
@@ -289,12 +292,9 @@ function dismissAll() {
 }
 
 /*
- * Scaffolding, both of these. While the real trigger is undecided the arms
- * come out on their own on every local load so the feel can be iterated on,
- * and the word summons them on demand. The auto-summon is gated on the dev
- * build, so neither the live site nor a preview build inherits it.
+ * The seal summons them. The word is kept as well: it is the only way in
+ * from the keyboard, and the seal is not focusable.
  */
-const AUTO_SUMMON_IN_DEV = true
 const SUMMON_WORD = 'bones'
 let typed = ''
 
@@ -319,14 +319,7 @@ function onKeyDown(event) {
   }
 }
 
-onMounted(() => {
-  window.addEventListener('keydown', onKeyDown)
-
-  // A beat after paint, so they are seen arriving rather than already there.
-  if (AUTO_SUMMON_IN_DEV && process.env.NODE_ENV !== 'production') {
-    later(summon, 900)
-  }
-})
+onMounted(() => window.addEventListener('keydown', onKeyDown))
 onBeforeUnmount(() => {
   window.removeEventListener('keydown', onKeyDown)
   clearTimers()
@@ -340,7 +333,10 @@ defineExpose({ summon, dismissAll })
   position: fixed;
   inset: 0;
   z-index: 9000;
-  overflow: hidden;
+  /* The layer is fixed to the viewport, so an arm reaching past its edge
+     cannot lengthen the page -- hiding the overflow only cost us the parts
+     of the arm that were meant to hang over. */
+  overflow: visible;
   pointer-events: none;
 }
 
@@ -550,6 +546,50 @@ defineExpose({ summon, dismissAll })
 /* Struck, it clenches harder than it claws. */
 .skeleton-arm-slot.is-flaring :deep(.skeleton-hand) {
   transform: scaleX(0.68) rotate(-14deg);
+}
+
+/*
+ * Three pips, one per blow left in it. Sits outside the lunge and tremor
+ * boxes so it holds still: a gauge that jitters with the thing it is
+ * measuring is not a gauge. It floats just past the fingertips -- over the
+ * page rather than over the bone, which is white and swallowed it whole.
+ */
+.arm-health {
+  position: absolute;
+  top: 50%;
+  display: flex;
+  gap: 4px;
+  padding: 3px;
+  transform: translateY(calc(-50% - 16px));
+  background: rgba(10, 8, 6, 0.92);
+  border: 1px solid var(--gilt-dim);
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgba(10, 8, 6, 0.75), 0 2px 10px rgba(0, 0, 0, 0.55);
+  pointer-events: none;
+}
+
+/* The drawing puts the hand at one end and the shoulder at the other, so the
+   fingertip end is whichever edge the margin is not. */
+.skeleton-arm-slot.is-left .arm-health {
+  left: calc(100% + 12px);
+}
+
+.skeleton-arm-slot.is-right .arm-health {
+  right: calc(100% + 12px);
+}
+
+.arm-health i {
+  display: block;
+  width: 15px;
+  height: 5px;
+  background: var(--parchment);
+  transition: background-color var(--dur-base) var(--ease-out), opacity var(--dur-base) var(--ease-out);
+}
+
+.arm-health i.is-spent {
+  background: var(--oxblood);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.5);
+  opacity: 0.6;
 }
 
 /* The jab gets its own box so it does not fight the position transform on

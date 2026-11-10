@@ -28,6 +28,12 @@
   display: block;
   width: 100%;
   height: auto;
+  /*
+   * An <svg> clips to its own viewBox by default, and the hand is moved by a
+   * transform that can carry it past that edge -- so the fingers were being
+   * cut off mid-grab rather than by anything further up the tree.
+   */
+  overflow: visible;
 }
 
 .skeleton-arm path {
