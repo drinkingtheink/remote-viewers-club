@@ -14,11 +14,11 @@
         :transform="`translate(${scratch.x} ${scratch.y}) rotate(${scratch.angle})`"
       >
         <path
-          v-for="(d, i) in scratch.lines"
+          v-for="(line, i) in scratch.lines"
           :key="i"
-          :d="d"
+          :d="line.d"
           pathLength="1"
-          :style="{ '--i': i }"
+          :style="{ '--i': i, '--weight': line.weight }"
         />
       </g>
 
@@ -302,25 +302,52 @@ function summon() {
  * Four rakes, built as broken runs of short segments rather than one smooth
  * curve: a clean arc reads as drawn, a torn line reads as dragged.
  */
+/*
+ * One rake.
+ *
+ * The variation that matters is between rakes, not within one. Every mark
+ * used to be four lines at fifteen points apart, all starting on the same
+ * vertical, all closing at the same rate -- so each was ragged in itself
+ * and the set of them was a stamp repeated.
+ *
+ * So the hand that made this one is decided first, and the fingers are
+ * drawn inside it: how many caught, how spread they were, whether they
+ * close or part on the way through, how badly it tore, and how level the
+ * hand was when it landed.
+ */
 function clawLines() {
+  const count = 3 + Math.floor(Math.random() * 3)
+  const spacing = 11 + Math.random() * 9
+  // under 1 the fingers draw together through the stroke, over 1 they part
+  const splay = 0.3 + Math.random() * 0.95
+  const rag = 5 + Math.random() * 13
+  // how level the hand was: a ragged leading edge means they did not all
+  // bite at the same moment
+  const bite = Math.random() * 18
+  const reach = 84 + Math.random() * 92
+  const mid = (count - 1) / 2
+
   const lines = []
 
-  for (let i = 0; i < 4; i += 1) {
-    const length = 96 + Math.random() * 58 + i * 6
-    const offset = (i - 1.5) * 15 + (Math.random() - 0.5) * 5
-    const steps = 5 + Math.floor(Math.random() * 3)
+  for (let i = 0; i < count; i += 1) {
+    const offset = (i - mid) * spacing + (Math.random() - 0.5) * 5
+    const start = Math.random() * bite
+    // no two fingers dig the same distance, and one of them is usually
+    // barely in at all
+    const length = start + reach * (0.55 + Math.random() * 0.6)
+    const steps = 4 + Math.floor(Math.random() * 4)
 
-    let d = `M0,${offset.toFixed(1)}`
+    let d = `M${start.toFixed(1)},${offset.toFixed(1)}`
 
     for (let step = 1; step <= steps; step += 1) {
-      const along = (length / steps) * step
-      const drift = offset * (1 - (step / steps) * 0.65)
-      const jag = (Math.random() - 0.5) * 11
+      const along = start + ((length - start) / steps) * step
+      const drift = offset * (1 - (step / steps) * splay)
+      const jag = (Math.random() - 0.5) * rag
 
       d += ` L${along.toFixed(1)},${(drift + jag).toFixed(1)}`
     }
 
-    lines.push(d)
+    lines.push({ d, weight: (0.68 + Math.random() * 0.75).toFixed(2) })
   }
 
   return lines
@@ -341,9 +368,11 @@ function scratchFrom(arm) {
     // From the fingertips, carrying on the way the hand was going. Struck
     // from the middle of the hand the rakes end up underneath the arm that
     // made them, which hides the whole effect.
-    x: reachesRight ? box.right - 12 : box.left + 12,
-    y: box.top + box.height * 0.58,
-    angle: reachesRight ? -7 : 187,
+    x: (reachesRight ? box.right - 12 : box.left + 12) + (Math.random() - 0.5) * 18,
+    y: box.top + box.height * (0.46 + Math.random() * 0.24),
+    // the base angle is the way the hand was going; the rest is how square
+    // it came down, which is never twice the same
+    angle: (reachesRight ? -7 : 187) + (Math.random() - 0.5) * 20,
     lines: clawLines()
   })
 
@@ -730,7 +759,8 @@ defineExpose({ summon, dismissAll })
 .scratch path {
   fill: none;
   stroke: var(--cinnabar);
-  stroke-width: 3.5;
+  /* a rake is not four identical cuts: some fingers were in deeper */
+  stroke-width: calc(3.5 * var(--weight, 1));
   stroke-linecap: round;
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
