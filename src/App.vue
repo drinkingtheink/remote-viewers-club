@@ -5,10 +5,10 @@
   <div ref="latticeEye" class="lattice-eye" aria-hidden="true"></div>
 
   <!--
-    The room losing focus while the arms have hold of it. It sits on the
-    same buried layer as the binding and comes last, so what it softens is
-    the leather, the tooling and the eye -- everything painted before it --
-    and never the page or the arms, which are painted after.
+    The room losing focus while the arms have hold of it. It sits above the
+    page but under the arms, so what it softens is everything painted
+    before it -- the leather, the tooling, the eye and the whole page -- and
+    never the arms, which are painted after and stay in focus.
   -->
   <div class="siege-haze" aria-hidden="true"></div>
 </template>

@@ -228,20 +228,24 @@ body::before {
  * where something swimming on a five-second cycle reads as a room you
  * cannot quite fix your eyes on.
  *
- * `backdrop-filter` rather than a filter on the layers themselves. The
- * binding is spread across the canvas, body::before and the eye, and only
- * the first of those could take a filter without dragging the page into it
- * -- a pane that softens whatever is painted behind it catches all three at
- * once. It also leaves .app-stage free: the jolt already spends `animation`
- * there, and a second one would overwrite it.
+ * `backdrop-filter` rather than a filter on the things being blurred. What
+ * has to go soft is the canvas, body::before, the lattice eye and the whole
+ * page -- four separate layers, one of which (.app-stage) already spends
+ * `animation` on the jolt and would have had it overwritten. A pane that
+ * softens whatever is painted behind it takes all four at once, without
+ * touching any of them.
  *
- * The arms and the page paint after this layer, so they stay sharp through
- * all of it, and the softness lands as depth with the threat in focus.
+ * Which makes the z-index the whole mechanism: at 8000 it sits above the
+ * page and below the arms at 9000, so the page falls on the blurred side of
+ * it and the arms do not. They stay in focus while everything they are
+ * reaching into will not hold still -- depth of field with the threat sharp,
+ * rather than a smear over the lot. pointer-events stays off, so the pane
+ * never intercepts a click meant for an arm or the page.
  */
 .siege-haze {
   position: fixed;
   inset: 0;
-  z-index: -1;
+  z-index: 8000;
   pointer-events: none;
 }
 
