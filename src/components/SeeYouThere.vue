@@ -103,6 +103,9 @@ const BEAT = 900
 const STAY = 9000
 const RETURN = 1200
 const AGAIN = 600
+// The first descent is a certainty; after that it is a maybe, or a presence
+// turns into a habit and stops being worth noticing.
+const CHANCE = 0.3
 
 export default {
     name: 'SeeYouThere',
@@ -117,6 +120,7 @@ export default {
             watchFrame: null,
             scrollFrame: null,
             homeDocTop: 0,
+            visits: 0,
             beatTimer: null,
             stayTimer: null,
             returnTimer: null,
@@ -149,9 +153,9 @@ export default {
          * The seal comes with you.
          *
          * Scroll past the masthead and, after a beat, it floats down into the
-         * corner and keeps watching; after a while it goes back up. It will do
-         * it again, but only once you have scrolled on -- re-arming on time
-         * alone would make it a nag rather than a presence.
+         * corner and keeps watching; after a while it goes back up. It comes
+         * the first time you go down the page, and after that only sometimes,
+         * and only once you have scrolled on again.
          */
         startRoving() {
             if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
@@ -194,6 +198,16 @@ export default {
         },
         castOff() {
             this.beatTimer = null
+
+            // A failed roll still costs the reader a stretch of scrolling
+            // before the next one. Rolling again on the very next scroll
+            // event would turn a 30% chance into a near-certainty, just
+            // spread over a few hundred pixels.
+            if (this.visits > 0 && Math.random() >= CHANCE) {
+                this.armedAt = window.scrollY + AGAIN
+                return
+            }
+            this.visits += 1
 
             /*
              * Where home is, in document coordinates. The seal sits in normal
