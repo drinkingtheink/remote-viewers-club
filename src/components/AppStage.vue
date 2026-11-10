@@ -53,6 +53,60 @@
       </figure>
     </dialog>
 
+    <!--
+      Same native <dialog> the close-up uses, for the same reasons. Its open
+      state lives in the URL so the question can be handed to someone.
+    -->
+    <dialog
+      ref="aboutDialog"
+      class="about-dialog"
+      aria-labelledby="about-heading"
+      @close="handleAboutClose"
+      @click="handleAboutClick"
+    >
+      <article class="about-body">
+        <p class="about-eyebrow">Remote Viewers Club</p>
+        <h2 id="about-heading">Tech and the Metaphysical</h2>
+        <p class="about-question">
+          Can you use the one to prove the other &mdash; or improve on it?
+        </p>
+
+        <p>
+          This is a club of instruments. Each exercise measures something it
+          cannot explain. A precognition run returns a real standard score
+          against chance, and a run falling below chance is named for
+          <em>psi-missing</em>, which is a term of art and not a joke. A
+          s&eacute;ance reports how far the planchette travelled and how much
+          of that was your own hand.
+        </p>
+
+        <p>
+          The instruments are honest, and that turns out to be the finding.
+          Arithmetic is excellent at saying how far from chance a thing landed
+          and no use at all at saying why. Done carefully enough, it makes
+          plain it was never going to settle the question.
+        </p>
+
+        <p>
+          The other direction is the one that works. The metaphysical is very
+          good at getting a person to sit still, attend closely, and write
+          down what they noticed &mdash; which is most of what a method is.
+          Whether anything is at the far end of the signal, the Club has no
+          instrument for.
+        </p>
+
+        <p class="about-credits">
+          Built by <a href="https://www.drinkingtheink.com/" target="_blank" rel="noopener">Jason M. Harrison</a>.
+          Badges after military and astronomical mission patches.
+          <a href="https://github.com/drinkingtheink/remote-viewers-club" target="_blank" rel="noopener">Source</a>.
+        </p>
+
+        <div class="about-actions">
+          <button autofocus @click="closeAbout">Close</button>
+        </div>
+      </article>
+    </dialog>
+
     <section class="sections">
       <button 
         @click="activeSection = 'gallery'" 
@@ -140,7 +194,7 @@
     </main>
 
     <footer>
-      <a href="https://github.com/drinkingtheink/remote-viewers-club" target="_blank">About this App</a>
+      <button type="button" class="footer-about" @click="openAbout">About this App</button>
       <a href="https://www.drinkingtheink.com/" target="_blank">About the Author</a>
     </footer>
 
@@ -252,6 +306,12 @@ function sectionFromUrl() {
   return SECTIONS.includes(focusQuery) ? focusQuery : initialFocus;
 }
 
+// ?about on the URL opens the note. It sits alongside ?focus= rather than
+// replacing it, so a shared link still lands on the right section behind it.
+function aboutFromUrl() {
+  return new URLSearchParams(window.location.search).has('about');
+}
+
 export default {
   name: 'AppStage',
   components: {
@@ -280,6 +340,7 @@ export default {
       badgeMap: badgeMap,
       activeBadge: null,
       activeSection: sectionFromUrl(),
+      aboutOpen: aboutFromUrl(),
     }
   },
   computed: {
@@ -337,19 +398,49 @@ export default {
         element?.scrollIntoView({ behavior: 'smooth' })
       }, 250);
     },
-    updateFocusUrlQueryString: function(val) {
-      let queryParams = new URLSearchParams(window.location.search);
-      queryParams.set(`focus`, val);
-      history.replaceState(null, null, `?${queryParams.toString()}`);
+    openAbout() {
+      this.aboutOpen = true;
+      this.syncUrl();
+      this.$nextTick(() => this.$refs.aboutDialog?.showModal());
+    },
+    closeAbout() {
+      this.$refs.aboutDialog?.close();
+    },
+    handleAboutClose() {
+      this.aboutOpen = false;
+      this.syncUrl();
+    },
+    handleAboutClick(event) {
+      if (event.target === this.$refs.aboutDialog) this.closeAbout();
+    },
+    /*
+     * One writer for the whole query string. Two of them meant whichever ran
+     * last won: the section writer re-added `about=` after the about writer
+     * had just taken the trailing `=` off it.
+     */
+    syncUrl() {
+      const queryParams = new URLSearchParams(window.location.search);
+      queryParams.set('focus', this.activeSection);
+
+      if (this.aboutOpen) queryParams.set('about', '');
+      else queryParams.delete('about');
+
+      // `?about` reads better than `?about=` on something meant to be shared,
+      // and URLSearchParams has no way to emit a bare flag.
+      const query = queryParams.toString().replace(/\babout=(?=&|$)/, 'about');
+      history.replaceState(null, null, query ? `?${query}` : window.location.pathname);
     },
   },
   mounted() {
     // Rewrites an absent or unrecognised ?focus= to whatever we actually show.
-    this.updateFocusUrlQueryString(this.activeSection);
+    this.syncUrl();
+
+    // A shared ?about link arrives with the note already open.
+    if (this.aboutOpen) this.$refs.aboutDialog?.showModal();
   },
   watch: {
-    activeSection(newSection) {
-      this.updateFocusUrlQueryString(newSection);
+    activeSection() {
+      this.syncUrl();
     }
   },
 }
@@ -375,6 +466,106 @@ export default {
   background-color: rgba(10, 8, 6, 0.94);
   box-shadow: 0 2px 30px rgba(0, 0, 0, 0.7);
   color: var(--the-yellow);
+}
+
+/* --- the note --- */
+.about-dialog {
+  width: min(94vw, 46rem);
+  max-height: 92vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: 2.25rem 2.5rem 2rem;
+  border: none;
+  border-top: 2px solid var(--gilt-dim);
+  border-radius: 10px;
+  background-color: rgba(10, 8, 6, 0.96);
+  box-shadow:
+    inset 0 1px 0 rgba(224, 189, 106, 0.16),
+    0 2px 30px rgba(0, 0, 0, 0.7);
+  color: var(--parchment);
+  text-align: left;
+}
+
+.about-dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.about-eyebrow {
+  margin: 0 0 0.4rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  letter-spacing: var(--tracking-wider);
+  color: var(--gilt);
+}
+
+.about-dialog h2 {
+  margin: 0;
+  font-size: var(--text-2xl);
+  font-variant-caps: all-small-caps;
+  letter-spacing: var(--tracking-wide);
+  line-height: var(--leading-tight);
+  color: var(--gilt-bright);
+  text-transform: none;
+}
+
+.about-question {
+  margin: 0.4rem 0 1.4rem;
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: var(--text-lg);
+  line-height: var(--leading-snug);
+  color: var(--candle);
+}
+
+.about-body p {
+  font-size: var(--text-md);
+  line-height: var(--leading-relaxed);
+  margin: 0 0 1rem;
+  max-width: var(--measure);
+}
+
+.about-credits {
+  margin-top: 1.4rem !important;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(224, 189, 106, 0.22);
+  font-size: var(--text-sm) !important;
+  opacity: 0.85;
+}
+
+.about-credits a {
+  text-transform: none;
+}
+
+.about-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.2rem;
+}
+
+/*
+ * The footer's other entry is a link; this one opens the note in place, so it
+ * only has to undo the button chrome. Everything that makes it look like its
+ * neighbour comes from the `footer a` rules it now shares.
+ */
+footer .footer-about {
+  /* a button is border-box by default and the <a> beside it is not, which
+     put the 10px rule inside one and outside the other */
+  box-sizing: content-box;
+  border-top: 0;
+  border-right: 0;
+  border-bottom: 0;
+  border-radius: 0;
+  color: var(--gilt);
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: normal;
+  text-transform: uppercase;
+}
+
+footer .footer-about:hover {
+  background: var(--panel);
+  color: var(--gilt-bright);
 }
 
 .badge-dialog::backdrop {
@@ -847,7 +1038,8 @@ footer {
   }
 }
 
-footer a {
+footer a,
+footer .footer-about {
   display: block;
   background: var(--panel);
   width: 46%;
@@ -862,7 +1054,8 @@ footer a {
   }
 }
 
-footer a:hover {
+footer a:hover,
+footer .footer-about:hover {
   border-color: var(--gilt);
 }
 
