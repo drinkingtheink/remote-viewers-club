@@ -1,8 +1,8 @@
 <template>
   <div class="app-stage">
     <div class="intro-wrapper">
-      <!-- the seal is the summons; nothing says so, which is the point -->
-      <SeeYouThere ref="watcher" class="watcher" @click="summonArms" />
+      <!-- the seal calls them and sends them back; nothing says so, which is the point -->
+      <SeeYouThere ref="watcher" class="watcher" @click="toggleArms" />
       <h1>REMOTE VIEWERS CLUB</h1>
       <p class="introduction">Purveyors, practicioners, and pundits of the metaphysical arts &amp; sciences</p>
     </div>
@@ -381,7 +381,18 @@ export default {
     }
   },
   methods: {
-    summonArms() {
+    /*
+     * The seal is a switch, not just a summons. It called them, so it can
+     * send them back -- which also gives the mouse the way out that Escape
+     * already gives the keyboard, and stops a click mid-siege being the one
+     * thing on the page that does nothing when you press it.
+     */
+    toggleArms() {
+      if (this.siege) {
+        this.$refs.skeletonArms?.dismissAll();
+        return;
+      }
+
       // Home first. Out in the corner the seal is position: fixed, and the
       // stage it lives in is about to start rotating -- which would strand
       // it. The flight takes about as long as the first arm does to arrive.
