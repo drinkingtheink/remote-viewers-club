@@ -83,11 +83,18 @@ button.disabled:active {
 }
 
 /*
- * The badge dialog. @starting-style plus allow-discrete gives a native
- * <dialog> a real entrance; browsers without it simply get the old instant
- * open, which is the behaviour being replaced anyway.
+ * Modals.
+ *
+ * Written against `dialog` rather than against each modal by name, so a new
+ * one arrives with its entrance already built. Naming them individually is
+ * how the About dialog ended up snapping open while the close-up faded.
+ *
+ * @starting-style supplies the "before it was shown" state, and
+ * allow-discrete on display and overlay is what keeps the element around long
+ * enough to animate on the way OUT -- without it the exit is a cut, because
+ * display flips to none immediately.
  */
-.badge-dialog {
+dialog {
   opacity: 0;
   transform: scale(0.97) translateY(var(--lift));
   transition:
@@ -97,19 +104,23 @@ button.disabled:active {
     display var(--dur-base) allow-discrete;
 }
 
-.badge-dialog[open] {
+dialog[open] {
   opacity: 1;
   transform: none;
 }
 
 @starting-style {
-  .badge-dialog[open] {
+  dialog[open] {
     opacity: 0;
     transform: scale(0.97) translateY(var(--lift));
   }
 }
 
-.badge-dialog::backdrop {
+/*
+ * The backdrop animates separately: it is not a child of the dialog, so it
+ * inherits none of the above and needs its own transition and start state.
+ */
+dialog::backdrop {
   opacity: 0;
   transition:
     opacity var(--dur-base) var(--ease-out),
@@ -117,12 +128,12 @@ button.disabled:active {
     display var(--dur-base) allow-discrete;
 }
 
-.badge-dialog[open]::backdrop {
+dialog[open]::backdrop {
   opacity: 1;
 }
 
 @starting-style {
-  .badge-dialog[open]::backdrop {
+  dialog[open]::backdrop {
     opacity: 0;
   }
 }
@@ -153,6 +164,12 @@ button.disabled:active {
 
   button:active,
   .btn:active {
+    transform: none;
+  }
+
+  /* a modal still fades, but it no longer flies in */
+  dialog,
+  dialog[open] {
     transform: none;
   }
 }
