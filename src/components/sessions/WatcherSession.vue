@@ -111,11 +111,12 @@
 </template>
 
 <script setup>
-import { computed, onBeforeUnmount, ref, defineProps } from 'vue'
+import { computed, onBeforeUnmount, ref, watch, defineProps } from 'vue'
 import SessionStage from '../SessionStage.vue'
 import EyeAnimation from '../animations/EyeAnimation.vue'
 import { useSession } from '../../composables/useSession'
 import { WINDOWS, WINDOW_MS, GAP_MS, SETTLE_MS, verdictFor } from '../../data/watcherVerdicts'
+import { raiseSiege } from '../../composables/useSiege'
 
 const props = defineProps(['scrollToElement'])
 
@@ -237,6 +238,19 @@ const verdict = computed(() =>
     falseAlarms: falseAlarms.value,
     presses: presses.value.length
   })
+)
+
+/*
+ * A run that told the Club nothing does not end quietly. Watched rather
+ * than called at the end of the run, because the verdict is a computed and
+ * this is the one place that knows the moment it settles -- and `once` so a
+ * reader rereading their own result does not raise them twice.
+ */
+watch(
+  () => verdict.value?.rouses && phase.value === 'report',
+  (rouses) => {
+    if (rouses) raiseSiege('watcher')
+  }
 )
 
 const statusLine = computed(() =>

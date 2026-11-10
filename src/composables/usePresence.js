@@ -1,3 +1,5 @@
+import { raiseSiege } from './useSiege'
+
 /*
  * Whether anyone is still there.
  *
@@ -14,6 +16,12 @@
 
 const IDLE_AFTER = 45000
 const AWAY_TITLE = 'See you there.'
+/*
+ * Long enough that flicking to another tab and back does not count. The
+ * title has been promising this the whole time anyone was gone; staying
+ * away properly is what makes it good on it.
+ */
+const AWAY_ENOUGH = 45000
 
 export function startPresence() {
   const root = document.documentElement
@@ -22,8 +30,20 @@ export function startPresence() {
 
   // The title change is a message, not motion, so it stands whatever the
   // motion preference. The idle settling does not.
+  let leftAt = 0
+
   document.addEventListener('visibilitychange', () => {
     document.title = document.hidden ? AWAY_TITLE : original
+
+    if (document.hidden) {
+      leftAt = Date.now()
+      return
+    }
+
+    // Back, after a real absence. The arms decide for themselves whether
+    // the moment suits -- canSummon still has the last word.
+    if (leftAt && Date.now() - leftAt >= AWAY_ENOUGH) raiseSiege('return')
+    leftAt = 0
   })
 
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return

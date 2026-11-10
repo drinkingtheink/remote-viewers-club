@@ -256,9 +256,10 @@ body::before {
     backdrop-filter: blur(0);
   }
 
+  /* how far it swims is the rung's to say; SkeletonArms sets it at summon */
   50% {
-    -webkit-backdrop-filter: blur(6.5px);
-    backdrop-filter: blur(6.5px);
+    -webkit-backdrop-filter: blur(var(--haze-depth, 6.5px));
+    backdrop-filter: blur(var(--haze-depth, 6.5px));
   }
 }
 

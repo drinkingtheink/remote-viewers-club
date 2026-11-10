@@ -135,6 +135,7 @@ import SessionStage from '../SessionStage.vue'
 import PlanchetteAnimation from '../animations/PlanchetteAnimation.vue'
 import { BOARD, GLYPHS, nearestGlyph } from '../../data/spiritBoard'
 import { useSession } from '../../composables/useSession'
+import { raiseSiege } from '../../composables/useSiege'
 
 const props = defineProps(['scrollToElement'])
 
@@ -353,6 +354,11 @@ function closeBoard() {
   travel.value = { ...counters }
   recordSitting()
   goTo('record')
+
+  // You put a question to the board and the board declined to answer. That
+  // is the closest thing a sitting has to a bad result, and something else
+  // in the room takes the opening.
+  if (!spelledText.value) raiseSiege('seance')
 }
 
 function endSession() {

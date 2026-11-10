@@ -63,7 +63,7 @@
       @click="strike(arm, $event)"
     >
       <span class="arm-health">
-        <i v-for="n in HITS_TO_CLEAR" :key="n" :class="{ 'is-spent': n <= arm.hits }"></i>
+        <i v-for="n in pips" :key="n" :class="{ 'is-spent': n <= arm.hits }"></i>
       </span>
 
       <span class="skeleton-arm-lunge">
@@ -76,20 +76,89 @@
 <script setup>
 import { computed, onBeforeUnmount, onMounted, ref, watch, defineEmits, defineExpose } from 'vue'
 import SkeletonArm from './SkeletonArm.vue'
+import { onSiegeRaised } from '../composables/useSiege'
 
-const HITS_TO_CLEAR = 3
 const FLARE_MS = 380
 const GIVE_UP_MS = 25000
 const STAGGER_MS = 420
 // Long enough to read as deliberate rather than as a pop-up.
 const EMERGE_MS = 900
 
-// Where each one comes from, how high up, and how far off square it hangs.
-const PLAN = [
-  { side: 'left', top: 20, tilt: -5, phase: -0.4 },
-  { side: 'right', top: 48, tilt: 3, phase: -1.7 },
-  { side: 'left', top: 74, tilt: 4, phase: -2.9 }
+/*
+ * What each visit costs them.
+ *
+ * There is nothing to lose here, on purpose, so these are not difficulty
+ * settings: an encounter you cannot fail does not get harder, it gets
+ * bigger. Every dial is turned for spectacle -- more of them, faster,
+ * further in, the room harder to see through -- so coming back a third time
+ * is rewarded with a larger production rather than punished with a steeper
+ * one.
+ *
+ * A first meeting is a pair, which is as much as it takes to show what they
+ * do without burying the page under them. It builds from there.
+ *
+ * The last rung inverts the shape instead of extending it. One arm with
+ * eight pips moving three times as fast is not the swarm turned up; it is a
+ * different scene, and it is where a ladder with no stakes should stop
+ * rather than climb forever.
+ */
+const LEVELS = [
+  { arms: 2, pips: 2, prowl: 22, reach: 1, haze: 6.5 },
+  { arms: 3, pips: 3, prowl: 30, reach: 1.08, haze: 8 },
+  { arms: 4, pips: 3, prowl: 38, reach: 1.16, haze: 9 },
+  { arms: 5, pips: 4, prowl: 46, reach: 1.24, haze: 9.5 },
+  { arms: 1, pips: 8, prowl: 70, reach: 1.32, haze: 10 }
 ]
+
+const TILTS = [-5, 3, 4, -3, 6]
+
+/*
+ * Where they come in. Sides alternate so the page is hauled from both at
+ * once, and the tops are spread evenly down the window.
+ *
+ * The band each one patrols has to narrow as the count grows or they walk
+ * through each other: five arms roaming eleven points apiece would overlap,
+ * so a lane is half the gap to its neighbour less a little. A lone arm gets
+ * the middle of the page and the run of it.
+ */
+const LAYOUT_TOP = 18
+const LAYOUT_SPREAD = 60
+
+function layout(count) {
+  const span = count > 1 ? LAYOUT_SPREAD / (count - 1) : 0
+  const range = count > 1 ? Math.max(4, span / 2 - 2) : 24
+
+  return Array.from({ length: count }, (_, i) => ({
+    side: i % 2 === 0 ? 'left' : 'right',
+    top: count > 1 ? LAYOUT_TOP + i * span : 46,
+    tilt: TILTS[i % TILTS.length],
+    phase: -(0.4 + i * 1.3),
+    range
+  }))
+}
+
+/*
+ * How many times this browser has met them. It decides the rung and nothing
+ * else -- there is no score here, because there is nothing to win.
+ */
+const RECORD_KEY = 'rvc-siege'
+
+function faced() {
+  try {
+    return JSON.parse(localStorage.getItem(RECORD_KEY))?.faced || 0
+  } catch {
+    // private window, or a value someone has edited by hand
+    return 0
+  }
+}
+
+function remember(count) {
+  try {
+    localStorage.setItem(RECORD_KEY, JSON.stringify({ faced: count }))
+  } catch {
+    // nothing to be done about it; the ladder just restarts next visit
+  }
+}
 
 const SCRATCH_LIFE_MS = 3600
 const IMPACT_LIFE_MS = 1300
@@ -110,15 +179,35 @@ const LUNGE_MS = 150
  * creature moving at its own pace.
  *
  * Each arm roams a band around where it came in, and the bands are narrow
- * enough that the three can never cross or stack up on one another.
+ * enough that they can never cross or stack up on one another -- see
+ * layout(), which sizes a lane to the company an arm is keeping.
+ *
+ * The pace is the rung's to set; everything else here holds across all of
+ * them.
  */
-const PROWL_SPEED = 22
-const PROWL_RANGE = 11
 const PROWL_PAUSE_MS = [900, 2600]
 const PROWL_MS = [1800, 7000]
 const PROWL_EDGE = [8, 86]
 
 const arms = ref([])
+// On the slot's template, so it has to be reactive rather than a constant:
+// the number of pips an arm carries is now a property of the encounter.
+const pips = ref(LEVELS[0].pips)
+let prowlSpeed = LEVELS[0].prowl
+// which rung this encounter is on, for whoever is writing the notice
+let rung = 0
+/*
+ * Which siege is the current one.
+ *
+ * Both of the delayed endings below -- the give-up and the clear at the end
+ * of a retreat -- are scheduled against the siege that asked for them, and
+ * either can land after a later one has started: summon, dismiss, summon
+ * again inside twenty-five seconds and the first encounter's timer would
+ * otherwise reach across and end the second. Each raise and each dismissal
+ * takes the next number, and a callback that no longer holds it does
+ * nothing.
+ */
+let sieging = 0
 const scratches = ref([])
 const impacts = ref([])
 
@@ -153,7 +242,22 @@ function canSummon() {
 function summon() {
   if (!canSummon()) return
 
-  arms.value = PLAN.map((spec) => ({
+  /*
+   * Which rung, and the dials that go with it. Counted up front rather than
+   * on the way out, so a siege dismissed early still counts as having been
+   * met -- the record is of encounters, not of victories.
+   */
+  const met = faced()
+  const level = LEVELS[Math.min(met, LEVELS.length - 1)]
+  remember(met + 1)
+
+  pips.value = level.pips
+  prowlSpeed = level.prowl
+  root.style.setProperty('--reach-gain', level.reach)
+  root.style.setProperty('--haze-depth', `${level.haze}px`)
+  rung = Math.min(met, LEVELS.length - 1)
+
+  arms.value = layout(level.arms).map((spec) => ({
     ...spec,
     id: nextId++,
     // where it came in; the patrol is measured from here, not from wherever
@@ -179,7 +283,10 @@ function summon() {
 
   // They cannot be allowed to outstay their welcome: a keyboard-only reader
   // has no way to swat them, so they leave on their own regardless.
-  later(dismissAll, GIVE_UP_MS)
+  const mine = (sieging += 1)
+  later(() => {
+    if (mine === sieging) dismissAll()
+  }, GIVE_UP_MS)
 }
 
 /*
@@ -266,9 +373,9 @@ function prowl(arm) {
     if (high < low) high = low
   }
 
-  const target = Math.min(high, Math.max(low, arm.home + between([-PROWL_RANGE, PROWL_RANGE])))
+  const target = Math.min(high, Math.max(low, arm.home + between([-arm.range, arm.range])))
   const travel = (Math.abs(target - arm.top) / 100) * window.innerHeight
-  const ms = Math.min(PROWL_MS[1], Math.max(PROWL_MS[0], (travel / PROWL_SPEED) * 1000))
+  const ms = Math.min(PROWL_MS[1], Math.max(PROWL_MS[0], (travel / prowlSpeed) * 1000))
 
   arm.driftMs = ms
   arm.top = target
@@ -277,7 +384,7 @@ function prowl(arm) {
 }
 
 function clawLoop(arm) {
-  if (!arms.value.includes(arm) || !arm.out || arm.hits >= HITS_TO_CLEAR) return
+  if (!arms.value.includes(arm) || !arm.out || arm.hits >= pips.value) return
 
   arm.lunging = true
   later(() => scratchFrom(arm), LUNGE_MS * 0.8)
@@ -325,7 +432,7 @@ function impactAt(x, y) {
 }
 
 function strike(arm, event) {
-  if (!arm.out || arm.hits >= HITS_TO_CLEAR) return
+  if (!arm.out || arm.hits >= pips.value) return
 
   if (event) impactAt(event.clientX, event.clientY)
 
@@ -338,7 +445,7 @@ function strike(arm, event) {
 
   // At the third hit the arm has been pushed back its whole length. Drop it
   // once the retreat has actually played.
-  if (arm.hits >= HITS_TO_CLEAR) {
+  if (arm.hits >= pips.value) {
     later(() => {
       arms.value = arms.value.filter((a) => a.id !== arm.id)
     }, EMERGE_MS)
@@ -349,11 +456,14 @@ function dismissAll() {
   if (!arms.value.length) return
   // they are letting go, not being broken: no jolt on the way out
   retreating = true
+  const mine = (sieging += 1)
   arms.value.forEach((arm) => {
     arm.out = false
   })
   later(() => {
-    arms.value = []
+    // a fresh siege can be raised while this one is still backing out; the
+    // page it would be clearing is no longer the page it was asked about
+    if (mine === sieging) arms.value = []
   }, EMERGE_MS)
 }
 
@@ -402,7 +512,7 @@ const root = document.documentElement
 const lean = computed(() =>
   arms.value.reduce((total, arm) => {
     if (!arm.out) return total
-    const grip = (HITS_TO_CLEAR - arm.hits) / HITS_TO_CLEAR
+    const grip = (pips.value - arm.hits) / pips.value
     return total + (arm.side === 'left' ? -grip : grip)
   }, 0)
 )
@@ -468,6 +578,8 @@ function releasePage() {
   if (pivotFrame) cancelAnimationFrame(pivotFrame)
   pivotFrame = null
   root.style.removeProperty('--list')
+  root.style.removeProperty('--reach-gain')
+  root.style.removeProperty('--haze-depth')
   delete root.dataset.besieged
   // the pivot outlives the list: the stage has to unwind about the same
   // point it bent on, or it swings on its way back to level
@@ -487,15 +599,24 @@ watch(
     else releasePage()
     emit('siege', {
       count,
+      rung,
       west: arms.value.filter((arm) => arm.side === 'left').length,
       east: arms.value.filter((arm) => arm.side === 'right').length
     })
   }
 )
 
-onMounted(() => window.addEventListener('keydown', onKeyDown))
+let stopListening = null
+
+onMounted(() => {
+  window.addEventListener('keydown', onKeyDown)
+  // canSummon() still has the final word, so a verdict landing behind an
+  // open dialog, on a narrow screen, or mid-siege is quietly ignored
+  stopListening = onSiegeRaised(summon)
+})
 onBeforeUnmount(() => {
   window.removeEventListener('keydown', onKeyDown)
+  stopListening?.()
   releasePage()
   clearTimers()
 })
@@ -706,10 +827,13 @@ defineExpose({ summon, dismissAll })
    * crosses onto the column on a wide monitor, and capped at 90% so the
    * shoulder never leaves the edge and the arm never floats free of the page.
    */
-  --reach: min(
+  --reach-base: min(
     calc(var(--arm-len) * 0.9),
     max(calc(var(--arm-len) * 0.66), calc((100vw - 1180px) / 2 + 120px))
   );
+
+  /* later rungs lean in further; the gain is set on :root at summon */
+  --reach: calc(var(--reach-base) * var(--reach-gain, 1));
 
   position: absolute;
   width: var(--arm-len);

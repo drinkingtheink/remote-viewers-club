@@ -370,7 +370,24 @@ export default {
      */
     bulletin() {
       if (!this.siege) return null
-      const { count, west, east } = this.siege
+      const { count, west, east, rung } = this.siege
+
+      /*
+       * The house voice losing its composure, one encounter at a time. The
+       * first notice is procedural and counts the breaches; by the last it
+       * has stopped filing anything at all. Nothing else escalates for the
+       * reader -- there is no winning or losing here -- so the copy is
+       * where a fourth visit has to feel different from a first.
+       */
+      if (rung >= 4) return 'It came back on its own.'
+      if (rung === 3) return 'The Club has stopped counting.'
+      if (rung === 2) return 'They are not using the margins now.'
+      if (rung === 1) {
+        return count > 3
+          ? `${count} points of contact. No steward has been appointed.`
+          : `${count} points of contact. The matter is no longer in hand.`
+      }
+
       if (count >= 3) return 'Three points of contact. The stewards are not answering.'
       if (count === 2) {
         if (west === 2) return 'Both breaches to the west. Members will please remain seated.'
