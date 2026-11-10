@@ -264,11 +264,11 @@ const badgeMap = [
     cat: 'RVC 09.08.2',
   },
   {
-    title: 'Electronic Phantoms',
-    desc: '9716th Radar Decoy SQ',
-    inspo: 'https://twitter.com/CassetteDyne/status/1735694599262192051',
-    id: 3,
-    cat: 'RVC 06.51.1',
+    title: 'Project Stargate',
+    desc: '44th Boundless Sight SQ',
+    inspo: 'https://codepen.io/drinkingtheink/pen/vEGdJew',
+    id: 8,
+    cat: 'RVC 09.77.4',
   },
   {
     title: 'PSYWACs',
@@ -299,11 +299,11 @@ const badgeMap = [
     cat: 'RVC 31.13.6',
   },
   {
-    title: 'Project Stargate',
-    desc: '44th Boundless Sight SQ',
-    inspo: 'https://codepen.io/drinkingtheink/pen/vEGdJew',
-    id: 8,
-    cat: 'RVC 09.77.4',
+    title: 'Electronic Phantoms',
+    desc: '9716th Radar Decoy SQ',
+    inspo: 'https://twitter.com/CassetteDyne/status/1735694599262192051',
+    id: 3,
+    cat: 'RVC 06.51.1',
   },
 ];
 
