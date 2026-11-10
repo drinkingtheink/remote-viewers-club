@@ -183,6 +183,8 @@
       </Transition>
     </main>
 
+    <SkeletonArms ref="skeletonArms" />
+
     <footer>
       <button type="button" class="footer-about" @click="openAbout">About this App</button>
       <a href="https://www.drinkingtheink.com/" target="_blank">About the Author</a>
@@ -215,6 +217,7 @@ import Badge6 from './Badge6.vue'
 import Badge7 from './Badge7.vue'
 import Badge8 from './Badge8.vue'
 import SeeYouThere from './SeeYouThere.vue'
+import SkeletonArms from './SkeletonArms.vue'
 import RemoteViewingSession from './sessions/RemoteViewingSession.vue'
 import PrecognitionSession from './sessions/PrecognitionSession.vue'
 import GnosisSession from './sessions/GnosisSession.vue'
@@ -314,6 +317,7 @@ export default {
     Badge7,
     Badge8,
     SeeYouThere,
+    SkeletonArms,
     RemoteViewingSession,
     PrecogIcon,
     RemoteViewingIcon,
