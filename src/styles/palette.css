@@ -222,6 +222,47 @@ body::before {
 }
 
 /*
+ * The room will not hold focus.
+ *
+ * A slow breath rather than a flicker: a fast one reads as a broken screen,
+ * where something swimming on a five-second cycle reads as a room you
+ * cannot quite fix your eyes on.
+ *
+ * `backdrop-filter` rather than a filter on the layers themselves. The
+ * binding is spread across the canvas, body::before and the eye, and only
+ * the first of those could take a filter without dragging the page into it
+ * -- a pane that softens whatever is painted behind it catches all three at
+ * once. It also leaves .app-stage free: the jolt already spends `animation`
+ * there, and a second one would overwrite it.
+ *
+ * The arms and the page paint after this layer, so they stay sharp through
+ * all of it, and the softness lands as depth with the threat in focus.
+ */
+.siege-haze {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+@keyframes siege-haze {
+  0%,
+  100% {
+    -webkit-backdrop-filter: blur(0);
+    backdrop-filter: blur(0);
+  }
+
+  50% {
+    -webkit-backdrop-filter: blur(6.5px);
+    backdrop-filter: blur(6.5px);
+  }
+}
+
+:root[data-besieged] .siege-haze {
+  animation: siege-haze 5.6s var(--ease-in-out) infinite;
+}
+
+/*
  * Jolt, then list.
  *
  * The list eased in on its own before, which read as an animation playing
@@ -322,7 +363,8 @@ body::before {
 /* No tasteful reduced version of a tilting page. The arms never summon under
    this preference anyway; this is belt and braces. */
 @media (prefers-reduced-motion: reduce) {
-  :root[data-jolt] .app-stage {
+  :root[data-jolt] .app-stage,
+  :root[data-besieged] .siege-haze {
     animation: none;
   }
 
