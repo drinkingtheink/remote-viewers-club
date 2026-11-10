@@ -236,62 +236,74 @@ import RemoteViewingIcon from './icons/RemoteViewingIcon'
 import PrecogIcon from './icons/PrecognitionIcon'
 import GnosisIcon from './icons/GnosisIcon'
 
+/*
+ * The accession numbers used to open on a year -- RVC 1961.44.7 -- which
+ * dated the collection and so bounded it. A real registry is unknowable
+ * because you do not hold the key, not because the digits are encoded, so
+ * the first field is now the series: the praxis form of the session that
+ * would have produced the specimen. Badge 1 files under FORM 24-A the way
+ * badge 2 files under FORM 09-C, and nothing in the line resolves to a date.
+ *
+ * Lot and item stay arbitrary, but they avoid the series numbers themselves
+ * -- no 06, 09, 17, 24, 31 or 42 in the second field -- so a reader cannot
+ * mistake a lot for a second series.
+ */
 const badgeMap = [
   {
     title: 'Beyond All Bounds',
     desc: '24th Omnidimensional Operations',
     inspo: 'https://twitter.com/arpitingle/status/1698709125088088109',
     id: 1,
-    cat: 'RVC 1961.44.7',
+    cat: 'RVC 24.44.7',
   },
   {
     title: 'Remote Viewing Task Force',
     desc: '88th Ecoacoustics SQ',
     inspo: 'https://twitter.com/CassetteDyne/status/1735694599262192051',
     id: 2,
-    cat: 'RVC 1972.08.2',
+    cat: 'RVC 09.08.2',
   },
   {
     title: 'Electronic Phantoms',
     desc: '9716th Radar Decoy SQ',
     inspo: 'https://twitter.com/CassetteDyne/status/1735694599262192051',
     id: 3,
-    cat: 'RVC 1958.17.1',
+    cat: 'RVC 06.51.1',
   },
   {
     title: 'PSYWACs',
     desc: '960th Psychological Warfare SQ',
     inspo: 'https://twitter.com/CassetteDyne/status/1735694599262192051',
     id: 4,
-    cat: 'RVC 1967.31.5',
+    cat: 'RVC 17.68.5',
   },
   {
     title: 'Vigilance and Speed',
     desc: '3rd Special Interceptor SQ',
     inspo: 'https://twitter.com/CassetteDyne/status/1735694599262192051',
     id: 5,
-    cat: 'RVC 1953.02.9',
+    cat: 'RVC 42.02.9',
   },
   {
     title: 'See You Yesterday',
     desc: '37th Temporal Reconaissance Wing',
     inspo: 'https://twitter.com/arpitingle/status/1698709125088088109',
     id: 6,
-    cat: 'RVC 1979.60.3',
+    cat: 'RVC 24.60.3',
   },
   {
     title: 'Infinite Broadcast',
     desc: '227th Silent Spectral Comms',
     inspo: 'https://codepen.io/drinkingtheink/pen/vEGdJew',
     id: 7,
-    cat: 'RVC 1984.13.6',
+    cat: 'RVC 31.13.6',
   },
   {
     title: 'Project Stargate',
     desc: '44th Boundless Sight SQ',
     inspo: 'https://codepen.io/drinkingtheink/pen/vEGdJew',
     id: 8,
-    cat: 'RVC 1991.77.4',
+    cat: 'RVC 09.77.4',
   },
 ];
 

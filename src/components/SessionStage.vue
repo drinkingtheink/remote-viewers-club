@@ -23,10 +23,12 @@ defineProps({
   },
   /*
    * The filing number, in the slot a specimen plate gives its accession
-   * number. A separate series on purpose: specimens are collection objects
-   * and get accessioned, a praxis session is a procedure and gets a form,
-   * so the two can share the furniture without being mistaken for one
-   * another.
+   * number. The two series are related but not the same: a praxis session
+   * is a procedure and gets a form, a specimen is a collection object and
+   * gets accessioned under the form that produced it, which is why a badge
+   * reads RVC 24.44.7 against this session's RVC FORM 24-A. Change a form
+   * number here and the matching accessions in AppStage's badgeMap go with
+   * it.
    */
   form: {
     type: String,
