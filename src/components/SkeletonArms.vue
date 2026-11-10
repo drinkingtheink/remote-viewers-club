@@ -513,6 +513,30 @@ defineExpose({ summon, dismissAll })
      of the arm that were meant to hang over. */
   overflow: visible;
   pointer-events: none;
+
+  /*
+   * The margins were a straight cut. The page clips at the window edge, so
+   * every arm ended in a hard vertical line it had plainly been sliced
+   * along -- the most artificial thing about them.
+   *
+   * The fade belongs here and not on the arm: the arm's own outer end sits
+   * off past the edge, and moves further out every time it takes a hit, so
+   * a mask measured from the arm would ramp somewhere nobody can see. The
+   * layer is pinned to the viewport, which is exactly where the cut is.
+   * It takes the ends of the scratches with it, which is the same idea.
+   */
+  --margin-fade: linear-gradient(
+    to right,
+    transparent 0,
+    #000 3.5%,
+    #000 96.5%,
+    transparent 100%
+  );
+
+  -webkit-mask-image: var(--margin-fade);
+  mask-image: var(--margin-fade);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
 }
 
 /*
@@ -696,7 +720,19 @@ defineExpose({ summon, dismissAll })
   color: var(--parchment);
   pointer-events: auto;
   cursor: crosshair;
-  filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.65));
+
+  /*
+   * Contact, then ambient. A single soft shadow dropped 10px reads as the
+   * arm hovering over the page; what seats a thing is a tight, dark, almost
+   * offsetless shadow directly beneath it, with the wide soft one behind
+   * that doing the ambient work. Kept as a variable because the flare
+   * stacks its own glow in front of this and should not have to restate it.
+   */
+  --arm-shadow:
+    drop-shadow(0 2px 3px rgba(0, 0, 0, 0.85))
+    drop-shadow(0 14px 30px rgba(0, 0, 0, 0.55));
+
+  filter: var(--arm-shadow);
   /* `top` carries the patrol and `transform` the reach, which is the whole
      reason the drift lives on `top`: the two get their own clocks for free,
      and the slow walk never inherits the snap of the grab. */
@@ -756,9 +792,7 @@ defineExpose({ summon, dismissAll })
    it lands on -- the arm is still theirs and still answers in their colour. */
 .skeleton-arm-slot.is-flaring {
   color: var(--cinnabar);
-  filter:
-    drop-shadow(0 0 16px var(--oxblood))
-    drop-shadow(0 10px 22px rgba(0, 0, 0, 0.65));
+  filter: drop-shadow(0 0 16px var(--oxblood)) var(--arm-shadow);
 }
 
 /* Struck, it clenches harder than it claws. */
