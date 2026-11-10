@@ -1,5 +1,5 @@
 <template>
-    <div class="see-you-there" :class="{ watching, adrift, settled }" ref="seal">
+    <div class="see-you-there" :class="{ watching, adrift, settled, pressing, awaiting }" ref="seal">
         <svg 
             id="Layer_1" 
             :class="{ 'closed': blink }"
@@ -106,6 +106,8 @@ const AGAIN = 600
 // The first descent is a certainty; after that it is a maybe, or a presence
 // turns into a habit and stops being worth noticing.
 const CHANCE = 0.3
+// press 260 + 820, impression 818 + 900: the whole stamp is done by 1750ms
+const PRESS_MS = 1800
 
 export default {
     name: 'SeeYouThere',
@@ -115,12 +117,15 @@ export default {
             watching: false,
             adrift: false,
             settled: false,
+            pressing: false,
+            awaiting: false,
             intervalId: null,
             timeoutId: null,
             watchFrame: null,
             scrollFrame: null,
             homeDocTop: 0,
             visits: 0,
+            pressTimer: null,
             beatTimer: null,
             stayTimer: null,
             returnTimer: null,
@@ -132,6 +137,7 @@ export default {
         this.startBlinkCycle();
         this.startWatching();
         this.startRoving();
+        this.press();
     },
     beforeUnmount() {
         if (this.intervalId) {
@@ -146,7 +152,7 @@ export default {
         window.removeEventListener('pointermove', this.onPointerMove)
         window.removeEventListener('scroll', this.onScroll)
         if (this.scrollFrame !== null) cancelAnimationFrame(this.scrollFrame)
-        for (const t of [this.beatTimer, this.stayTimer, this.returnTimer]) clearTimeout(t)
+        for (const t of [this.beatTimer, this.stayTimer, this.returnTimer, this.pressTimer]) clearTimeout(t)
     },
     methods: {
         /*
@@ -157,6 +163,26 @@ export default {
          * the first time you go down the page, and after that only sometimes,
          * and only once you have scrolled on again.
          */
+        /* Stamp it. Restarting means clearing the class for a frame first,
+           or the browser sees the same animation already running and does
+           nothing. */
+        press() {
+            clearTimeout(this.pressTimer)
+            this.awaiting = false
+            this.pressing = false
+            requestAnimationFrame(() => {
+                this.pressing = true
+                this.pressTimer = setTimeout(() => {
+                    this.pressing = false
+                }, PRESS_MS)
+            })
+        },
+        /** Is the perch on screen right now? */
+        perchInView() {
+            const height = this.$refs.seal?.offsetHeight || 0
+            const top = this.homeDocTop - window.scrollY
+            return top < window.innerHeight && top + height > 0
+        },
         startRoving() {
             if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
             // on a narrow screen the seal is centred in the flow and there is
@@ -183,6 +209,13 @@ export default {
              */
             if (document.documentElement.dataset.besieged) {
                 if (this.adrift) this.goHome()
+                return
+            }
+
+            // held back after flying home over the top of the screen: stamp
+            // it in as soon as its perch is actually on screen again
+            if (this.awaiting && this.perchInView()) {
+                this.press()
                 return
             }
 
@@ -218,6 +251,7 @@ export default {
             // before the next one. Rolling again on the very next scroll
             // event would turn a 30% chance into a near-certainty, just
             // spread over a few hundred pixels.
+            this.awaiting = false
             if (this.visits > 0 && Math.random() >= CHANCE) {
                 this.armedAt = window.scrollY + AGAIN
                 return
@@ -262,6 +296,9 @@ export default {
                 this.returnTimer = null
                 this.adrift = false
                 seal.style.top = ''
+                // it has reached the perch, but the perch may be over the top
+                // of the screen; hold it there rather than let it appear
+                if (!this.perchInView()) this.awaiting = true
                 // only comes back after another stretch of scrolling down
                 this.armedAt = window.scrollY + AGAIN
             }, RETURN)
@@ -330,7 +367,24 @@ export default {
    * instead of throwing it away -- which is why the rotation here runs to
    * zero rather than to twenty.
    */
+}
+
+/*
+ * The press lives on a class, not on the element, because the seal arrives
+ * more than once: it is stamped on load, and stamped again if it went home
+ * over the top of the screen and the reader later comes back up to it.
+ */
+.see-you-there.pressing {
   animation: seal-press 820ms cubic-bezier(0.22, 1, 0.3, 1) 260ms both;
+}
+
+/*
+ * Waiting to be stamped. It has already reached its perch, but the perch is
+ * off the top of the screen, so it is held back rather than left sitting
+ * there to appear fully formed the moment it scrolls into view.
+ */
+.see-you-there.awaiting {
+  opacity: 0;
 }
 
 @keyframes seal-press {
@@ -368,7 +422,7 @@ export default {
  * looks harmless and is not: a scoped class beats .watcher on specificity,
  * so it silently drops the seal out of the corner and into the flow.
  */
-.see-you-there::after {
+.see-you-there.pressing::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -400,11 +454,11 @@ export default {
  * still fades in, because appearing from nowhere is worse than arriving.
  */
 @media (prefers-reduced-motion: reduce) {
-  .see-you-there {
+  .see-you-there.pressing {
     animation: seal-fade 400ms ease-out both;
   }
 
-  .see-you-there::after {
+  .see-you-there.pressing::after {
     animation: none;
     opacity: 0;
   }
@@ -510,7 +564,7 @@ export default {
 /* Where the seal is laid out in the flow instead, the ring has no box of its
    own to sit in and would spread across whatever is positioned above it. */
 @media only screen and (max-width: 60em) {
-  .see-you-there::after {
+  .see-you-there.pressing::after {
     display: none;
   }
 }
