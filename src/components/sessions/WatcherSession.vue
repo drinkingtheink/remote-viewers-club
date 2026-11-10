@@ -1,5 +1,5 @@
 <template>
-  <SessionStage title="Watcher Session" container-class="watcher-session" :is-active="isActive">
+  <SessionStage form="RVC FORM 42-F" title="Watcher Session" container-class="watcher-session" :is-active="isActive">
     <div v-if="phase === 'intro'" class="panel">
       <p class="panel-subheader">
         The Club will watch you. Report the moments you feel it.

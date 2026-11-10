@@ -1326,13 +1326,22 @@ button.enlarge:hover {
   justify-content: center;
 }
 
+/*
+ * A praxis session is the same kind of object as a specimen plate, so it is
+ * framed like one: the gilt hairline sits on top rather than an oxblood rule
+ * underneath, the inset highlight gives the edge its struck look, and the
+ * corners are square. --panel and the plate's own ground are within a hair
+ * of each other already, so the ground is left alone.
+ */
 .stage {
   margin: 0 auto;
   background-color: var(--panel);
-  border-radius: 8px;
+  border-radius: 0;
   padding: 25px 10px 50px 10px;
-  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.45);
-  border-bottom: 3px solid var(--oxblood);
+  border-top: 2px solid var(--gilt-dim);
+  box-shadow:
+    inset 0 1px 0 rgba(224, 189, 106, 0.16),
+    0 2px 14px rgba(0, 0, 0, 0.45);
   margin: 10px;
   position: relative;
   /* the only thing that changes is the width, when a session opens */
@@ -1391,12 +1400,38 @@ button.enlarge:hover {
   border-bottom: 1px solid var(--gilt-dim);
 }
 
+/*
+ * The accession line, borrowed wholesale from .specimen-cat: mono, gilt,
+ * letterspaced, lining tabular figures so the digits line up card to card.
+ * It is what makes a plate read as catalogued rather than decorated, and it
+ * was the one tier a session had no equivalent for.
+ */
+.stage .session-form {
+  margin: 0 0 0.35rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  letter-spacing: var(--tracking-wider);
+  font-variant-numeric: lining-nums tabular-nums;
+  color: var(--gilt);
+  text-align: center;
+}
 
-.panel-subheader {
-  font-size: var(--text-xl);
+
+/*
+ * The descriptor, matched to .specimen-unit. This was a second heading --
+ * display face at --text-xl, directly under the h2 -- so each card opened
+ * with two lines competing to be the title. The plate solves it by dropping
+ * its second line into italic body and letting the name carry the card.
+ */
+/* `.stage p` is a class plus an element and beats a bare class, so an
+   unprefixed .panel-subheader loses font-style and max-width to it. */
+.stage p.panel-subheader {
+  font-size: var(--text-md);
   line-height: var(--leading-snug);
-  font-family: var(--font-heading);
-  max-width: 34ch;
+  font-family: var(--font-body);
+  font-style: italic;
+  color: var(--parchment);
+  max-width: 44ch;
 }
 
 button.begin-session {
@@ -1406,6 +1441,18 @@ button.begin-session {
   left: 0;
   right: 0;
   margin: auto
+}
+
+/* The divider from .specimen-actions. The button is already pinned to the
+   bottom of the card, so the rule lands at the same height on every one of
+   them without needing a wrapper in six different session templates. */
+button.begin-session::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -1rem;
+  border-top: 1px solid rgba(224, 189, 106, 0.22);
 }
 
 input {

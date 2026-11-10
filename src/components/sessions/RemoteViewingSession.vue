@@ -1,5 +1,6 @@
 <template>
   <div class="remote-viewing-container stage" :class="{ 'active': stage !== 'intro' }">
+    <p class="session-form">RVC FORM 09-C</p>
     <h2>Remote Viewing Session</h2>
 
     <div v-if="stage === 'intro'" class="panel">

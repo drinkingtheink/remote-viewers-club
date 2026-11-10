@@ -4,6 +4,7 @@
       'active': gameStarted || gameOver
     }"
   >
+    <p class="session-form">RVC FORM 17-E</p>
     <h2>Gnosis Session</h2>
     
     <div v-if="!gameStarted" class="start-screen">

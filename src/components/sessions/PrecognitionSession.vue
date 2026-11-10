@@ -1,5 +1,5 @@
 <template>
-  <SessionStage title="Precognition Session" container-class="card-game" :is-active="isActive">
+  <SessionStage form="RVC FORM 24-A" title="Precognition Session" container-class="card-game" :is-active="isActive">
     <div class="game-container">
       <div v-if="phase === 'intro'" class="game-screen">
         <p class="panel-subheader">

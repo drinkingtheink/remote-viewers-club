@@ -1,5 +1,6 @@
 <template>
   <div class="stage" :class="[containerClass, { active: isActive }]">
+    <p v-if="form" class="session-form">{{ form }}</p>
     <h2>{{ title }}</h2>
     <slot />
   </div>
@@ -19,6 +20,17 @@ defineProps({
   containerClass: {
     type: String,
     required: true
+  },
+  /*
+   * The filing number, in the slot a specimen plate gives its accession
+   * number. A separate series on purpose: specimens are collection objects
+   * and get accessioned, a praxis session is a procedure and gets a form,
+   * so the two can share the furniture without being mistaken for one
+   * another.
+   */
+  form: {
+    type: String,
+    default: ''
   },
   isActive: {
     type: Boolean,

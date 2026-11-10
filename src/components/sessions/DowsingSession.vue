@@ -4,6 +4,7 @@
         'active': gameStarted
         }"
     >
+    <p class="session-form">RVC FORM 06-B</p>
     <h2>Dowsing Session</h2>
     
     <!-- Start screen -->

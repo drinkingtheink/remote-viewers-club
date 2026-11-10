@@ -1,5 +1,5 @@
 <template>
-  <SessionStage title="Séance Session" container-class="spirit-board-session" :is-active="isActive">
+  <SessionStage form="RVC FORM 31-D" title="Séance Session" container-class="spirit-board-session" :is-active="isActive">
     <div v-if="phase === 'intro'" class="panel">
       <p class="panel-subheader">Put a question to the board and let the planchette answer it.</p>
 
