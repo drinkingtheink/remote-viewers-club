@@ -3,7 +3,7 @@
     A fixed layer over the whole page. The layer itself never takes a click;
     only the arms do, so the page stays usable while they are out.
   -->
-  <div v-if="arms.length || scratches.length" class="skeleton-layer" aria-hidden="true">
+  <div v-if="arms.length || scratches.length || impacts.length" class="skeleton-layer" aria-hidden="true">
     <!-- Marks are left on the page, not on the arm, so they stay put while
          the arm that made them retreats. -->
     <svg class="scratch-layer">
@@ -21,6 +21,32 @@
           :style="{ '--i': i }"
         />
       </g>
+
+      <g
+        v-for="burst in impacts"
+        :key="`i${burst.id}`"
+        class="impact"
+        :transform="`translate(${burst.x} ${burst.y})`"
+      >
+        <circle class="impact-ring" r="5" />
+        <line
+          v-for="(shard, i) in burst.shards"
+          :key="`s${i}`"
+          class="impact-shard"
+          x1="0"
+          y1="0"
+          :x2="shard.x"
+          :y2="shard.y"
+          :style="{ '--i': i }"
+        />
+        <circle
+          v-for="(drop, i) in burst.drops"
+          :key="`d${i}`"
+          class="impact-drop"
+          :r="drop.r"
+          :style="{ '--dx': `${drop.dx}px`, '--dy': `${drop.dy}px`, '--i': i }"
+        />
+      </g>
     </svg>
 
     <button
@@ -32,7 +58,7 @@
       :class="[`is-${arm.side}`, { 'is-out': arm.out, 'is-struck': arm.hits > 0, 'is-flaring': arm.flaring, 'is-lunging': arm.lunging }]"
       :style="{ '--hits': arm.hits, '--tilt': `${arm.tilt}deg`, '--phase': `${arm.phase}s`, top: `${arm.top}%` }"
       tabindex="-1"
-      @click="strike(arm)"
+      @click="strike(arm, $event)"
     >
       <span class="skeleton-arm-lunge">
         <span class="skeleton-arm-tremor"><SkeletonArm /></span>
@@ -61,15 +87,18 @@ const PLAN = [
 ]
 
 const SCRATCH_LIFE_MS = 3600
-const CLAW_GAP_MS = [620, 1500]
+const IMPACT_LIFE_MS = 1300
+const CLAW_GAP_MS = [1240, 3000]
 const LUNGE_MS = 150
 
 const arms = ref([])
 const scratches = ref([])
+const impacts = ref([])
 
 let timers = []
 let nextId = 0
 let nextScratchId = 0
+let nextImpactId = 0
 
 const between = ([min, max]) => min + Math.random() * (max - min)
 
@@ -121,16 +150,29 @@ function summon() {
   later(dismissAll, GIVE_UP_MS)
 }
 
-/* Four rakes, uneven in length and bow, so no two sets look alike. */
+/*
+ * Four rakes, built as broken runs of short segments rather than one smooth
+ * curve: a clean arc reads as drawn, a torn line reads as dragged.
+ */
 function clawLines() {
   const lines = []
 
   for (let i = 0; i < 4; i += 1) {
     const length = 96 + Math.random() * 58 + i * 6
     const offset = (i - 1.5) * 15 + (Math.random() - 0.5) * 5
-    const bow = 9 + Math.random() * 9
+    const steps = 5 + Math.floor(Math.random() * 3)
 
-    lines.push(`M0,${offset.toFixed(1)} q${(length * 0.45).toFixed(1)},${bow.toFixed(1)} ${length.toFixed(1)},${(offset * 0.35).toFixed(1)}`)
+    let d = `M0,${offset.toFixed(1)}`
+
+    for (let step = 1; step <= steps; step += 1) {
+      const along = (length / steps) * step
+      const drift = offset * (1 - (step / steps) * 0.65)
+      const jag = (Math.random() - 0.5) * 11
+
+      d += ` L${along.toFixed(1)},${(drift + jag).toFixed(1)}`
+    }
+
+    lines.push(d)
   }
 
   return lines
@@ -179,8 +221,46 @@ function clawLoop(arm) {
   later(() => clawLoop(arm), between(CLAW_GAP_MS))
 }
 
-function strike(arm) {
+/*
+ * Where the blow landed. Shards go out fast and evenly; the blood is slower,
+ * fewer, and falls -- it is the only part that is meant to still be there a
+ * beat later. Blood is already the house vocabulary (the contract is signed
+ * in it), so it reads as of a piece rather than as gore for its own sake.
+ */
+function impactAt(x, y) {
+  const id = nextImpactId++
+  const shards = []
+  const drops = []
+
+  for (let i = 0; i < 9; i += 1) {
+    const angle = (i / 9) * Math.PI * 2 + Math.random() * 0.5
+    const reach = 16 + Math.random() * 20
+
+    shards.push({
+      x: (Math.cos(angle) * reach).toFixed(1),
+      y: (Math.sin(angle) * reach).toFixed(1)
+    })
+  }
+
+  for (let i = 0; i < 5; i += 1) {
+    drops.push({
+      r: (1.6 + Math.random() * 2.4).toFixed(1),
+      dx: ((Math.random() - 0.5) * 70).toFixed(1),
+      dy: (26 + Math.random() * 54).toFixed(1)
+    })
+  }
+
+  impacts.value.push({ id, x, y, shards, drops })
+
+  later(() => {
+    impacts.value = impacts.value.filter((burst) => burst.id !== id)
+  }, IMPACT_LIFE_MS)
+}
+
+function strike(arm, event) {
   if (!arm.out || arm.hits >= HITS_TO_CLEAR) return
+
+  if (event) impactAt(event.clientX, event.clientY)
 
   arm.hits += 1
   arm.flaring = true
@@ -285,7 +365,9 @@ defineExpose({ summon, dismissAll })
 /* The glow sits on the set rather than each rake: four marks times a dozen
    live sets is sixty filtered nodes, and they are all animating. */
 .scratch {
-  filter: drop-shadow(0 0 5px var(--oxblood));
+  filter:
+    drop-shadow(0 0 3px var(--cinnabar))
+    drop-shadow(0 0 11px var(--oxblood));
 }
 
 .scratch path {
@@ -305,6 +387,73 @@ defineExpose({ summon, dismissAll })
 @keyframes scratch-rake {
   to {
     stroke-dashoffset: 0;
+  }
+}
+
+/* --- the blow --- */
+.impact circle,
+.impact line {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.impact-ring {
+  fill: none;
+  stroke: var(--cinnabar);
+  stroke-width: 2.5;
+  filter: drop-shadow(0 0 8px var(--oxblood));
+  animation: impact-ring 420ms var(--ease-out) forwards;
+}
+
+@keyframes impact-ring {
+  from {
+    transform: scale(0.35);
+    opacity: 0.95;
+  }
+  to {
+    transform: scale(8);
+    opacity: 0;
+  }
+}
+
+.impact-shard {
+  stroke: var(--candle);
+  stroke-width: 2;
+  stroke-linecap: round;
+  transform-origin: 0 0;
+  animation: impact-shard 320ms var(--ease-out) forwards;
+  animation-delay: calc(var(--i) * 8ms);
+}
+
+@keyframes impact-shard {
+  from {
+    transform: scale(0.2);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1.25);
+    opacity: 0;
+  }
+}
+
+/* The only part meant to outlast the flash, and the only part that falls. */
+.impact-drop {
+  fill: var(--blood);
+  animation: impact-drop 1100ms cubic-bezier(0.3, 0, 0.7, 1) forwards;
+  animation-delay: calc(var(--i) * 26ms);
+}
+
+@keyframes impact-drop {
+  0% {
+    transform: translate(0, 0) scale(0.6);
+    opacity: 0;
+  }
+  18% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--dx), var(--dy)) scale(1);
+    opacity: 0;
   }
 }
 
@@ -462,7 +611,9 @@ defineExpose({ summon, dismissAll })
 /* The glow sits on the set rather than each rake: four marks times a dozen
    live sets is sixty filtered nodes, and they are all animating. */
 .scratch {
-  filter: drop-shadow(0 0 5px var(--oxblood));
+  filter:
+    drop-shadow(0 0 3px var(--cinnabar))
+    drop-shadow(0 0 11px var(--oxblood));
 }
 
 .scratch path {
@@ -482,6 +633,73 @@ defineExpose({ summon, dismissAll })
 @keyframes scratch-rake {
   to {
     stroke-dashoffset: 0;
+  }
+}
+
+/* --- the blow --- */
+.impact circle,
+.impact line {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.impact-ring {
+  fill: none;
+  stroke: var(--cinnabar);
+  stroke-width: 2.5;
+  filter: drop-shadow(0 0 8px var(--oxblood));
+  animation: impact-ring 420ms var(--ease-out) forwards;
+}
+
+@keyframes impact-ring {
+  from {
+    transform: scale(0.35);
+    opacity: 0.95;
+  }
+  to {
+    transform: scale(8);
+    opacity: 0;
+  }
+}
+
+.impact-shard {
+  stroke: var(--candle);
+  stroke-width: 2;
+  stroke-linecap: round;
+  transform-origin: 0 0;
+  animation: impact-shard 320ms var(--ease-out) forwards;
+  animation-delay: calc(var(--i) * 8ms);
+}
+
+@keyframes impact-shard {
+  from {
+    transform: scale(0.2);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1.25);
+    opacity: 0;
+  }
+}
+
+/* The only part meant to outlast the flash, and the only part that falls. */
+.impact-drop {
+  fill: var(--blood);
+  animation: impact-drop 1100ms cubic-bezier(0.3, 0, 0.7, 1) forwards;
+  animation-delay: calc(var(--i) * 26ms);
+}
+
+@keyframes impact-drop {
+  0% {
+    transform: translate(0, 0) scale(0.6);
+    opacity: 0;
+  }
+  18% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--dx), var(--dy)) scale(1);
+    opacity: 0;
   }
 }
 
@@ -509,6 +727,11 @@ defineExpose({ summon, dismissAll })
   .scratch path {
     animation: none;
     stroke-dashoffset: 0;
+  }
+
+  .impact circle,
+  .impact line {
+    animation: none;
   }
 }
 </style>
