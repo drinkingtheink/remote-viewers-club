@@ -644,11 +644,9 @@ defineExpose({ summon, dismissAll })
 }
 
 /* The only part meant to outlast the flash, and the only part that falls.
-   Embers off the blow rather than blood off the arm, now that the blow is
-   the Club's. */
+   It comes off the arm rather than off the blow, so it stays blood. */
 .impact-drop {
-  fill: var(--candle);
-  filter: drop-shadow(0 0 6px var(--gilt));
+  fill: var(--blood);
   animation: impact-drop 1100ms cubic-bezier(0.3, 0, 0.7, 1) forwards;
   animation-delay: calc(var(--i) * 26ms);
 }
@@ -754,13 +752,12 @@ defineExpose({ summon, dismissAll })
 
 /* The red is the hit, not the resting state: it says the blow registered,
    and it is the only reason you can tell how close the thing is to going. */
-/* Struck, the bone takes the Club's light rather than reddening: whatever
-   just hit it did not come from its own side. */
+/* Struck, it reddens. The gold belongs to the blow landing, not to the thing
+   it lands on -- the arm is still theirs and still answers in their colour. */
 .skeleton-arm-slot.is-flaring {
-  color: var(--gilt-bright);
+  color: var(--cinnabar);
   filter:
-    drop-shadow(0 0 20px var(--gilt))
-    drop-shadow(0 0 46px var(--gilt-dim))
+    drop-shadow(0 0 16px var(--oxblood))
     drop-shadow(0 10px 22px rgba(0, 0, 0, 0.65));
 }
 
