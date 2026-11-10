@@ -56,7 +56,7 @@
       class="skeleton-arm-slot"
       :data-arm="arm.id"
       :class="[`is-${arm.side}`, { 'is-out': arm.out, 'is-struck': arm.hits > 0, 'is-flaring': arm.flaring, 'is-lunging': arm.lunging }]"
-      :style="{ '--hits': arm.hits, '--tilt': `${arm.tilt}deg`, '--phase': `${arm.phase}s`, top: `${arm.top}%` }"
+      :style="{ '--hits': arm.hits, '--tilt': `${arm.tilt}deg`, '--phase': `${arm.phase}s`, '--drift-dur': `${arm.driftMs}ms`, top: `${arm.top}%` }"
       tabindex="-1"
       @click="strike(arm, $event)"
     >
@@ -93,6 +93,28 @@ const SCRATCH_LIFE_MS = 3600
 const IMPACT_LIFE_MS = 1300
 const CLAW_GAP_MS = [1240, 3000]
 const LUNGE_MS = 150
+
+/*
+ * The patrol.
+ *
+ * An arm that holds one spot is a prop; one that works its way along the
+ * margin is hunting. It is the idle beat, so it stays well under the claw:
+ * a constant 22px a second, which crosses a whole band in about four
+ * seconds and never competes with the lunge for attention.
+ *
+ * Constant speed rather than a fixed duration per leg. A fixed duration
+ * makes the short hops look darty and the long ones sludgy; holding the
+ * speed and letting the clock fall out of the distance reads as one
+ * creature moving at its own pace.
+ *
+ * Each arm roams a band around where it came in, and the bands are narrow
+ * enough that the three can never cross or stack up on one another.
+ */
+const PROWL_SPEED = 22
+const PROWL_RANGE = 11
+const PROWL_PAUSE_MS = [900, 2600]
+const PROWL_MS = [1800, 7000]
+const PROWL_EDGE = [8, 86]
 
 const arms = ref([])
 const scratches = ref([])
@@ -132,6 +154,10 @@ function summon() {
   arms.value = PLAN.map((spec) => ({
     ...spec,
     id: nextId++,
+    // where it came in; the patrol is measured from here, not from wherever
+    // it has wandered to, so an arm cannot drift away a step at a time
+    home: spec.top,
+    driftMs: PROWL_MS[0],
     hits: 0,
     out: false,
     flaring: false,
@@ -146,6 +172,7 @@ function summon() {
     // It starts clawing as it lands and does not stop. The arms are not
     // waiting to be noticed; being left alone is not a resting state.
     later(() => clawLoop(arm), arrival + EMERGE_MS * 0.75)
+    later(() => prowl(arm), arrival + EMERGE_MS)
   })
 
   // They cannot be allowed to outstay their welcome: a keyboard-only reader
@@ -212,6 +239,41 @@ function scratchFrom(arm) {
  * fall into step. It jabs forward as it rakes -- the marks alone read as
  * decoration; the lunge is what makes it look like it meant it.
  */
+/*
+ * One leg of the patrol: pick a spot in the band, work out how long it takes
+ * at walking pace, and let the stylesheet carry it there.
+ */
+function prowl(arm) {
+  if (!arms.value.includes(arm) || !arm.out) return
+
+  /*
+   * The drawn box is not the CSS box. These hinge at the shoulder, which is
+   * off past the edge of the window, so the tilt throws the hand end a good
+   * fifty pixels clear of wherever `top` put it -- and the lean deepens as
+   * the arm takes hits. Measure that overhang against the box we actually
+   * have rather than guessing at a margin that only holds at one size.
+   */
+  const room = window.innerHeight
+  let [low, high] = PROWL_EDGE
+  const slot = document.querySelector(`[data-arm="${arm.id}"]`)
+  if (slot) {
+    const rect = slot.getBoundingClientRect()
+    const over = rect.top - (arm.top / 100) * room
+    low = Math.max(low, (-over / room) * 100)
+    high = Math.min(high, ((room - rect.height - over) / room) * 100)
+    if (high < low) high = low
+  }
+
+  const target = Math.min(high, Math.max(low, arm.home + between([-PROWL_RANGE, PROWL_RANGE])))
+  const travel = (Math.abs(target - arm.top) / 100) * window.innerHeight
+  const ms = Math.min(PROWL_MS[1], Math.max(PROWL_MS[0], (travel / PROWL_SPEED) * 1000))
+
+  arm.driftMs = ms
+  arm.top = target
+  // a breath at the end of each leg, so it patrols rather than glides
+  later(() => prowl(arm), ms + between(PROWL_PAUSE_MS))
+}
+
 function clawLoop(arm) {
   if (!arms.value.includes(arm) || !arm.out || arm.hits >= HITS_TO_CLEAR) return
 
@@ -596,8 +658,12 @@ defineExpose({ summon, dismissAll })
   pointer-events: auto;
   cursor: crosshair;
   filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.65));
+  /* `top` carries the patrol and `transform` the reach, which is the whole
+     reason the drift lives on `top`: the two get their own clocks for free,
+     and the slow walk never inherits the snap of the grab. */
   transition:
     transform var(--emerge-dur, 900ms) var(--ease-settle),
+    top var(--drift-dur, 4s) var(--ease-in-out),
     color var(--dur-base) var(--ease-out),
     filter var(--dur-base) var(--ease-out);
 }
