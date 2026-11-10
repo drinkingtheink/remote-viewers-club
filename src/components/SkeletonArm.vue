@@ -25,11 +25,71 @@
         what makes one read as round.
       -->
       <linearGradient :id="shadeId" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="currentColor" stop-opacity="0.84" />
+        <stop offset="0" stop-color="currentColor" stop-opacity="0.93" />
         <stop offset="0.34" stop-color="currentColor" stop-opacity="1" />
-        <stop offset="1" stop-color="currentColor" stop-opacity="0.44" />
+        <stop offset="1" stop-color="currentColor" stop-opacity="0.72" />
       </linearGradient>
+
+      <!--
+        What actually rounds a finger.
+        =============================
+
+        The gradient above cannot do this on its own, and it is worth
+        saying why. A gradient in objectBoundingBox runs down the box, so
+        it only reads as roundness on a bone that lies along the box --
+        which the forearm does and a finger does not. The fingers run
+        diagonally, so a vertical ramp shades them along their LENGTH
+        instead of across their thickness: pale at one end, dim at the
+        other, and flat the whole way. That is the ring and little finger
+        standing out.
+
+        Nor can it be fixed by splitting the drawing up. Most of the hand
+        is a single subpath whose outline weaves around every finger in one
+        go, so there is no per-finger element to hang a per-finger gradient
+        on without redrawing the art.
+
+        An inner shadow does not care about any of that. It works off the
+        silhouette, so it finds the underside of each finger at whatever
+        angle that finger happens to lie, including the ones buried inside
+        the big path. Dark band inside the lower edge, thinner light one
+        inside the upper, and every bone is lit by the same overhead source.
+
+        Built on SourceAlpha rather than SourceGraphic, so the bands key off
+        the shape alone and the flare can still recolour the bone underneath
+        them.
+      -->
+      <filter
+        :id="modelId"
+        x="-15%"
+        y="-30%"
+        width="130%"
+        height="160%"
+        color-interpolation-filters="sRGB"
+      >
+        <feGaussianBlur in="SourceAlpha" stdDeviation="9" result="soft" />
+
+        <!-- lift the soft copy, keep what the shape has and it does not:
+             a band hugging the underside of every edge -->
+        <feOffset in="soft" dy="-11" result="lifted" />
+        <feComposite in="SourceAlpha" in2="lifted" operator="out" result="underside" />
+        <feFlood flood-color="#120c06" flood-opacity="0.62" result="dark" />
+        <feComposite in="dark" in2="underside" operator="in" result="shade" />
+
+        <!-- and the same the other way up, for the catch along the top -->
+        <feOffset in="soft" dy="10" result="dropped" />
+        <feComposite in="SourceAlpha" in2="dropped" operator="out" result="topside" />
+        <feFlood flood-color="#fff4df" flood-opacity="0.34" result="lite" />
+        <feComposite in="lite" in2="topside" operator="in" result="sheen" />
+
+        <feMerge>
+          <feMergeNode in="SourceGraphic" />
+          <feMergeNode in="shade" />
+          <feMergeNode in="sheen" />
+        </feMerge>
+      </filter>
     </defs>
+
+    <g :filter="`url(#${modelId})`">
     <path id="forearm" d="M1080.63,123.74c5.78-23.44,18.38-56.89,6.64-72.45-4.25-5.63-13.05-7-19.88-4.73-35.8,11.89-72.31,14.34-110.04,10.74l-55.74-5.32c-30.13-4.62-50.54-4.28-58.38-3.87l-95.4.51c-42.02.23-82.82.64-124.56-2.72l-34.29-5.81c-14-2.37-27.35-6.9-41.44-5.78-10.78.86-18.25,9.28-17.26,19.91,1.02,10.97,6.77,19.63,14.11,27.4,13.65,14.44,2.54,31.16-9.74,47.77-.14-.13-.27-.29-.41-.43-.34.56-.66,1.13-.92,1.73-.88,2.05-1,4.3-1.13,6.56,1.22,7.52,1.75,13.49,4.45,17.37,3.42,4.93,10.78,8.18,16.77,7.03l31.04-5.99c11.06-2.14,21.86-3.5,33.23-3.09l52.58,1.91,29.64,1.49,69.38,4.12c65.27,3.88,128.92,3.48,194-3.53,15.88-1.71,30.53-1.45,45.92.14,13.47,1.39,24.26,6.73,35.49,13.69l16.91,10.48c6.49,4.02,13.82,1.88,18.59-3.74,15.89-18.69-2.61-41.12.42-53.41ZM969.63,114.53l-3.76.32c-10.27.67-23.05,1.33-35.95,1.92-1.94-.1-3.69,0-5.26.24-12.51.56-24.82,1.05-34.72,1.43-1.99-.04-4.03.06-6.08.23-9.38.35-15.44.55-15.44.55-.25.17-.47.34-.71.51l-69.57,1.32-123.71-.22-44.49-1.47c-14.51-.48-26.63-1.95-41.2-4.93,3.77-4.31,7.24-5.63,12.09-6.94,55-14.9,110.87-21.31,167.87-23.23l64.66.15,15.98.76c27.41,2.15,62.3,4.19,81.45,5.26.03.03.06.07.09.1l71.43,8.79c6.05.74,12.05,1.55,16.04,7.4-16.78,5.11-32.17,6.43-48.71,7.83Z" />
     <path id="upper-arm" d="M1751.49,135.05c-2.74-2.13-3.97-6.28-2.45-9.24,6.58-12.85,5.85-26.61-2.65-37.55-18.31-23.57-45.78-17.77-73.73-10.04l-46.9,12.96c-17.13-.17-32.82-.11-50.02-1.34l-207.3-2.48-43.9-1.61-21.72-.16c-41.42-.3-80.93-8.4-119.24-23.59-15.93-6.32-30.73-12.7-46.91-17.45-11.95-3.51-23.78.37-28.89,11.91-4.57,10.34-6.66,21.8-7.75,33.28l-2.03,21.49c-16.72,17.52-6.15,49.57,1.67,72.45,13.21,9.97,31.68,7.27,44.6-2.05,14.47-10.44,29.27-18.39,46.23-24.19,32.32-11.04,73.32-14.06,107.87-11.98l33.7,2.02,82.52,7.66,19.96,1.33,76.53.1c61.04.08,133.39,6.93,179.9,48.17,5.74,5.09,11.25,8.74,19.8,9.68,26.28,2.88,50.39-16.48,55.07-42.98,2.46-13.9-3.31-27.78-14.39-36.4Z" />
     <g class="skeleton-hand">
@@ -37,6 +97,7 @@
       <path d="M45.91,140.88l1.42,9.38c8.15.36,18.65-.75,27.77-2.75,34.31-7.51,53.32,3.77,63.15-1.18,5.58-2.81,4.78-10.15,6.31-16.72l3.44,13.65c1.69,1.14,7.25,3.08,9.45,2.7l41.9-7.34c6.77-1.19,15.3-.88,22.19-.14l31.57,3.41c4.29.46,8.2-6.08,7.52-9.85l-5.9-33.09c-13.24,3.75-23.84,7.98-36.42,7.96l-39.15-.08c-7.81-.02-15.6-1.34-22.95.35-7.76,1.79-9.58,7.62-11.84,14.61l-1.4-9.59-41.98,2.41c-17.84,1.02-58.38,3.75-57.85,10.67l.55,7.25-5.18-6.06c-11.3-2.81-34.1,2.75-37.21,9.16-1.92,3.96-1.77,10.69.93,13.92,17.36.5,35.44,3.44,43.68-8.69Z" />
       <path d="M251.28,198.46c7.02-.41,13.1-2.53,17-8.44l-6.35-13.76,3.94-9.89c.56-1.41.16-5.17-.83-6.31-.79-.91-4.09-2.35-5.54-1.98l-22.23,5.72c-18.03,4.64-35.89,5.56-54.31,7.13l-42.27,3.59-44.64,9-23.96.22c-9.31.09-12.31,5.74-13.82,14.92l-2.72-9.76c-16.29-2.63-44.02,4.84-46.35,15.49-2.19,10.05,29.34,12.17,48.24,5.55,1.14,6.79,6.37,10.4,12.82,8.62l24.51-6.76,35.25-.47c5.26-.07,8.9-3.33,11.79-7.79l4.18,7.94c7.98.39,16.31-.12,24.47-2.29l28.96-7.72,51.85-3.02Z" />
       <path d="M299.38,243.13c-26.03,15.62-41.33,4.35-42.5,25.52-11.82-16.66-33.75-.64-52.09,11.19-7.05,4.54-13.71,10.12-11.6,20.19,16.94.44,28.53-7.81,48.57-7.58,6.58.08,13.14-1.34,18.88-3.51l1.86-7.21c6.82,7.37,19.95,1.68,31.15-4.51,11.22-6.19,22.47-8.72,35.06-11.2l25.02-4.92c-2.19-14.91-9.26-27.36-20.22-38.46l-34.15,20.5Z" />
+    </g>
     </g>
   </svg>
 </template>
@@ -59,7 +120,9 @@ import { getCurrentInstance } from 'vue'
  * zero by every arm that uses it. A clock would not have saved it either:
  * all three are built in the same pass of summon(), inside one millisecond.
  */
-const shadeId = `bone-shade-${getCurrentInstance().uid}`
+const uid = getCurrentInstance().uid
+const shadeId = `bone-shade-${uid}`
+const modelId = `bone-model-${uid}`
 </script>
 
 <style scoped>
