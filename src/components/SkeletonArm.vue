@@ -5,7 +5,31 @@
     viewBox="0 0 1766.44 300.05"
     aria-hidden="true"
     focusable="false"
+    :style="{ '--bone-fill': `url(#${shadeId})` }"
   >
+    <defs>
+      <!--
+        Volume without a second copy of the geometry.
+
+        The stops are currentColor at varying opacity rather than fixed
+        greys, which is the whole trick: the flare reddens these bones by
+        setting `color`, and a gradient of literal colours would have gone
+        deaf to it. Opacity shades instead, and against a near-black page
+        less opacity reads as deeper shadow.
+
+        Left in objectBoundingBox, so every bone is lit across its own short
+        axis rather than all of them sharing one ramp down the drawing.
+
+        The brightest band sits just under the top edge, not on it: a
+        cylinder turns away at its silhouette, and that small dip is most of
+        what makes one read as round.
+      -->
+      <linearGradient :id="shadeId" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="currentColor" stop-opacity="0.84" />
+        <stop offset="0.34" stop-color="currentColor" stop-opacity="1" />
+        <stop offset="1" stop-color="currentColor" stop-opacity="0.44" />
+      </linearGradient>
+    </defs>
     <path id="forearm" d="M1080.63,123.74c5.78-23.44,18.38-56.89,6.64-72.45-4.25-5.63-13.05-7-19.88-4.73-35.8,11.89-72.31,14.34-110.04,10.74l-55.74-5.32c-30.13-4.62-50.54-4.28-58.38-3.87l-95.4.51c-42.02.23-82.82.64-124.56-2.72l-34.29-5.81c-14-2.37-27.35-6.9-41.44-5.78-10.78.86-18.25,9.28-17.26,19.91,1.02,10.97,6.77,19.63,14.11,27.4,13.65,14.44,2.54,31.16-9.74,47.77-.14-.13-.27-.29-.41-.43-.34.56-.66,1.13-.92,1.73-.88,2.05-1,4.3-1.13,6.56,1.22,7.52,1.75,13.49,4.45,17.37,3.42,4.93,10.78,8.18,16.77,7.03l31.04-5.99c11.06-2.14,21.86-3.5,33.23-3.09l52.58,1.91,29.64,1.49,69.38,4.12c65.27,3.88,128.92,3.48,194-3.53,15.88-1.71,30.53-1.45,45.92.14,13.47,1.39,24.26,6.73,35.49,13.69l16.91,10.48c6.49,4.02,13.82,1.88,18.59-3.74,15.89-18.69-2.61-41.12.42-53.41ZM969.63,114.53l-3.76.32c-10.27.67-23.05,1.33-35.95,1.92-1.94-.1-3.69,0-5.26.24-12.51.56-24.82,1.05-34.72,1.43-1.99-.04-4.03.06-6.08.23-9.38.35-15.44.55-15.44.55-.25.17-.47.34-.71.51l-69.57,1.32-123.71-.22-44.49-1.47c-14.51-.48-26.63-1.95-41.2-4.93,3.77-4.31,7.24-5.63,12.09-6.94,55-14.9,110.87-21.31,167.87-23.23l64.66.15,15.98.76c27.41,2.15,62.3,4.19,81.45,5.26.03.03.06.07.09.1l71.43,8.79c6.05.74,12.05,1.55,16.04,7.4-16.78,5.11-32.17,6.43-48.71,7.83Z" />
     <path id="upper-arm" d="M1751.49,135.05c-2.74-2.13-3.97-6.28-2.45-9.24,6.58-12.85,5.85-26.61-2.65-37.55-18.31-23.57-45.78-17.77-73.73-10.04l-46.9,12.96c-17.13-.17-32.82-.11-50.02-1.34l-207.3-2.48-43.9-1.61-21.72-.16c-41.42-.3-80.93-8.4-119.24-23.59-15.93-6.32-30.73-12.7-46.91-17.45-11.95-3.51-23.78.37-28.89,11.91-4.57,10.34-6.66,21.8-7.75,33.28l-2.03,21.49c-16.72,17.52-6.15,49.57,1.67,72.45,13.21,9.97,31.68,7.27,44.6-2.05,14.47-10.44,29.27-18.39,46.23-24.19,32.32-11.04,73.32-14.06,107.87-11.98l33.7,2.02,82.52,7.66,19.96,1.33,76.53.1c61.04.08,133.39,6.93,179.9,48.17,5.74,5.09,11.25,8.74,19.8,9.68,26.28,2.88,50.39-16.48,55.07-42.98,2.46-13.9-3.31-27.78-14.39-36.4Z" />
     <g class="skeleton-hand">
@@ -18,9 +42,24 @@
 </template>
 
 <script setup>
+import { getCurrentInstance } from 'vue'
+
 // Drawn hand-at-left, shoulder-at-right, so unflipped it reaches leftward --
 // which is the pose for an arm coming out of the right-hand margin. The left
 // margin's arms are the same drawing mirrored.
+
+/*
+ * Three of these are on screen at once and each carries its own copy of the
+ * gradient, so the id cannot be a constant: duplicate ids all resolve to
+ * whichever came first in the document, and the first arm to be beaten off
+ * the page would have taken the other two's fill with it when it went.
+ *
+ * The instance uid rather than a counter declared up here -- top-level code
+ * in <script setup> runs once per instance, so a local counter is reset to
+ * zero by every arm that uses it. A clock would not have saved it either:
+ * all three are built in the same pass of summon(), inside one millisecond.
+ */
+const shadeId = `bone-shade-${getCurrentInstance().uid}`
 </script>
 
 <style scoped>
@@ -37,7 +76,21 @@
 }
 
 .skeleton-arm path {
-  fill: currentColor;
+  fill: var(--bone-fill, currentColor);
+
+  /*
+   * A hairline catch along every edge. It does the job a rim light does --
+   * lifts the bone off whatever is behind it and keeps the separate bones
+   * reading as separate -- and it is the register the rest of the app is
+   * drawn in anyway: the badges and session icons are all engraved line
+   * work. non-scaling-stroke so it stays one crisp pixel whatever size the
+   * arm is drawn at, rather than thickening with the viewBox.
+   */
+  stroke: var(--candle);
+  stroke-opacity: 0.2;
+  stroke-width: 1;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
 }
 
 .skeleton-hand {
