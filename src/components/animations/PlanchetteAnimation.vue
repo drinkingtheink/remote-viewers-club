@@ -136,12 +136,20 @@ const letters = CHARS.map((ch, i) => {
  * placement group instead would scale the movement down with everything
  * else and amount to nothing.
  */
+/*
+ * The jaw is absent from the idle cycle: the skull surfaces as a bare
+ * cranium, and the jaw only arrives when you do. It makes the laugh an
+ * event rather than something that was always sitting there waiting.
+ */
 .skull-jaw {
   transform-box: fill-box;
   transform-origin: 50% 0;
+  opacity: 0;
+  transition: opacity 0.35s ease;
 }
 
 .spirit-board-session:hover .skull-jaw {
+  opacity: 1;
   animation: skull-jabber 1.1s linear infinite;
 }
 
@@ -169,6 +177,8 @@ const letters = CHARS.map((ch, i) => {
   transform-origin: center;
   opacity: 0;
   animation: motif-surface var(--motif-cycle, 26s) ease-in-out infinite both;
+  /* carries the hand-off when hover stops the animation dead */
+  transition: opacity 0.5s ease;
 }
 
 .motif-crow {
@@ -192,8 +202,23 @@ const letters = CHARS.map((ch, i) => {
   }
 }
 
+/*
+ * Hover holds the board still: the skull stays up for as long as you are
+ * there, laughing, and the crow stands down. Speeding the cycle up was the
+ * wrong fix -- it still traded the two of them in and out under the cursor,
+ * which is the opposite of holding someone's attention.
+ */
 .spirit-board-session:hover .motif {
-  --motif-cycle: 15s;
+  animation: none;
+  transform: none;
+}
+
+.spirit-board-session:hover .board-skull {
+  opacity: var(--motif-peak);
+}
+
+.spirit-board-session:hover .motif-crow {
+  opacity: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {
