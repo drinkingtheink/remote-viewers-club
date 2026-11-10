@@ -114,7 +114,13 @@ function dismissAll() {
   }, EMERGE_MS)
 }
 
-// A typed word, for tuning the feel before the real trigger is wired up.
+/*
+ * Scaffolding, both of these. While the real trigger is undecided the arms
+ * come out on their own on every local load so the feel can be iterated on,
+ * and the word summons them on demand. The auto-summon is gated on the dev
+ * build, so neither the live site nor a preview build inherits it.
+ */
+const AUTO_SUMMON_IN_DEV = true
 const SUMMON_WORD = 'bones'
 let typed = ''
 
@@ -139,7 +145,14 @@ function onKeyDown(event) {
   }
 }
 
-onMounted(() => window.addEventListener('keydown', onKeyDown))
+onMounted(() => {
+  window.addEventListener('keydown', onKeyDown)
+
+  // A beat after paint, so they are seen arriving rather than already there.
+  if (AUTO_SUMMON_IN_DEV && process.env.NODE_ENV !== 'production') {
+    later(summon, 900)
+  }
+})
 onBeforeUnmount(() => {
   window.removeEventListener('keydown', onKeyDown)
   clearTimers()
