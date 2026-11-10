@@ -72,7 +72,7 @@
 </template>
 
 <script setup>
-import { onBeforeUnmount, onMounted, ref, defineExpose } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch, defineEmits, defineExpose } from 'vue'
 import SkeletonArm from './SkeletonArm.vue'
 
 const HITS_TO_CLEAR = 3
@@ -319,9 +319,91 @@ function onKeyDown(event) {
   }
 }
 
+/*
+ * What the arms are doing to the page, as one number.
+ *
+ * Each arm out hauls its own margin down, weighted by the grip it has left,
+ * so beating one back eases its pull before it lets go altogether. The sides
+ * cancel, which is the whole joke: with two on the west and one on the east
+ * the page lists west, and clearing the east one makes it list further.
+ */
+const DEG_PER_ARM = 1.4
+const MAX_LIST = 3
+
+const emit = defineEmits(['siege'])
+const root = document.documentElement
+
+const lean = computed(() =>
+  arms.value.reduce((total, arm) => {
+    if (!arm.out) return total
+    const grip = (HITS_TO_CLEAR - arm.hits) / HITS_TO_CLEAR
+    return total + (arm.side === 'left' ? -grip : grip)
+  }, 0)
+)
+
+/*
+ * A rotation turns about the element's own centre, and the stage is as tall
+ * as the document -- so one degree of list would throw the masthead a
+ * hundred pixels sideways and the amount would change as you scrolled.
+ * Pinning the pivot to the middle of the viewport keeps the part you are
+ * actually looking at where you left it.
+ */
+let pivotFrame = null
+
+function placePivot() {
+  pivotFrame = null
+  root.style.setProperty('--list-pivot', `${window.scrollY + window.innerHeight / 2}px`)
+}
+
+function trackPivot() {
+  if (pivotFrame) return
+  pivotFrame = requestAnimationFrame(placePivot)
+}
+
+let besieged = false
+
+function holdPage(count, tilt) {
+  const deg = Math.max(-MAX_LIST, Math.min(MAX_LIST, tilt * DEG_PER_ARM))
+  root.style.setProperty('--list', `${deg.toFixed(2)}deg`)
+  root.dataset.besieged = String(count)
+  if (besieged) return
+  besieged = true
+  placePivot()
+  window.addEventListener('scroll', trackPivot, { passive: true })
+  window.addEventListener('resize', trackPivot)
+}
+
+function releasePage() {
+  if (!besieged) return
+  besieged = false
+  window.removeEventListener('scroll', trackPivot)
+  window.removeEventListener('resize', trackPivot)
+  if (pivotFrame) cancelAnimationFrame(pivotFrame)
+  pivotFrame = null
+  root.style.removeProperty('--list')
+  delete root.dataset.besieged
+  // the pivot outlives the list: the stage has to unwind about the same
+  // point it bent on, or it swings on its way back to level
+  later(() => root.style.removeProperty('--list-pivot'), 1200)
+}
+
+watch(
+  [() => arms.value.length, lean],
+  ([count, tilt]) => {
+    if (count) holdPage(count, tilt)
+    else releasePage()
+    emit('siege', {
+      count,
+      west: arms.value.filter((arm) => arm.side === 'left').length,
+      east: arms.value.filter((arm) => arm.side === 'right').length
+    })
+  }
+)
+
 onMounted(() => window.addEventListener('keydown', onKeyDown))
 onBeforeUnmount(() => {
   window.removeEventListener('keydown', onKeyDown)
+  releasePage()
   clearTimers()
 })
 

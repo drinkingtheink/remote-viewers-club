@@ -2,7 +2,7 @@
   <div class="app-stage">
     <div class="intro-wrapper">
       <!-- the seal is the summons; nothing says so, which is the point -->
-      <SeeYouThere class="watcher" @click="summonArms" />
+      <SeeYouThere ref="watcher" class="watcher" @click="summonArms" />
       <h1>REMOTE VIEWERS CLUB</h1>
       <p class="introduction">Purveyors, practicioners, and pundits of the metaphysical arts &amp; sciences</p>
     </div>
@@ -122,7 +122,7 @@
     <main>
       <Transition name="leaf" mode="out-in">
       <section class="content-section gallery" v-if="activeSection === 'gallery'" key="gallery-stage">
-        <h2 class="intro">Special Teams led by legendary members</h2>
+        <h2 class="intro" :class="{ 'is-bulletin': bulletin }">{{ bulletin || 'Special Teams led by legendary members' }}</h2>
         <figure
           class="badge"
           v-for="(badge, i) in badgeMap"
@@ -146,7 +146,7 @@
       </section>
 
       <section class="content-section praxis" v-else-if="activeSection === 'praxis'" key="praxis-stage">
-        <h2 class="intro">Practice your skills and maybe you can make one of the special teams</h2>
+        <h2 class="intro" :class="{ 'is-bulletin': bulletin }">{{ bulletin || 'Practice your skills and maybe you can make one of the special teams' }}</h2>
         <!-- <div class="focii">
           <span class="focus-option">
             <RemoteViewingIcon />
@@ -184,8 +184,6 @@
       </Transition>
     </main>
 
-    <SkeletonArms ref="skeletonArms" />
-
     <footer>
       <button type="button" class="footer-about" @click="openAbout">About this App</button>
       <a href="https://www.drinkingtheink.com/" target="_blank">About the Author</a>
@@ -206,6 +204,14 @@
       <p class="colophon-mark">Remote Viewers Club &middot; bound in the year 2026</p>
     </aside>
   </div>
+
+  <!--
+    Outside .app-stage on purpose. The arms are the level reference frame --
+    the page is what moves -- and they are position: fixed, which a rotation
+    on an ancestor would quietly turn into position: absolute.
+  -->
+  <SkeletonArms ref="skeletonArms" @siege="onSiege" />
+
 </template>
 
 <script>
@@ -336,17 +342,42 @@ export default {
       activeBadge: null,
       activeSection: sectionFromUrl(),
       aboutOpen: aboutFromUrl(),
+      siege: null,
     }
   },
   computed: {
     activeIndex() {
       if (!this.activeBadge) return -1
       return this.badgeMap.findIndex((badge) => badge.id === this.activeBadge.id)
+    },
+    /*
+     * The club's own letterpress plate, filed under duress. It is the house
+     * voice that makes this funny rather than loud: an institution that has
+     * skeletons coming through the margins and responds by asking members to
+     * remain seated.
+     */
+    bulletin() {
+      if (!this.siege) return null
+      const { count, west, east } = this.siege
+      if (count >= 3) return 'Three points of contact. The stewards are not answering.'
+      if (count === 2) {
+        if (west === 2) return 'Both breaches to the west. Members will please remain seated.'
+        if (east === 2) return 'Both breaches to the east. Members will please remain seated.'
+        return 'Two breaches, one to each margin. Members will please remain seated.'
+      }
+      return `One contact, ${west ? 'west' : 'east'} margin. The matter is in hand.`
     }
   },
   methods: {
     summonArms() {
+      // Home first. Out in the corner the seal is position: fixed, and the
+      // stage it lives in is about to start rotating -- which would strand
+      // it. The flight takes about as long as the first arm does to arrive.
+      this.$refs.watcher?.goHome();
       this.$refs.skeletonArms?.summon();
+    },
+    onSiege(report) {
+      this.siege = report.count ? report : null;
     },
     handleBadgeClick(badge) {
       this.activeBadge = badge;
@@ -1162,6 +1193,23 @@ button.enlarge:hover {
   @media only screen and (min-width: 767px) {
     width: 70%;
     font-size: 180%;
+  }
+}
+
+/*
+ * The same plate, filed under duress. Set in the UI face rather than the
+ * display one -- this is a notice pinned over the standing text, not part of
+ * the standing text, and it should look like it was set in a hurry.
+ */
+.intro.is-bulletin {
+  font-family: var(--font-ui);
+  font-size: var(--text-lg);
+  letter-spacing: var(--tracking-wide);
+  color: var(--cinnabar);
+  text-shadow: 0 0 18px rgba(139, 0, 0, 0.55);
+
+  @media only screen and (min-width: 767px) {
+    font-size: var(--text-xl);
   }
 }
 

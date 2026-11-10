@@ -174,6 +174,18 @@ export default {
             this.scrollFrame = null
             const y = window.scrollY
 
+            /*
+             * The page is listing under the arms, and a rotation on an
+             * ancestor quietly turns a fixed child into an absolute one --
+             * out in the corner the seal would scroll away instead of
+             * keeping station. It holds its perch until they are gone, which
+             * is where it belongs anyway: it let them in, it can watch.
+             */
+            if (document.documentElement.dataset.besieged) {
+                if (this.adrift) this.goHome()
+                return
+            }
+
             // scrolled back up while it is out: come home now rather than
             // sitting in the corner over a masthead that is visible again
             if (this.adrift) {
@@ -198,6 +210,9 @@ export default {
         },
         castOff() {
             this.beatTimer = null
+
+            // armed before the arms arrived; the perch rule still holds
+            if (document.documentElement.dataset.besieged) return
 
             // A failed roll still costs the reader a stretch of scrolling
             // before the next one. Rolling again on the very next scroll

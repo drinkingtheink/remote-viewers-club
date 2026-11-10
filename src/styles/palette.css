@@ -197,6 +197,78 @@ body::before {
 }
 
 /*
+ * Under siege.
+ *
+ * The arms have hold of the page, so the page comes off level. A vignette
+ * would only be decoration; a list is a consequence -- you can see what is
+ * pulling, and from which side.
+ *
+ * The pivot is pinned to the middle of the viewport by SkeletonArms, because
+ * .app-stage is as tall as the document and turning it about its own centre
+ * would throw the masthead sideways. The slight scale is what keeps the
+ * corners inside the window once it is crooked; it reads as recoil.
+ *
+ * .app-stage carries no background of its own, so what tilts is the plate
+ * and not the binding: the leather stays square behind it.
+ */
+.app-stage {
+  rotate: var(--list, 0deg);
+  transform-origin: 50% var(--list-pivot, 50%);
+  transition: rotate 900ms var(--ease-settle), scale 900ms var(--ease-settle);
+}
+
+:root[data-besieged] .app-stage {
+  scale: 0.978;
+}
+
+/*
+ * A crooked stage sweeps its corners out past the window, and the arms hang
+ * over the edge on purpose. Neither has any business adding a horizontal
+ * scrollbar.
+ *
+ * Both the root and body, which looks redundant and is not: measured side by
+ * side inside one siege, the root alone still scrolled 49px and body alone
+ * still scrolled 49px. Only the pair reports a scrollWidth equal to the
+ * client width. `clip` rather than `hidden` so neither becomes a scroll
+ * container, and only on the x axis, so the page still scrolls down.
+ */
+:root[data-besieged],
+:root[data-besieged] body {
+  overflow-x: clip;
+}
+
+/* The candle does not gutter here, it reddens. Kept shallow on purpose: the
+   list is doing the work, and two loud signals read as a bug, not a fright. */
+:root[data-besieged] body::after {
+  background: radial-gradient(
+    ellipse at 50% 40%,
+    transparent 22%,
+    rgba(58, 4, 4, 0.34) 60%,
+    rgba(14, 0, 0, 0.74) 100%
+  );
+  transition: background var(--dur-slow) var(--ease-out);
+}
+
+:root[data-besieged="3"] body::after {
+  background: radial-gradient(
+    ellipse at 50% 40%,
+    transparent 12%,
+    rgba(74, 5, 5, 0.42) 52%,
+    rgba(18, 0, 0, 0.84) 100%
+  );
+}
+
+/* No tasteful reduced version of a tilting page. The arms never summon under
+   this preference anyway; this is belt and braces. */
+@media (prefers-reduced-motion: reduce) {
+  .app-stage {
+    rotate: none;
+    scale: none;
+    transition: none;
+  }
+}
+
+/*
  * The eye in the binding. Driven by useWatchingLattice, which only ever puts
  * it on a quatrefoil's centre, and only while someone is here to see it.
  *
