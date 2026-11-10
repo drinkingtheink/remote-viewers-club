@@ -283,6 +283,8 @@ function strike(arm, event) {
 
 function dismissAll() {
   if (!arms.value.length) return
+  // they are letting go, not being broken: no jolt on the way out
+  retreating = true
   arms.value.forEach((arm) => {
     arm.out = false
   })
@@ -361,6 +363,27 @@ function trackPivot() {
 }
 
 let besieged = false
+let lastCount = 0
+let retreating = false
+
+/*
+ * The jolt.
+ *
+ * Only two moments earn one: something taking hold, and something breaking.
+ * The watcher below also fires on every scratch -- lean moves with each hit
+ * -- and shaking the page every time the reader lands a blow would be both
+ * sickening and a lie about what just happened. The scratch already has its
+ * burst, its flare and a change in the list.
+ */
+const JOLT_MS = { grab: 280, break: 180 }
+
+function jolt(kind) {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+  root.dataset.jolt = kind
+  later(() => {
+    if (root.dataset.jolt === kind) delete root.dataset.jolt
+  }, JOLT_MS[kind])
+}
 
 function holdPage(count, tilt) {
   const deg = Math.max(-MAX_LIST, Math.min(MAX_LIST, tilt * DEG_PER_ARM))
@@ -390,6 +413,12 @@ function releasePage() {
 watch(
   [() => arms.value.length, lean],
   ([count, tilt]) => {
+    // the page is grabbed, or something has just come off it
+    if (count > lastCount && lastCount === 0) jolt('grab')
+    else if (count < lastCount && !retreating) jolt('break')
+    if (!count) retreating = false
+    lastCount = count
+
     if (count) holdPage(count, tilt)
     else releasePage()
     emit('siege', {

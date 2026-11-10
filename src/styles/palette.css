@@ -222,6 +222,45 @@ body::before {
 }
 
 /*
+ * Jolt, then list.
+ *
+ * The list eased in on its own before, which read as an animation playing
+ * rather than as something hauling on the page. A shove at the moment the
+ * angle changes makes the tilt a consequence of the grab.
+ *
+ * `translate` on purpose: the stage already spends `rotate` on the list and
+ * `scale` on the recoil, and the three compose instead of overwriting each
+ * other the way a single `transform` would.
+ */
+:root[data-jolt="grab"] .app-stage {
+  animation: siege-grab 280ms cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+:root[data-jolt="break"] .app-stage {
+  animation: siege-break 180ms cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+/* broad and sideways: something has taken hold and pulled */
+@keyframes siege-grab {
+  0% { translate: 0 0; }
+  16% { translate: -7px 3px; }
+  34% { translate: 6px -2px; }
+  52% { translate: -4px 2px; }
+  70% { translate: 3px -1px; }
+  86% { translate: -1px 0; }
+  100% { translate: 0 0; }
+}
+
+/* short and vertical: something has snapped */
+@keyframes siege-break {
+  0% { translate: 0 0; }
+  22% { translate: 2px -6px; }
+  46% { translate: -2px 4px; }
+  70% { translate: 1px -2px; }
+  100% { translate: 0 0; }
+}
+
+/*
  * A crooked stage sweeps its corners out past the window, and the arms hang
  * over the edge on purpose. Neither has any business adding a horizontal
  * scrollbar.
@@ -235,6 +274,28 @@ body::before {
 :root[data-besieged],
 :root[data-besieged] body {
   overflow-x: clip;
+}
+
+/*
+ * The light itself goes wrong.
+ *
+ * The vignette below already reddens, but that is the room. This is the
+ * carried light -- the gilt the candle finds as it passes -- and it is the
+ * layer that actually reads as the source. Turned rather than repainted: the
+ * tooling is a data URI and cannot see a custom property, so a hue shift is
+ * the only way to move its gold without shipping a second copy of it.
+ */
+:root[data-besieged] body::before {
+  filter: hue-rotate(-38deg) saturate(2.4) brightness(0.88);
+  opacity: 0.48;
+  transition:
+    filter var(--dur-slow) var(--ease-out),
+    opacity var(--dur-slow) var(--ease-out);
+}
+
+:root[data-besieged="3"] body::before {
+  filter: hue-rotate(-44deg) saturate(3) brightness(0.82);
+  opacity: 0.56;
 }
 
 /* The candle does not gutter here, it reddens. Kept shallow on purpose: the
@@ -261,6 +322,10 @@ body::before {
 /* No tasteful reduced version of a tilting page. The arms never summon under
    this preference anyway; this is belt and braces. */
 @media (prefers-reduced-motion: reduce) {
+  :root[data-jolt] .app-stage {
+    animation: none;
+  }
+
   .app-stage {
     rotate: none;
     scale: none;
