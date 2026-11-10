@@ -1232,14 +1232,24 @@ button.enlarge:hover {
   height: 24px;
   width: 20px;
   flex: 0 0 auto;
-  background: var(--gilt-bright);
-  mask: radial-gradient(#0000 71%, #000 72%) 10000% 10000%/99.5% 99.5%;
-  /* Held in the layout even when inactive, so switching tabs doesn't
-     shuffle the labels sideways. */
-  opacity: 0;
+  /*
+   * The slot is occupied on every tab, not just the active one. It was held
+   * empty before, which reserved the space correctly but left the label of an
+   * inactive tab looking shoved off its own centre with nothing to explain it.
+   *
+   * Inactive tabs get a crescent; the active one gets the star.
+   */
+  background: var(--gilt-dim);
+  mask: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M15.4 2.2A10 10 0 1 0 15.4 21.8A12.2 12.2 0 0 1 15.4 2.2Z' fill='%23000'/></svg>") center / contain no-repeat;
+  -webkit-mask: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M15.4 2.2A10 10 0 1 0 15.4 21.8A12.2 12.2 0 0 1 15.4 2.2Z' fill='%23000'/></svg>") center / contain no-repeat;
+  opacity: 0.6;
+  transition: opacity var(--dur-base) var(--ease-out);
 }
 
 .sections button.active .sparkle {
+  background: var(--gilt-bright);
+  mask: radial-gradient(#0000 71%, #000 72%) 10000% 10000%/99.5% 99.5%;
+  -webkit-mask: radial-gradient(#0000 71%, #000 72%) 10000% 10000%/99.5% 99.5%;
   opacity: 1;
   animation: swoop-up 0.25s linear;
 }
