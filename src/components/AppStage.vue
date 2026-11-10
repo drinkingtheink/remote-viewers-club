@@ -1438,7 +1438,15 @@ button.enlarge:hover {
 /* `.stage p` is a class plus an element and beats a bare class, so an
    unprefixed .panel-subheader loses font-style and max-width to it. */
 .stage p.panel-subheader {
-  font-size: var(--text-md);
+  /*
+   * A step above body copy. --text-md is right for .specimen-unit on a
+   * badge plate, but a session card is several times the size and the same
+   * value reads small inside it -- this is the line that tells you what the
+   * session is, so it carries more weight than the instructions below it.
+   * Still well under the --text-2xl title, which is what kept it from going
+   * back to being a second heading.
+   */
+  font-size: var(--text-lg);
   line-height: var(--leading-snug);
   font-family: var(--font-body);
   font-style: italic;
