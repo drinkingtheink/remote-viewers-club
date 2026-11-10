@@ -3,18 +3,40 @@
     A fixed layer over the whole page. The layer itself never takes a click;
     only the arms do, so the page stays usable while they are out.
   -->
-  <div v-if="arms.length" class="skeleton-layer" aria-hidden="true">
+  <div v-if="arms.length || scratches.length" class="skeleton-layer" aria-hidden="true">
+    <!-- Marks are left on the page, not on the arm, so they stay put while
+         the arm that made them retreats. -->
+    <svg class="scratch-layer">
+      <g
+        v-for="scratch in scratches"
+        :key="scratch.id"
+        class="scratch"
+        :transform="`translate(${scratch.x} ${scratch.y}) rotate(${scratch.angle})`"
+      >
+        <path
+          v-for="(d, i) in scratch.lines"
+          :key="i"
+          :d="d"
+          pathLength="1"
+          :style="{ '--i': i }"
+        />
+      </g>
+    </svg>
+
     <button
       v-for="arm in arms"
       :key="arm.id"
       type="button"
       class="skeleton-arm-slot"
-      :class="[`is-${arm.side}`, { 'is-out': arm.out, 'is-struck': arm.hits > 0, 'is-flaring': arm.flaring }]"
-      :style="{ '--hits': arm.hits, '--tilt': `${arm.tilt}deg`, top: `${arm.top}%` }"
+      :data-arm="arm.id"
+      :class="[`is-${arm.side}`, { 'is-out': arm.out, 'is-struck': arm.hits > 0, 'is-flaring': arm.flaring, 'is-lunging': arm.lunging }]"
+      :style="{ '--hits': arm.hits, '--tilt': `${arm.tilt}deg`, '--phase': `${arm.phase}s`, top: `${arm.top}%` }"
       tabindex="-1"
       @click="strike(arm)"
     >
-      <SkeletonArm />
+      <span class="skeleton-arm-lunge">
+        <span class="skeleton-arm-tremor"><SkeletonArm /></span>
+      </span>
     </button>
   </div>
 </template>
@@ -32,16 +54,24 @@ const EMERGE_MS = 900
 
 // Where each one comes from, how high up, and how far off square it hangs.
 const PLAN = [
-  { side: 'left', top: 22, tilt: -5 },
-  { side: 'right', top: 46, tilt: 3 },
-  { side: 'left', top: 68, tilt: 4 },
-  { side: 'right', top: 15, tilt: -3 }
+  { side: 'left', top: 22, tilt: -5, phase: -0.4 },
+  { side: 'right', top: 46, tilt: 3, phase: -1.7 },
+  { side: 'left', top: 68, tilt: 4, phase: -2.9 },
+  { side: 'right', top: 15, tilt: -3, phase: -1.1 }
 ]
 
+const SCRATCH_LIFE_MS = 3600
+const CLAW_GAP_MS = [620, 1500]
+const LUNGE_MS = 150
+
 const arms = ref([])
+const scratches = ref([])
 
 let timers = []
 let nextId = 0
+let nextScratchId = 0
+
+const between = ([min, max]) => min + Math.random() * (max - min)
 
 const later = (fn, ms) => {
   timers.push(setTimeout(fn, ms))
@@ -72,13 +102,18 @@ function summon() {
     id: nextId++,
     hits: 0,
     out: false,
-    flaring: false
+    flaring: false,
+    lunging: false
   }))
 
   arms.value.forEach((arm, i) => {
+    const arrival = 60 + i * STAGGER_MS
     later(() => {
       arm.out = true
-    }, 60 + i * STAGGER_MS)
+    }, arrival)
+    // It starts clawing as it lands and does not stop. The arms are not
+    // waiting to be noticed; being left alone is not a resting state.
+    later(() => clawLoop(arm), arrival + EMERGE_MS * 0.75)
   })
 
   // They cannot be allowed to outstay their welcome: a keyboard-only reader
@@ -86,11 +121,70 @@ function summon() {
   later(dismissAll, GIVE_UP_MS)
 }
 
+/* Four rakes, uneven in length and bow, so no two sets look alike. */
+function clawLines() {
+  const lines = []
+
+  for (let i = 0; i < 4; i += 1) {
+    const length = 96 + Math.random() * 58 + i * 6
+    const offset = (i - 1.5) * 15 + (Math.random() - 0.5) * 5
+    const bow = 9 + Math.random() * 9
+
+    lines.push(`M0,${offset.toFixed(1)} q${(length * 0.45).toFixed(1)},${bow.toFixed(1)} ${length.toFixed(1)},${(offset * 0.35).toFixed(1)}`)
+  }
+
+  return lines
+}
+
+/* Marked where the hand actually is, measured rather than predicted, so the
+   rakes line up with the fingers whatever the arm happens to be doing. */
+function scratchFrom(arm) {
+  const hand = document.querySelector(`[data-arm="${arm.id}"] .skeleton-hand`)
+  if (!hand) return
+
+  const box = hand.getBoundingClientRect()
+  const id = nextScratchId++
+  const reachesRight = arm.side === 'left'
+
+  scratches.value.push({
+    id,
+    // From the fingertips, carrying on the way the hand was going. Struck
+    // from the middle of the hand the rakes end up underneath the arm that
+    // made them, which hides the whole effect.
+    x: reachesRight ? box.right - 12 : box.left + 12,
+    y: box.top + box.height * 0.58,
+    angle: reachesRight ? -7 : 187,
+    lines: clawLines()
+  })
+
+  later(() => {
+    scratches.value = scratches.value.filter((s) => s.id !== id)
+  }, SCRATCH_LIFE_MS)
+}
+
+/*
+ * Claws on its own, forever, at an uneven cadence so the four of them never
+ * fall into step. It jabs forward as it rakes -- the marks alone read as
+ * decoration; the lunge is what makes it look like it meant it.
+ */
+function clawLoop(arm) {
+  if (!arms.value.includes(arm) || !arm.out || arm.hits >= HITS_TO_CLEAR) return
+
+  arm.lunging = true
+  later(() => scratchFrom(arm), LUNGE_MS * 0.8)
+  later(() => {
+    arm.lunging = false
+  }, LUNGE_MS + 110)
+
+  later(() => clawLoop(arm), between(CLAW_GAP_MS))
+}
+
 function strike(arm) {
   if (!arm.out || arm.hits >= HITS_TO_CLEAR) return
 
   arm.hits += 1
   arm.flaring = true
+  scratchFrom(arm)
   later(() => {
     arm.flaring = false
   }, FLARE_MS)
@@ -176,9 +270,65 @@ defineExpose({ summon, dismissAll })
  * happens to have. A laptop shows a hand and some forearm; a wide monitor
  * shows nearly all of it. One rule, and it reads correctly at both.
  */
+.scratch-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/*
+ * pathLength="1" normalises every rake, however long it is, so one pair of
+ * keyframes draws them all at the same rate.
+ */
+/* The glow sits on the set rather than each rake: four marks times a dozen
+   live sets is sixty filtered nodes, and they are all animating. */
+.scratch {
+  filter: drop-shadow(0 0 5px var(--oxblood));
+}
+
+.scratch path {
+  fill: none;
+  stroke: var(--cinnabar);
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  filter: drop-shadow(0 0 5px var(--oxblood));
+  animation:
+    scratch-rake 170ms var(--ease-out) forwards,
+    scratch-fade var(--scratch-life, 3.4s) linear forwards;
+  animation-delay: calc(var(--i) * 35ms);
+}
+
+@keyframes scratch-rake {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes scratch-fade {
+  0%, 42% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
 .skeleton-arm-slot {
-  --margin: max(150px, (100vw - 1180px) / 2);
-  --arm-len: clamp(360px, 34vw, 620px);
+  --arm-len: clamp(460px, 42vw, 900px);
+  /*
+   * How far in the hand lands. Proportional to the arm so plenty of it is in
+   * view at any width, but floored against the page's own margin so it still
+   * crosses onto the column on a wide monitor, and capped at 90% so the
+   * shoulder never leaves the edge and the arm never floats free of the page.
+   */
+  --reach: min(
+    calc(var(--arm-len) * 0.9),
+    max(calc(var(--arm-len) * 0.66), calc((100vw - 1180px) / 2 + 120px))
+  );
 
   position: absolute;
   width: var(--arm-len);
@@ -223,13 +373,13 @@ defineExpose({ summon, dismissAll })
  */
 .skeleton-arm-slot.is-left.is-out {
   transform:
-    translateX(calc(var(--margin) - var(--arm-len) - var(--hits) * var(--margin) / 3))
+    translateX(calc(var(--reach) - var(--arm-len) - var(--hits) * var(--reach) / 3))
     rotate(calc(var(--tilt) + var(--hits) * -1.5deg));
 }
 
 .skeleton-arm-slot.is-right.is-out {
   transform:
-    translateX(calc(var(--arm-len) - var(--margin) + var(--hits) * var(--margin) / 3))
+    translateX(calc(var(--arm-len) - var(--reach) + var(--hits) * var(--reach) / 3))
     rotate(calc(var(--tilt) + var(--hits) * 1.5deg));
 }
 
@@ -252,9 +402,113 @@ defineExpose({ summon, dismissAll })
   transform: scaleX(0.84);
 }
 
+/* The jab gets its own box so it does not fight the position transform on
+   the button or the tremor on the one inside it. */
+.skeleton-arm-lunge {
+  display: block;
+  transition: transform 150ms var(--ease-out);
+}
+
+.skeleton-arm-slot.is-left.is-lunging .skeleton-arm-lunge {
+  transform: translateX(28px);
+}
+
+.skeleton-arm-slot.is-right.is-lunging .skeleton-arm-lunge {
+  transform: translateX(-28px);
+}
+
+/*
+ * Never quite still. Two things are doing the work: the offsets are uneven
+ * rather than a clean sine, and each arm is given a negative delay so they
+ * are permanently out of phase with each other -- four arms twitching in
+ * unison would read as one object, not four.
+ */
+.skeleton-arm-tremor {
+  display: block;
+  animation: bone-tremor 2.3s var(--ease-in-out) infinite;
+  animation-delay: var(--phase, 0s);
+}
+
+@keyframes bone-tremor {
+  0%   { transform: translate(0, 0) rotate(0deg); }
+  11%  { transform: translate(2px, -3px) rotate(0.5deg); }
+  24%  { transform: translate(-3px, 1px) rotate(-0.8deg); }
+  36%  { transform: translate(3px, 2px) rotate(0.3deg); }
+  49%  { transform: translate(-1px, -3px) rotate(-0.5deg); }
+  61%  { transform: translate(2px, 1px) rotate(1deg); }
+  74%  { transform: translate(-3px, -1px) rotate(-0.4deg); }
+  88%  { transform: translate(1px, 3px) rotate(0.7deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+/* A struck arm shudders rather than trembles. */
+.skeleton-arm-slot.is-flaring .skeleton-arm-tremor {
+  animation-duration: 0.3s;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .skeleton-arm-slot {
+  .scratch-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/*
+ * pathLength="1" normalises every rake, however long it is, so one pair of
+ * keyframes draws them all at the same rate.
+ */
+/* The glow sits on the set rather than each rake: four marks times a dozen
+   live sets is sixty filtered nodes, and they are all animating. */
+.scratch {
+  filter: drop-shadow(0 0 5px var(--oxblood));
+}
+
+.scratch path {
+  fill: none;
+  stroke: var(--cinnabar);
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  filter: drop-shadow(0 0 5px var(--oxblood));
+  animation:
+    scratch-rake 170ms var(--ease-out) forwards,
+    scratch-fade var(--scratch-life, 3.4s) linear forwards;
+  animation-delay: calc(var(--i) * 35ms);
+}
+
+@keyframes scratch-rake {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes scratch-fade {
+  0%, 42% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.skeleton-arm-slot {
     transition: none;
+  }
+
+  .skeleton-arm-tremor {
+    animation: none;
+  }
+
+  .skeleton-arm-lunge {
+    transition: none;
+  }
+
+  .scratch path {
+    animation: none;
+    stroke-dashoffset: 0;
   }
 }
 </style>
