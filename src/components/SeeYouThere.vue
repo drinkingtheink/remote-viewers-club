@@ -319,6 +319,100 @@ export default {
   --seal-face: var(--gilt-bright);
   --seal-face-hi: var(--candle);
   --seal-face-lo: var(--gilt);
+
+  /*
+   * It is a wax seal, so it arrives by being pressed: it comes down large
+   * and askew, bites past its resting size, and rocks back onto its angle.
+   *
+   * `scale` and `rotate` rather than `transform`, because the seal already
+   * spends `transform` on the twenty degrees it sits at. The individual
+   * properties apply before it, so the keyframes compose with that angle
+   * instead of throwing it away -- which is why the rotation here runs to
+   * zero rather than to twenty.
+   */
+  animation: seal-press 820ms cubic-bezier(0.22, 1, 0.3, 1) 260ms both;
+}
+
+@keyframes seal-press {
+  0% {
+    opacity: 0;
+    scale: 2.1;
+    rotate: -24deg;
+  }
+  45% {
+    opacity: 1;
+  }
+  68% {
+    /* the bite: past its own size, as wax spreads under the stamp */
+    scale: 0.945;
+    rotate: 2.5deg;
+  }
+  84% {
+    scale: 1.025;
+    rotate: -1deg;
+  }
+  100% {
+    opacity: 1;
+    scale: 1;
+    rotate: 0deg;
+  }
+}
+
+/*
+ * The impression spreading out from under it, once. Sized off the seal, so
+ * it stays right if the seal is ever resized, and behind it, so it reads as
+ * something the seal displaced rather than a ring drawn on top.
+ *
+ * It anchors to the seal's own `position: absolute`, set by .watcher where it
+ * is used. Giving this element `position: relative` to anchor it instead
+ * looks harmless and is not: a scoped class beats .watcher on specificity,
+ * so it silently drops the seal out of the corner and into the flow.
+ */
+.see-you-there::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 50%;
+  border: 2px solid var(--gilt-bright);
+  opacity: 0;
+  pointer-events: none;
+  /* 818ms is where the press bites -- 260ms of delay plus 68% of its 820ms.
+     Starting the ring there makes it the consequence of the stamp landing,
+     rather than something that happens shortly afterwards. */
+  animation: seal-impression 900ms ease-out 818ms both;
+}
+
+@keyframes seal-impression {
+  0% {
+    opacity: 0.55;
+    scale: 0.82;
+  }
+  100% {
+    opacity: 0;
+    scale: 1.7;
+  }
+}
+
+/*
+ * No press under reduced motion: it travels a long way and overshoots, which
+ * is the whole point of it and exactly what is being asked for less of. It
+ * still fades in, because appearing from nowhere is worse than arriving.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .see-you-there {
+    animation: seal-fade 400ms ease-out both;
+  }
+
+  .see-you-there::after {
+    animation: none;
+    opacity: 0;
+  }
+
+  @keyframes seal-fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
 }
 
 /*
@@ -411,6 +505,14 @@ export default {
 
 .closed #eye {
     opacity: 0;
+}
+
+/* Where the seal is laid out in the flow instead, the ring has no box of its
+   own to sit in and would spread across whatever is positioned above it. */
+@media only screen and (max-width: 60em) {
+  .see-you-there::after {
+    display: none;
+  }
 }
 
 .see-you-there:hover #eye {
