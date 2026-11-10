@@ -2,6 +2,8 @@
 
 ### Purveyors, practicioners, and pundits of the metaphysical arts & sciences
 
+**[remote-viewers-club.jasonmharrison.info](https://remote-viewers-club.jasonmharrison.info/)**
+
 ![The Remote Viewers Club masthead: gilt lettering on blind-tooled leather, with the club's wax seal watching from the corner](docs/screenshots/masthead.jpg)
 
 A single-page Vue 3 application bound as an occult tome. Inside: a gallery of eight
@@ -114,6 +116,10 @@ version, so there is none.
 ---
 
 ## Running it
+
+The club keeps its doors open at
+[remote-viewers-club.jasonmharrison.info](https://remote-viewers-club.jasonmharrison.info/).
+To raise your own:
 
 ```sh
 npm install
