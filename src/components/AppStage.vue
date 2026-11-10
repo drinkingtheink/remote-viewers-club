@@ -68,31 +68,21 @@
         <p class="about-eyebrow">Remote Viewers Club</p>
         <h2 id="about-heading">Tech and the Metaphysical</h2>
         <p class="about-question">
-          Can you use the one to prove the other &mdash; or improve on it?
+          Can you use one to prove the other? Or improve on it?
         </p>
 
         <p>
-          This is a club of instruments. Each exercise measures something it
-          cannot explain. A precognition run returns a real standard score
-          against chance, and a run falling below chance is named for
-          <em>psi-missing</em>, which is a term of art and not a joke. A
-          s&eacute;ance reports how far the planchette travelled and how much
-          of that was your own hand.
+          Probably not, on the first count. The tests here are real ones
+          though. The precognition run scores you against chance and shows its
+          working. The s&eacute;ance measures how far the planchette moved and
+          how much of that was your own hand. Nothing is rigged to make you
+          look psychic.
         </p>
 
         <p>
-          The instruments are honest, and that turns out to be the finding.
-          Arithmetic is excellent at saying how far from chance a thing landed
-          and no use at all at saying why. Done carefully enough, it makes
-          plain it was never going to settle the question.
-        </p>
-
-        <p>
-          The other direction is the one that works. The metaphysical is very
-          good at getting a person to sit still, attend closely, and write
-          down what they noticed &mdash; which is most of what a method is.
-          Whether anything is at the far end of the signal, the Club has no
-          instrument for.
+          The second question is the better one. S&eacute;ance, dowsing,
+          remote viewing: whatever else they are, they are all instructions to
+          slow down and look hard at something. That part works.
         </p>
 
         <p class="about-credits">
