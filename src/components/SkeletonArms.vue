@@ -28,7 +28,9 @@
         class="impact"
         :transform="`translate(${burst.x} ${burst.y})`"
       >
+        <circle class="impact-flash" r="5" />
         <circle class="impact-ring" r="5" />
+        <circle class="impact-ring is-second" r="5" />
         <line
           v-for="(shard, i) in burst.shards"
           :key="`s${i}`"
@@ -566,12 +568,47 @@ defineExpose({ summon, dismissAll })
   transform-origin: center;
 }
 
+/*
+ * A member's blow is gold.
+ *
+ * The arms mark the page in red; what answers them is the Club, and it should
+ * never be in doubt which of the two just happened. Before this a strike and
+ * a rake were the same cinnabar, so the blow read as the arm's own.
+ */
+.impact-flash {
+  fill: var(--gilt-bright);
+  filter: drop-shadow(0 0 20px var(--gilt));
+  animation: impact-flash 360ms var(--ease-out) forwards;
+}
+
+@keyframes impact-flash {
+  from {
+    transform: scale(0.5);
+    opacity: 0.95;
+  }
+  to {
+    transform: scale(4.4);
+    opacity: 0;
+  }
+}
+
 .impact-ring {
   fill: none;
-  stroke: var(--cinnabar);
-  stroke-width: 2.5;
-  filter: drop-shadow(0 0 8px var(--oxblood));
-  animation: impact-ring 420ms var(--ease-out) forwards;
+  stroke: var(--gilt-bright);
+  stroke-width: 3.5;
+  filter:
+    drop-shadow(0 0 12px var(--gilt))
+    drop-shadow(0 0 28px var(--gilt-dim));
+  animation: impact-ring 520ms var(--ease-out) forwards;
+}
+
+/* a second ring a beat behind the first: one is an effect, two is a shock
+   going out */
+.impact-ring.is-second {
+  stroke-width: 2;
+  opacity: 0.7;
+  animation-duration: 760ms;
+  animation-delay: 90ms;
 }
 
 @keyframes impact-ring {
@@ -580,17 +617,18 @@ defineExpose({ summon, dismissAll })
     opacity: 0.95;
   }
   to {
-    transform: scale(8);
+    transform: scale(11);
     opacity: 0;
   }
 }
 
 .impact-shard {
-  stroke: var(--candle);
-  stroke-width: 2;
+  stroke: var(--gilt-bright);
+  stroke-width: 3;
   stroke-linecap: round;
   transform-origin: 0 0;
-  animation: impact-shard 320ms var(--ease-out) forwards;
+  filter: drop-shadow(0 0 7px var(--gilt));
+  animation: impact-shard 430ms var(--ease-out) forwards;
   animation-delay: calc(var(--i) * 8ms);
 }
 
@@ -600,14 +638,17 @@ defineExpose({ summon, dismissAll })
     opacity: 1;
   }
   to {
-    transform: scale(1.25);
+    transform: scale(1.85);
     opacity: 0;
   }
 }
 
-/* The only part meant to outlast the flash, and the only part that falls. */
+/* The only part meant to outlast the flash, and the only part that falls.
+   Embers off the blow rather than blood off the arm, now that the blow is
+   the Club's. */
 .impact-drop {
-  fill: var(--blood);
+  fill: var(--candle);
+  filter: drop-shadow(0 0 6px var(--gilt));
   animation: impact-drop 1100ms cubic-bezier(0.3, 0, 0.7, 1) forwards;
   animation-delay: calc(var(--i) * 26ms);
 }
@@ -713,10 +754,13 @@ defineExpose({ summon, dismissAll })
 
 /* The red is the hit, not the resting state: it says the blow registered,
    and it is the only reason you can tell how close the thing is to going. */
+/* Struck, the bone takes the Club's light rather than reddening: whatever
+   just hit it did not come from its own side. */
 .skeleton-arm-slot.is-flaring {
-  color: var(--cinnabar);
+  color: var(--gilt-bright);
   filter:
-    drop-shadow(0 0 16px var(--oxblood))
+    drop-shadow(0 0 20px var(--gilt))
+    drop-shadow(0 0 46px var(--gilt-dim))
     drop-shadow(0 10px 22px rgba(0, 0, 0, 0.65));
 }
 
@@ -824,123 +868,8 @@ defineExpose({ summon, dismissAll })
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .scratch-layer {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
-/*
- * pathLength="1" normalises every rake, however long it is, so one pair of
- * keyframes draws them all at the same rate.
- */
-/* The glow sits on the set rather than each rake: four marks times a dozen
-   live sets is sixty filtered nodes, and they are all animating. */
-.scratch {
-  filter:
-    drop-shadow(0 0 3px var(--cinnabar))
-    drop-shadow(0 0 11px var(--oxblood));
-}
-
-.scratch path {
-  fill: none;
-  stroke: var(--cinnabar);
-  stroke-width: 3.5;
-  stroke-linecap: round;
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  filter: drop-shadow(0 0 5px var(--oxblood));
-  animation:
-    scratch-rake 170ms var(--ease-out) forwards,
-    scratch-fade var(--scratch-life, 3.4s) linear forwards;
-  animation-delay: calc(var(--i) * 35ms);
-}
-
-@keyframes scratch-rake {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-/* --- the blow --- */
-.impact circle,
-.impact line {
-  transform-box: fill-box;
-  transform-origin: center;
-}
-
-.impact-ring {
-  fill: none;
-  stroke: var(--cinnabar);
-  stroke-width: 2.5;
-  filter: drop-shadow(0 0 8px var(--oxblood));
-  animation: impact-ring 420ms var(--ease-out) forwards;
-}
-
-@keyframes impact-ring {
-  from {
-    transform: scale(0.35);
-    opacity: 0.95;
-  }
-  to {
-    transform: scale(8);
-    opacity: 0;
-  }
-}
-
-.impact-shard {
-  stroke: var(--candle);
-  stroke-width: 2;
-  stroke-linecap: round;
-  transform-origin: 0 0;
-  animation: impact-shard 320ms var(--ease-out) forwards;
-  animation-delay: calc(var(--i) * 8ms);
-}
-
-@keyframes impact-shard {
-  from {
-    transform: scale(0.2);
-    opacity: 1;
-  }
-  to {
-    transform: scale(1.25);
-    opacity: 0;
-  }
-}
-
-/* The only part meant to outlast the flash, and the only part that falls. */
-.impact-drop {
-  fill: var(--blood);
-  animation: impact-drop 1100ms cubic-bezier(0.3, 0, 0.7, 1) forwards;
-  animation-delay: calc(var(--i) * 26ms);
-}
-
-@keyframes impact-drop {
-  0% {
-    transform: translate(0, 0) scale(0.6);
-    opacity: 0;
-  }
-  18% {
-    opacity: 1;
-  }
-  100% {
-    transform: translate(var(--dx), var(--dy)) scale(1);
-    opacity: 0;
-  }
-}
-
-@keyframes scratch-fade {
-  0%, 42% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
-.skeleton-arm-slot {
+  /* every animation this block suppresses is declared above it */
+  .skeleton-arm-slot {
     transition: none;
   }
 
