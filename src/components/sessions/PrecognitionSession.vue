@@ -276,8 +276,11 @@ onBeforeUnmount(() => clearTimeout(revealTimer))
 .game-screen {
   min-height: 100px;
   transition: min-height var(--dur-base) var(--ease-settle);
-  margin-top: -20px;
-  padding-top: 2rem;
+  /*
+   * No top nudge. The -20px/+2rem pair here predated the card header and
+   * left this the only session whose first line of copy sat 12px below
+   * every other one -- visible the moment two cards sit side by side.
+   */
 }
 
 .run-tally {
