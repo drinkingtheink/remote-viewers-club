@@ -57,8 +57,8 @@
       type="button"
       class="skeleton-arm-slot"
       :data-arm="arm.id"
-      :class="[`is-${arm.side}`, { 'is-out': arm.out, 'is-struck': arm.hits > 0, 'is-flaring': arm.flaring, 'is-lunging': arm.lunging }]"
-      :style="{ '--hits': arm.hits, '--tilt': `${arm.tilt}deg`, '--phase': `${arm.phase}s`, '--drift-dur': `${arm.driftMs}ms`, top: `${arm.top}%` }"
+      :class="[`is-${arm.side}`, { 'is-out': arm.out, 'is-struck': arm.hits > 0, 'is-flaring': arm.flaring, 'is-lunging': arm.lunging, 'is-recovering': arm.recovering }]"
+      :style="{ '--shove': arm.shove, '--tilt': `${arm.tilt}deg`, '--phase': `${arm.phase}s`, '--drift-dur': `${arm.driftMs}ms`, top: `${arm.top}%` }"
       tabindex="-1"
       @click="strike(arm, $event)"
     >
@@ -79,6 +79,9 @@ import SkeletonArm from './SkeletonArm.vue'
 import { onSiegeRaised } from '../composables/useSiege'
 
 const FLARE_MS = 380
+// Long enough that it reads as the arm recovering rather than shrugging off
+// the blow, short enough that a heavy one is never parked for long.
+const RECOVER_AFTER = 4200
 const GIVE_UP_MS = 25000
 const STAGGER_MS = 420
 // Long enough to read as deliberate rather than as a pop-up.
@@ -265,6 +268,12 @@ function summon() {
     home: spec.top,
     driftMs: PROWL_MS[0],
     hits: 0,
+    // How far back it has been driven, 0 to 1, kept apart from `hits`
+    // because the two come apart: a blow lands permanently, being pushed
+    // off the page does not.
+    shove: 0,
+    recovering: false,
+    struckAt: 0,
     out: false,
     flaring: false,
     lunging: false
@@ -438,18 +447,48 @@ function strike(arm, event) {
 
   arm.hits += 1
   arm.flaring = true
+  arm.recovering = false
+  arm.struckAt = Date.now()
+  /*
+   * One pip's worth of ground, so the last blow is always the one that puts
+   * it off the page whatever it is carrying. This was a flat third, which
+   * was right while every arm had three pips and badly wrong once one had
+   * eight: three hits drove it clean off the window with five left in it,
+   * out past its own hand, where nothing could reach it again.
+   */
+  arm.shove = arm.hits / pips.value
   scratchFrom(arm)
   later(() => {
     arm.flaring = false
   }, FLARE_MS)
 
-  // At the third hit the arm has been pushed back its whole length. Drop it
-  // once the retreat has actually played.
+  // Left alone, it gathers itself and comes back within reach. Otherwise a
+  // heavy arm parked at the edge is simply out of the fight, and waiting
+  // for the give-up timer is not a fight.
+  later(() => recover(arm), RECOVER_AFTER)
+
+  // The last hit has pushed it back its whole length. Drop it once the
+  // retreat has actually played.
   if (arm.hits >= pips.value) {
     later(() => {
       arms.value = arms.value.filter((a) => a.id !== arm.id)
     }, EMERGE_MS)
   }
+}
+
+/*
+ * Back in, if nothing has touched it since. The damage stands -- the pips
+ * stay spent -- and only the ground is given back, so coming back is not a
+ * second chance for the arm, just another chance at it.
+ */
+function recover(arm) {
+  if (!arms.value.includes(arm) || !arm.out) return
+  if (arm.hits >= pips.value) return
+  if (!arm.shove) return
+  if (Date.now() - arm.struckAt < RECOVER_AFTER - 60) return
+
+  arm.recovering = true
+  arm.shove = 0
 }
 
 function dismissAll() {
@@ -512,7 +551,9 @@ const root = document.documentElement
 const lean = computed(() =>
   arms.value.reduce((total, arm) => {
     if (!arm.out) return total
-    const grip = (pips.value - arm.hits) / pips.value
+    // what it is hauling with is how far in it is, so the page comes back
+    // off level as it does
+    const grip = 1 - arm.shove
     return total + (arm.side === 'left' ? -grip : grip)
   }, 0)
 )
@@ -892,22 +933,31 @@ defineExpose({ summon, dismissAll })
  * further positive. Getting that backwards drives them deeper into the page
  * on every blow, which is a different easter egg entirely.
  */
+/* --shove is 0 to 1 whatever the arm is carrying, so a full retreat is one
+   --reach and the last pip is always the one that clears the window. */
 .skeleton-arm-slot.is-left.is-out {
   transform:
-    translateX(calc(var(--reach) - var(--arm-len) - var(--hits) * var(--reach) / 3))
-    rotate(calc(var(--tilt) + var(--hits) * -1.5deg));
+    translateX(calc(var(--reach) - var(--arm-len) - var(--shove) * var(--reach)))
+    rotate(calc(var(--tilt) + var(--shove) * -4.5deg));
 }
 
 .skeleton-arm-slot.is-right.is-out {
   transform:
-    translateX(calc(var(--arm-len) - var(--reach) + var(--hits) * var(--reach) / 3))
-    rotate(calc(var(--tilt) + var(--hits) * 1.5deg));
+    translateX(calc(var(--arm-len) - var(--reach) + var(--shove) * var(--reach)))
+    rotate(calc(var(--tilt) + var(--shove) * 4.5deg));
 }
 
 /* Struck arms retreat faster than they arrived. Things that pull back
    quickly read as alive; things that ease back read as machinery. */
 .skeleton-arm-slot.is-struck {
   --emerge-dur: 260ms;
+}
+
+/* Coming back is the opposite: slow, and after the rule above, since a
+   recovering arm is still a struck one and would otherwise snap in at the
+   knockback's pace. */
+.skeleton-arm-slot.is-recovering {
+  --emerge-dur: 2200ms;
 }
 
 /* The red is the hit, not the resting state: it says the blow registered,
