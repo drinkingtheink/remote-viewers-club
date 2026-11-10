@@ -547,8 +547,9 @@ defineExpose({ summon, dismissAll })
     drop-shadow(0 10px 22px rgba(0, 0, 0, 0.65));
 }
 
+/* Struck, it clenches harder than it claws. */
 .skeleton-arm-slot.is-flaring :deep(.skeleton-hand) {
-  transform: scaleX(0.84);
+  transform: scaleX(0.68) rotate(-14deg);
 }
 
 /* The jab gets its own box so it does not fight the position transform on
@@ -564,6 +565,16 @@ defineExpose({ summon, dismissAll })
 
 .skeleton-arm-slot.is-right.is-lunging .skeleton-arm-lunge {
   transform: translateX(-28px);
+}
+
+/*
+ * The hand hooks as it drags. Fingers pull in toward the wrist and the whole
+ * hand cocks over, so the rake comes off a curled claw rather than a flat
+ * palm swiping sideways. transform-origin is the wrist, so it pivots where
+ * a hand actually does.
+ */
+.skeleton-arm-slot.is-lunging :deep(.skeleton-hand) {
+  transform: scaleX(0.78) rotate(-9deg);
 }
 
 /*
