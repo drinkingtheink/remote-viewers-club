@@ -116,6 +116,7 @@ export default {
             timeoutId: null,
             watchFrame: null,
             scrollFrame: null,
+            homeDocTop: 0,
             beatTimer: null,
             stayTimer: null,
             returnTimer: null,
@@ -154,6 +155,9 @@ export default {
          */
         startRoving() {
             if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+            // on a narrow screen the seal is centred in the flow and there is
+            // no margin for it to stand in, so it stays put
+            if (window.matchMedia('(max-width: 60em)').matches) return
             this.armedAt = 0
             window.addEventListener('scroll', this.onScroll, { passive: true })
         },
@@ -166,7 +170,12 @@ export default {
             this.scrollFrame = null
             const y = window.scrollY
 
-            if (this.adrift) return
+            // scrolled back up while it is out: come home now rather than
+            // sitting in the corner over a masthead that is visible again
+            if (this.adrift) {
+                if (y < PAST) this.goHome()
+                return
+            }
 
             // back up at the top: forget the visit entirely and start over
             if (y < PAST) {
@@ -185,16 +194,45 @@ export default {
         },
         castOff() {
             this.beatTimer = null
+
+            /*
+             * Where home is, in document coordinates. The seal sits in normal
+             * flow, so its viewport position is just this minus the scroll --
+             * which is what lets it fly back to the exact spot later instead
+             * of being dropped there.
+             */
+            const seal = this.$refs.seal
+            const perch = seal.offsetParent
+            /*
+             * offsetTop, not getBoundingClientRect: the seal sits at 20
+             * degrees, and the rect is the rotated box, which sits about 26px
+             * above the CSS box it would be animated back to. Landing on the
+             * rect's top is what left it hopping at the end of the flight.
+             */
+            this.homeDocTop =
+                (perch ? perch.getBoundingClientRect().top : 0) + seal.offsetTop + window.scrollY
+
             this.adrift = true
             // a frame apart, so the browser has a start position to move from
             requestAnimationFrame(() => requestAnimationFrame(() => { this.settled = true }))
             this.stayTimer = setTimeout(this.goHome, STAY)
         },
         goHome() {
+            if (!this.adrift || this.returnTimer) return
+            clearTimeout(this.stayTimer)
             this.stayTimer = null
+
+            // Fly back to the perch rather than off the top. Landing on the
+            // real position means un-fixing afterwards changes nothing on
+            // screen; before, it vanished upward and blinked back into place.
+            const seal = this.$refs.seal
+            seal.style.top = `${this.homeDocTop - window.scrollY}px`
             this.settled = false
+
             this.returnTimer = setTimeout(() => {
+                this.returnTimer = null
                 this.adrift = false
+                seal.style.top = ''
                 // only comes back after another stretch of scrolling down
                 this.armedAt = window.scrollY + AGAIN
             }, RETURN)
@@ -265,24 +303,19 @@ export default {
 .see-you-there.adrift {
     position: fixed;
     top: -190px;
-    right: 2.5rem;
-    left: auto;
-    bottom: auto;
-    width: 118px;
-    margin: 0;
     z-index: 40;
+    /*
+     * Only `top` differs from the perch. The wrapper it normally sits in is
+     * exactly viewport-width, so its `right: 5%` and width resolve the same
+     * fixed as absolute -- which means the landing needs no measuring and
+     * cannot pop. Measuring was the wrong road: getBoundingClientRect returns
+     * the ROTATED box, and the seal sits at 20 degrees.
+     */
     transition: top 1.15s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .see-you-there.adrift.settled {
     top: 56vh;
-}
-
-@media only screen and (max-width: 60em) {
-    .see-you-there.adrift {
-        width: 84px;
-        right: 1rem;
-    }
 }
 
 @media (prefers-reduced-motion: reduce) {
