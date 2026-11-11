@@ -21,6 +21,11 @@
           <clipPath :id="id('card')"><rect width="856" height="540" rx="28" /></clipPath>
           <clipPath :id="id('arch')"><path d="M0 470 V160 A160 160 0 0 1 320 160 V470 Z" /></clipPath>
           <clipPath :id="id('floor')"><rect x="0" y="360" width="320" height="110" /></clipPath>
+          <!-- the iris moves, and an eye whose pupil can leave the eye is a
+               worse effect than a still one -->
+          <clipPath :id="id('eye')">
+            <path d="M86 230 Q160 172 234 230 Q160 288 86 230Z" />
+          </clipPath>
           <radialGradient :id="id('glow')" cx="50%" cy="49%" r="55%">
             <stop offset="0" style="stop-color: var(--leather-raised)" />
             <stop offset="1" style="stop-color: var(--leather-deep)" />
@@ -46,11 +51,12 @@
             <g :clip-path="`url(#${id('arch')})`">
               <rect x="0" y="0" width="320" height="470" :style="`fill: url(#${id('glow')})`" />
               <circle
+                class="portal-rays"
                 cx="160" cy="230" r="125"
                 style="fill: none; stroke: var(--gilt); stroke-width: 170; stroke-dasharray: 3 29.72; opacity: 0.16"
               />
               <rect x="0" y="360" width="320" height="110" style="fill: var(--leather-deep)" />
-              <g :clip-path="`url(#${id('floor')})`" style="stroke: var(--cinnabar); stroke-width: 0.9; opacity: 0.75">
+              <g class="portal-floor" :clip-path="`url(#${id('floor')})`" style="stroke: var(--cinnabar); stroke-width: 0.9; opacity: 0.75">
                 <line x1="0" y1="368" x2="320" y2="368" />
                 <line x1="0" y1="380" x2="320" y2="380" />
                 <line x1="0" y1="397" x2="320" y2="397" />
@@ -68,12 +74,16 @@
             </g>
             <path d="M0.75 470 V160 A159.25 159.25 0 0 1 319.25 160 V470" style="fill: none; stroke: var(--gilt); stroke-width: 1.5" />
 
-            <circle cx="62" cy="118" r="15" style="fill: var(--gilt)" />
-            <circle cx="69" cy="113" r="13" style="fill: var(--leather)" />
-            <circle cx="258" cy="118" r="15" style="fill: var(--gilt)" />
-            <circle cx="251" cy="113" r="13" style="fill: var(--leather)" />
+            <g class="portal-moon is-west">
+              <circle cx="62" cy="118" r="15" style="fill: var(--gilt)" />
+              <circle cx="69" cy="113" r="13" style="fill: var(--leather)" />
+            </g>
+            <g class="portal-moon is-east">
+              <circle cx="258" cy="118" r="15" style="fill: var(--gilt)" />
+              <circle cx="251" cy="113" r="13" style="fill: var(--leather)" />
+            </g>
 
-            <g style="fill: var(--parchment)">
+            <g class="portal-stars" style="fill: var(--parchment)">
               <circle cx="160" cy="48" r="2.4" />
               <circle cx="112" cy="70" r="1.4" />
               <circle cx="208" cy="66" r="1.8" />
@@ -84,9 +94,9 @@
             </g>
 
             <g style="fill: none; stroke: var(--gilt); stroke-width: 0.6; opacity: 0.75">
-              <circle cx="160" cy="230" r="96" style="stroke-width: 6; stroke-dasharray: 0.6 9.45" />
+              <circle class="portal-dial is-ticks" cx="160" cy="230" r="96" style="stroke-width: 6; stroke-dasharray: 0.6 9.45" />
               <circle cx="160" cy="230" r="88" />
-              <circle cx="160" cy="230" r="58" style="stroke-dasharray: 2 3" />
+              <circle class="portal-dial is-inner" cx="160" cy="230" r="58" style="stroke-dasharray: 2 3" />
               <line x1="40" y1="230" x2="80" y2="230" />
               <line x1="240" y1="230" x2="280" y2="230" />
               <line x1="160" y1="120" x2="160" y2="178" style="stroke-dasharray: 3 2" />
@@ -94,15 +104,17 @@
             </g>
 
             <path d="M86 230 Q160 172 234 230 Q160 288 86 230Z" style="fill: var(--leather-deep); stroke: var(--gilt); stroke-width: 2" />
-            <circle cx="160" cy="230" r="28" style="fill: none; stroke: var(--cinnabar); stroke-width: 2" />
-            <circle cx="160" cy="230" r="20" style="fill: none; stroke: var(--gilt); stroke-width: 0.75; stroke-dasharray: 1 3" />
-            <circle cx="160" cy="230" r="11" style="fill: var(--gilt)" />
-            <circle cx="165" cy="225" r="3" style="fill: var(--parchment)" />
+            <g class="portal-iris" :clip-path="`url(#${id('eye')})`">
+              <circle cx="160" cy="230" r="28" style="fill: none; stroke: var(--cinnabar); stroke-width: 2" />
+              <circle cx="160" cy="230" r="20" style="fill: none; stroke: var(--gilt); stroke-width: 0.75; stroke-dasharray: 1 3" />
+              <circle cx="160" cy="230" r="11" style="fill: var(--gilt)" />
+              <circle cx="165" cy="225" r="3" style="fill: var(--parchment)" />
+            </g>
 
             <!-- the sealed envelope -->
             <rect x="136" y="392" width="48" height="30" style="fill: var(--parchment); stroke: var(--gilt); stroke-width: 1" />
             <path d="M136 392 L160 410 L184 392" style="fill: none; stroke: var(--gilt-dim); stroke-width: 1" />
-            <circle cx="160" cy="410" r="5" style="fill: var(--oxblood)" />
+            <circle class="portal-wax" cx="160" cy="410" r="5" style="fill: var(--oxblood)" />
             <text
               x="160" y="442"
               style="font-family: var(--font-mono); font-size: 7px; letter-spacing: 1px; fill: var(--gilt); text-anchor: middle"
@@ -358,6 +370,131 @@ watch(() => props.name, fitName)
 </script>
 
 <style scoped>
+/* --- the window ------------------------------------------------------- */
+
+/*
+ * The portal is a mechanism, so it runs.
+ *
+ * Everything here turns about the eye at 160,230 in the inner viewBox,
+ * which needs transform-box: view-box -- the default is the element's own
+ * border box, and a circle rotating about its own bounding box is a circle
+ * doing nothing visible.
+ *
+ * The periods are long and deliberately not multiples of each other, so the
+ * parts never line back up into a pattern you can count. Nothing here is
+ * meant to be watched; it is meant to be noticed, and then to carry on.
+ */
+.member-card-face .portal-rays,
+.member-card-face .portal-dial {
+  transform-box: view-box;
+  transform-origin: 160px 230px;
+}
+
+@keyframes portal-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* The fan of light, slowest of the lot: a beacon, not a pinwheel. */
+.member-card-face .portal-rays {
+  animation: portal-turn 150s linear infinite;
+}
+
+/* The two dials read against each other, so they go opposite ways. The
+   plain ring between them is left still -- a solid circle cannot show
+   rotation anyway, and it gives the eye something fixed to measure by. */
+.member-card-face .portal-dial.is-ticks {
+  animation: portal-turn 94s linear infinite reverse;
+}
+
+.member-card-face .portal-dial.is-inner {
+  animation: portal-turn 61s linear infinite;
+}
+
+/*
+ * It looks about. Holds rather than drifts: an eye moves in jumps and then
+ * stays, and a pupil easing smoothly from side to side reads as a lava lamp
+ * rather than as attention.
+ */
+@keyframes portal-glance {
+  0%, 20% { transform: translate(0, 0); }
+  26%, 42% { transform: translate(11px, -2px); }
+  48%, 64% { transform: translate(-10px, 1px); }
+  70%, 100% { transform: translate(0, 0); }
+}
+
+.member-card-face .portal-iris {
+  animation: portal-glance 13s var(--ease-settle) infinite;
+}
+
+/* Stars do not all twinkle together, so each is given its own period and a
+   head start on the others. */
+@keyframes portal-twinkle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+
+.member-card-face .portal-stars circle {
+  animation: portal-twinkle 5s ease-in-out infinite;
+}
+
+.member-card-face .portal-stars circle:nth-child(2) { animation-duration: 7.4s; animation-delay: -2.1s; }
+.member-card-face .portal-stars circle:nth-child(3) { animation-duration: 4.3s; animation-delay: -3.4s; }
+.member-card-face .portal-stars circle:nth-child(4) { animation-duration: 6.7s; animation-delay: -1.2s; }
+.member-card-face .portal-stars circle:nth-child(5) { animation-duration: 5.9s; animation-delay: -4.6s; }
+.member-card-face .portal-stars circle:nth-child(6) { animation-duration: 8.1s; animation-delay: -0.8s; }
+.member-card-face .portal-stars circle:nth-child(7) { animation-duration: 4.9s; animation-delay: -3.9s; }
+
+/* The moons breathe in turn rather than together, so the arch is never
+   quite symmetrical. */
+@keyframes portal-wane {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+
+.member-card-face .portal-moon {
+  animation: portal-wane 17s ease-in-out infinite;
+}
+
+.member-card-face .portal-moon.is-east {
+  animation-duration: 23s;
+  animation-delay: -8s;
+}
+
+/* The floor is the one red thing in the window, so it is the one thing that
+   pulses -- a signal rather than scenery. */
+@keyframes portal-signal {
+  0%, 100% { opacity: 0.75; }
+  50% { opacity: 0.38; }
+}
+
+.member-card-face .portal-floor {
+  animation: portal-signal 11s ease-in-out infinite;
+}
+
+/* The wax, still warm. */
+@keyframes portal-wax {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.member-card-face .portal-wax {
+  animation: portal-wax 6.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .member-card-face .portal-rays,
+  .member-card-face .portal-dial,
+  .member-card-face .portal-iris,
+  .member-card-face .portal-stars circle,
+  .member-card-face .portal-moon,
+  .member-card-face .portal-floor,
+  .member-card-face .portal-wax {
+    animation: none;
+  }
+}
+
 /*
  * ID-1 proportions -- 856 by 540 is a credit card at ten times its
  * millimetres -- so the thing prints at exactly card size and reads as an
