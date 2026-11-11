@@ -382,6 +382,11 @@ const writeToLocalStorage = (signatureData, writtenName) => {
     storage.setItem('rvc-joined', true)
     storage.setItem('signatureData', signatureData)
     storage.setItem('writtenName', writtenName)
+    // The card prints an ADMITTED date and nothing was recording one. Only
+    // written if absent, so re-signing cannot backdate an existing member.
+    if (!storage.getItem('rvc-joined-at')) {
+      storage.setItem('rvc-joined-at', new Date().toISOString())
+    }
   }
 }
 

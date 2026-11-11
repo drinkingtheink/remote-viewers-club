@@ -290,6 +290,16 @@
       />
     </section>
 
+    <section v-if="isMemberAlready" class="member-card-mount">
+      <h3>Your Card</h3>
+      <MembershipCard
+        :name="memberName"
+        :signature="memberSignature"
+        :admitted="admittedYear"
+        :member-no="memberNo"
+      />
+    </section>
+
     <section class="members-toggle">
       <button 
         v-show="isMemberAlready"
@@ -320,6 +330,7 @@
 <script>
 import SignaturePad from './SignaturePad'
 import SignatureGallery from './SignatureGallery'
+import MembershipCard from './MembershipCard'
 import CandleAnimation from './animations/CandleAnimation'
 import { eventBus } from '../EventBus'
 
@@ -328,7 +339,36 @@ export default {
   components: {
     SignaturePad,
     SignatureGallery,
-    CandleAnimation
+    CandleAnimation,
+    MembershipCard
+  },
+  computed: {
+    memberName() {
+      return this.readStore('writtenName') || 'Unsigned'
+    },
+    memberSignature() {
+      return this.readStore('signatureData') || ''
+    },
+    /*
+     * ADMITTED in the Club's numerals. Members who signed before the date was
+     * being recorded have no year to print, and the card says so rather than
+     * inventing one.
+     */
+    admittedYear() {
+      const when = this.readStore('rvc-joined-at')
+      if (!when) return '—'
+      const year = new Date(when).getFullYear()
+      if (Number.isNaN(year)) return '—'
+      return this.toRoman(year)
+    },
+    /*
+     * Left blank until the roll hands out real numbers. A card is a record,
+     * and a record with a made-up number on it is worse than one with a
+     * blank where the number goes.
+     */
+    memberNo() {
+      return this.readStore('rvc-member-no') || '—'
+    }
   },
   methods: {
     handleMouseMove(e) {
@@ -374,6 +414,30 @@ export default {
     },
     enableShowMembershipRoll() {
       this.showMembershipRoll = true;
+    },
+    readStore(key) {
+      try {
+        return localStorage.getItem(key) || ''
+      } catch (e) {
+        // private windows throw rather than return null
+        return ''
+      }
+    },
+    toRoman(value) {
+      const table = [
+        [1000, 'M'], [900, 'CM'], [500, 'D'], [400, 'CD'],
+        [100, 'C'], [90, 'XC'], [50, 'L'], [40, 'XL'],
+        [10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I']
+      ]
+      let left = value
+      let out = ''
+      for (const [size, numeral] of table) {
+        while (left >= size) {
+          out += numeral
+          left -= size
+        }
+      }
+      return out
     }
   },
   data() {
