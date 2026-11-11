@@ -217,11 +217,48 @@
   100% { transform: scaleY(1); }
 }
 
-.watcher-session:hover #watcher-gaze { animation-duration: 6s; }
-.watcher-session:hover #watcher-lids { animation-duration: 3.5s; }
-.watcher-session:hover .orbit-outer { animation-duration: 60s; }
-.watcher-session:hover .orbit-mid { animation-duration: 38s; }
-.watcher-session:hover .orbit-inner { animation-duration: 26s; }
+/*
+ * Hover: it notices you.
+ *
+ * Every animation here sped up on hover, which is what you do when you have
+ * nothing particular to say -- and it said the wrong thing on this panel of
+ * all of them. The others each do something: Remote Viewing turns day to
+ * night, the board's skull starts talking. This one is about being watched,
+ * so what it does is stop pretending to be busy and look at you.
+ *
+ * The gaze snaps rather than eases, because that is what an eye does when
+ * it finds something; a lock-on that glides reads as a camera. Everything
+ * else goes quiet around it -- the orbits almost stop, the stars slow --
+ * so the stillness is the event.
+ */
+.watcher-session:hover #watcher-gaze {
+  animation: none;
+  transform: translate(0, 0);
+}
+
+/* It widens, and it does not blink while it is looking at you. That is the
+   part that unsettles. */
+.watcher-session:hover #watcher-lids {
+  animation: none;
+  transform: scaleY(1.06);
+  transition: transform 260ms var(--ease-out);
+}
+
+.watcher-session:hover .eye-pupil {
+  animation: none;
+  r: 8px;
+  transition: r 260ms var(--ease-out);
+}
+
+.watcher-session:hover .eye-striae path {
+  opacity: 0.9;
+  transition: opacity 260ms var(--ease-out);
+}
+
+.watcher-session:hover .orbit-outer { animation-duration: 420s; }
+.watcher-session:hover .orbit-mid { animation-duration: 300s; }
+.watcher-session:hover .orbit-inner { animation-duration: 240s; }
+.watcher-session:hover .eye-stars path { animation-duration: 14s; }
 
 @media (prefers-reduced-motion: reduce) {
   #watcher-gaze,
@@ -231,9 +268,11 @@
   .eye-stars path,
   .watcher-session:hover #watcher-gaze,
   .watcher-session:hover #watcher-lids,
+  .watcher-session:hover .eye-pupil,
   .watcher-session:hover .orbit {
     animation: none;
     transform: none;
+    transition: none;
   }
 }
 </style>
