@@ -1,5 +1,28 @@
 <template>
   <div class="sig-gallery-container stage">
+    <!--
+      Every signature is a PNG with a white background baked in, so each one
+      arrived as its own white rectangle, letterboxed to its own proportions
+      inside a uniform box -- which is what made the row look ragged when
+      the boxes were in fact identical.
+
+      Luminance becomes alpha and is inverted, dropping the paper and
+      keeping the hand; the flood re-inks what is left. The same filter the
+      membership card uses on its reverse.
+    -->
+    <svg class="roll-defs" aria-hidden="true" focusable="false">
+      <defs>
+        <filter id="roll-ink" x="0" y="0" width="100%" height="100%">
+          <feColorMatrix type="luminanceToAlpha" />
+          <feComponentTransfer>
+            <feFuncA type="linear" slope="-1.6" intercept="1.25" />
+          </feComponentTransfer>
+          <feComposite operator="in" in2="SourceGraphic" result="hand" />
+          <feFlood flood-color="#8b0000" />
+          <feComposite operator="in" in2="hand" />
+        </filter>
+      </defs>
+    </svg>
     <div class="header">
       <h3>The Membership Roll</h3>
       <button class="roll-refresh" @click="refreshData" :disabled="loading">
@@ -42,9 +65,11 @@
           class="item-card"
           :class="{ 'is-you': you && item.id === you.id }"
         >
+          <!-- Number above, name below, both centred: the same arrangement a
+               specimen plate and a praxis card use. -->
           <div class="card-header">
+            <p class="item-id">&#8470;&nbsp;{{ item.id }}</p>
             <h3>{{ item.title || item.printedName || 'Untitled' }}</h3>
-            <span class="item-id">#{{ item.id }}</span>
           </div>
           
           <div class="image-container">
@@ -291,8 +316,19 @@ onMounted(() => {
   text-align: center;
 }
 
+/*
+ * `.stage p` caps a paragraph at --measure and centres it with auto side
+ * margins. This set the margins and dropped the auto, so the capped box
+ * stayed against the left edge while the text went on centring inside it --
+ * and because --measure is in ch, each line was a different width and so
+ * landed on a different axis. Measured at 456, 467 and 720 for three lines
+ * that are all meant to be centred on the same one.
+ *
+ * They are a caption block, not prose, so the cap comes off entirely.
+ */
 .sig-gallery-container .stats p {
-  margin: 0 0 4px 0;
+  max-width: none;
+  margin: 0 auto 4px;
   font-weight: 500;
 }
 
@@ -319,11 +355,15 @@ onMounted(() => {
   background-color: rgba(0,0,0,0.8);
 }
 
+/*
+ * This was a flex row with the name at one end and the number at the other,
+ * aligned to flex-start -- so the two sat on different baselines, seven
+ * pixels apart, and the name was centred in whatever space the number left
+ * rather than on the card. Stacked and centred, neither problem exists.
+ */
 .sig-gallery-container .card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
   margin-bottom: 16px;
+  text-align: center;
 }
 
 .sig-gallery-container .card-header h3 {
@@ -372,6 +412,7 @@ onMounted(() => {
 }
 
 .sig-gallery-container .signature-image {
+  filter: url(#roll-ink);
   -webkit-mask-image: linear-gradient(90deg, #000 0 34%, transparent 52%);
   mask-image: linear-gradient(90deg, #000 0 34%, transparent 52%);
   -webkit-mask-size: 300% 100%;
@@ -391,18 +432,44 @@ onMounted(() => {
 }
 
 .sig-gallery-container .item-id {
-  padding: 4px 8px;
-  border-radius: 12px;
-  font-size: var(--text-xs);
-  font-weight: 500;
+  margin: 0 0 0.35rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  letter-spacing: var(--tracking-wider);
   /* an id is data, not prose: lining figures, not the oldstyle body uses */
   font-variant-numeric: lining-nums tabular-nums;
+  color: var(--gilt);
 }
 
+.roll-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+/*
+ * The paper is the panel now, one size for every entry, rather than
+ * whatever rectangle each PNG happened to carry inside it.
+ *
+ * The ratio is the pad's own, 500 by 200. Any other shape letterboxes the
+ * image inside its box, and the soft edge where the scaled bitmap meets the
+ * transparent strip is partly opaque -- which the ink filter then re-inks at
+ * full strength, drawing a red rule across the foot of every signature.
+ * Matching the ratio means there is no edge to catch.
+ */
 .sig-gallery-container .image-container {
   margin-bottom: 16px;
-  border-radius: 12px;
+  aspect-ratio: 5 / 2;
+  border-radius: 2px;
   overflow: hidden;
+  background: var(--parchment);
+  box-shadow: inset 0 0 0 1px var(--gilt-dim);
+}
+
+.sig-gallery-container .image-container img {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .sig-gallery-container .signature-image {
