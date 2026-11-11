@@ -12,7 +12,7 @@
 
 // GET: returns { success, data: [...] }.
 export const ROLL_READ =
-  'https://script.google.com/macros/s/AKfycbxKQRUEBU8e1skP35pZzZslfgWLtkeeAqdL57M1oSwEqw-pEhQ1jksIrzhwd_KraiSt/exec'
+  'https://script.google.com/macros/s/AKfycbzQYcncfku0c-bzy92vK_JJvPZwmFdxUwhsZUryxCKDX99-YzaT1B7JkVLXcOolKJ04/exec'
 
 /*
  * POST: the same deployment, which is the fix for a bug that ate fifteen
@@ -23,10 +23,12 @@ export const ROLL_READ =
  * perfectly valid response, so the pad declared SAVED! every time and the
  * roll never grew. The last signature to land did so on 3 August 2025.
  *
- * apps-script/Code.gs in this repo is the script both ends now talk to; it
- * has a doPost that actually appends. Until that version is deployed, writes
- * here still hit the old stub -- which the pad will now report rather than
- * celebrate.
+ * apps-script/Code.gs in this repo is the script both ends talk to, and the
+ * address above is version 7 of it, deployed 10 November 2026 -- a third
+ * URL, since neither of the two the app had been using was the deployment
+ * that got updated. The old pair are left out deliberately: a dead address
+ * kept around for reference is an address something eventually points at
+ * again.
  */
 export const ROLL_WRITE = ROLL_READ
 
