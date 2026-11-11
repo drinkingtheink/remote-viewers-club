@@ -551,7 +551,26 @@ watch(() => props.name, fitName)
   pointer-events: none;
   opacity: 0;
   mix-blend-mode: screen;
-  transition: opacity var(--dur-base) var(--ease-out);
+  /*
+   * The lean, but not the turn.
+   *
+   * Staying flat while the card leaned left the light as an upright
+   * rectangle over a card in perspective, and its own edge showed as a
+   * seam beside the card's. Taking the same rotations puts it in the
+   * card's plane.
+   *
+   * The turn is deliberately left off. A face rotated by 180 degrees and
+   * then flipped back by its own rotateY is, on screen, in the same plane
+   * it started in -- so whichever face is showing lies at the lean alone,
+   * and the light lies there with it. Following the turn would have taken
+   * the light away with the front face.
+   *
+   * translateZ last, so it is a step along the tilted normal: one pixel in
+   * front of the face it is lighting, rather than coplanar with it and left
+   * to the compositor to arbitrate.
+   */
+  transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateZ(1px);
+  transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
   background: radial-gradient(
     54% 120% at var(--sheen-x, 50%) var(--sheen-y, 50%),
     rgba(255, 243, 214, 0.2) 0%,
@@ -658,7 +677,8 @@ watch(() => props.name, fitName)
 /* A card that snaps between faces is still legible; one that spins is not
    something to inflict on anyone who asked for less motion. */
 @media (prefers-reduced-motion: reduce) {
-  .member-card-pivot {
+  .member-card-pivot,
+  .member-card-sheen {
     transition: none;
   }
 
