@@ -62,31 +62,61 @@
         <span>File this impression with the Club archive</span>
       </label>
 
-      <button @click="revealTarget">Reveal Target</button>
+      <button @click="submitForJudging">Submit for Judging</button>
+    </div>
+
+    <div v-else-if="stage === 'judging'" class="judging">
+      <h3>Judging</h3>
+      <p class="judging-brief">
+        One of these four is the target. The other three are decoys, drawn from the same
+        register. Set them against your own impression and choose the one it matches best.
+        Which is which is withheld until you have chosen: a judgement made after the answer
+        is not a judgement.
+      </p>
+
+      <figure class="judging-impression">
+        <img :src="userDrawingImage" alt="Your impression" />
+        <figcaption>{{ textualImpression || 'No description recorded.' }}</figcaption>
+      </figure>
+
+      <ul class="judging-pool">
+        <li v-for="(site, i) in pool" :key="site.id">
+          <button type="button" class="judging-choice" @click="judge(site)">
+            <img :src="imageFor(site)" :alt="`Candidate ${POOL_LABELS[i]}`" />
+            <span class="judging-letter">{{ POOL_LABELS[i] }}</span>
+          </button>
+        </li>
+      </ul>
     </div>
 
     <div v-else-if="stage === 'reveal'" class="reveal">
-      <h3>Target Revealed</h3>
-      <div class="results-container">
-        <div class="user-impression">
-          <h4>Your Impression</h4>
-          <img :src="userDrawingImage" alt="Your drawing" class="impression-image" />
-          <div class="impression-text">{{ textualImpression || "No description provided" }}</div>
-        </div>
-        <div class="actual-target">
-          <h4>Actual Target</h4>
-          <img :src="targetImageSrc" :alt="targetName" class="target-image" />
-          <h5>{{ targetName }}</h5>
-          <div class="target-description">{{ targetDescription }}</div>
-        </div>
-      </div>
+      <h3>{{ wasHit ? 'First-place match' : 'No match' }}</h3>
+
+      <ul class="judging-pool is-resolved">
+        <li v-for="(site, i) in pool" :key="site.id">
+          <figure
+            class="judging-result"
+            :class="{ 'is-target': site.id === targetSite.id, 'is-chosen': site.id === chosenSite.id }"
+          >
+            <img :src="imageFor(site)" :alt="site.name" />
+            <figcaption>
+              <span class="judging-letter">{{ POOL_LABELS[i] }}</span>
+              <strong>{{ site.name }}</strong>
+              <span v-if="site.id === targetSite.id" class="judging-tag is-target-tag">the target</span>
+              <span v-if="site.id === chosenSite.id" class="judging-tag is-choice-tag">your choice</span>
+            </figcaption>
+          </figure>
+        </li>
+      </ul>
+
+      <p class="target-description">{{ targetSite.description }}</p>
+
       <div class="accuracy-container">
         <h4>Analysis</h4>
-        <div class="accuracy-score">
-          <span>Accuracy Score:</span> <span class="score">{{ accuracyScore }}%</span>
-        </div>
-        <p class="accuracy-notes">{{ accuracyNotes }}</p>
+        <p class="accuracy-notes">{{ verdict }}</p>
+        <p class="session-note">{{ lifetimeLine }}</p>
       </div>
+
       <button @click="resetSession">Start New Session</button>
     </div>
   </div>
@@ -112,12 +142,78 @@ const textualImpression = ref('');
 // say so. Nothing leaves the browser now unless this is ticked.
 const shareWithArchive = ref(false);
 const userDrawingImage = ref('');
-const targetImage = ref('');
-const targetName = ref('');
-const targetDescription = ref('');
-const accuracyScore = ref(0);
-const accuracyNotes = ref('');
-const targetImageSrc = computed(() => targetImages[targetImage.value]);
+const targetSite = ref(null);
+const chosenSite = ref(null);
+const pool = ref([]);
+
+/*
+ * Rank-order judging, which is how the protocol is actually scored.
+ *
+ * The score here used to be getRandomInt(100) dressed as analysis -- the one
+ * place in the Club where the statistics were not real. Everywhere else the
+ * joke works because the arithmetic does: Precognition computes a genuine
+ * z-score and will tell you when you are below chance.
+ *
+ * So the target is no longer revealed. It is hidden among three decoys from
+ * the same register and you pick the one your own impression matches, blind.
+ * That is a real trial with a known chance rate -- one in four -- and it can
+ * be counted honestly over a lifetime of sittings.
+ */
+const POOL_SIZE = 4;
+const POOL_LABELS = ['A', 'B', 'C', 'D'];
+const CHANCE = 1 / POOL_SIZE;
+const LIFETIME_KEY = 'rvc-rv-lifetime';
+
+const readLifetime = () => {
+  try {
+    const saved = JSON.parse(localStorage.getItem(LIFETIME_KEY));
+    if (saved && Number.isFinite(saved.trials) && Number.isFinite(saved.hits)) return saved;
+  } catch {
+    // unreadable or hand-edited; start the record over
+  }
+  return { trials: 0, hits: 0 };
+};
+
+const lifetime = ref(readLifetime());
+
+const imageFor = (site) => targetImages[site.image];
+const wasHit = computed(() => !!chosenSite.value && chosenSite.value.id === targetSite.value.id);
+
+const shuffle = (list) => {
+  const out = [...list];
+  for (let i = out.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  return out;
+};
+
+const verdict = computed(() => {
+  if (!chosenSite.value) return '';
+  if (wasHit.value) {
+    return `Your impression was judged against four candidates and placed the target first. One sitting proves nothing on its own -- a viewer guessing lands this one time in four -- but it is recorded.`;
+  }
+  return `The target placed below your choice. ${getFailMsg()}`;
+});
+
+/*
+ * The only number worth printing. A single trial at one-in-four says almost
+ * nothing, so the honest reading is the run of them: what chance expects,
+ * what you got, and how far apart those are in standard deviations.
+ */
+const lifetimeLine = computed(() => {
+  const { trials, hits } = lifetime.value;
+  if (!trials) return '';
+  const expected = trials * CHANCE;
+  const sd = Math.sqrt(trials * CHANCE * (1 - CHANCE));
+  const z = sd ? (hits - expected) / sd : 0;
+  const sittings = trials === 1 ? 'sitting' : 'sittings';
+  return `${hits} first-place ${hits === 1 ? 'match' : 'matches'} in ${trials} ${sittings}. `
+    + `Chance expects ${expected.toFixed(1)}. `
+    + (trials < 8
+      ? 'Too few sittings to say anything either way.'
+      : `That is ${Math.abs(z).toFixed(2)} standard deviations ${z >= 0 ? 'above' : 'below'} chance.`);
+});
 
 // Canvas-related state
 const canvas = ref(null);
@@ -144,14 +240,16 @@ const beginSession = () => {
 
   props.scrollToElement('.remote-viewing-container.stage.active');
   
-  // This makes it seem random but actually selects based on something deterministic
-  // like the current hour of the day or some other factor
-  const targetIndex = getRandomInt(possibleTargets.length);
-  const target = possibleTargets[targetIndex];
+  const target = possibleTargets[getRandomInt(possibleTargets.length)];
   coordinates.value = target.coordinates;
-  targetImage.value = target.image;
-  targetDescription.value = target.description;
-  targetName.value = target.name;
+  targetSite.value = target;
+  chosenSite.value = null;
+
+  // Built now rather than at judging time, so the decoys cannot be chosen
+  // with any knowledge of what was drawn.
+  const decoys = shuffle(possibleTargets.filter((site) => site.id !== target.id))
+    .slice(0, POOL_SIZE - 1);
+  pool.value = shuffle([target, ...decoys]);
   
   // Start the "focusing" process
   const interval = setInterval(() => {
@@ -226,53 +324,35 @@ const clearCanvas = () => {
   }
 };
 
-const revealTarget = () => {
-  let noTextEntered = true;
-
-  // Capture the canvas as an image
+const submitForJudging = () => {
   if (canvas.value) {
     userDrawingImage.value = canvas.value.toDataURL('image/png');
   }
-  
-  // Calculate a seemingly objective score based on timing and user input
-  // In reality, this could be determined by factors like:
-  // - Length of time spent drawing
-  // - Complexity of drawing
-  // - Keywords in textual description that match target
-  
-  // const lengthFactor = Math.min(textualImpression.value.length / 50, 1);
-  // const timeFactor = Math.min(focusProgress.value / 100, 1);
-  
-  let maxAccScore = 100;
 
-  if (!!textualImpression.value && textualImpression.value !== '') {
-    noTextEntered = false;
-  } else {
-    maxAccScore = maxAccScore - 50;
+  stage.value = 'judging';
+  props.scrollToElement('.remote-viewing-container.stage.active');
+};
+
+const judge = (site) => {
+  if (chosenSite.value) return;
+  chosenSite.value = site;
+
+  lifetime.value = {
+    trials: lifetime.value.trials + 1,
+    hits: lifetime.value.hits + (site.id === targetSite.value.id ? 1 : 0)
+  };
+  try {
+    localStorage.setItem(LIFETIME_KEY, JSON.stringify(lifetime.value));
+  } catch {
+    // private window; the record simply does not carry over
   }
 
-  accuracyScore.value = getRandomInt(maxAccScore);
-  
-  // Generate analysis notes
-  if (accuracyScore.value > 80) {
-    accuracyNotes.value = 'Exceptional accuracy! Your impression captured key elements of the target with remarkable precision.';
-  } else if (accuracyScore.value > 65) {
-    accuracyNotes.value = 'Good accuracy. Several important aspects of the target were identified in your impression.';
-  } else if (accuracyScore.value > 40) {
-    accuracyNotes.value = getFailMsg();
-  } else {
-    accuracyNotes.value = getFailMsg();
-  }
-
-  if (noTextEntered) {
-    accuracyNotes.value = accuracyNotes.value + ' At least try entering a description.';
-  }
-  
   if (shareWithArchive.value) {
     submitData();
   }
 
   stage.value = 'reveal';
+  props.scrollToElement('.remote-viewing-container.stage.active');
 };
 
 const resetSession = () => {
@@ -287,6 +367,9 @@ const resetSession = () => {
   userDrawingImage.value = '';
   isDrawing.value = false;
   ctx.value = null;
+  targetSite.value = null;
+  chosenSite.value = null;
+  pool.value = [];
 };
 
 const submitData = () => {
@@ -295,9 +378,13 @@ const submitData = () => {
     coordinates: coordinates.value,
     illustration: userDrawingImage.value,
     description: textualImpression.value,
-    accuracyNotes: accuracyNotes.value,
-    actualTarget: targetName.value,
-    accuracyScore: accuracyScore.value
+    accuracyNotes: verdict.value,
+    actualTarget: targetSite.value.name,
+    // was: accuracyScore, a random number. A judgement is the thing worth
+    // filing, so the sheet gets which candidate was picked and whether it
+    // was the right one.
+    chosenTarget: chosenSite.value.name,
+    firstPlaceMatch: wasHit.value
   };
 
   // Create a hidden iframe approach (CORS bypass for Google Scripts)
@@ -349,6 +436,149 @@ watch(penSize, () => {
 </script>
 
 <style>
+/* --- judging ----------------------------------------------------------- */
+
+.remote-viewing-container .judging-brief {
+  max-width: 56ch;
+}
+
+/* The impression sits above the lineup rather than beside it: it is the
+   thing being held against all four, not a fifth candidate. */
+.remote-viewing-container .judging-impression {
+  margin: 1.5rem auto;
+  max-width: 24rem;
+}
+
+.remote-viewing-container .judging-impression img {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--gilt-dim);
+  background: var(--parchment);
+}
+
+.remote-viewing-container .judging-impression figcaption {
+  margin-top: 0.5rem;
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: var(--text-sm);
+  color: var(--parchment);
+}
+
+.remote-viewing-container .judging-pool {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(210px, 100%), 1fr));
+  gap: 1rem;
+  max-width: 62rem;
+  margin: 1.5rem auto 0;
+  padding: 0;
+  list-style: none;
+}
+
+.remote-viewing-container .judging-choice {
+  all: unset;
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  cursor: pointer;
+  border: 2px solid var(--gilt-dim);
+  transition: border-color var(--dur-quick) var(--ease-out), transform var(--dur-quick) var(--ease-out);
+}
+
+.remote-viewing-container .judging-choice:hover,
+.remote-viewing-container .judging-choice:focus-visible {
+  border-color: var(--gilt-bright);
+  transform: translateY(-3px);
+}
+
+.remote-viewing-container .judging-choice img,
+.remote-viewing-container .judging-result img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.remote-viewing-container .judging-letter {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0.15rem 0.5rem;
+  background: rgba(10, 8, 6, 0.86);
+  border-right: 1px solid var(--gilt-dim);
+  border-bottom: 1px solid var(--gilt-dim);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  letter-spacing: var(--tracking-wider);
+  color: var(--gilt);
+}
+
+/* --- the lineup, resolved --------------------------------------------- */
+
+.remote-viewing-container .judging-result {
+  position: relative;
+  margin: 0;
+  border: 2px solid transparent;
+  opacity: 0.55;
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+
+.remote-viewing-container .judging-result.is-target,
+.remote-viewing-container .judging-result.is-chosen {
+  opacity: 1;
+}
+
+/* The target is the gold one. A choice that was not the target is marked in
+   oxblood, and a choice that was gets both -- which is the whole point of
+   putting them on the same plate. */
+.remote-viewing-container .judging-result.is-chosen {
+  border-color: var(--oxblood);
+}
+
+.remote-viewing-container .judging-result.is-target {
+  border-color: var(--gilt-bright);
+}
+
+.remote-viewing-container .judging-result figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.4rem;
+  font-size: var(--text-sm);
+  color: var(--parchment);
+}
+
+.remote-viewing-container .judging-result .judging-letter {
+  position: static;
+  border: 0;
+  background: none;
+  padding: 0;
+}
+
+.remote-viewing-container .judging-tag {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-wide);
+}
+
+/* Both land on the same plate when the choice was right, so they have to be
+   told apart at a glance -- and separated, or they read as one phrase. */
+.remote-viewing-container .judging-tag.is-target-tag {
+  color: var(--gilt-bright);
+}
+
+.remote-viewing-container .judging-tag.is-choice-tag {
+  color: var(--cinnabar);
+}
+
+.remote-viewing-container .judging-tag + .judging-tag::before {
+  content: "·";
+  margin-right: 0.4rem;
+  color: var(--gilt-dim);
+}
+
 .remote-viewing-container {
   margin: 0 auto;
 }
