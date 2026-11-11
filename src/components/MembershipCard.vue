@@ -1,6 +1,6 @@
 <template>
   <div class="member-card" :class="{ 'is-turned': turned }">
-    <div class="member-card-stage">
+    <div class="member-card-stage" ref="stage">
       <!--
         The light sits outside the turning box on purpose: inside it, it
         would be a surface in the same 3D space as the faces and would spin
@@ -259,6 +259,22 @@
 
     <button
       type="button"
+      class="member-card-save"
+      :disabled="saving"
+      :aria-label="`Save the ${turned ? 'back' : 'front'} of the card as a PNG`"
+      :title="saving ? 'Striking a copy…' : 'Save this side as a PNG'"
+      @click="save"
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path
+          d="M12 3v11m0 0 4-4m-4 4-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"
+          style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"
+        />
+      </svg>
+    </button>
+
+    <button
+      type="button"
       class="member-card-turn"
       :aria-label="turned ? 'Turn the card to the front' : 'Turn the card over'"
       :title="turned ? 'Turn to the front' : 'Turn the card over'"
@@ -277,6 +293,8 @@
 <script setup>
 import { computed, nextTick, onMounted, ref, watch, getCurrentInstance, defineProps } from 'vue'
 import zenerSymbols from '../data/zenerSymbols'
+import { exportCardPng } from '../composables/useCardExport'
+import { showPlacard } from '../composables/usePlacard'
 
 const props = defineProps({
   name: { type: String, default: 'Unsigned' },
@@ -304,6 +322,37 @@ const uid = getCurrentInstance().uid
 const id = (part) => `rvc-card-${uid}-${part}`
 
 const turned = ref(false)
+const saving = ref(false)
+const stage = ref(null)
+
+/*
+ * The face you are looking at, not both. Somebody who wants the reverse can
+ * turn it over and press it again, and a control that silently produces two
+ * files is a control nobody trusts twice.
+ */
+async function save() {
+  if (saving.value) return
+  saving.value = true
+
+  try {
+    const face = stage.value?.querySelector(
+      turned.value ? '.member-card-face.is-back' : '.member-card-face.is-front'
+    )
+    if (!face) throw new Error('No face to copy')
+
+    const side = turned.value ? 'reverse' : 'front'
+    // RV-XXVI-Y loses its psi to the filter and would leave a trailing
+    // hyphen to collide with the one before 'front'.
+    const tag =
+      (props.memberNo || '').replace(/[^\w-]+/g, '').replace(/^-+|-+$/g, '') || 'unnumbered'
+    await exportCardPng(face, `remote-viewers-club-${tag}-${side}`)
+  } catch (error) {
+    showPlacard(['The Club could not strike a copy.', 'Try again in a moment.'], { hold: 3600 })
+    console.error('Error exporting the membership card:', error)
+  } finally {
+    saving.value = false
+  }
+}
 
 /* The glyphs, keyed to the same ids the Precognition deck uses, so a symbol
    earned there is the symbol lit here. */
@@ -634,9 +683,9 @@ watch(() => props.name, fitName)
 /* Beside the card, not beneath it: a pill the width of the thing it turns
    read as the main business of the section rather than a way to see the
    back of a card. */
+.member-card-save,
 .member-card-turn {
   position: absolute;
-  right: -0.75rem;
   bottom: -0.75rem;
   display: grid;
   place-items: center;
@@ -653,11 +702,29 @@ watch(() => props.name, fitName)
     border-color var(--dur-quick) var(--ease-out);
 }
 
+.member-card-turn {
+  right: -0.75rem;
+}
+
+/* Tucked in beside the turn, same size and weight: they are both small
+   things you may do to the card, and neither is the main business. */
+.member-card-save {
+  right: 2.75rem;
+}
+
+.member-card-save:disabled {
+  opacity: 0.5;
+  cursor: progress;
+}
+
+.member-card-save svg,
 .member-card-turn svg {
   width: 1.25rem;
   height: 1.25rem;
 }
 
+.member-card-save:hover,
+.member-card-save:focus-visible,
 .member-card-turn:hover,
 .member-card-turn:focus-visible {
   color: var(--gilt-bright);
