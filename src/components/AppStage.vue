@@ -85,7 +85,7 @@
 
         <p>
           So treat it as a rehearsal room. Call the card, work the board, come
-          back until something sharpens. Or does not.
+          back until something sharpens. Or clicks into place.
         </p>
 
         <p>
