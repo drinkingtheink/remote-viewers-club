@@ -69,24 +69,28 @@
         <p class="about-eyebrow">A Note to the Curious</p>
         <h2 id="about-heading">The Machine and the Mystery</h2>
         <p class="about-question">
-          Every instrument that finds a ghost has just proved it was never
-          one.
+          Asking whether a machine can serve the mystery is a few thousand
+          years late.
         </p>
 
         <p>
-          The faculty will not sit for its portrait: ask it to repeat and it
-          goes quiet. A delicate talent would do that. So would nothing. No
-          needle yet built tells them apart.
+          The mirror, the pendulum, the deck, the board: every rite you can
+          name is already an instrument. The occult has always run on
+          hardware.
         </p>
 
         <p>
-          So we offer practice, not proof: the same hour, the same cards, an
-          honest tally. Sharpen what you have.
+          The trouble is a machine wants the same answer twice, and the
+          mystery never agreed to that. Ours asks anyway.
         </p>
 
         <p>
-          You are already staring into a lighted glass at a place you are not.
-          Your grandmother had a word for it.
+          So treat it as a rehearsal room. Call the card, work the board, come
+          back until something sharpens. Or does not.
+        </p>
+
+        <p>
+          We have only changed the glass.
         </p>
 
         <p class="about-credits">
