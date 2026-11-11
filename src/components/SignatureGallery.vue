@@ -1,27 +1,29 @@
 <template>
   <div class="sig-gallery-container stage">
     <div class="header">
-      <h3>Club Membership Roll:</h3>
-      <button @click="refreshData" :disabled="loading">
-        {{ loading ? 'Loading...' : 'Refresh Data' }}
+      <h3>The Membership Roll</h3>
+      <button class="roll-refresh" @click="refreshData" :disabled="loading">
+        {{ loading ? 'Reading' : 'Read it again' }}
       </button>
     </div>
     
     <div v-if="loading" class="loading">
       <div class="spinner"></div>
-      <p>Loading members...</p>
+      <p>Reading the roll&hellip;</p>
     </div>
-    
+
+    <!-- The Club does not say "Error Loading Data", and it has never used an
+         emoji in its life. -->
     <div v-else-if="error" class="error">
-      <h3>⚠️ Error Loading Data</h3>
+      <h3>The roll could not be read</h3>
       <p>{{ error }}</p>
-      <button @click="refreshData">Try Again</button>
+      <button class="roll-refresh" @click="refreshData">Try again</button>
     </div>
-    
+
     <div v-else-if="items.length === 0" class="empty">
-      <h3>📝 No Members Found</h3>
-      <p>No data found in the spreadsheet.</p>
-      <button @click="refreshData">Refresh</button>
+      <h3>No names on the roll</h3>
+      <p>Nobody has signed, or the register could not be reached.</p>
+      <button class="roll-refresh" @click="refreshData">Try again</button>
     </div>
     
     <div v-else class="content">
@@ -217,11 +219,20 @@ onMounted(() => {
 
 .sig-gallery-container .header {
   display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
   padding-bottom: 16px;
   border-bottom: 0.5px solid var(--gilt-dim);
+}
+
+/* The quietest control on the page: it reloads a list nobody asked it to
+   reload. It should not be the same weight as the ones that do something. */
+.sig-gallery-container .roll-refresh {
+  font-size: var(--text-sm);
+  padding: 0.45rem 1.1rem;
 }
 
 .sig-gallery-container .loading {

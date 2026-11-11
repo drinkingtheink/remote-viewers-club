@@ -290,7 +290,18 @@
       />
     </section>
 
-    <section v-if="isMemberAlready" class="member-card-mount">
+    <!--
+      One thing to do at a time. Signing and holding a card are the two
+      states this page has, and they were both mounted at once with v-show
+      deciding which was visible -- which left an empty section and a stray
+      toggle sitting in the gap for whichever one you were not.
+    -->
+    <section v-if="!isMemberAlready" class="join-step signature">
+      <h3>&ndash; Sign Here When Ready &ndash;</h3>
+      <SignaturePad bloodColor="#8B0000" />
+    </section>
+
+    <section v-else class="join-step member-card-mount">
       <h3>Your Card</h3>
       <MembershipCard
         :name="memberName"
@@ -300,28 +311,17 @@
       />
     </section>
 
-    <section class="members-toggle">
-      <button 
-        v-show="isMemberAlready"
-        class="tos-handler"
-        @click="handleTOSToggle">
-        {{ openTOS ? 'Close Terms you already agreed to' : 'Review Terms - No Backsies!'}}
+    <!-- The secondary business, together and at one size. -->
+    <nav class="join-actions">
+      <button v-if="isMemberAlready" type="button" class="tos-handler" @click="handleTOSToggle">
+        {{ openTOS ? 'Close the terms' : 'Review the terms &mdash; no backsies' }}
       </button>
-    </section>
+      <button type="button" @click="showMembershipRoll = !showMembershipRoll">
+        {{ showMembershipRoll ? 'Hide the roll' : 'Show the roll' }}
+      </button>
+    </nav>
 
-    <section class="signature" v-show="!isMemberAlready">
-      <h3>- Sign Here When Ready -</h3>
-      <SignaturePad 
-        bloodColor="#8B0000"
-      />
-    </section>
-
-    <section>
-      <button v-show="!showMembershipRoll" @click="enableShowMembershipRoll">Show Roll</button>
-      <button v-show="showMembershipRoll" @click="showMembershipRoll = false">Hide Roll</button>
-    </section>
-
-    <section v-if="isMemberAlready || showMembershipRoll" class="signature-gallery">
+    <section v-if="showMembershipRoll" class="join-step signature-gallery">
       <SignatureGallery />
     </section>
   </div>
@@ -441,9 +441,6 @@ export default {
     handleTOSToggle() {
       this.openTOS = !this.openTOS;
     },
-    enableShowMembershipRoll() {
-      this.showMembershipRoll = true;
-    },
     readStore(key) {
       try {
         return localStorage.getItem(key) || ''
@@ -482,6 +479,10 @@ export default {
   },
   mounted() {
     this.isMemberAlready = localStorage.getItem('rvc-joined') || false
+    // Members arrived to an open roll before, because the section tested
+    // `isMemberAlready || showMembershipRoll` -- so Hide Roll could never
+    // close it. Same first impression, as a starting value this time.
+    this.showMembershipRoll = !!this.isMemberAlready
     this.loadMemberNumber()
 
     eventBus.on('confirmSigSaved', this.confirmSigSaved)
@@ -678,10 +679,27 @@ export default {
 }
 
 .signature {
-  margin: 0 auto;
+  margin-inline: auto;
   background-color: var(--panel);
   padding: 2rem;
   max-width: 500px;
+  border-top: 2px solid var(--gilt-dim);
+  box-shadow: inset 0 1px 0 rgba(224, 189, 106, 0.16), 0 2px 14px rgba(0, 0, 0, 0.45);
+}
+
+/* The two headings that open a step, set alike so the card and the pad read
+   as the same kind of moment. */
+.join-step > h3 {
+  margin: 0 auto 1.25rem;
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  letter-spacing: var(--tracking-wide);
+  color: var(--gilt-bright);
+}
+
+.member-card-mount {
+  margin-inline: auto;
+  max-width: 48rem;
 }
 
 .signature h3 {
@@ -731,28 +749,48 @@ export default {
   will-change: translate;
 }
 
-.members-toggle {
+/*
+ * One row of secondary business.
+ *
+ * This was three buttons across two sections, stacked down the middle at
+ * different widths, with a negative margin pulling one up into the one
+ * above it. They all do the same kind of job -- show me something else --
+ * so they sit together at one size, and the page stops reading as a column
+ * of unrelated offers underneath the thing you actually came for.
+ *
+ * It wraps rather than shrinking, so two buttons become two rows on a phone
+ * instead of two slivers.
+ */
+.join-actions {
   display: flex;
-  align-content: center;
-  margin-top: -1rem;
-  position: relative;
-  z-index: 10;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: center;
+  gap: 0.9rem;
+  margin: 2.75rem auto 0;
+  padding-inline: 1rem;
 }
 
+.join-actions button {
+  flex: 0 1 17rem;
+  font-size: var(--text-sm);
+}
+
+/* Each part of the page gets the same air above it, so the rhythm does not
+   depend on which state the reader happens to be in. */
+.join-step {
+  margin-top: 2.75rem;
+}
+
+/*
+ * Width, size and weight all come from the row now. It used to sit at 95%
+ * scale and 85% opacity to mark itself as the quieter offer, which worked
+ * while it stood alone and stopped working the moment it had a neighbour:
+ * two buttons side by side, one of them measurably smaller and dimmer than
+ * the other, reads as a mistake rather than a hierarchy.
+ */
 .tos-handler {
-  margin: 0 auto;
-  width: 450px;
-  max-width: 100%;
-  font-size: var(--text-md);
   border-radius: 10px;
   border-color: rgba(0, 0, 0, 0.8);
-  opacity: 0.85;
-  transform: scale(0.95);
-  transition: opacity 0.5s ease, transform 0.5s ease, background-color 0.2s ease;
-}
-
-.tos-handler:hover {
-  opacity: 1;
-  transform: scale(1);
 }
 </style>
