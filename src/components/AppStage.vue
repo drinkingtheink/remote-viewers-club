@@ -66,30 +66,39 @@
       @click="handleAboutClick"
     >
       <article class="about-body">
-        <p class="about-eyebrow">Remote Viewers Club</p>
-        <h2 id="about-heading">Tech and the Metaphysical</h2>
+        <p class="about-eyebrow">A Note to the Curious</p>
+        <h2 id="about-heading">The Machine and the Mystery</h2>
         <p class="about-question">
-          Can you use one to prove the other? Or improve on it?
+          Can the one be made to testify for the other? And failing that, can
+          it be made to serve?
         </p>
 
         <p>
-          Probably not, on the first count. The tests here are real ones
-          though. The precognition run scores you against chance and shows its
-          working. The s&eacute;ance measures how far the planchette moved and
-          how much of that was your own hand. Nothing is rigged to make you
-          look psychic.
+          On the first count, no &mdash; and anyone who tells you otherwise
+          should be asked to show their hands. What the Club keeps instead is
+          arithmetic, in the open. The precognition run sets your hits beside
+          the number blind chance would have dealt you and prints the
+          difference either way. The board measures how far the planchette
+          travelled and how much of it came out of your own wrist. Nothing
+          here has been dressed for company: come away looking ordinary and
+          you were ordinary.
         </p>
 
         <p>
-          The second question is the better one. S&eacute;ance, dowsing,
-          remote viewing: whatever else they are, they are all instructions to
-          slow down and look hard at something. That part works.
+          The second question is the one worth the candle. Strip the brass
+          and the incense from a s&eacute;ance, a dowsing rod, a set of
+          coordinates handed to you cold, and what is left is an instruction:
+          be still, attend to one thing, and do not look away until it gives
+          something up. That has never required proving, and it works on a wet
+          Tuesday with the lights on and nothing whatever in the room.
         </p>
 
         <p class="about-credits">
-          Built by <a href="https://www.drinkingtheink.com/" target="_blank" rel="noopener">Jason M. Harrison</a>.
-          Badges after military and astronomical mission patches.
-          <a href="https://github.com/drinkingtheink/remote-viewers-club" target="_blank" rel="noopener">Source</a>.
+          Kept by <a href="https://www.drinkingtheink.com/" target="_blank" rel="noopener">Jason M. Harrison</a>.
+          The badges are after military and astronomical mission patches &mdash;
+          sigils drawn by people with budgets. The
+          <a href="https://github.com/drinkingtheink/remote-viewers-club" target="_blank" rel="noopener">source</a>
+          is open to anyone who cares to look.
         </p>
 
         <div class="about-actions">
