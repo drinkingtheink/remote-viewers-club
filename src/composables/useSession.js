@@ -1,5 +1,6 @@
 import { computed, ref } from 'vue'
 import failMsgs from '../data/failureFeedback'
+import { recordSitting } from './useProgress'
 
 export const INTRO = 'intro'
 
@@ -25,6 +26,9 @@ export function useSession({ selector, scrollToElement }) {
 
   /** Enter the first working phase and bring the now-expanded panel into view. */
   const begin = (firstPhase) => {
+    // The selector is the only stable name a session has here, and it is
+    // already unique per panel, so it serves as the id in the record.
+    recordSitting(selector)
     phase.value = firstPhase
     // Scroll only once the `active` class is on the element the selector targets.
     scrollToElement?.(`${selector}.stage.active`)

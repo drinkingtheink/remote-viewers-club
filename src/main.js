@@ -10,10 +10,13 @@ import { startPointerLight } from './composables/usePointerLight'
 import { startPresence } from './composables/usePresence'
 import { startSheen } from './composables/useSheen'
 import { showPlacard } from './composables/usePlacard'
+import { startLapse } from './composables/useLapse'
 
 startPointerLight()
 startPresence()
 startSheen()
+// After the rest: it may raise a placard, and the queue should exist first.
+startLapse()
 
 /*
  * Placard copy is the kind of thing that has to be read on the card to be

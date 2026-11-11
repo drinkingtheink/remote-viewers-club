@@ -1,5 +1,30 @@
 <template>
   <div class="signature-pad-container">
+    <!--
+      No pen, no pad. Leaving the canvas drawable behind a dead Save button
+      would invite somebody to compose a signature and then be told it does
+      not count, which is a worse welcome than being told the terms first.
+    -->
+    <figure v-if="!penIssued" class="sig-riddle">
+      <figcaption>The pen is withheld</figcaption>
+      <!--
+        Three conditions, two of which are already met by anyone standing
+        here: the terms are above you and the nib is the Club's own. Naming
+        all three and then waving two away is funnier than listing one, and
+        it tells a reader what the Club thinks it is asking for.
+      -->
+      <blockquote>
+        <p>Three conditions attend a signing.</p>
+        <p>The first you met by reading what binds you.</p>
+        <p>The third the nib sees to itself, in red.</p>
+        <p class="sig-riddle-answer">
+          Only the second is yours: six rooms stand open under Praxis. Sit in one.
+        </p>
+      </blockquote>
+      <p class="sig-riddle-form">RVC FORM 00-A</p>
+    </figure>
+
+    <template v-else>
     <div class="canvas-container" ref="canvasContainer">
       <canvas 
         ref="signatureCanvas"
@@ -37,6 +62,7 @@
     </div>
     <p v-if="blocker" class="sig-blocker">{{ blocker }}</p>
     <p v-if="saveError" class="sig-error" role="alert">{{ saveError }}</p>
+    </template>
   </div>
 </template>
 
@@ -45,6 +71,8 @@ import { computed, ref, onMounted, onBeforeUnmount, defineProps, defineEmits, wa
 import { eventBus } from '../EventBus'
 import { ROLL_WRITE, rollNumberFor } from '../data/archiveEndpoints'
 import { showPlacard } from '../composables/usePlacard'
+import { hasSat } from '../composables/useProgress'
+import { toRoman } from '../data/numerals'
 
 // Props
 const props = defineProps({
@@ -389,7 +417,47 @@ const saveSignature = () => {
   // The mark and the name are kept straight away so a failed filing cannot
   // lose them. Membership itself waits for the Club to acknowledge it.
   writeToLocalStorage(imageData, signedName.value)
+
+  if (readmit()) return
+
   submitData(imageData)
+}
+
+/*
+ * Signing again after the Club has forgotten you.
+ *
+ * Matched against what this browser already holds rather than against the
+ * roll, which matters: the roll has a 'Goober 1' and a 'goober 1' on it
+ * already, so a stranger who happens to pick a name somebody else used must
+ * still get their own row. Only a device that signed as this name before,
+ * and kept the number it was given, is the same member coming back.
+ *
+ * It also stops the duplicate row that signing twice used to leave.
+ */
+function readmit() {
+  const was = (localStorage.getItem('writtenName') || '').trim().toLowerCase()
+  const number = Number(localStorage.getItem('rvc-member-no'))
+  if (!number || !was || was !== signedName.value.toLowerCase()) return false
+
+  try {
+    localStorage.setItem('rvc-joined', true)
+  } catch (storageError) {
+    // private window; it will be forgotten again, which is on brand
+  }
+
+  saving.value = false
+  isSaved.value = true
+  isMemberAlready.value = true
+  emitToBus()
+
+  // The punchline: the number never changed. The roll kept it while the
+  // Club mislaid the fact of you.
+  showPlacard(
+    ['You have signed this register before.', `You are member № ${toRoman(number)}. You always were.`],
+    { hold: 5000 }
+  )
+
+  return true
 }
 
 const writeToLocalStorage = (signatureData, writtenName) => {
@@ -507,6 +575,22 @@ const handleTouchMove = (event) => {
   draw(event)
 }
 
+/*
+ * The pen is issued on evidence of practice.
+ *
+ * One sitting, not all six: the bar has to be clearable on a phone and by
+ * keyboard, and Remote Viewing's canvas is mouse-only -- a gate that
+ * demands every session would make joining impossible for some readers
+ * outright. One is enough to make signing a thing you did rather than a
+ * thing you scrolled to.
+ *
+ * Read once at setup rather than watched. A reader who sits a session goes
+ * through a full page of Praxis to get back here, and anyone who opens the
+ * pad first and the session second will find the pen waiting next time --
+ * which is the Club's manner anyway.
+ */
+const penIssued = ref(hasSat())
+
 const signedName = computed(() => (printedName.value || '').trim())
 
 /* "the 22nd to sign" -- 11th, 12th and 13th are the ones that catch a naive
@@ -518,7 +602,7 @@ function ordinal(n) {
 }
 
 const canSave = computed(
-  () => !saving.value && !isSaved.value && !!signedName.value && hasInk.value
+  () => penIssued.value && !saving.value && !isSaved.value && !!signedName.value && hasInk.value
 )
 
 /*
@@ -527,6 +611,7 @@ const canSave = computed(
  */
 const blocker = computed(() => {
   if (saving.value || isSaved.value) return ''
+  if (!penIssued.value) return ''
   if (!hasInk.value && !signedName.value) return 'Sign above and print your name to file it.'
   if (!hasInk.value) return 'The Club requires a mark. Sign above.'
   if (!signedName.value) return 'Print your name below the mark.'
@@ -588,6 +673,55 @@ watch(isSaved, () => {
 </script>
 
 <style scoped>
+/*
+ * The terms of admission, set as an inscription rather than an error. It is
+ * the first thing most readers will meet on this panel, so it has to read as
+ * something the Club meant to say.
+ */
+.sig-riddle {
+  margin: 0;
+  padding: 1.5rem 0.5rem 0.5rem;
+  text-align: center;
+}
+
+.sig-riddle figcaption {
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  font-variant-caps: all-small-caps;
+  letter-spacing: var(--tracking-wide);
+  color: var(--gilt-bright);
+}
+
+.sig-riddle blockquote {
+  margin: 1.1rem auto 0;
+  max-width: 34ch;
+  border: 0;
+}
+
+.sig-riddle blockquote p {
+  margin: 0 0 0.3rem;
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: var(--text-md);
+  line-height: var(--leading-snug);
+  color: var(--parchment);
+}
+
+/* The answer carries a little weight, since it is the one line a reader
+   actually has to act on. */
+.sig-riddle blockquote p.sig-riddle-answer {
+  margin-top: 0.8rem;
+  color: var(--gilt);
+}
+
+.sig-riddle-form {
+  margin: 1.4rem 0 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  letter-spacing: var(--tracking-wider);
+  color: var(--ash);
+}
+
 /*
  * Why it will not go, and what went wrong if it went and failed. The button
  * used to refuse in silence, which is indistinguishable from being broken.

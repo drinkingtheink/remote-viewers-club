@@ -138,6 +138,7 @@
 
 <script setup>
 import { ref, computed, onMounted, watch, defineProps } from 'vue';
+import { recordSitting } from '../../composables/useProgress'
 import WandAnimation from '../animations/WandAnimation.vue'
 
 const props = defineProps(['scrollToElement'])
@@ -289,6 +290,7 @@ const checkCell = (index) => {
 
 // Start the game
 const startGame = () => {
+  recordSitting('.dowsing-simulator');
   props.scrollToElement('.dowsing-simulator.stage.active')
   gameStarted.value = true;
   initializeGrid();

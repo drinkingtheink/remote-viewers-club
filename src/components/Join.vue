@@ -297,7 +297,7 @@
       toggle sitting in the gap for whichever one you were not.
     -->
     <section v-if="!isMemberAlready" class="join-step signature">
-      <h3>&ndash; Sign Here When Ready &ndash;</h3>
+      <h3>{{ penIssued ? '– Sign Here When Ready –' : '– Admission –' }}</h3>
       <SignaturePad bloodColor="#8B0000" />
     </section>
 
@@ -332,6 +332,8 @@ import SignaturePad from './SignaturePad'
 import SignatureGallery from './SignatureGallery'
 import MembershipCard from './MembershipCard'
 import { rollNumberFor } from '../data/archiveEndpoints'
+import { toRoman } from '../data/numerals'
+import { hasSat } from '../composables/useProgress'
 import CandleAnimation from './animations/CandleAnimation'
 import { eventBus } from '../EventBus'
 
@@ -344,6 +346,12 @@ export default {
     MembershipCard
   },
   computed: {
+    /* The heading has to agree with the panel under it: inviting someone to
+       sign when ready, above a notice saying the pen is withheld, reads as
+       two parts of the page that have not met. */
+    penIssued() {
+      return hasSat()
+    },
     memberName() {
       return this.readStore('writtenName') || 'Unsigned'
     },
@@ -360,7 +368,7 @@ export default {
       if (!when) return '—'
       const year = new Date(when).getFullYear()
       if (Number.isNaN(year)) return '—'
-      return this.toRoman(year)
+      return toRoman(year)
     },
     /*
      * The number is the member's row in the register, so it is the Club's to
@@ -370,7 +378,7 @@ export default {
      */
     memberNo() {
       if (!this.memberNumber) return '—'
-      return `RV-${this.toRoman(this.memberNumber)}-\u03A8`
+      return `RV-${toRoman(this.memberNumber)}-\u03A8`
     }
   },
   methods: {
@@ -448,22 +456,6 @@ export default {
         // private windows throw rather than return null
         return ''
       }
-    },
-    toRoman(value) {
-      const table = [
-        [1000, 'M'], [900, 'CM'], [500, 'D'], [400, 'CD'],
-        [100, 'C'], [90, 'XC'], [50, 'L'], [40, 'XL'],
-        [10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I']
-      ]
-      let left = value
-      let out = ''
-      for (const [size, numeral] of table) {
-        while (left >= size) {
-          out += numeral
-          left -= size
-        }
-      }
-      return out
     }
   },
   data() {

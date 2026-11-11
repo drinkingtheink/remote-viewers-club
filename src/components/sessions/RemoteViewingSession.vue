@@ -124,6 +124,7 @@
 
 <script setup>
 import { computed, ref, watch, defineProps } from 'vue';
+import { recordSitting } from '../../composables/useProgress'
 import sites from '../../data/latLongSites';
 import targetImages from '../../data/targetImages';
 import failMsgs from '../../data/failureFeedback';
@@ -237,6 +238,7 @@ const getFailMsg = () => {
 
 const beginSession = () => {
   stage.value = 'coordinates';
+  recordSitting('.remote-viewing-container');
 
   props.scrollToElement('.remote-viewing-container.stage.active');
   

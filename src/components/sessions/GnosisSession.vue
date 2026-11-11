@@ -75,6 +75,7 @@
 
 <script setup>
 import { ref, defineProps } from 'vue'
+import { recordSitting } from '../../composables/useProgress'
 import BookAnimation from '../animations/BookAnimation.vue'
 import questions from '../../data/trivia'
 
@@ -101,6 +102,7 @@ function startGame() {
 
   deck.value = [...questions].sort(() => Math.random() - 0.5)
   
+  recordSitting('.gnosis-session')
   gameStarted.value = true
   gameOver.value = false
   score.value = 0
