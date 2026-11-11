@@ -189,13 +189,13 @@
       </Transition>
     </main>
 
-    <footer>
-      <button type="button" class="footer-about" @click="openAbout">About this App</button>
-      <a href="https://www.drinkingtheink.com/" target="_blank">About the Author</a>
-    </footer>
-
-    <!-- what a bound volume carries at the back -->
-    <aside class="colophon">
+    <!--
+      What a bound volume carries at the back, and the only thing down here
+      now: the colophon was already the page's closing statement, so the two
+      entries that used to sit above it as website buttons are the last line
+      of it instead.
+    -->
+    <footer class="colophon">
       <h2 class="colophon-head">Colophon</h2>
       <p>
         Set in <em>Vollkorn</em>, with <em>Unica One</em> for the display lines
@@ -207,7 +207,20 @@
         the binding is photographed; all of it is drawn by the page itself.
       </p>
       <p class="colophon-mark">Remote Viewers Club &middot; bound in the year 2026</p>
-    </aside>
+
+      <p class="imprint">
+        <button type="button" class="imprint-entry" @click="openAbout">
+          A Note to the Curious
+        </button>
+        <span class="imprint-sep" aria-hidden="true">&#10022;</span>
+        <a
+          class="imprint-entry"
+          href="https://www.drinkingtheink.com/"
+          target="_blank"
+          rel="noopener"
+        >The Hand That Bound It<span class="imprint-away" aria-hidden="true">&#8599;</span><span class="visually-hidden"> (opens in a new tab)</span></a>
+      </p>
+    </footer>
   </div>
 
   <!--
@@ -616,35 +629,6 @@ export default {
   margin-top: 1.2rem;
 }
 
-/*
- * The footer's other entry is a link; this one opens the note in place, so it
- * only has to undo the button chrome. Everything that makes it look like its
- * neighbour comes from the `footer a` rules it now shares.
- */
-footer .footer-about {
-  /* a button is border-box by default and the <a> beside it is not, which
-     put the 10px rule inside one and outside the other */
-  box-sizing: content-box;
-  border-top: 0;
-  border-right: 0;
-  border-bottom: 0;
-  border-radius: 0;
-  color: var(--gilt);
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: inherit;
-  letter-spacing: normal;
-  /* the button system sets real small caps; its neighbour here is a plain
-     uppercased link, and the two sat at different cap heights */
-  font-variant-caps: normal;
-  text-transform: uppercase;
-}
-
-footer .footer-about:hover {
-  background: var(--panel);
-  color: var(--gilt-bright);
-}
-
 .badge-dialog::backdrop {
   background-color: rgba(0, 0, 0, 0.78);
 }
@@ -916,8 +900,9 @@ section.gallery > .intro {
  * one has more to own up to than most -- the whole binding is generated.
  */
 .colophon {
-  max-width: 44ch;
-  margin: 4rem auto 6rem;
+  /* wide enough that the imprint's two entries sit on one line */
+  max-width: 48ch;
+  margin: 5rem auto 7rem;
   padding: 1.75rem 2rem 2rem;
   border-top: 2px solid var(--gilt-dim);
   background: rgba(10, 8, 6, 0.74);
@@ -1101,39 +1086,91 @@ section.gallery > .intro {
   border-top: 1px solid rgba(224, 189, 106, 0.22);
 }
 
-footer {
-  text-align: center;
+/*
+ * The imprint: the colophon's last line.
+ *
+ * These were two oxblood-edged slabs at 46% width apiece, reading "About this
+ * App" and "About the Author" -- website furniture bolted to the end of a
+ * book, and stacked above the colophon, so the page finished twice.
+ *
+ * Set loose on the boards they were a legibility problem as well as a design
+ * one: the tooling runs straight through a line this size, and gilt on gilt
+ * where a diagonal crosses a letter is unreadable. Inside the plate there is
+ * nothing behind them but the plate.
+ */
+.imprint {
   display: flex;
-  justify-content: space-around;
-  max-width: 800px;
-  margin: 4rem auto 10rem auto;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.3rem 1rem;
+  margin: 1.4rem 0 0 !important;
+  padding-top: 1.1rem;
+  border-top: 1px solid rgba(224, 189, 106, 0.22);
 }
 
-@media only screen and (max-width: 60em) {
-  footer {
-    display: block;
+/*
+ * One entry is a button and one is a link, because one opens the note in
+ * place and the other leaves the book entirely. They have to read as the same
+ * kind of thing, so the button's chrome comes off rather than the link being
+ * dressed up to match it.
+ */
+.imprint-entry {
+  padding: 0.2rem 0;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  border-radius: 0;
+  background: none;
+  color: var(--gilt);
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  font-weight: normal;
+  font-variant-caps: all-small-caps;
+  letter-spacing: var(--tracking-wide);
+  text-transform: none;
+  text-decoration: none;
+}
+
+.imprint-entry:hover {
+  background: none;
+  color: var(--gilt-bright);
+  border-bottom-color: var(--gilt-dim);
+}
+
+/* the button inherits this from the button system; the link does not */
+.imprint-entry:focus-visible {
+  outline: 3px solid var(--the-yellow);
+  outline-offset: 2px;
+}
+
+.imprint-sep {
+  color: var(--gilt-dim);
+  font-size: var(--text-xs);
+}
+
+/*
+ * Measured, not guessed: the two entries stop sharing a line once the plate
+ * is under 432px, and the plate is the viewport below its own max-width. A
+ * separator left stranded at the end of the first entry reads as an ornament
+ * rather than as a divider, so below that it stacks and the star goes.
+ */
+@media only screen and (max-width: 27em) {
+  .imprint {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.55rem;
+  }
+
+  .imprint-sep {
+    display: none;
   }
 }
 
-footer a,
-footer .footer-about {
-  display: block;
-  background: var(--panel);
-  width: 46%;
-  padding: 1rem 0;
-  border-left: 10px solid var(--oxblood);
-}
-
-@media only screen and (max-width: 60em) {
-  footer a {
-    width: 100%;
-    margin-bottom: 10px;
-  }
-}
-
-footer a:hover,
-footer .footer-about:hover {
-  border-color: var(--gilt);
+/* it leaves the book, and says so without spending a second line of type */
+.imprint-away {
+  margin-left: 0.3em;
+  font-size: 0.8em;
+  opacity: 0.9;
 }
 
 button.enlarge {
