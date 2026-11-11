@@ -44,6 +44,7 @@
 import { computed, ref, onMounted, onBeforeUnmount, defineProps, defineEmits, watch } from 'vue'
 import { eventBus } from '../EventBus'
 import { ROLL_WRITE, rollNumberFor } from '../data/archiveEndpoints'
+import { showPlacard } from '../composables/usePlacard'
 
 // Props
 const props = defineProps({
@@ -460,9 +461,23 @@ const submitData = (sigImgData) => {
         }
         isMemberAlready.value = true
         emitToBus()
+
+        /*
+         * The one genuinely good moment on the site, and it used to pass
+         * with a word changing on a button. The number is the part worth
+         * saying: it is the Club's answer, and it is theirs now.
+         */
+        showPlacard(
+          ['The Club has your mark.', `You are the ${ordinal(number)} to sign.`],
+          { hold: 4200 }
+        )
       } else {
         saveError.value =
           'The Club did not acknowledge the signature. It is kept on this device; try filing it again.'
+        showPlacard(
+          ['The Club did not answer.', 'Your mark is kept here. Try again when you like.'],
+          { hold: 4000 }
+        )
       }
     } catch (error) {
       saving.value = false
@@ -493,6 +508,14 @@ const handleTouchMove = (event) => {
 }
 
 const signedName = computed(() => (printedName.value || '').trim())
+
+/* "the 22nd to sign" -- 11th, 12th and 13th are the ones that catch a naive
+   rule out, so they are handled before the last digit is consulted. */
+function ordinal(n) {
+  const tens = n % 100
+  if (tens >= 11 && tens <= 13) return `${n}th`
+  return `${n}${['th', 'st', 'nd', 'rd'][n % 10] || 'th'}`
+}
 
 const canSave = computed(
   () => !saving.value && !isSaved.value && !!signedName.value && hasInk.value

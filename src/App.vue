@@ -11,16 +11,21 @@
     never the arms, which are painted after and stay in focus.
   -->
   <div class="siege-haze" aria-hidden="true"></div>
+
+  <!-- how the Club says things; raised from anywhere via showPlacard() -->
+  <ThePlacard />
 </template>
 
 <script>
 import AppStage from './components/AppStage.vue'
+import ThePlacard from './components/ThePlacard.vue'
 import { startWatchingLattice } from './composables/useWatchingLattice'
 
 export default {
   name: 'App',
   components: {
-    AppStage
+    AppStage,
+    ThePlacard
   },
   mounted() {
     startWatchingLattice(this.$refs.latticeEye)

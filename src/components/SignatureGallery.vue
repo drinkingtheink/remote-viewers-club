@@ -67,7 +67,7 @@
             </div>
           </div>
           <div v-if="item.timestamp" class="timestamp">
-            <small><bold>JOINED:</bold> {{ formatDate(item.timestamp) }}</small>
+            <small><strong>JOINED:</strong> {{ formatDate(item.timestamp) }}</small>
           </div>
         </div>
       </div>
