@@ -69,8 +69,7 @@
         <p class="about-eyebrow">A Note to the Curious</p>
         <h2 id="about-heading">The Machine and the Mystery</h2>
         <p class="about-question">
-          Asking whether a machine can serve the mystery is a few thousand
-          years late.
+          Can a machine prove the gift? Or even improve it?
         </p>
 
         <p>
