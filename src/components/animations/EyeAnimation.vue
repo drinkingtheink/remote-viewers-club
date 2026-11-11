@@ -19,8 +19,18 @@
         <ellipse class="orbit orbit-inner" cx="150" cy="108" rx="104" ry="68" />
       </g>
 
+      <!-- One path per star. They shared a single path before, so all eight
+           brightened and dimmed together, which reads as the whole sky
+           pulsing rather than as stars. -->
       <g class="eye-stars">
-        <path d="M38 29Q39.12 34.88 45 36Q39.12 37.12 38 43Q36.88 37.12 31 36Q36.88 34.88 38 29ZM266 38.5Q266.88 43.12 271.5 44Q266.88 44.88 266 49.5Q265.12 44.88 260.5 44Q265.12 43.12 266 38.5ZM22 165Q22.8 169.2 27 170Q22.8 170.8 22 175Q21.2 170.8 17 170Q21.2 169.2 22 165ZM278 157.5Q279.04 162.96 284.5 164Q279.04 165.04 278 170.5Q276.96 165.04 271.5 164Q276.96 162.96 278 157.5ZM150 9Q150.8 13.2 155 14Q150.8 14.8 150 19Q149.2 14.8 145 14Q149.2 13.2 150 9ZM150 199.5Q150.72 203.28 154.5 204Q150.72 204.72 150 208.5Q149.28 204.72 145.5 204Q149.28 203.28 150 199.5ZM96 18Q96.64 21.36 100 22Q96.64 22.64 96 26Q95.36 22.64 92 22Q95.36 21.36 96 18ZM214 188Q214.64 191.36 218 192Q214.64 192.64 214 196Q213.36 192.64 210 192Q213.36 191.36 214 188Z" />
+        <path d="M38 29Q39.12 34.88 45 36Q39.12 37.12 38 43Q36.88 37.12 31 36Q36.88 34.88 38 29Z" />
+        <path d="M266 38.5Q266.88 43.12 271.5 44Q266.88 44.88 266 49.5Q265.12 44.88 260.5 44Q265.12 43.12 266 38.5Z" />
+        <path d="M22 165Q22.8 169.2 27 170Q22.8 170.8 22 175Q21.2 170.8 17 170Q21.2 169.2 22 165Z" />
+        <path d="M278 157.5Q279.04 162.96 284.5 164Q279.04 165.04 278 170.5Q276.96 165.04 271.5 164Q276.96 162.96 278 157.5Z" />
+        <path d="M150 9Q150.8 13.2 155 14Q150.8 14.8 150 19Q149.2 14.8 145 14Q149.2 13.2 150 9Z" />
+        <path d="M150 199.5Q150.72 203.28 154.5 204Q150.72 204.72 150 208.5Q149.28 204.72 145.5 204Q149.28 203.28 150 199.5Z" />
+        <path d="M96 18Q96.64 21.36 100 22Q96.64 22.64 96 26Q95.36 22.64 92 22Q95.36 21.36 96 18Z" />
+        <path d="M214 188Q214.64 191.36 218 192Q214.64 192.64 214 196Q213.36 192.64 210 192Q213.36 191.36 214 188Z" />
       </g>
 
       <g id="watcher-lids">
@@ -125,6 +135,14 @@
   animation: star-glimmer 7s ease-in-out infinite;
 }
 
+.eye-stars path:nth-child(2) { animation-duration: 9.3s; animation-delay: -3.1s; }
+.eye-stars path:nth-child(3) { animation-duration: 5.6s; animation-delay: -1.4s; }
+.eye-stars path:nth-child(4) { animation-duration: 8.1s; animation-delay: -5.2s; }
+.eye-stars path:nth-child(5) { animation-duration: 6.4s; animation-delay: -2.7s; }
+.eye-stars path:nth-child(6) { animation-duration: 10.2s; animation-delay: -6.8s; }
+.eye-stars path:nth-child(7) { animation-duration: 7.7s; animation-delay: -0.9s; }
+.eye-stars path:nth-child(8) { animation-duration: 5.9s; animation-delay: -4.3s; }
+
 @keyframes star-glimmer {
   0%, 100% { opacity: 0.55; }
   50% { opacity: 0.22; }
@@ -139,14 +157,39 @@
   animation: watcher-gaze 11s ease-in-out infinite;
 }
 
+/*
+ * An eye moves in jumps and then stays. Every stop is held and every move
+ * between them takes about two per cent of the cycle, a fifth of a second,
+ * so it snaps; easing evenly from one position to the next made it sweep
+ * the room like a searchlight instead.
+ *
+ * It opens and closes on centre, and holds there longest. That is the beat
+ * the whole session is about -- the moment it is looking at you rather than
+ * past you.
+ */
 @keyframes watcher-gaze {
-  0%   { transform: translate(0, 0); }
-  16%  { transform: translate(-38px, -6px); }
-  32%  { transform: translate(32px, 5px); }
-  48%  { transform: translate(-14px, 8px); }
-  64%  { transform: translate(44px, -5px); }
-  82%  { transform: translate(-28px, 3px); }
-  100% { transform: translate(0, 0); }
+  0%, 15%   { transform: translate(0, 0); }
+  17%, 29%  { transform: translate(-34px, -5px); }
+  31%, 41%  { transform: translate(29px, 4px); }
+  43%, 52%  { transform: translate(-12px, 7px); }
+  54%, 67%  { transform: translate(40px, -4px); }
+  69%, 80%  { transform: translate(-26px, 2px); }
+  82%, 100% { transform: translate(0, 0); }
+}
+
+/*
+ * And the pupil tightens when it finds you. Contracted on centre, open
+ * while it is searching: a small thing, but it is the difference between an
+ * eye that moves and an eye that is looking.
+ */
+.eye-pupil {
+  animation: watcher-focus 11s ease-out infinite;
+}
+
+@keyframes watcher-focus {
+  0%, 15%   { r: 9px; }
+  18%, 79%  { r: 12px; }
+  83%, 100% { r: 9px; }
 }
 
 #watcher-lids {
@@ -155,11 +198,23 @@
   animation: watcher-blink 6s ease-in-out infinite;
 }
 
-/* open for most of the cycle; the close is quick, as a lid is */
+/*
+ * A lid shuts faster than it opens -- roughly 80ms down against 180ms back
+ * -- and the old blink took the same slow beat each way, which is what made
+ * it read as a squash rather than a blink. Asymmetric now, and quick.
+ *
+ * Two of them per cycle, unevenly spaced, because an eye that blinks on a
+ * metronome is a machine. The second is the half-blink everybody does and
+ * nobody notices.
+ */
 @keyframes watcher-blink {
-  0%, 86%   { transform: scaleY(1); }
-  92%       { transform: scaleY(0.06); }
-  100%      { transform: scaleY(1); }
+  0%, 43% { transform: scaleY(1); }
+  45% { transform: scaleY(0.35); }
+  47.5% { transform: scaleY(1); }
+  88% { transform: scaleY(1); }
+  89.5% { transform: scaleY(0.04); }
+  93% { transform: scaleY(1); }
+  100% { transform: scaleY(1); }
 }
 
 .watcher-session:hover #watcher-gaze { animation-duration: 6s; }
@@ -171,6 +226,7 @@
 @media (prefers-reduced-motion: reduce) {
   #watcher-gaze,
   #watcher-lids,
+  .eye-pupil,
   .orbit,
   .eye-stars path,
   .watcher-session:hover #watcher-gaze,
