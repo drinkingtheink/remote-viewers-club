@@ -24,22 +24,26 @@
     <input id="print-name" v-model="printedName" />
     <div class="sig-controls">
       <button type="button" class="clear-button secondary" @click="clearSignature">Clear</button>
-      <button 
-        :class="{ 'disabled': printedName == null || printedName == undefined, 'saving': saving }" 
-        type="button" 
-        class="save-button" 
-        @click="saveSignature"> 
+      <button
+        :class="{ saving }"
+        :disabled="!canSave"
+        type="button"
+        class="save-button"
+        @click="saveSignature">
         <span v-if="!saving && !isSaved">Save</span>
-        <span v-if="saving">Saving</span>
+        <span v-if="saving">Filing</span>
         <span v-if="isSaved">SAVED!</span>
       </button>
     </div>
+    <p v-if="blocker" class="sig-blocker">{{ blocker }}</p>
+    <p v-if="saveError" class="sig-error" role="alert">{{ saveError }}</p>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, defineProps, defineEmits, watch } from 'vue'
+import { computed, ref, onMounted, onBeforeUnmount, defineProps, defineEmits, watch } from 'vue'
 import { eventBus } from '../EventBus'
+import { ROLL_WRITE, rollContains } from '../data/archiveEndpoints'
 
 // Props
 const props = defineProps({
@@ -88,9 +92,16 @@ const lastY = ref(0)
 const drips = ref([])
 const animationFrameId = ref(null)
 const isAnimating = ref(false)
-const printedName = ref(null)
+// '' and not null: the old default made `printedName == null` the test for
+// an empty field, and an emptied field is '' -- which is not == null, so the
+// button un-greyed itself while the guard inside still refused to save.
+const printedName = ref('')
 const saving = ref(false)
 const isSaved = ref(false)
+const saveError = ref('')
+// Whether anything has actually been drawn. A name alone used to be enough
+// to file a blank sheet of paper.
+const hasInk = ref(false)
 const isMemberAlready = ref(false)
 // const isAMember = ref(false)
 
@@ -197,7 +208,9 @@ const addDrip = (x, y) => {
 
 const draw = (event) => {
   if (!isDrawing.value) return
-  
+
+  hasInk.value = true
+
   const { offsetX, offsetY } = getCoordinates(event)
   
   // Draw the signature line
@@ -331,7 +344,9 @@ const clearSignature = () => {
   const canvas = signatureCanvas.value
   context.value.fillStyle = props.backgroundColor
   context.value.fillRect(0, 0, canvas.width, canvas.height)
-  printedName.value = null
+  printedName.value = ''
+  hasInk.value = false
+  saveError.value = ''
   
   // Clear drips
   drips.value = []
@@ -348,8 +363,9 @@ const clearSignature = () => {
 }
 
 const saveSignature = () => {
-  if (!printedName.value) return
+  if (!canSave.value) return
 
+  saveError.value = ''
   saving.value = true
   // Create a temporary canvas to merge signature and drips
   const tempCanvas = document.createElement('canvas')
@@ -369,9 +385,9 @@ const saveSignature = () => {
   
   // Get combined image data
   const imageData = tempCanvas.toDataURL('image/png')
-  writeToLocalStorage(imageData, printedName.value)
-  isMemberAlready.value = true;
-  // emit('save', imageData)
+  // The mark and the name are kept straight away so a failed filing cannot
+  // lose them. Membership itself waits for the Club to acknowledge it.
+  writeToLocalStorage(imageData, signedName.value)
   submitData(imageData)
 }
 
@@ -379,7 +395,6 @@ const writeToLocalStorage = (signatureData, writtenName) => {
   const storage = typeof localStorage !== 'undefined' ? localStorage : null
 
   if (storage) {
-    storage.setItem('rvc-joined', true)
     storage.setItem('signatureData', signatureData)
     storage.setItem('writtenName', writtenName)
     // The card prints an ADMITTED date and nothing was recording one. Only
@@ -394,11 +409,11 @@ const submitData = (sigImgData) => {
   // Get form data
   const formData = {
     signatureImgData: sigImgData,
-    printedName: printedName.value
+    printedName: signedName.value
   };
   const form = document.createElement('form');
   form.method = 'POST';
-  form.action = 'https://script.google.com/macros/s/AKfycbwpZu_9Pb4_Qm6FgsWy5HuSg_hDnFGH3MLb3EspqBThRqOV3ZRiBa1a43fZqLMMhzc/exec';
+  form.action = ROLL_WRITE;
   form.target = 'hidden-iframe';
   form.style.display = 'none';
   
@@ -414,20 +429,48 @@ const submitData = (sigImgData) => {
   iframe.name = 'hidden-iframe';
   iframe.style.display = 'none';
   
-  // Add success/error handlers
-  iframe.onload = function() {   
+  /*
+   * The iframe's load event is not evidence. It fires for whatever comes
+   * back -- an Apps Script error page, a sign-in redirect, an empty body --
+   * and the old handler took it as proof and showed SAVED!, so a write that
+   * never landed looked exactly like one that did.
+   *
+   * The response itself cannot be read: it is cross-origin, which is the
+   * whole reason the write goes through an iframe. So ask the roll instead.
+   * It answers cross-origin requests, and whether the name is on it is the
+   * only thing anybody actually wanted to know.
+   */
+  iframe.onload = async function () {
     try {
+      const landed = await rollContains(signedName.value)
+
       saving.value = false
-      isSaved.value = true
-      emitToBus()
+
+      if (landed) {
+        isSaved.value = true
+        // Only now: a member is someone the roll has, and keeping the flag
+        // until here is what leaves the pad on screen to try again with.
+        try {
+          localStorage.setItem('rvc-joined', true)
+        } catch (storageError) {
+          // private window; the card simply will not persist
+        }
+        isMemberAlready.value = true
+        emitToBus()
+      } else {
+        saveError.value =
+          'The Club did not acknowledge the signature. It is kept on this device; try filing it again.'
+      }
     } catch (error) {
-      console.error("Error during iframe load:", error);
-    } 
-    // Clean up
-    setTimeout(function() {
-      document.body.removeChild(form);
-      document.body.removeChild(iframe);
-    }, 1500);
+      saving.value = false
+      saveError.value = 'The Club could not be reached. Your signature is kept on this device.'
+      console.error('Error confirming the signature was filed:', error)
+    }
+
+    setTimeout(function () {
+      if (form.parentNode) document.body.removeChild(form)
+      if (iframe.parentNode) document.body.removeChild(iframe)
+    }, 1500)
   };
   
   // Add elements to DOM and submit
@@ -445,6 +488,24 @@ const handleTouchMove = (event) => {
   event.preventDefault()
   draw(event)
 }
+
+const signedName = computed(() => (printedName.value || '').trim())
+
+const canSave = computed(
+  () => !saving.value && !isSaved.value && !!signedName.value && hasInk.value
+)
+
+/*
+ * Why the button will not go. It was refusing in silence before: the guard
+ * returned, nothing moved, and nothing said why.
+ */
+const blocker = computed(() => {
+  if (saving.value || isSaved.value) return ''
+  if (!hasInk.value && !signedName.value) return 'Sign above and print your name to file it.'
+  if (!hasInk.value) return 'The Club requires a mark. Sign above.'
+  if (!signedName.value) return 'Print your name below the mark.'
+  return ''
+})
 
 const emitToBus = () => {
   if(eventBus) {
@@ -501,6 +562,35 @@ watch(isSaved, () => {
 </script>
 
 <style scoped>
+/*
+ * Why it will not go, and what went wrong if it went and failed. The button
+ * used to refuse in silence, which is indistinguishable from being broken.
+ */
+.sig-blocker,
+.sig-error {
+  margin: 0.6rem auto 0;
+  max-width: 34ch;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+}
+
+.sig-blocker {
+  color: var(--ash);
+  font-style: italic;
+}
+
+.sig-error {
+  color: var(--cinnabar);
+}
+
+/* A disabled control has to look it, or the only way to find out is to press
+   it and watch nothing happen. */
+.save-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
 .signature-pad-container {
   display: flex;
   flex-direction: column;

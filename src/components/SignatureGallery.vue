@@ -76,6 +76,7 @@
 <script setup>
 import { computed, ref, onMounted } from 'vue'
 import { eventBus } from '../EventBus'
+import { ROLL_READ } from '../data/archiveEndpoints'
 
 // Reactive data
 const items = ref([])
@@ -123,7 +124,7 @@ const yourPlace = computed(() => {
   return `${n} signatures precede yours.`
 })
 
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxKQRUEBU8e1skP35pZzZslfgWLtkeeAqdL57M1oSwEqw-pEhQ1jksIrzhwd_KraiSt/exec'
+const APPS_SCRIPT_URL = ROLL_READ
 
 // Validate base64 image format
 const isValidBase64Image = (str) => {
