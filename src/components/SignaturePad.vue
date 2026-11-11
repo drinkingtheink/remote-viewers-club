@@ -43,7 +43,7 @@
 <script setup>
 import { computed, ref, onMounted, onBeforeUnmount, defineProps, defineEmits, watch } from 'vue'
 import { eventBus } from '../EventBus'
-import { ROLL_WRITE, rollContains } from '../data/archiveEndpoints'
+import { ROLL_WRITE, rollNumberFor } from '../data/archiveEndpoints'
 
 // Props
 const props = defineProps({
@@ -442,16 +442,19 @@ const submitData = (sigImgData) => {
    */
   iframe.onload = async function () {
     try {
-      const landed = await rollContains(signedName.value)
+      // The roll's answer is the member's number, so ask for it rather than
+      // for a yes: it is the one moment the Club is certainly looking.
+      const number = await rollNumberFor(signedName.value)
 
       saving.value = false
 
-      if (landed) {
+      if (number !== null) {
         isSaved.value = true
         // Only now: a member is someone the roll has, and keeping the flag
         // until here is what leaves the pad on screen to try again with.
         try {
           localStorage.setItem('rvc-joined', true)
+          localStorage.setItem('rvc-member-no', String(number))
         } catch (storageError) {
           // private window; the card simply will not persist
         }

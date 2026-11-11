@@ -42,9 +42,9 @@ export const ROLL_WRITE = ROLL_READ
  * A sheet append is not always visible on the next read, so this asks a few
  * times before giving up.
  */
-export async function rollContains(name, { tries = 4, gap = 1200 } = {}) {
+export async function rollNumberFor(name, { tries = 4, gap = 1200 } = {}) {
   const wanted = (name || '').trim().toLowerCase()
-  if (!wanted) return false
+  if (!wanted) return null
 
   for (let attempt = 0; attempt < tries; attempt += 1) {
     if (attempt) await new Promise((resolve) => setTimeout(resolve, gap))
@@ -60,14 +60,23 @@ export async function rollContains(name, { tries = 4, gap = 1200 } = {}) {
 
       const result = await response.json()
       const rows = (result && result.data) || []
-      const found = rows.some(
+      /*
+       * The last match, not the first. Two people have signed as the same
+       * name before -- 'Goober 1' and 'goober 1' are already on the roll --
+       * and the one who just signed is the later row.
+       */
+      const mine = rows.filter(
         (row) => ((row.title || row.printedName || '').trim().toLowerCase()) === wanted
       )
-      if (found) return true
+      if (mine.length) return Number(mine[mine.length - 1].id) || null
     } catch (error) {
       // network hiccup on one attempt is not an answer; try again
     }
   }
 
-  return false
+  return null
+}
+
+export async function rollContains(name, options) {
+  return (await rollNumberFor(name, options)) !== null
 }

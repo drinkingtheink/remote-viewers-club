@@ -331,6 +331,7 @@
 import SignaturePad from './SignaturePad'
 import SignatureGallery from './SignatureGallery'
 import MembershipCard from './MembershipCard'
+import { rollNumberFor } from '../data/archiveEndpoints'
 import CandleAnimation from './animations/CandleAnimation'
 import { eventBus } from '../EventBus'
 
@@ -362,12 +363,14 @@ export default {
       return this.toRoman(year)
     },
     /*
-     * Left blank until the roll hands out real numbers. A card is a record,
-     * and a record with a made-up number on it is worse than one with a
-     * blank where the number goes.
+     * The number is the member's row in the register, so it is the Club's to
+     * give and not ours to invent -- which is why the card showed a dash
+     * until the roll could be asked. In the Club's numerals, like the date
+     * beside it, and keeping the shape the plate was drawn around.
      */
     memberNo() {
-      return this.readStore('rvc-member-no') || '—'
+      if (!this.memberNumber) return '—'
+      return `RV-${this.toRoman(this.memberNumber)}-\u03A8`
     }
   },
   methods: {
@@ -408,6 +411,32 @@ export default {
     },
     confirmSigSaved() {
       this.isMemberAlready = true;
+      this.loadMemberNumber();
+    },
+    /*
+     * Members who signed before the number was being kept have one waiting
+     * for them on the roll, so it is fetched once and then remembered. The
+     * pad stores it for anyone signing from now on, and this never runs.
+     */
+    async loadMemberNumber() {
+      const stored = Number(this.readStore('rvc-member-no'))
+      if (stored) {
+        this.memberNumber = stored
+        return
+      }
+
+      const name = this.readStore('writtenName')
+      if (!this.isMemberAlready || !name) return
+
+      const number = await rollNumberFor(name, { tries: 1 })
+      if (!number) return
+
+      this.memberNumber = number
+      try {
+        localStorage.setItem('rvc-member-no', String(number))
+      } catch (e) {
+        // private window; it will simply be looked up again next visit
+      }
     },
     handleTOSToggle() {
       this.openTOS = !this.openTOS;
@@ -443,6 +472,7 @@ export default {
   data() {
     return {
       isMemberAlready: false,
+      memberNumber: null,
       openTOS: false,
       showMembershipRoll: false,
       pointerX: 0,
@@ -452,6 +482,7 @@ export default {
   },
   mounted() {
     this.isMemberAlready = localStorage.getItem('rvc-joined') || false
+    this.loadMemberNumber()
 
     eventBus.on('confirmSigSaved', this.confirmSigSaved)
   },

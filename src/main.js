@@ -8,10 +8,10 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import { startPointerLight } from './composables/usePointerLight'
 import { startPresence } from './composables/usePresence'
-import { startSpecimenSheen } from './composables/useSpecimenSheen'
+import { startSheen } from './composables/useSheen'
 
 startPointerLight()
 startPresence()
-startSpecimenSheen()
+startSheen()
 
 createApp(App).mount('#app')

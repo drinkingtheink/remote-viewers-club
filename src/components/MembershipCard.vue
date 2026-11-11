@@ -1,6 +1,14 @@
 <template>
   <div class="member-card" :class="{ 'is-turned': turned }">
-    <div class="member-card-pivot">
+    <div class="member-card-stage">
+      <!--
+        The light sits outside the turning box on purpose: inside it, it
+        would be a surface in the same 3D space as the faces and would spin
+        away with them. Out here it stays flat against the viewer, which is
+        what a reflection does.
+      -->
+      <span class="member-card-sheen" aria-hidden="true"></span>
+      <div class="member-card-pivot">
       <!-- ===================== FRONT ===================== -->
       <svg
         class="member-card-face is-front"
@@ -234,10 +242,22 @@
           <text x="428" y="478" style="font-family: var(--font-heading); font-size: 11px; letter-spacing: 1.6px; fill: var(--ash); text-anchor: middle">SIGNED IN THE PRESENCE OF THOSE WHO SEE BEYOND</text>
         </g>
       </svg>
+      </div>
     </div>
 
-    <button type="button" class="member-card-turn" @click="turned = !turned">
-      {{ turned ? 'Turn to the front' : 'Turn the card over' }}
+    <button
+      type="button"
+      class="member-card-turn"
+      :aria-label="turned ? 'Turn the card to the front' : 'Turn the card over'"
+      :title="turned ? 'Turn to the front' : 'Turn the card over'"
+      @click="turned = !turned"
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path
+          d="M4 11a8 8 0 0 1 13.7-5.6L20 7.7M20 4v4h-4"
+          style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"
+        />
+      </svg>
     </button>
   </div>
 </template>
@@ -344,19 +364,75 @@ watch(() => props.name, fitName)
  * object rather than a banner.
  */
 .member-card {
+  position: relative;
   width: min(100%, 44rem);
   margin-inline: auto;
 }
 
-.member-card-pivot {
+.member-card-stage {
   position: relative;
   aspect-ratio: 856 / 540;
+  perspective: 1800px;
+}
+
+/*
+ * One transform carries both the lean and the turn, which is why the turn is
+ * a variable rather than its own rule: two transforms on one box means the
+ * last one wins, and the card would snap flat the moment it was turned.
+ */
+.member-card-pivot {
+  position: absolute;
+  inset: 0;
   transform-style: preserve-3d;
+  transform: rotateX(var(--tilt-x, 0deg)) rotateY(calc(var(--tilt-y, 0deg) + var(--flip, 0deg)));
   transition: transform var(--dur-slow) var(--ease-settle);
 }
 
 .member-card.is-turned .member-card-pivot {
-  transform: rotateY(180deg);
+  --flip: 180deg;
+}
+
+/* The lean follows the pointer and has to keep up with it; the turn is a
+   deliberate act and gets to take its time. */
+.member-card:hover .member-card-pivot {
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+/*
+ * The same light the specimen plates carry, on a card instead. `screen` so
+ * it adds rather than paints over, which on a near-black ground reads as
+ * varnish catching a lamp. useSheen writes the position.
+ *
+ * Above the faces and inert until the card is hovered or holds focus, and
+ * pointer-events: none so it never comes between a reader and the button.
+ */
+.member-card-sheen {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: 28px;
+  pointer-events: none;
+  opacity: 0;
+  mix-blend-mode: screen;
+  transition: opacity var(--dur-base) var(--ease-out);
+  background: radial-gradient(
+    54% 120% at var(--sheen-x, 50%) var(--sheen-y, 50%),
+    rgba(255, 243, 214, 0.2) 0%,
+    rgba(255, 234, 186, 0.08) 42%,
+    transparent 74%
+  );
+}
+
+.member-card:hover .member-card-sheen,
+.member-card:focus-within .member-card-sheen {
+  opacity: 1;
+}
+
+/* Reached by keyboard there is no pointer to follow, so the light sits
+   where one above the desk would put it. */
+.member-card:focus-within .member-card-sheen {
+  --sheen-x: 50%;
+  --sheen-y: 14%;
 }
 
 .member-card-face {
@@ -373,9 +449,73 @@ watch(() => props.name, fitName)
   transform: rotateY(180deg);
 }
 
+/*
+ * At rest it drifts, the way a card propped against something does. Slow and
+ * shallow on purpose: enough that the thing is not dead on the page, not so
+ * much that it asks to be looked at. It gives way the moment a pointer
+ * arrives, because then the lean is doing the moving.
+ */
+@keyframes member-card-adrift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(0, -7px, 0);
+  }
+}
+
+.member-card-stage {
+  animation: member-card-adrift 7s var(--ease-in-out) infinite;
+}
+
+.member-card:hover .member-card-stage,
+.member-card:focus-within .member-card-stage {
+  animation-play-state: paused;
+}
+
+/* Beside the card, not beneath it: a pill the width of the thing it turns
+   read as the main business of the section rather than a way to see the
+   back of a card. */
 .member-card-turn {
-  display: block;
-  margin: 1rem auto 0;
+  position: absolute;
+  right: -0.75rem;
+  bottom: -0.75rem;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 1px solid var(--gilt-dim);
+  border-radius: 50%;
+  background: var(--leather-raised);
+  color: var(--gilt);
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+  transition: transform var(--dur-quick) var(--ease-out), color var(--dur-quick) var(--ease-out),
+    border-color var(--dur-quick) var(--ease-out);
+}
+
+.member-card-turn svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.member-card-turn:hover,
+.member-card-turn:focus-visible {
+  color: var(--gilt-bright);
+  border-color: var(--gilt-bright);
+}
+
+/* The arrow points the way the card is about to go, and comes back round
+   with it. */
+.member-card.is-turned .member-card-turn svg {
+  transform: scaleX(-1);
+}
+
+.member-card-turn svg {
+  transition: transform var(--dur-slow) var(--ease-settle);
 }
 
 /* A card that snaps between faces is still legible; one that spins is not
@@ -383,6 +523,10 @@ watch(() => props.name, fitName)
 @media (prefers-reduced-motion: reduce) {
   .member-card-pivot {
     transition: none;
+  }
+
+  .member-card-stage {
+    animation: none;
   }
 }
 </style>
