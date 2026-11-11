@@ -80,16 +80,9 @@
 
         <p>
           The trouble is a machine wants the same answer twice, and the
-          mystery never agreed to that. Ours asks anyway.
-        </p>
-
-        <p>
-          So treat it as a rehearsal room. Call the card, work the board, come
+          mystique...never agreed to those stakes. So treat it as a rehearsal room. 
+          Call the card, work the board, come
           back until something sharpens. Or clicks into place.
-        </p>
-
-        <p>
-          We have only changed the glass.
         </p>
 
         <p class="about-credits">
