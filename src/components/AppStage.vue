@@ -1129,6 +1129,13 @@ section.gallery > .intro {
   letter-spacing: var(--tracking-wide);
   text-transform: none;
   text-decoration: none;
+  /*
+   * Both entries need the same box or their rules sit at different heights.
+   * A button does not inherit line-height and was resolving to 14px against
+   * the 23.1px the anchor took from the colophon, which put the anchor's
+   * underline 4.6px lower than its neighbour's. Stated once, for both.
+   */
+  line-height: 1.3;
 }
 
 .imprint-entry:hover {
