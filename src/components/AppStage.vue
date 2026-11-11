@@ -69,36 +69,48 @@
         <p class="about-eyebrow">A Note to the Curious</p>
         <h2 id="about-heading">The Machine and the Mystery</h2>
         <p class="about-question">
-          Can the one be made to testify for the other? And failing that, can
-          it be made to serve?
+          Every instrument that finds a ghost has just finished proving it was
+          never one.
         </p>
 
         <p>
-          On the first count, no &mdash; and anyone who tells you otherwise
-          should be asked to show their hands. What the Club keeps instead is
-          arithmetic, in the open. The precognition run sets your hits beside
-          the number blind chance would have dealt you and prints the
-          difference either way. The board measures how far the planchette
-          travelled and how much of it came out of your own wrist. Nothing
-          here has been dressed for company: come away looking ordinary and
-          you were ordinary.
+          They were never strangers, the wire and the table. Both began
+          rapping out messages in the same decade, and the newspapers of the
+          day could not always tell you which was which. Edison, late in life,
+          spoke of an apparatus delicate enough to take a call from the dead.
+          Marconi is said to have gone to his grave half-persuaded that no
+          sound ever truly stops &mdash; that with a fine enough receiver you
+          might still catch the Sermon on the Mount, out past the weather.
         </p>
 
         <p>
-          The second question is the one worth the candle. Strip the brass
-          and the incense from a s&eacute;ance, a dowsing rod, a set of
-          coordinates handed to you cold, and what is left is an instruction:
-          be still, attend to one thing, and do not look away until it gives
-          something up. That has never required proving, and it works on a wet
-          Tuesday with the lights on and nothing whatever in the room.
+          The trouble is that an instrument can only annex a mystery. Catch
+          the knock on a dial and it is no longer a knock from the other side;
+          it is a frequency, filed, and the dark has moved back one room.
+          Worse, the faculty will not sit for its portrait. Ask it to repeat
+          on command and it goes quiet &mdash; which is precisely what a real
+          and delicate talent would do, and precisely what nothing at all
+          would do. No needle yet built can tell those two apart.
+        </p>
+
+        <p>
+          So we do not ask the machine to settle it. A machine is good for the
+          one thing the s&eacute;ance never was: it will sit with you at the
+          same hour, deal the same cards, and keep the tally without
+          flattering you. Whatever you have &mdash; and you may have nothing
+          &mdash; this is where you come to sharpen it.
+        </p>
+
+        <p>
+          You are, after all, already staring into a lighted glass to watch a
+          place you are not. Your grandmother would have known what to call
+          that.
         </p>
 
         <p class="about-credits">
           Kept by <a href="https://www.drinkingtheink.com/" target="_blank" rel="noopener">Jason M. Harrison</a>.
-          The badges are after military and astronomical mission patches &mdash;
-          sigils drawn by people with budgets. The
-          <a href="https://github.com/drinkingtheink/remote-viewers-club" target="_blank" rel="noopener">source</a>
-          is open to anyone who cares to look.
+          Badges after military and astronomical mission patches.
+          <a href="https://github.com/drinkingtheink/remote-viewers-club" target="_blank" rel="noopener">Source</a>.
         </p>
 
         <div class="about-actions">
