@@ -1,25 +1,34 @@
 /*
  * Where the Club's archive lives.
  *
- * Two separate Apps Script deployments, which is worth saying out loud
- * because it is not obvious and it matters: signatures are POSTed to one and
- * the roll is read back from the other. Whether they are the same project
- * behind the scenes cannot be told from here.
+ * One Apps Script deployment, serving both halves. It was two, and that is
+ * exactly how the write end came to be broken without anyone noticing.
  *
  * They were a literal inside two components that never referenced each
  * other. The pad now reads the roll back to confirm a signature actually
- * landed, so both halves have to agree on the addresses -- and a URL that
+ * landed, so both halves have to agree on the address -- and a URL that
  * exists in one place cannot drift out of step with its other copy.
  */
 
-// POST: a hidden form targets this, because the deployment does not answer
-// cross-origin requests.
-export const ROLL_WRITE =
-  'https://script.google.com/macros/s/AKfycbwpZu_9Pb4_Qm6FgsWy5HuSg_hDnFGH3MLb3EspqBThRqOV3ZRiBa1a43fZqLMMhzc/exec'
-
-// GET: this one does answer, and returns { success, data: [...] }.
+// GET: returns { success, data: [...] }.
 export const ROLL_READ =
   'https://script.google.com/macros/s/AKfycbxKQRUEBU8e1skP35pZzZslfgWLtkeeAqdL57M1oSwEqw-pEhQ1jksIrzhwd_KraiSt/exec'
+
+/*
+ * POST: the same deployment, which is the fix for a bug that ate fifteen
+ * months of signatures.
+ *
+ * Writes used to go to a second deployment whose doPost was a stub -- it
+ * returned success and never touched the sheet. The iframe loaded that
+ * perfectly valid response, so the pad declared SAVED! every time and the
+ * roll never grew. The last signature to land did so on 3 August 2025.
+ *
+ * apps-script/Code.gs in this repo is the script both ends now talk to; it
+ * has a doPost that actually appends. Until that version is deployed, writes
+ * here still hit the old stub -- which the pad will now report rather than
+ * celebrate.
+ */
+export const ROLL_WRITE = ROLL_READ
 
 /*
  * Did this name make it onto the roll?
