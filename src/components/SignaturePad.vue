@@ -137,6 +137,14 @@ const isMemberAlready = ref(false)
 // Methods
 const setupCanvas = () => {
   const canvas = signatureCanvas.value
+  /*
+   * There is no pad while the pen is withheld, but the mount hook runs
+   * either way -- which is how this came to call getContext on null the
+   * moment the gate went in. Everything below reaches for a canvas, so
+   * everything below has to be prepared not to find one.
+   */
+  if (!canvas || !dripsCanvas.value) return
+
   context.value = canvas.getContext('2d')
   
   // Set canvas background
@@ -160,6 +168,8 @@ const handleResize = () => {
   const container = canvasContainer.value
   const canvas = signatureCanvas.value
   const dripsCanvasEl = dripsCanvas.value
+  if (!container || !canvas || !dripsCanvasEl) return
+
   
   // Save current canvas content
   const imageData = canvas.toDataURL()
@@ -278,6 +288,8 @@ const stopDrawing = () => {
 }
 
 const updateDrips = () => {
+  if (!dripsContext.value || !dripsCanvas.value) return
+
   dripsContext.value.clearRect(0, 0, dripsCanvas.value.width, dripsCanvas.value.height)
   
   let activeCount = 0
@@ -371,6 +383,8 @@ const startAnimation = () => {
 
 const clearSignature = () => {
   const canvas = signatureCanvas.value
+  if (!canvas || !context.value) return
+
   context.value.fillStyle = props.backgroundColor
   context.value.fillRect(0, 0, canvas.width, canvas.height)
   printedName.value = ''
