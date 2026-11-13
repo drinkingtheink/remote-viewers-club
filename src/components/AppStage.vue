@@ -262,13 +262,6 @@ import GnosisIcon from './icons/GnosisIcon'
  */
 const badgeMap = [
   {
-    title: 'Grand Ephemeris',
-    desc: '19th Celestial Reckoning SQ',
-    inspo: 'https://www.grandephemeris.com/',
-    id: 9,
-    cat: 'RVC 31.19.6',
-  },
-  {
     title: 'Beyond All Bounds',
     desc: '24th Omnidimensional Operations',
     inspo: 'https://twitter.com/arpitingle/status/1698709125088088109',
@@ -323,6 +316,13 @@ const badgeMap = [
     inspo: 'https://twitter.com/CassetteDyne/status/1735694599262192051',
     id: 3,
     cat: 'RVC 06.51.1',
+  },
+  {
+    title: 'Grand Ephemeris',
+    desc: '19th Celestial Reckoning SQ',
+    inspo: 'https://www.grandephemeris.com/',
+    id: 9,
+    cat: 'RVC 31.19.6',
   },
 ];
 

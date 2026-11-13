@@ -3,92 +3,93 @@
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 680" role="img" aria-label="Grand Ephemeris mission patch">
       <defs>
         <clipPath id="ephemeris-field">
-          <circle cx="340" cy="340" r="288" />
+          <circle cx="344" cy="330" r="262" />
         </clipPath>
         <clipPath id="ephemeris-globe">
-          <circle cx="232" cy="288" r="92" />
+          <circle cx="206" cy="252" r="118" />
         </clipPath>
         <linearGradient id="ephemeris-sweep" x1="0" y1="0" x2="1" y2="0.4">
           <stop offset="0" stop-color="#fff" stop-opacity="0" />
-          <stop offset="0.45" stop-color="#fff" stop-opacity="0.26" />
-          <stop offset="0.55" stop-color="#fff" stop-opacity="0.26" />
+          <stop offset="0.45" stop-color="#fff" stop-opacity="0.22" />
+          <stop offset="0.55" stop-color="#fff" stop-opacity="0.22" />
           <stop offset="1" stop-color="#fff" stop-opacity="0" />
         </linearGradient>
       </defs>
 
-      <circle class="field" cx="340" cy="340" r="290" />
+      <!-- Rim, mid-blue ground, white rule, then the night it all sits on.
+           The blue is a disc and not a stroke, so the white rule has
+           something to sit in rather than against. -->
+      <circle class="disc" cx="340" cy="336" r="306" />
+      <circle class="ring-outer" cx="340" cy="336" r="318" />
+      <circle class="ring-inner" cx="340" cy="336" r="286" />
+      <circle class="field" cx="344" cy="330" r="262" />
 
       <g clip-path="url(#ephemeris-field)">
-        <!-- the register: a dashed stroke rather than fifty tick marks -->
-        <circle class="register" cx="340" cy="340" r="268" />
-
         <g class="globe">
-          <circle class="globe-sea" cx="232" cy="288" r="92" />
+          <circle class="globe-sea" cx="206" cy="252" r="118" />
           <g clip-path="url(#ephemeris-globe)">
-            <!-- Angular, not round. Drawn with curves these came out as four
-                 neat discs and the whole globe read as a moon. -->
+            <!-- Four small shapes read as scattered rocks. Two large ones
+                 that run off the limb read as a world. -->
             <g class="globe-land">
-              <path d="M152 258 184 232 214 240 236 230 248 252 230 274 202 280 178 296 158 286Z" />
-              <path d="M180 318 206 300 240 306 266 326 260 352 232 368 202 360 182 340Z" />
-              <path d="M264 232 294 228 310 248 296 268 270 262 258 246Z" />
-              <path d="M284 296 304 304 300 322 280 316Z" />
+              <path d="M96 168 150 152 198 170 236 156 262 186 244 214 196 226 170 212 134 220 102 206Z" />
+              <path d="M110 254 158 238 214 248 258 272 268 304 240 336 184 348 134 330 106 296Z" />
+              <path d="M268 214 300 208 314 232 294 254 266 246Z" />
             </g>
-            <!-- the lit limb falls away to the right, which is what makes a
-                 disc read as a sphere rather than a sticker -->
-            <circle class="globe-shadow" cx="286" cy="268" r="104" />
           </g>
-          <circle class="globe-rim" cx="232" cy="288" r="92" />
         </g>
 
-        <g class="shield">
-          <path
-            class="shield-face"
-            d="M392 234h120v70c0 42-30 70-60 82-30-12-60-40-60-82Z"
-          />
-          <path
-            class="shield-edge"
-            d="M392 234h120v70c0 42-30 70-60 82-30-12-60-40-60-82Z"
-          />
-          <path class="bolt" d="M468 256l-54 66h28l-10 56 54-68h-28Z" />
+        <!-- The ringed one, keeping station below the world. It has to sit
+             clear of the landmasses: it is drawn in the same blue, so any
+             overlap and the two read as one shape. -->
+        <g class="ringed-planet">
+          <circle cx="132" cy="396" r="26" />
+          <ellipse class="planet-ring" cx="132" cy="396" rx="47" ry="13" transform="rotate(-18 132 396)" />
         </g>
 
-        <!--
-          The contrails.
-          
-          The gold is a stroked arc and the scarlet a filled taper, which is
-          not an inconsistency but the fix: as two filled tapers the bands
-          nested inside one another whichever way they were widened, and the
-          gold was swallowed whole every time. A stroke has a width of its
-          own and simply sits alongside.
-
-          Its line is placed off the scarlet's measured outline rather than
-          guessed at. Sampling that path gives a lower edge running (192,572)
-          to (264,491) to (316,395), and the gold runs a half-width clear of
-          it the whole way, converging only at the top where they should.
-        -->
-        <path class="ribbon-gold" d="M164 604C250 570 310 480 334 352" />
-        <path class="ribbon-scarlet" d="M132 532C226 500 318 400 352 220 344 396 270 500 192 572Z" />
+        <!-- The charge is a pick, not a shield, and the bolt is struck out
+             of it rather than laid on top. -->
+        <g class="charge">
+          <path
+            class="charge-face"
+            d="M440 194c40 0 60 28 60 58 0 42-36 80-60 80s-60-38-60-80c0-30 20-58 60-58Z"
+          />
+          <path class="bolt" d="M454 222l-36 52h21l-9 42 36-54h-21Z" />
+        </g>
 
         <g class="minor-stars">
-          <path d="M300 240q3 15 18 18-15 3-18 18-3-15-18-18 15-3 18-18Z" />
-          <path d="M378 352q4 18 22 22-18 4-22 22-4-18-22-22 18-4 22-22Z" />
-          <path d="M268 420q3 13 16 16-13 3-16 16-3-13-16-16 13-3 16-16Z" />
-          <path d="M430 448q3 14 17 17-14 3-17 17-3-14-17-17 14-3 17-17Z" />
-          <path d="M196 468q2 11 13 13-11 2-13 13-2-11-13-13 11-2 13-13Z" />
-          <path d="M506 200q3 13 16 16-13 3-16 16-3-13-16-16 13-3 16-16Z" />
+          <path d="M214 322q4 20 22 24-18 4-22 24-4-20-22-24 18-4 22-24Z" />
+          <path d="M330 440q5 24 26 30-21 6-26 30-5-24-26-30 21-6 26-30Z" />
+          <path d="M476 372q5 22 24 28-19 6-24 28-5-22-24-28 19-6 24-28Z" />
+          <path d="M428 408q3 13 15 17-12 4-15 17-3-13-15-17 12-4 15-17Z" />
+          <path d="M288 494q3 12 14 15-11 3-14 15-3-12-14-15 11-3 14-15Z" />
         </g>
 
-        <g class="major-star">
-          <path d="M342 112q10 54 64 64-54 10-64 64-10-54-64-64 54-10 64-64Z" />
-          <circle class="major-star-core" cx="342" cy="176" r="9" />
-        </g>
+        <!-- Two of the three trails. They fall from the star rather than
+             rising to it, which is the whole shape of the thing. -->
+        <path
+          class="trail-gold"
+          d="M320 208c-8 78-48 154-134 224-16 13-24 28-6 32 96-64 150-166 160-252Z"
+        />
+        <path
+          class="trail-blue"
+          d="M360 208c10 82 44 164 96 238 10 15 0 32-14 19-60-76-94-172-102-255Z"
+        />
 
-        <!-- a light crossing the plate, on the same beat the other badges keep -->
         <rect class="sweep" x="-680" y="0" width="680" height="680" fill="url(#ephemeris-sweep)" />
       </g>
 
-      <circle class="ring-inner" cx="340" cy="340" r="297" />
-      <circle class="ring-outer" cx="340" cy="340" r="317" />
+      <!-- Left out of the clip deliberately: on the plate this one runs off
+           the rim at the lower left instead of stopping politely at it. -->
+      <path
+        class="trail-scarlet"
+        d="M340 202c-6 102-62 208-168 302-32 28-70 54-52 64 120-64 214-210 232-362Z"
+      />
+
+      <g class="major-star">
+        <path class="star-pale" d="M336 104q14 62 70 72-56 10-70 72-14-62-70-72 56-10 70-72Z" />
+        <path class="star-gold" d="M336 124q12 50 58 58-46 8-58 58-12-50-58-58 46-8 58-58Z" />
+        <circle class="star-core" cx="336" cy="180" r="7" />
+      </g>
     </svg>
   </div>
 </template>
@@ -103,8 +104,8 @@ export default {
     }
   },
   mounted() {
-    // the same cadence the rest of the plates keep: a pass on arrival, then
-    // every so often, so a wall of them never flares in unison
+    // the cadence the rest of the plates keep: a pass on arrival, then every
+    // so often, so a wall of them never flares in unison
     this.intervalId = setInterval(() => {
       this.doAnimate = true
       setTimeout(() => {
@@ -126,100 +127,91 @@ export default {
 <style scoped>
 /* --- the plate ---------------------------------------------------------- */
 
-.field {
-  fill: #11305c;
+.disc {
+  fill: #3d7cb8;
 }
 
 .ring-outer {
   fill: none;
-  stroke: #e01b2e;
-  stroke-width: 26px;
+  stroke: #d8383a;
+  stroke-width: 22px;
 }
 
 .ring-inner {
   fill: none;
   stroke: #fff;
-  stroke-width: 13px;
+  stroke-width: 8px;
 }
 
-.register {
-  fill: none;
-  stroke: #f2c230;
-  stroke-width: 9px;
-  stroke-dasharray: 2 17;
-  opacity: 0.32;
+.field {
+  fill: #0e2a4e;
 }
 
 /* --- the world ---------------------------------------------------------- */
 
 .globe-sea {
-  fill: #2e6fb7;
+  fill: #123458;
 }
 
 .globe-land path {
-  fill: #16457f;
+  fill: #3d7cb8;
 }
 
-.globe-shadow {
-  fill: #0d2a52;
-  opacity: 0.34;
+.ringed-planet circle {
+  fill: #3d7cb8;
 }
 
-.globe-rim {
+.planet-ring {
   fill: none;
-  stroke: #0d2a52;
-  stroke-width: 3px;
-  opacity: 0.6;
+  stroke: #3d7cb8;
+  stroke-width: 7px;
 }
 
 /* --- the charge --------------------------------------------------------- */
 
-.shield-face {
-  fill: #1f5fa8;
-}
-
-.shield-edge {
-  fill: none;
-  stroke: #f2c230;
-  stroke-width: 9px;
-  stroke-linejoin: round;
+.charge-face {
+  fill: #ead455;
 }
 
 .bolt {
-  fill: #f2c230;
+  fill: #0e2a4e;
 }
 
-/* --- the contrails ------------------------------------------------------ */
+/* --- the trails --------------------------------------------------------- */
 
-.ribbon-gold {
-  fill: none;
-  stroke: #f2c230;
-  stroke-width: 30px;
-  stroke-linecap: round;
+.trail-gold {
+  fill: #ead455;
 }
 
-.ribbon-scarlet {
-  fill: #e01b2e;
+.trail-blue {
+  fill: #3d7cb8;
+}
+
+.trail-scarlet {
+  fill: #d8383a;
 }
 
 /* --- the sky ------------------------------------------------------------ */
 
-.major-star path {
+.star-pale {
   fill: #fff;
 }
 
-.major-star-core {
-  fill: #f2c230;
+.star-gold {
+  fill: #ead455;
+}
+
+.star-core {
+  fill: #fff;
 }
 
 .minor-stars path {
   fill: #fff;
-  opacity: 0.85;
 }
 
 /*
- * The big star keeps its own slow breath; the small ones each get a
- * different period and a head start, so the sky never twinkles in chorus.
+ * The star keeps its own slow breath; the small ones each get a different
+ * period and a head start, so the sky never twinkles in chorus.
  */
 .major-star {
   transform-box: fill-box;
@@ -229,7 +221,7 @@ export default {
 
 @keyframes ephemeris-flare {
   0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.07); opacity: 0.88; }
+  50% { transform: scale(1.06); opacity: 0.9; }
 }
 
 .minor-stars path {
@@ -240,19 +232,16 @@ export default {
 .minor-stars path:nth-child(3) { animation-duration: 4.3s; animation-delay: -3.5s; }
 .minor-stars path:nth-child(4) { animation-duration: 8.1s; animation-delay: -1.1s; }
 .minor-stars path:nth-child(5) { animation-duration: 6.2s; animation-delay: -4.6s; }
-.minor-stars path:nth-child(6) { animation-duration: 9.3s; animation-delay: -0.7s; }
 
 @keyframes ephemeris-twinkle {
-  0%, 100% { opacity: 0.85; }
-  50% { opacity: 0.22; }
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
 }
 
 /* --- the pass ----------------------------------------------------------- */
 
-/*
- * Parked off the left edge and only sent across while `animate` is set, so
- * the plate is still until it is looked at.
- */
+/* Parked off the left edge and only sent across while `animate` is set, so
+   the plate is still until it is looked at. */
 .sweep {
   opacity: 0;
 }
