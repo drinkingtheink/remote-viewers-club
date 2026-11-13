@@ -292,7 +292,8 @@ export default {
  * The plate before anybody looks at it.
  *
  * It is an instrument for recording something, so at rest it has recorded
- * nothing: no star, no trails behind it, and the sky down to an ember. What
+ * nothing: no star, no trails behind it, and an empty sky -- the small
+ * stars are out too, so the field is bare rather than lightly furnished. What
  * remains is the plate itself -- the border rules, the ringed planet, the
  * land and the charge -- because those are its furniture, not the event.
  *
@@ -315,7 +316,7 @@ export default {
 .star-minor {
   transform-box: fill-box;
   transform-origin: center;
-  opacity: 0.16;
+  opacity: 0;
 }
 
 @keyframes ephemeris-flare {
@@ -529,9 +530,9 @@ export default {
  * single polygon, so it turns about its own centre and stays whole.
  */
 @keyframes ephemeris-shimmer {
-  /* opens on the dormant ember, so the flare is the star coming up from
-     where it was and not a jump */
-  0% { transform: scale(1); opacity: 0.16; }
+  /* opens from nothing, since dormant leaves the sky bare: each small star
+     is struck by the wake passing it rather than merely brightened */
+  0% { transform: scale(1); opacity: 0; }
   45% { transform: scale(1.55); opacity: 1; }
   100% { transform: scale(1); opacity: 1; }
 }
