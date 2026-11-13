@@ -1,94 +1,59 @@
 <template>
   <div class="grand-ephemeris" :class="{ animate: doAnimate }">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 680" role="img" aria-label="Grand Ephemeris mission patch">
+    <!--
+      The artwork is the sticker from artwork/grand-ephemeris-sticker.svg,
+      geometry and paint order untouched. What changed on the way in: the
+      Layer_1 id and the cls-1..cls-5 names are gone, and every element now
+      says what it is. The names were read off the measured bounding boxes
+      rather than guessed, and each one was checked to carry exactly one ink,
+      so a misreading could not have quietly repainted the plate.
+    -->
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 284.68 284.67"
+      role="img"
+      aria-label="Grand Ephemeris mission patch"
+    >
       <defs>
-        <clipPath id="ephemeris-field">
-          <circle cx="344" cy="330" r="262" />
-        </clipPath>
-        <clipPath id="ephemeris-globe">
-          <circle cx="206" cy="252" r="118" />
+        <clipPath id="ephemeris-plate">
+          <circle cx="142.34" cy="142.34" r="142" />
         </clipPath>
         <linearGradient id="ephemeris-sweep" x1="0" y1="0" x2="1" y2="0.4">
           <stop offset="0" stop-color="#fff" stop-opacity="0" />
-          <stop offset="0.45" stop-color="#fff" stop-opacity="0.22" />
-          <stop offset="0.55" stop-color="#fff" stop-opacity="0.22" />
+          <stop offset="0.45" stop-color="#fff" stop-opacity="0.2" />
+          <stop offset="0.55" stop-color="#fff" stop-opacity="0.2" />
           <stop offset="1" stop-color="#fff" stop-opacity="0" />
         </linearGradient>
       </defs>
 
-      <!-- Rim, mid-blue ground, white rule, then the night it all sits on.
-           The blue is a disc and not a stroke, so the white rule has
-           something to sit in rather than against. -->
-      <circle class="disc" cx="340" cy="336" r="306" />
-      <circle class="ring-outer" cx="340" cy="336" r="318" />
-      <circle class="ring-inner" cx="340" cy="336" r="286" />
-      <circle class="field" cx="344" cy="330" r="262" />
+      <circle class="night" cx="142.65" cy="144.42" r="94.49"/>
+      <path class="planet-ring" d="M64.03,134.77c-3.94-4.27-10.6-4.53-14.87-.59-2.75,2.54-3.94,6.35-3.13,10-3.89,3-6.07,5.73-5.33,7.1,1.16,2.13,8.93.16,17.35-4.41s14.32-10,13.17-12.13c-.68-1.2-3.42-1.1-7.19.03Z"/>
+      <path class="planet-body" d="M51.19,152.27c5.11,2.77,11.49.88,14.27-4.22.67-1.23,1.09-2.59,1.22-3.99-2.22,1.54-4.52,2.95-6.89,4.24-2.78,1.51-5.65,2.84-8.6,3.97Z"/>
+      <path class="land" d="M74.95,77.71c2.39-1.31,5.23-1.48,7.73-1.63l7.58-.46c-12.72-7.5-29.11-3.27-36.62,9.45-4.01,6.79-4.81,15.01-2.19,22.45l.28-.46c.68-1.18,1.39-2.39,2.76-2.69,1.15-.12,2.31.18,3.26.85.44.25.9.47,1.37.65,2.52.77,5.19-.65,5.95-3.18.05-.16.09-.31.12-.47.08-.89.04-1.79-.14-2.67-.05-.4-.11-.8-.15-1.21-.58-2.06.62-4.21,2.68-4.79.18-.05.36-.09.54-.11,2.56-.61,5.25-.44,7.71.49,1.16.48,2.29,1.03,3.37,1.67,1.06.62,2.16,1.17,3.3,1.63,2,.74,4.81,1,6.53-.69-.4-2.16-1.71-4.05-3.6-5.18-1.71-.86-3.56-1.4-5.46-1.59-.73-.13-1.49-.25-2.23-.41-1.63-.36-5.51-1.56-6.35-4.87-.71-2.79,1.29-5.52,3.56-6.78Z"/>
+      <path class="land" d="M76.68,125.4c14.76.01,26.74-11.94,26.75-26.71,0-5.58-1.73-11.02-4.97-15.55-.2.18-.42.35-.65.49-.58.35-1.22.6-1.89.73-1.61.32-3.28.15-4.89.49s-3.25,1.42-3.45,3,.95,2.88,2.21,3.74c2.37,1.66,5.43,2.24,7.47,4.24,1.56,1.51,2.22,3.72,1.74,5.83-.54,2.12-2.37,3.66-4.55,3.83-1.83.08-3.5-.93-5.17-1.69-3.73-1.68-7.89-2.21-11.92-1.5-1.07.1-2.08.56-2.87,1.3-1.22,1.35-.83,3.45-.36,5.21-.87-1.11-2.86-.37-3.32,1-.31,1.39,0,2.85.85,4,.82,1.38,1.83,2.65,3,3.76-2.59-1.3-5.36-2.22-8.21-2.74-1.45-.24-3.12-.31-4.18.69-.61.67-1,1.5-1.13,2.4-.16.75-.24,1.51-.26,2.28,4.58,3.38,10.11,5.2,15.8,5.2Z"/>
+      <path class="trail-gold" d="M139.77,108.33c0,.16-.25,1.35-.88,3.56.18-1.1-3.29,12.51-3.28,12.4,0,.12,3.43-13.29,3.08-11.72-2.11,7.13-8,23.17-23,47.47-21,33.91-62.47,30.51-62.47,30.51-1.27-.19.77,2.94,2.94,5.88h-.11c-2.39-.23,7.25,10.49,7.25,10.49,55.63-9.13,71.84-75.22,75.17-92.68.86-3.53,1.26-5.69,1.3-5.91Z"/>
+      <path class="rim-azure" d="M142.68,44.38c54.16.02,98.05,43.94,98.03,98.09-.02,54.16-43.94,98.05-98.09,98.03s-98.05-43.94-98.03-98.09c0-26,10.34-50.93,28.72-69.31,18.36-18.46,43.34-28.8,69.37-28.72M142.68,2.83C65.55,2.8,3.01,65.31,2.98,142.45c-.02,77.13,62.49,139.68,139.62,139.7,77.13.02,139.68-62.49,139.7-139.62v-.09c-.02-77.1-62.52-139.59-139.62-139.61Z"/>
+      <path class="rim-pale" d="M142.68,265.45c-67.93,0-123-55.07-123-123S74.75,19.45,142.68,19.45s123,55.07,123,123c-.09,67.89-55.11,122.91-123,123ZM142.68,20.61c-67.28-.02-121.85,54.51-121.87,121.79-.02,67.28,54.51,121.85,121.79,121.87,67.28.02,121.85-54.51,121.87-121.79v-.04c-.09-67.23-54.56-121.71-121.79-121.83Z"/>
+      <path class="rim-pale" d="M142.68,266.05c-68.27.02-123.62-55.31-123.64-123.58S74.36,18.84,142.62,18.83c68.27-.02,123.62,55.31,123.64,123.58v.03c-.08,68.22-55.36,123.52-123.58,123.61ZM20.23,142.44c.02,67.61,54.85,122.4,122.46,122.38,67.58-.02,122.36-54.8,122.38-122.38,0,67.61-54.83,122.41-122.44,122.4-67.6,0-122.39-54.81-122.4-122.4h0ZM142.68,21.21c-66.95-.02-121.24,54.25-121.26,121.2-.02,66.95,54.25,121.24,121.2,121.26,66.95.02,121.24-54.25,121.26-121.2v-.03c-.07-66.91-54.29-121.14-121.2-121.23Z"/>
+      <path class="rim-night" d="M142.73,50.09c51.16,0,92.63,41.47,92.63,92.63,0,51.16-41.47,92.63-92.63,92.63-51.16,0-92.63-41.47-92.63-92.63,0-24.57,9.76-48.13,27.13-65.5,17.33-17.43,40.92-27.2,65.5-27.13M142.73,44.15c-54.44,0-98.57,44.13-98.57,98.57s44.13,98.57,98.57,98.57,98.57-44.13,98.57-98.57h0c0-54.44-44.13-98.57-98.57-98.57h0Z"/>
+      <path class="night-shadow" d="M142.88,100.02c0,.23.11,1.93,0,5.16-.11-1.57-.2-2.49-.22-2.64,0,.17.14,1.37.18,3.63-.5,10.46-3.18,34.34-15.78,72.64-17.61,53.44-76.38,63.02-76.38,63.02-1.83.18,2.06,3.74,6.07,7h-.07c-3.4.5,13.62,11.83,13.62,11.83,74.12-31.47,74.14-127.18,72.82-152.14-.03-5.1-.22-8.19-.24-8.5Z"/>
+      <path class="rim-scarlet" d="M142.35,284.67C63.75,284.68.01,220.97,0,142.36c0-37.76,14.99-73.97,41.68-100.66,55.58-55.59,145.7-55.6,201.29-.01,55.59,55.58,55.6,145.7.01,201.29-26.63,26.78-62.87,41.79-100.64,41.69ZM142.35,5.95C67.03,5.92,5.94,66.97,5.92,142.29c-.01,36.21,14.38,70.94,40,96.54,53.28,53.26,139.64,53.25,192.9-.02,53.26-53.28,53.25-139.64-.02-192.91h0c-25.52-25.66-60.25-40.05-96.44-39.95Z"/>
+      <path class="trail-scarlet" d="M142.95,94.22c0,.22.09,2-.08,5.21-.11-1.59-.2,14.13-.22,14,0,.18.13-15.25.16-13-.68,10.57-3.9,34.73-18.11,73.58-19.83,54.21-83.95,64.59-83.95,64.59-2,.2,2.21,3.75,6.54,7h-.17c-3.7.54,14.69,11.77,14.69,11.77,81.13-32.72,82.36-129.42,81.24-154.62.08-5.11-.08-8.22-.1-8.53Z"/>
+      <path class="trail-azure" d="M177.12,218.7c7.2-3.48,11.21-5.81,13.67-7.72-11.69-9.43-19.91-21.91-26.17-39-14.09-38.53-17.37-62.6-18.09-73.31v2.24-2.65c0-.8,0-1.19-.06-.87-.12-1.73-.14-3.47-.08-5.21,0,.31-.18,3.43-.1,8.59-.85,18.66-2.54,75.86,30.83,117.93Z"/>
+      <polygon class="star-pale" points="136.36 64.44 142.03 49.09 148.37 64.18 163.73 69.86 148.63 76.19 142.96 91.55 136.62 76.46 121.26 70.78 136.36 64.44"/>
+      <polygon class="star-gold" points="148.59 64.39 142.65 50.25 142.65 90.51 143.18 91.76 148.85 76.4 163.94 70.07 148.59 64.39"/>
+      <polygon class="star-minor" points="96.1 147.3 99.74 148.73 96.04 150.2 94.39 163.14 93.14 150.21 89.5 148.77 93.21 147.31 94.85 134.98 96.1 147.3"/>
+      <polygon class="star-minor" points="145.81 198.11 150.9 200.12 145.72 202.16 143.42 220.24 141.67 202.17 136.59 200.17 141.76 198.12 144.05 180.9 145.81 198.11"/>
+      <path class="charge-face" d="M190.73,87.15c3.91-.01,7.8.6,11.52,1.81,2.29.73,4.42,1.87,6.3,3.37,2.68,2.16,4.42,5.28,4.85,8.7.31,2.53.17,5.09-.42,7.57-.77,3.3-1.92,6.5-3.43,9.53-1.81,3.63-3.81,7.16-6,10.57-1.84,3.04-3.86,5.95-6.06,8.74-1.23,1.62-2.66,3.08-4.25,4.34-.53.39-1.1.72-1.7,1-.76.36-1.63.36-2.39,0-1-.45-1.91-1.08-2.69-1.84-1.62-1.52-3.1-3.2-4.4-5-2.91-3.99-5.58-8.15-8-12.46-1.87-3.15-3.47-6.46-4.78-9.88-1.02-2.61-1.7-5.35-2-8.14-.3-2.55,0-5.13.86-7.54,1.09-2.8,3.07-5.16,5.64-6.72,2.55-1.56,5.36-2.63,8.29-3.18,2.85-.59,5.75-.88,8.66-.87Z"/>
+      <path class="charge-bolt" d="M190.45,108.04h5.53c1.76,0,2.06.62,1.44,2.15-2.23,5.55-4.5,11.09-6.82,16.6-.22.53-.92.86-1.39,1.28-.34-.61-.93-1.21-.95-1.83-.1-3-.05-5.93-.05-9.17h-5.32c-1.74,0-2.23-.6-1.52-2.35,2.19-5.36,4.37-10.73,6.63-16.06.27-.64,1-1.08,1.55-1.6.4.61.69,1.29.86,2,.1,2.93.04,5.83.04,8.98Z"/>
+      <polygon class="star-minor" points="186.85 180.01 188.76 180.77 186.81 181.53 185.95 188.33 185.29 181.54 183.38 180.78 185.33 180.02 186.19 173.55 186.85 180.01"/>
+      <polygon class="star-minor" points="209.89 167.17 213.68 168.67 209.82 170.19 208.1 183.66 206.81 170.2 203.01 168.7 206.87 167.18 208.58 154.34 209.89 167.17"/>
+      <polygon class="star-pale" points="163.94 70.07 142.35 70.32 148.85 76.4 163.94 70.07"/>
+      <polygon class="star-gold" points="121.26 70.78 142.35 70.32 136.62 76.46 121.26 70.78"/>
 
-      <g clip-path="url(#ephemeris-field)">
-        <g class="globe">
-          <circle class="globe-sea" cx="206" cy="252" r="118" />
-          <g clip-path="url(#ephemeris-globe)">
-            <!-- Four small shapes read as scattered rocks. Two large ones
-                 that run off the limb read as a world. -->
-            <g class="globe-land">
-              <path d="M96 168 150 152 198 170 236 156 262 186 244 214 196 226 170 212 134 220 102 206Z" />
-              <path d="M110 254 158 238 214 248 258 272 268 304 240 336 184 348 134 330 106 296Z" />
-              <path d="M268 214 300 208 314 232 294 254 266 246Z" />
-            </g>
-          </g>
-        </g>
-
-        <!-- The ringed one, keeping station below the world. It has to sit
-             clear of the landmasses: it is drawn in the same blue, so any
-             overlap and the two read as one shape. -->
-        <g class="ringed-planet">
-          <circle cx="132" cy="396" r="26" />
-          <ellipse class="planet-ring" cx="132" cy="396" rx="47" ry="13" transform="rotate(-18 132 396)" />
-        </g>
-
-        <!-- The charge is a pick, not a shield, and the bolt is struck out
-             of it rather than laid on top. -->
-        <g class="charge">
-          <path
-            class="charge-face"
-            d="M440 194c40 0 60 28 60 58 0 42-36 80-60 80s-60-38-60-80c0-30 20-58 60-58Z"
-          />
-          <path class="bolt" d="M454 222l-36 52h21l-9 42 36-54h-21Z" />
-        </g>
-
-        <g class="minor-stars">
-          <path d="M214 322q4 20 22 24-18 4-22 24-4-20-22-24 18-4 22-24Z" />
-          <path d="M330 440q5 24 26 30-21 6-26 30-5-24-26-30 21-6 26-30Z" />
-          <path d="M476 372q5 22 24 28-19 6-24 28-5-22-24-28 19-6 24-28Z" />
-          <path d="M428 408q3 13 15 17-12 4-15 17-3-13-15-17 12-4 15-17Z" />
-          <path d="M288 494q3 12 14 15-11 3-14 15-3-12-14-15 11-3 14-15Z" />
-        </g>
-
-        <!-- Two of the three trails. They fall from the star rather than
-             rising to it, which is the whole shape of the thing. -->
-        <path
-          class="trail-gold"
-          d="M320 208c-8 78-48 154-134 224-16 13-24 28-6 32 96-64 150-166 160-252Z"
-        />
-        <path
-          class="trail-blue"
-          d="M360 208c10 82 44 164 96 238 10 15 0 32-14 19-60-76-94-172-102-255Z"
-        />
-
-        <rect class="sweep" x="-680" y="0" width="680" height="680" fill="url(#ephemeris-sweep)" />
-      </g>
-
-      <!-- Left out of the clip deliberately: on the plate this one runs off
-           the rim at the lower left instead of stopping politely at it. -->
-      <path
-        class="trail-scarlet"
-        d="M340 202c-6 102-62 208-168 302-32 28-70 54-52 64 120-64 214-210 232-362Z"
-      />
-
-      <g class="major-star">
-        <path class="star-pale" d="M336 104q14 62 70 72-56 10-70 72-14-62-70-72 56-10 70-72Z" />
-        <path class="star-gold" d="M336 124q12 50 58 58-46 8-58 58-12-50-58-58 46-8 58-58Z" />
-        <circle class="star-core" cx="336" cy="180" r="7" />
+      <!-- a light crossing the plate, on the beat the other badges keep -->
+      <g clip-path="url(#ephemeris-plate)">
+        <rect class="sweep" x="-285" y="0" width="285" height="285" fill="url(#ephemeris-sweep)" />
       </g>
     </svg>
   </div>
@@ -125,117 +90,70 @@ export default {
 </script>
 
 <style scoped>
-/* --- the plate ---------------------------------------------------------- */
+/* --- the frame ---------------------------------------------------------- */
 
-.disc {
-  fill: #3d7cb8;
-}
+.rim-scarlet { fill: #eb1c24; }
+.rim-pale { fill: #fff; }
+.rim-azure { fill: #1275b4; }
+.rim-night { fill: #011b39; }
 
-.ring-outer {
-  fill: none;
-  stroke: #d8383a;
-  stroke-width: 22px;
-}
+/* --- the night it sits on ----------------------------------------------- */
 
-.ring-inner {
-  fill: none;
-  stroke: #fff;
-  stroke-width: 8px;
-}
-
-.field {
-  fill: #0e2a4e;
-}
+.night { fill: #011b39; }
+.night-shadow { fill: #011b39; }
 
 /* --- the world ---------------------------------------------------------- */
 
-.globe-sea {
-  fill: #123458;
-}
-
-.globe-land path {
-  fill: #3d7cb8;
-}
-
-.ringed-planet circle {
-  fill: #3d7cb8;
-}
-
-.planet-ring {
-  fill: none;
-  stroke: #3d7cb8;
-  stroke-width: 7px;
-}
-
-/* --- the charge --------------------------------------------------------- */
-
-.charge-face {
-  fill: #ead455;
-}
-
-.bolt {
-  fill: #0e2a4e;
-}
+.land { fill: #1275b4; }
+.planet-body { fill: #1275b4; }
+.planet-ring { fill: #1275b4; }
 
 /* --- the trails --------------------------------------------------------- */
 
-.trail-gold {
-  fill: #ead455;
-}
+.trail-gold { fill: #edd337; }
+.trail-scarlet { fill: #eb1c24; }
+.trail-azure { fill: #1275b4; }
 
-.trail-blue {
-  fill: #3d7cb8;
-}
+/* --- the charge --------------------------------------------------------- */
 
-.trail-scarlet {
-  fill: #d8383a;
-}
+.charge-face { fill: #edd337; }
+.charge-bolt { fill: #011b39; }
 
 /* --- the sky ------------------------------------------------------------ */
 
-.star-pale {
-  fill: #fff;
-}
-
-.star-gold {
-  fill: #ead455;
-}
-
-.star-core {
-  fill: #fff;
-}
-
-.minor-stars path {
-  fill: #fff;
-}
+.star-pale { fill: #fff; }
+.star-gold { fill: #edd337; }
+.star-minor { fill: #fff; }
 
 /*
- * The star keeps its own slow breath; the small ones each get a different
- * period and a head start, so the sky never twinkles in chorus.
+ * The star breathes; the small ones each get their own period and a head
+ * start, so the sky never twinkles in chorus.
+ *
+ * Opacity and not scale, deliberately. The star is four separate polygons
+ * whose bounding boxes have four different centres, so scaling each about
+ * its own would pull it apart rather than flare it.
  */
-.major-star {
-  transform-box: fill-box;
-  transform-origin: center;
+.star-pale,
+.star-gold {
   animation: ephemeris-flare 6.5s ease-in-out infinite;
 }
 
 @keyframes ephemeris-flare {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.06); opacity: 0.9; }
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.82; }
 }
 
-.minor-stars path {
+.star-minor {
   animation: ephemeris-twinkle 5s ease-in-out infinite;
 }
 
-.minor-stars path:nth-child(2) { animation-duration: 7.4s; animation-delay: -2.2s; }
-.minor-stars path:nth-child(3) { animation-duration: 4.3s; animation-delay: -3.5s; }
-.minor-stars path:nth-child(4) { animation-duration: 8.1s; animation-delay: -1.1s; }
-.minor-stars path:nth-child(5) { animation-duration: 6.2s; animation-delay: -4.6s; }
+.star-minor:nth-of-type(2) { animation-duration: 7.4s; animation-delay: -2.2s; }
+.star-minor:nth-of-type(3) { animation-duration: 4.3s; animation-delay: -3.5s; }
+.star-minor:nth-of-type(4) { animation-duration: 8.1s; animation-delay: -1.1s; }
 
 @keyframes ephemeris-twinkle {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
+  50% { opacity: 0.35; }
 }
 
 /* --- the pass ----------------------------------------------------------- */
@@ -254,12 +172,13 @@ export default {
   0% { transform: translateX(0); opacity: 0; }
   12% { opacity: 1; }
   88% { opacity: 1; }
-  100% { transform: translateX(1500px); opacity: 0; }
+  100% { transform: translateX(640px); opacity: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .major-star,
-  .minor-stars path,
+  .star-pale,
+  .star-gold,
+  .star-minor,
   .animate .sweep {
     animation: none;
   }
