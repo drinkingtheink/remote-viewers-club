@@ -234,6 +234,7 @@ import Badge5 from './Badge5.vue'
 import Badge6 from './Badge6.vue'
 import Badge7 from './Badge7.vue'
 import Badge8 from './Badge8.vue'
+import Badge9 from './Badge9.vue'
 import SeeYouThere from './SeeYouThere.vue'
 import SkeletonArms from './SkeletonArms.vue'
 import RemoteViewingSession from './sessions/RemoteViewingSession.vue'
@@ -260,6 +261,13 @@ import GnosisIcon from './icons/GnosisIcon'
  * mistake a lot for a second series.
  */
 const badgeMap = [
+  {
+    title: 'Grand Ephemeris',
+    desc: '19th Celestial Reckoning SQ',
+    inspo: 'https://www.grandephemeris.com/',
+    id: 9,
+    cat: 'RVC 31.19.6',
+  },
   {
     title: 'Beyond All Bounds',
     desc: '24th Omnidimensional Operations',
@@ -346,6 +354,7 @@ export default {
     Badge6,
     Badge7,
     Badge8,
+    Badge9,
     SeeYouThere,
     SkeletonArms,
     RemoteViewingSession,
